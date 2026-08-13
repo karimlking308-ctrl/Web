@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TopStories } from '../components/news/TopStories';
 import { MarketMovers } from '../components/markets/MarketMovers';
 import { LatestNews } from '../components/news/LatestNews';
@@ -7,46 +7,71 @@ import { NewsletterSignup } from '../components/newsletter/NewsletterSignup';
 import { AdSlot } from '../components/advertising/AdSlot';
 import { SectionHeader } from '../components/common/SectionHeader';
 import { ArticleCard } from '../components/news/ArticleCard';
-import { placeholderSupportingArticles } from '../services/newsService';
+import { newsService } from '../services/newsService';
+import { Article } from '../types';
 import { useRouter } from '../context/RouterContext';
-import { TrendingUp, Flame, Cpu, Landmark, Bitcoin, LineChart, ShieldAlert } from 'lucide-react';
+import { Flame, LineChart, Globe, Zap } from 'lucide-react';
 
 export const HomePage: React.FC = () => {
   const { navigate } = useRouter();
+  const [cryptoArticles, setCryptoArticles] = useState<Article[]>([]);
+  const [stockArticles, setStockArticles] = useState<Article[]>([]);
+  const [economyArticles, setEconomyArticles] = useState<Article[]>([]);
+  const [trendingArticles, setTrendingArticles] = useState<Article[]>([]);
 
-  const cryptoArticles = placeholderSupportingArticles.filter(a => a.category === 'crypto');
-  const stockArticles = placeholderSupportingArticles.filter(a => a.category === 'stocks');
-  const economyArticles = placeholderSupportingArticles.filter(a => a.category === 'economy');
-  const techArticles = placeholderSupportingArticles.filter(a => a.category === 'technology');
+  useEffect(() => {
+    let isMounted = true;
+
+    // Load category spotlights
+    newsService.getLatestNews({ category: 'crypto', limit: 2 }).then(res => {
+      if (isMounted) setCryptoArticles(res.articles);
+    });
+
+    newsService.getLatestNews({ category: 'stocks', limit: 2 }).then(res => {
+      if (isMounted) setStockArticles(res.articles);
+    });
+
+    newsService.getLatestNews({ category: 'economy', limit: 2 }).then(res => {
+      if (isMounted) setEconomyArticles(res.articles);
+    });
+
+    newsService.getTrendingStories(5).then(items => {
+      if (isMounted) setTrendingArticles(items);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="flex flex-col gap-10 md:gap-14">
       {/* Top Banner Advertisement Slot */}
       <AdSlot variant="banner" />
 
-      {/* D. Top Stories Section */}
+      {/* Top Stories Section */}
       <TopStories />
 
-      {/* E. Market Movers Component */}
+      {/* Market Movers Component */}
       <MarketMovers />
 
       {/* Main Grid: Latest News Wire + Sidebar */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left / Center 8 Columns: Latest News */}
         <div className="lg:col-span-8 flex flex-col gap-10">
-          {/* F. Latest News Feed */}
+          {/* Latest News Feed */}
           <LatestNews limit={6} />
 
           {/* Inline Ad Slot */}
           <AdSlot variant="inline" />
 
-          {/* G. Crypto Section Spotlight */}
+          {/* Crypto Section Spotlight */}
           <section className="w-full">
             <SectionHeader
               title="Crypto & Digital Assets"
-              subtitle="Bitcoin, Ethereum, DeFi liquidity, and regulatory developments"
+              subtitle="Bitcoin, Ethereum, digital asset flows, and regulatory developments"
               viewAllLink="/crypto"
-              badge="Web3"
+              badge="Web3 Wire"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {cryptoArticles.length > 0 ? (
@@ -54,33 +79,18 @@ export const HomePage: React.FC = () => {
                   <ArticleCard key={article.id} article={article} variant="standard" />
                 ))
               ) : (
-                <div className="col-span-2 p-6 bg-slate-900/40 rounded-lg text-center text-xs text-slate-400">
-                  Digital asset wire stream connects in Phase 2
+                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
+                  Loading verified digital asset news wire...
                 </div>
               )}
-              {/* Additional category preview card */}
-              <ArticleCard
-                article={{
-                  id: 'crypto-spotlight-2',
-                  slug: 'crypto-derivatives-and-spot-etf-flows',
-                  title: 'Institutional Spot ETF Inflows & On-Chain Settlement Dynamics',
-                  summary: 'Tracking net daily inflows into registered spot ETF products and sovereign reserve accumulation strategies.',
-                  category: 'crypto',
-                  source: 'PULSE Digital',
-                  publishedAt: '2h ago',
-                  readTimeMinutes: 4,
-                  tags: ['ETF', 'Bitcoin', 'Flows']
-                }}
-                variant="standard"
-              />
             </div>
           </section>
 
-          {/* H. Stocks & Equities Spotlight */}
+          {/* Stocks & Equities Spotlight */}
           <section className="w-full">
             <SectionHeader
               title="Equities & Corporate Earnings"
-              subtitle="Wall Street earnings, valuation multiples, and sector rotations"
+              subtitle="Wall Street earnings, corporate guidance, and sector movements"
               viewAllLink="/stocks"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -89,32 +99,18 @@ export const HomePage: React.FC = () => {
                   <ArticleCard key={article.id} article={article} variant="standard" />
                 ))
               ) : (
-                <div className="col-span-2 p-6 bg-slate-900/40 rounded-lg text-center text-xs text-slate-400">
-                  Stock market reports will appear here
+                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
+                  Loading equity market reporting...
                 </div>
               )}
-              <ArticleCard
-                article={{
-                  id: 'stock-spotlight-2',
-                  slug: 'semiconductor-valuation-multiples-and-capex',
-                  title: 'Megacap Tech Balance Sheets: Free Cash Flow Yields & Buybacks',
-                  summary: 'Analyzing capital return programs, dividend growth trajectories, and debt leverage ratios across tech leaders.',
-                  category: 'stocks',
-                  source: 'PULSE Equities',
-                  publishedAt: '3h ago',
-                  readTimeMinutes: 5,
-                  tags: ['Equities', 'Tech', 'Dividends']
-                }}
-                variant="standard"
-              />
             </div>
           </section>
 
-          {/* I. Economy & Macro Spotlight */}
+          {/* Economy & Macro Spotlight */}
           <section className="w-full">
             <SectionHeader
               title="Economy & Central Banks"
-              subtitle="Monetary policy, inflation indicators, and sovereign debt markets"
+              subtitle="Monetary policy, inflation indicators, and sovereign debt dynamics"
               viewAllLink="/economy"
             />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -123,24 +119,10 @@ export const HomePage: React.FC = () => {
                   <ArticleCard key={article.id} article={article} variant="standard" />
                 ))
               ) : (
-                <div className="col-span-2 p-6 bg-slate-900/40 rounded-lg text-center text-xs text-slate-400">
-                  Macroeconomic reports will appear here
+                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
+                  Loading macroeconomic wire coverage...
                 </div>
               )}
-              <ArticleCard
-                article={{
-                  id: 'economy-spotlight-2',
-                  slug: 'global-trade-flows-and-currency-crosses',
-                  title: 'Global Trade Balances, Commodity Pricing, and Foreign Exchange',
-                  summary: 'Monitoring export-import price indices, shipping freight rates, and international currency reserve shifts.',
-                  category: 'economy',
-                  source: 'PULSE Macro',
-                  publishedAt: '4h ago',
-                  readTimeMinutes: 4,
-                  tags: ['Macro', 'Forex', 'Trade']
-                }}
-                variant="standard"
-              />
             </div>
           </section>
         </div>
@@ -150,64 +132,72 @@ export const HomePage: React.FC = () => {
           {/* Sidebar Advertisement */}
           <AdSlot variant="sidebar" />
 
-          {/* K. Trending Stories Widget */}
+          {/* Trending Stories Widget */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
-            <div className="flex items-center gap-2 pb-3 mb-4 border-b border-slate-100">
-              <Flame className="w-4 h-4 text-amber-500" />
-              <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wider font-mono">
-                Trending Wire
-              </h3>
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <Flame className="w-4 h-4 text-amber-500" />
+                <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wider font-mono">
+                  Trending Wire
+                </h3>
+              </div>
+              <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-bold">
+                Live
+              </span>
             </div>
 
             <div className="flex flex-col gap-3">
-              {[
-                { rank: '01', title: 'Federal Reserve policy committee minutes and rate trajectory expectations', cat: 'economy', time: '18m ago' },
-                { rank: '02', title: 'Global chipmaker unveils next-generation AI datacenter architecture', cat: 'technology', time: '34m ago' },
-                { rank: '03', title: 'Major institutional liquidity provider opens digital asset custody desk', cat: 'crypto', time: '1h ago' },
-                { rank: '04', title: 'Treasury yields adjust following latest monthly employment summary', cat: 'markets', time: '2h ago' },
-              ].map((item) => (
-                <div
-                  key={item.rank}
-                  onClick={() => navigate('/trending')}
-                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group"
-                >
-                  <span className="font-mono font-extrabold text-lg text-slate-400 group-hover:text-blue-600 transition-colors shrink-0">
-                    {item.rank}
-                  </span>
-                  <div className="flex flex-col gap-1">
-                    <h4 className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug line-clamp-2">
-                      {item.title}
-                    </h4>
-                    <span className="text-[10px] font-mono text-slate-500">
-                      {item.time}
+              {trendingArticles.length > 0 ? (
+                trendingArticles.map((item, idx) => (
+                  <div
+                    key={item.id}
+                    onClick={() => navigate(`/article/${item.slug}`)}
+                    className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group"
+                  >
+                    <span className="font-mono font-extrabold text-lg text-slate-400 group-hover:text-blue-600 transition-colors shrink-0">
+                      {(idx + 1).toString().padStart(2, '0')}
                     </span>
+                    <div className="flex flex-col gap-1">
+                      <h4 className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug line-clamp-2">
+                        {item.title}
+                      </h4>
+                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                        <span className="text-blue-600 font-semibold">{item.source}</span>
+                        <span>•</span>
+                        <span>{item.publishedAt}</span>
+                      </div>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="p-4 text-center text-xs font-mono text-slate-400">
+                  Calculating trending stories...
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
           {/* Native Sponsored Slot */}
           <AdSlot variant="native" />
 
-          {/* Market Intelligence Quick Box */}
+          {/* Verified News Engine Box */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-xs text-slate-700 flex flex-col gap-3 shadow-xs">
             <h4 className="font-bold text-slate-900 font-mono uppercase tracking-wider text-xs flex items-center gap-2">
-              <LineChart className="w-4 h-4 text-blue-600" />
-              <span>Phase 1 Architecture Status</span>
+              <Zap className="w-4 h-4 text-blue-600" />
+              <span>Real-Time Ingestion Engine</span>
             </h4>
             <p className="text-slate-600 leading-relaxed text-[11px]">
-              All core data schemas, component systems, and view controllers are primed for Phase 2 RSS ingestion and Phase 3 real-time market data feeds.
+              PULSE ingests, normalizes, and deduplicates coverage from CNBC, BBC, SEC, The Guardian, Federal Reserve, and verified wire services.
             </p>
             <div className="pt-2 border-t border-slate-200 font-mono text-[10px] text-slate-500 flex justify-between">
-              <span>Clean Design System</span>
-              <span className="text-emerald-700 font-bold">Active</span>
+              <span>Source Attribution</span>
+              <span className="text-emerald-700 font-bold">100% Verified</span>
             </div>
           </div>
         </aside>
       </div>
 
-      {/* J. PULSE AI Analysis Section */}
+      {/* PULSE AI Analysis Section */}
       <section className="w-full mt-4">
         <SectionHeader
           title="PULSE AI Market Synthesis"
@@ -218,7 +208,7 @@ export const HomePage: React.FC = () => {
         <AIAnalysisCard />
       </section>
 
-      {/* L. Newsletter Subscription Section */}
+      {/* Newsletter Subscription Section */}
       <div id="newsletter-section" className="w-full pt-4">
         <NewsletterSignup />
       </div>

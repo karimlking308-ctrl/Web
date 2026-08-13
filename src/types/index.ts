@@ -5,7 +5,16 @@ export type Category =
   | 'economy' 
   | 'technology' 
   | 'analysis' 
-  | 'trending';
+  | 'trending'
+  | 'business'
+  | 'energy'
+  | 'global'
+  | 'science';
+
+export interface RelatedSource {
+  name: string;
+  url: string;
+}
 
 export interface Article {
   id: string;
@@ -18,11 +27,14 @@ export interface Article {
   sourceUrl?: string;
   imageUrl?: string;
   publishedAt: string;
+  publishedTimestamp?: number;
   tags: string[];
   tickers?: string[];
   readTimeMinutes?: number;
   isBreaking?: boolean;
   isFeatured?: boolean;
+  sourceId?: string;
+  relatedSources?: RelatedSource[];
   createdAt?: string;
   updatedAt?: string;
 }

@@ -5,7 +5,7 @@ import { ArticleCard } from '../components/news/ArticleCard';
 import { ArticleCardSkeleton } from '../components/common/Skeleton';
 import { AdSlot } from '../components/advertising/AdSlot';
 import { useRouter } from '../context/RouterContext';
-import { Search, Filter, AlertCircle, RefreshCw, Layers, Sparkles } from 'lucide-react';
+import { Search, AlertCircle, RefreshCw, Layers, Zap } from 'lucide-react';
 
 export const SearchPage: React.FC = () => {
   const { searchQuery, setSearchQuery } = useRouter();
@@ -28,14 +28,13 @@ export const SearchPage: React.FC = () => {
     setHasSearched(true);
 
     try {
-      // Simulate fast search query with Phase 1 service
       const res = await newsService.searchNews(
         term,
         cat === 'all' ? undefined : cat
       );
       setResults(res);
     } catch {
-      setError('Search service is currently indexing new wires. Please try again.');
+      setError('Search service encountered a temporary error. Please retry.');
     } finally {
       setLoading(false);
     }
@@ -72,11 +71,11 @@ export const SearchPage: React.FC = () => {
   ];
 
   const suggestedQueries = [
-    'Bitcoin ETF',
+    'Bitcoin',
     'Federal Reserve',
     'Semiconductors',
-    'Treasury Yields',
-    'Corporate Earnings',
+    'Yields',
+    'Earnings',
     'Inflation',
   ];
 
@@ -89,7 +88,7 @@ export const SearchPage: React.FC = () => {
             Search PULSE Intelligence Wire
           </h1>
           <p className="text-xs sm:text-sm text-slate-600">
-            Query across global markets, macroeconomic reports, corporate filings, and AI-assisted analysis
+            Query across global markets, macroeconomic reports, corporate filings, and verified news feeds
           </p>
 
           {/* Search Bar Form */}
@@ -100,7 +99,7 @@ export const SearchPage: React.FC = () => {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search markets, companies, crypto, news..."
+                placeholder="Search markets, companies, tickers, crypto..."
                 className="w-full bg-slate-50 border border-slate-300 focus:border-blue-600 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-colors shadow-xs font-mono"
               />
             </div>
@@ -158,7 +157,7 @@ export const SearchPage: React.FC = () => {
               <Search className="w-10 h-10 text-slate-400 mb-1" />
               <h3 className="text-base font-bold text-slate-900">Enter a keyword to search</h3>
               <p className="text-xs text-slate-500 max-w-sm">
-                Search real-time financial reporting by ticker symbol, central bank, company name, or asset class.
+                Search real-time financial reporting by ticker symbol, central bank statement, company name, or asset class.
               </p>
             </div>
           )}
@@ -199,7 +198,7 @@ export const SearchPage: React.FC = () => {
                 No matching wire reports found for "{query}"
               </h3>
               <p className="text-xs text-slate-500 max-w-sm">
-                Try searching for broader terms like "crypto", "markets", "earnings", or "Fed". Full real-time news search indices connect in Phase 2.
+                Try searching for broader terms like "crypto", "markets", "earnings", "tech", or "Fed".
               </p>
             </div>
           )}
@@ -211,7 +210,7 @@ export const SearchPage: React.FC = () => {
                 <span>
                   Found <strong className="text-slate-900">{results.length}</strong> reports matching "{query}"
                 </span>
-                <span>Sorted by Editorial Relevance</span>
+                <span>Sorted by Recency & Relevance</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -229,11 +228,12 @@ export const SearchPage: React.FC = () => {
         <aside className="lg:col-span-4 flex flex-col gap-6">
           <AdSlot variant="sidebar" />
           <div className="bg-white border border-slate-200 rounded-xl p-5 text-xs text-slate-600 shadow-xs">
-            <h3 className="font-bold text-slate-900 font-mono uppercase tracking-wider mb-2 text-xs">
-              Search Index Status
+            <h3 className="font-bold text-slate-900 font-mono uppercase tracking-wider mb-2 text-xs flex items-center gap-1.5">
+              <Zap className="w-3.5 h-3.5 text-blue-600" />
+              <span>Full-Text News Index</span>
             </h3>
             <p className="text-xs leading-relaxed text-slate-600">
-              In Phase 2, this search system will perform sub-millisecond semantic search across indexed global wire feeds, RSS streams, and SEC corporate disclosures.
+              The search index performs multi-token search across verified sources (CNBC, BBC, The Guardian, Federal Reserve, SEC, CoinDesk) with instant categorization.
             </p>
           </div>
           <AdSlot variant="native" />
