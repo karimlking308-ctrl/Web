@@ -1,0 +1,7 @@
+{
+  "name": "PULSE - Markets, News, Analysis",
+  "description": "A premier financial media platform delivering global financial news, crypto updates, stock markets, macroeconomic coverage, and AI-assisted market analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
