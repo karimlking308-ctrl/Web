@@ -1,8 +1,9 @@
 import React from 'react';
 import { Article } from '../../types';
 import { Badge } from '../common/Badge';
-import { Clock, ArrowUpRight, Newspaper, Image as ImageIcon } from 'lucide-react';
+import { Clock, ArrowUpRight } from 'lucide-react';
 import { useRouter } from '../../context/RouterContext';
+import { getDeterministicArticleImage } from '../../utils/imageUtils';
 
 interface ArticleCardProps {
   article: Article;
@@ -19,7 +20,10 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
 }) => {
   const { navigate } = useRouter();
   const [imageError, setImageError] = React.useState(false);
-  const hasImage = Boolean(article.imageUrl && !imageError);
+
+  const displayImageUrl = (!imageError && article.imageUrl)
+    ? article.imageUrl
+    : getDeterministicArticleImage(article.title, article.summary, article.category, article.id);
 
   const handleClick = () => {
     navigate(`/article/${article.slug}`);
@@ -34,28 +38,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       >
         {/* Visual Container */}
         <div className="relative w-full aspect-[16/9] md:aspect-[21/10] bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-200">
-          {hasImage ? (
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              onError={() => setImageError(true)}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-tr from-slate-100 via-slate-50 to-blue-50/40 flex flex-col items-center justify-center p-6 text-center">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-2 shadow-xs">
-                <Newspaper className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-mono uppercase tracking-widest text-slate-700 font-bold">
-                PULSE Editorial Coverage
-              </span>
-              <span className="text-[11px] font-mono text-slate-500 mt-1">
-                Source: {article.source}
-              </span>
-            </div>
-          )}
+          <img
+            src={displayImageUrl}
+            alt={article.title}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
           <div className="absolute top-4 left-4 flex items-center gap-2">
             <Badge category={article.category} size="md">
@@ -148,21 +138,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         className={`group bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-4 cursor-pointer transition-all flex flex-col sm:flex-row gap-4 shadow-xs hover:shadow-md ${className}`}
       >
         <div className="sm:w-1/3 aspect-[16/10] bg-slate-100 rounded-md overflow-hidden shrink-0 flex items-center justify-center border border-slate-200">
-          {hasImage ? (
-            <img
-              src={article.imageUrl}
-              alt={article.title}
-              loading="lazy"
-              referrerPolicy="no-referrer"
-              onError={() => setImageError(true)}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-            />
-          ) : (
-            <div className="w-full h-full bg-slate-50 flex flex-col items-center justify-center p-3 text-center">
-              <ImageIcon className="w-5 h-5 text-slate-400 mb-1" />
-              <span className="text-[10px] font-mono uppercase text-slate-500 font-semibold">PULSE Media</span>
-            </div>
-          )}
+          <img
+            src={displayImageUrl}
+            alt={article.title}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+          />
         </div>
 
         <div className="sm:w-2/3 flex flex-col justify-between gap-2">
@@ -206,23 +189,14 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       className={`group bg-white border border-slate-200 hover:border-slate-300 rounded-lg overflow-hidden cursor-pointer transition-all flex flex-col justify-between shadow-xs hover:shadow-md ${className}`}
     >
       <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-200">
-        {hasImage ? (
-          <img
-            src={article.imageUrl}
-            alt={article.title}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-            onError={() => setImageError(true)}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-slate-50 to-blue-50/30 flex flex-col items-center justify-center p-4 text-center">
-            <Newspaper className="w-6 h-6 text-slate-400 mb-1" />
-            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-600 font-semibold">
-              {article.category} Report
-            </span>
-          </div>
-        )}
+        <img
+          src={displayImageUrl}
+          alt={article.title}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          onError={() => setImageError(true)}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
 
         <div className="absolute top-2.5 left-2.5">
           <Badge category={article.category} size="sm">

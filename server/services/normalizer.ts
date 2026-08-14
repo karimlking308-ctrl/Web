@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { Article, Category } from '../../src/types';
 import { NewsSourceConfig } from '../config/sources';
+import { getDeterministicArticleImage } from '../../src/utils/imageUtils';
 
 // List of verified financial tickers to detect in titles and summaries
 const VERIFIED_STOCK_TICKERS = new Set([
@@ -458,13 +459,14 @@ export function normalizeRssItem(
   tagsSet.add(category.charAt(0).toUpperCase() + category.slice(1));
   tagsSet.add(source.name);
 
-  // Extract Image if provided legitimately in enclosure, media, or content
-  const imageUrl = extractImageUrl(item);
-
   const linkHash = crypto.createHash('sha256').update(link).digest('hex').slice(0, 16);
   const id = `${source.id}-${linkHash}`;
   const slug = createSlug(title, id);
   const isBreaking = isBreakingStory(title, publishedTimestamp, source.priority);
+
+  // Extract Image if provided legitimately in enclosure, media, or content, or fallback to deterministic topic image
+  const extractedImage = extractImageUrl(item);
+  const imageUrl = extractedImage || getDeterministicArticleImage(title, summary, category, id);
 
   // Compute estimated read time
   const wordCount = (title.split(' ').length + summary.split(' ').length) + 150;

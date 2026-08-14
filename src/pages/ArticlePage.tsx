@@ -7,6 +7,7 @@ import { ArticleCard } from '../components/news/ArticleCard';
 import { AdSlot } from '../components/advertising/AdSlot';
 import { DisclaimerBanner } from '../components/common/DisclaimerBanner';
 import { useRouter } from '../context/RouterContext';
+import { getDeterministicArticleImage } from '../utils/imageUtils';
 import {
   Clock,
   Share2,
@@ -189,30 +190,16 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ slug }) => {
           </div>
 
           {/* Hero Media */}
-          {article.imageUrl && !imageError ? (
-            <div className="relative aspect-[16/9] md:aspect-[21/10] bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-xs">
-              <img
-                src={article.imageUrl}
-                alt={article.title}
-                loading="lazy"
-                referrerPolicy="no-referrer"
-                onError={() => setImageError(true)}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ) : (
-            <div className="w-full aspect-[21/9] bg-gradient-to-tr from-slate-100 via-slate-50 to-blue-50 rounded-xl border border-slate-200 flex flex-col items-center justify-center p-6 text-center shadow-xs">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-600 mb-2">
-                <Newspaper className="w-6 h-6" />
-              </div>
-              <span className="text-xs font-mono uppercase tracking-widest text-slate-800 font-bold">
-                PULSE Verified Financial Wire
-              </span>
-              <span className="text-[11px] font-mono text-slate-500 mt-1">
-                Source: {article.source}
-              </span>
-            </div>
-          )}
+          <div className="relative aspect-[16/9] md:aspect-[21/10] bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-xs">
+            <img
+              src={(!imageError && article.imageUrl) ? article.imageUrl : getDeterministicArticleImage(article.title, article.summary, article.category, article.id)}
+              alt={article.title}
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              onError={() => setImageError(true)}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
           {/* Primary Outbound Link & Copyright Protection Banner */}
           <div className="p-5 rounded-xl bg-blue-50/80 border border-blue-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">

@@ -1,5 +1,6 @@
 import { Article, Category } from '../../src/types';
 import { initializeDatabase, getDbClient } from './db';
+import { getDeterministicArticleImage } from '../../src/utils/imageUtils';
 
 export interface StorageStats {
   totalArticles: number;
@@ -31,7 +32,7 @@ function mapRowToArticle(row: any): Article {
     category: row.category as Category,
     source: String(row.source),
     sourceUrl: String(row.source_url),
-    imageUrl: row.image_url ? String(row.image_url) : undefined,
+    imageUrl: row.image_url ? String(row.image_url) : getDeterministicArticleImage(String(row.title), String(row.summary), String(row.category), String(row.id)),
     publishedAt: String(row.published_at),
     publishedTimestamp: Number(row.published_timestamp),
     tags: row.tags ? JSON.parse(String(row.tags)) : [],
