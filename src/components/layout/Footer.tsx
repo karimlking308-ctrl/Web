@@ -2,7 +2,8 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { categoriesData, allToolsData } from '../../data/toolsData';
 import { ToolIcon } from '../common/ToolIcon';
-import { Wrench, ShieldCheck, Heart, Github, Twitter, Mail } from 'lucide-react';
+import { BrandLogo } from '../common/BrandLogo';
+import { ShieldCheck, Heart, Github, Twitter, Mail } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const { lang, t, navigate } = useApp();
@@ -18,14 +19,9 @@ export const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-4">
             <div
               onClick={() => navigate('/')}
-              className="flex items-center gap-3 cursor-pointer select-none"
+              className="cursor-pointer select-none"
             >
-              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20">
-                <Wrench className="w-5 h-5" />
-              </div>
-              <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
-                {isAr ? 'كويك كيت' : 'QuickKit'}
-              </span>
+              <BrandLogo isArabic={isAr} showTagline={false} size="md" />
             </div>
 
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-sm">
@@ -125,7 +121,7 @@ export const Footer: React.FC = () => {
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div>
-            © {new Date().getFullYear()} QuickKit. {t('allRightsReserved')}
+            © {new Date().getFullYear()} Sol Tools. {t('allRightsReserved')}
           </div>
           <div className="flex items-center gap-4">
             <button

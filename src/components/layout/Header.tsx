@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { categoriesData, allToolsData } from '../../data/toolsData';
 import { ToolIcon } from '../common/ToolIcon';
+import { BrandLogo } from '../common/BrandLogo';
 import {
   Search,
   Heart,
@@ -10,7 +11,6 @@ import {
   Globe,
   Menu,
   X,
-  Wrench,
   Sparkles,
   ChevronDown,
 } from 'lucide-react';
@@ -60,19 +60,9 @@ export const Header: React.FC = () => {
           {/* 1. Brand Logo */}
           <div
             onClick={() => navigate('/')}
-            className="flex items-center gap-3 cursor-pointer select-none shrink-0 group"
+            className="cursor-pointer shrink-0"
           >
-            <div className="w-10 h-10 rounded-xl bg-linear-to-tr from-amber-500 to-amber-400 text-white flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <Wrench className="w-5 h-5" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white group-hover:text-amber-500 transition-colors leading-none">
-                {isAr ? 'كويك كيت' : 'QuickKit'}
-              </span>
-              <span className="text-[9px] font-extrabold tracking-widest uppercase text-amber-600 dark:text-amber-400 pt-0.5">
-                {t('appTagline')}
-              </span>
-            </div>
+            <BrandLogo isArabic={isAr} />
           </div>
 
           {/* 2. Desktop Navigation Categories */}

@@ -16,12 +16,12 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
         return (
           <div className="space-y-6 text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-              {isAr ? 'عن كويك كيت (QuickKit)' : 'About QuickKit'}
+              {isAr ? 'عن سول تولز (Sol Tools)' : 'About Sol Tools'}
             </h1>
             <p>
               {isAr
-                ? 'كويك كيت هي منصة شاملة ومجانية 100% تجمع أكثر من 39 أداة أساسية لمعالجة الصور، ملفات PDF، تنسيق الأكواد، تحليل النصوص، الحسابات والتحويلات اليومية.'
-                : 'QuickKit is an all-in-one suite of 39+ free, client-side online tools designed for developers, designers, students, and professionals worldwide.'}
+                ? 'سول تولز هي منصة شاملة ومجانية 100% تجمع أكثر من 39 أداة أساسية لمعالجة الصور، ملفات PDF، تنسيق الأكواد، تحليل النصوص، الحسابات والتحويلات اليومية.'
+                : 'Sol Tools is an all-in-one suite of 39+ free, client-side online tools designed for developers, designers, students, and professionals worldwide.'}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
@@ -65,8 +65,8 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
             </h2>
             <p>
               {isAr
-                ? 'نحن نؤمن بأن بياناتك هي ملكك الخاص. منصة كويك كيت مبنية بالكامل لتنفذ كافة العمليات (تغيير حجم الصور، تحويل ملفات PDF، تشفير وتنسيق الأكواد، وحساب الأرقام) داخل بيئة الـ JavaScript في متصفحك مباشرة (Client-Side). لن يتم نقل أي من ملفاتك إلى خوادمنا على الإطلاق.'
-                : 'QuickKit is architected to perform all file modifications, conversions, code formatting, and data calculations purely within your local browser JavaScript engine. We do not store or transmit your source files, text, images, or documents to remote servers.'}
+                ? 'نحن نؤمن بأن بياناتك هي ملكك الخاص. منصة سول تولز مبنية بالكامل لتنفذ كافة العمليات (تغيير حجم الصور، تحويل ملفات PDF، تشفير وتنسيق الأكواد، وحساب الأرقام) داخل بيئة الـ JavaScript في متصفحك مباشرة (Client-Side). لن يتم نقل أي من ملفاتك إلى خوادمنا على الإطلاق.'
+                : 'Sol Tools is architected to perform all file modifications, conversions, code formatting, and data calculations purely within your local browser JavaScript engine. We do not store or transmit your source files, text, images, or documents to remote servers.'}
             </p>
 
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mt-4">
@@ -88,8 +88,8 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
             </h1>
             <p>
               {isAr
-                ? 'باستخدامك لمنصة QuickKit، فإنك توافق على الشروط والأحكام التالية:'
-                : 'By using the QuickKit platform, you agree to the following terms:'}
+                ? 'باستخدامك لمنصة Sol Tools، فإنك توافق على الشروط والأحكام التالية:'
+                : 'By using the Sol Tools platform, you agree to the following terms:'}
             </p>
             <ul className="list-disc pl-5 rtl:pr-5 space-y-2 text-xs">
               <li>
@@ -105,7 +105,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
               <li>
                 {isAr
                   ? 'يحظر استخدام الأدوات لأي أغراض غير قانونية أو انتهاك لحقوق الملكية الفكرية.'
-                  : 'You may not use QuickKit for any unlawful purpose or copyright infringement.'}
+                  : 'You may not use Sol Tools for any unlawful purpose or copyright infringement.'}
               </li>
             </ul>
           </div>
@@ -115,7 +115,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
         return (
           <div className="space-y-6 text-slate-700 dark:text-slate-300 text-sm leading-relaxed max-w-xl">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
-              {isAr ? 'اتصل بنا' : 'Contact QuickKit'}
+              {isAr ? 'اتصل بنا' : 'Contact Sol Tools'}
             </h1>
             <p>
               {isAr
@@ -126,7 +126,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ pageType }) => {
             <div className="p-6 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl space-y-3">
               <div className="flex items-center gap-3 text-slate-800 dark:text-slate-200 font-semibold">
                 <Mail className="w-5 h-5 text-amber-500" />
-                <span>support@quickkit.tools</span>
+                <span>support@soltools.app</span>
               </div>
               <p className="text-xs text-slate-500">
                 {isAr ? 'فريق الدعم يرد خلال 24 ساعة في أيام العمل.' : 'Our team typically responds within 24 hours.'}

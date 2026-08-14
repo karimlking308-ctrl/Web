@@ -62,7 +62,7 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({ toolSlug }) => {
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
-        title: `${tool.name} - QuickKit`,
+        title: `${tool.name} - Sol Tools`,
         text: tool.description,
         url: window.location.href,
       }).catch(() => {});

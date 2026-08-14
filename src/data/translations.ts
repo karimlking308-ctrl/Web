@@ -1,7 +1,7 @@
 export const translations = {
   en: {
-    appName: 'QuickKit',
-    appTagline: 'Free Online Tools',
+    appName: 'Sol Tools',
+    appTagline: '200+ Free Online Tools',
     allTools: 'All Tools',
     imageTools: 'Image Tools',
     pdfTools: 'PDF Tools',
@@ -35,7 +35,7 @@ export const translations = {
     viewAllTools: 'View all tools',
     mostPopularTools: 'Most Popular Tools',
     explorePopular: 'Explore all popular tools',
-    extensionBannerTitle: 'Add QuickKit to your browser',
+    extensionBannerTitle: 'Add Sol Tools to your browser',
     extensionBannerSubtitle: 'Access your favorite tools anytime, anywhere directly from your bookmark or browser.',
     installExtension: 'Add Bookmark',
     howItWorks: 'How It Works',
@@ -83,8 +83,8 @@ export const translations = {
     browseAllPrompt: 'Explore tools and click the heart icon to save your favorites!',
   },
   ar: {
-    appName: 'كويك كيت',
-    appTagline: 'أدوات مجانية أونلاين',
+    appName: 'سول تولز',
+    appTagline: '+200 أداة مجانية أونلاين',
     allTools: 'جميع الأدوات',
     imageTools: 'أدوات الصور',
     pdfTools: 'أدوات PDF',
@@ -118,7 +118,7 @@ export const translations = {
     viewAllTools: 'عرض جميع الأدوات',
     mostPopularTools: 'الأدوات الأكثر شيوعاً',
     explorePopular: 'استكشف كافة الأدوات الشائعة',
-    extensionBannerTitle: 'أضف QuickKit إلى متصفحك',
+    extensionBannerTitle: 'أضف Sol Tools إلى متصفحك',
     extensionBannerSubtitle: 'وصل سريع لأدواتك المفضلة في أي وقت وأي مكان مباشرة من المتصفح.',
     installExtension: 'إضافة للمفضلة',
     howItWorks: 'كيف يعمل الموقع',
