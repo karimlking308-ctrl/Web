@@ -18,6 +18,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
   showSummary = true,
 }) => {
   const { navigate } = useRouter();
+  const [imageError, setImageError] = React.useState(false);
+  const hasImage = Boolean(article.imageUrl && !imageError);
 
   const handleClick = () => {
     navigate(`/article/${article.slug}`);
@@ -32,12 +34,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       >
         {/* Visual Container */}
         <div className="relative w-full aspect-[16/9] md:aspect-[21/10] bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-200">
-          {article.imageUrl ? (
+          {hasImage ? (
             <img
               src={article.imageUrl}
               alt={article.title}
               loading="lazy"
               referrerPolicy="no-referrer"
+              onError={() => setImageError(true)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
@@ -49,7 +52,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
                 PULSE Editorial Coverage
               </span>
               <span className="text-[11px] font-mono text-slate-500 mt-1">
-                Verified wire image feeds integrate in Phase 2
+                Source: {article.source}
               </span>
             </div>
           )}
@@ -145,12 +148,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         className={`group bg-white border border-slate-200 hover:border-slate-300 rounded-lg p-4 cursor-pointer transition-all flex flex-col sm:flex-row gap-4 shadow-xs hover:shadow-md ${className}`}
       >
         <div className="sm:w-1/3 aspect-[16/10] bg-slate-100 rounded-md overflow-hidden shrink-0 flex items-center justify-center border border-slate-200">
-          {article.imageUrl ? (
+          {hasImage ? (
             <img
               src={article.imageUrl}
               alt={article.title}
               loading="lazy"
               referrerPolicy="no-referrer"
+              onError={() => setImageError(true)}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform"
             />
           ) : (
@@ -202,12 +206,13 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
       className={`group bg-white border border-slate-200 hover:border-slate-300 rounded-lg overflow-hidden cursor-pointer transition-all flex flex-col justify-between shadow-xs hover:shadow-md ${className}`}
     >
       <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden flex items-center justify-center border-b border-slate-200">
-        {article.imageUrl ? (
+        {hasImage ? (
           <img
             src={article.imageUrl}
             alt={article.title}
             loading="lazy"
             referrerPolicy="no-referrer"
+            onError={() => setImageError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (

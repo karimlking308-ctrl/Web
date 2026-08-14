@@ -7,6 +7,17 @@ import { Article } from '../../src/types';
 
 const parser = new Parser({
   timeout: 9000,
+  customFields: {
+    item: [
+      ['media:content', 'mediaContent', { keepArray: true }],
+      ['media:thumbnail', 'mediaThumbnail', { keepArray: true }],
+      ['media:group', 'mediaGroup'],
+      ['content:encoded', 'contentEncoded'],
+      ['enclosure', 'enclosure'],
+      ['image', 'image'],
+      ['dc:creator', 'creator'],
+    ],
+  },
 });
 
 let isIngesting = false;

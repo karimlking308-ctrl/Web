@@ -43,17 +43,71 @@ export const placeholderMarketMovers: MarketMoversData = {
   ],
 };
 
+export interface MarketDataApiResponse {
+  tickers: MarketAsset[];
+  movers: MarketMoversData;
+  allAssets: MarketAsset[];
+  timestamp: string;
+  source: string;
+}
+
+// In-flight promise deduplication & client cache
+let activeFetchPromise: Promise<MarketDataApiResponse> | null = null;
+let clientCache: { data: MarketDataApiResponse; timestamp: number } | null = null;
+const CLIENT_CACHE_TTL = 15000; // 15 seconds client cache
+
+async function fetchMarketData(): Promise<MarketDataApiResponse> {
+  const now = Date.now();
+  if (clientCache && now - clientCache.timestamp < CLIENT_CACHE_TTL) {
+    return clientCache.data;
+  }
+
+  if (activeFetchPromise) {
+    return activeFetchPromise;
+  }
+
+  activeFetchPromise = (async () => {
+    try {
+      const res = await fetch('/api/markets');
+      if (!res.ok) {
+        throw new Error(`HTTP error ${res.status}`);
+      }
+      const data: MarketDataApiResponse = await res.json();
+      clientCache = { data, timestamp: Date.now() };
+      return data;
+    } catch (err) {
+      console.warn('[MarketService] Failed to fetch market data from /api/markets, using fallback state:', err);
+      return {
+        tickers: placeholderTickerAssets,
+        movers: placeholderMarketMovers,
+        allAssets: [...placeholderTickerAssets, ...placeholderMarketMovers.gainers, ...placeholderMarketMovers.losers, ...placeholderMarketMovers.mostActive],
+        timestamp: new Date().toISOString(),
+        source: 'unavailable',
+      };
+    } finally {
+      activeFetchPromise = null;
+    }
+  })();
+
+  return activeFetchPromise;
+}
+
 export const marketService: MarketService = {
   async getTickerAssets(): Promise<MarketAsset[]> {
-    return placeholderTickerAssets;
+    const data = await fetchMarketData();
+    return data.tickers && data.tickers.length > 0 ? data.tickers : placeholderTickerAssets;
   },
 
   async getMarketMovers(): Promise<MarketMoversData> {
-    return placeholderMarketMovers;
+    const data = await fetchMarketData();
+    return data.movers || placeholderMarketMovers;
   },
 
   async getAssetBySymbol(symbol: string): Promise<MarketAsset | null> {
-    const all = [...placeholderTickerAssets, ...placeholderMarketMovers.gainers, ...placeholderMarketMovers.losers, ...placeholderMarketMovers.mostActive];
-    return all.find(a => a.symbol.toLowerCase() === symbol.toLowerCase()) || null;
+    const data = await fetchMarketData();
+    const found = data.allAssets.find(a => a.symbol.toLowerCase() === symbol.toLowerCase());
+    if (found) return found;
+    const fallbackAll = [...placeholderTickerAssets, ...placeholderMarketMovers.gainers, ...placeholderMarketMovers.losers, ...placeholderMarketMovers.mostActive];
+    return fallbackAll.find(a => a.symbol.toLowerCase() === symbol.toLowerCase()) || null;
   }
 };

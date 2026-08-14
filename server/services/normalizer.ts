@@ -257,6 +257,125 @@ export function isBreakingStory(title: string, publishedTimestamp: number, prior
 }
 
 /**
+ * Safely extract, prioritize by resolution, and sanitize real image URL from RSS item
+ */
+export function extractImageUrl(item: any): string | undefined {
+  let candidate: string | undefined = undefined;
+
+  // 1. Array of media:content (e.g. Guardian, CoinDesk, Yahoo Finance, CoinTelegraph)
+  const mediaList = item.mediaContent || item['media:content'];
+  if (Array.isArray(mediaList) && mediaList.length > 0) {
+    const sorted = [...mediaList].sort((a, b) => {
+      const aAttr = a && typeof a === 'object' && '$' in a ? (a as any).$ : a;
+      const bAttr = b && typeof b === 'object' && '$' in b ? (b as any).$ : b;
+      const wA = Number(aAttr?.width || 0);
+      const wB = Number(bAttr?.width || 0);
+      return wB - wA;
+    });
+    for (const m of sorted) {
+      const attr = m && typeof m === 'object' && '$' in m ? (m as any).$ : m;
+      const u = attr?.url || (typeof m === 'string' ? m : undefined);
+      if (u && typeof u === 'string') {
+        candidate = u;
+        break;
+      }
+    }
+  } else if (mediaList) {
+    const attr = mediaList && typeof mediaList === 'object' && '$' in mediaList ? (mediaList as any).$ : mediaList;
+    candidate = attr?.url || (typeof mediaList === 'string' ? mediaList : undefined);
+  }
+
+  // 2. Media thumbnail (e.g. BBC)
+  if (!candidate) {
+    const thumbList = item.mediaThumbnail || item['media:thumbnail'];
+    if (Array.isArray(thumbList) && thumbList.length > 0) {
+      const sorted = [...thumbList].sort((a, b) => {
+        const aAttr = a && typeof a === 'object' && '$' in a ? (a as any).$ : a;
+        const bAttr = b && typeof b === 'object' && '$' in b ? (b as any).$ : b;
+        const wA = Number(aAttr?.width || 0);
+        const wB = Number(bAttr?.width || 0);
+        return wB - wA;
+      });
+      for (const t of sorted) {
+        const attr = t && typeof t === 'object' && '$' in t ? (t as any).$ : t;
+        const u = attr?.url || (typeof t === 'string' ? t : undefined);
+        if (u && typeof u === 'string') {
+          candidate = u;
+          break;
+        }
+      }
+    } else if (thumbList) {
+      const attr = thumbList && typeof thumbList === 'object' && '$' in thumbList ? (thumbList as any).$ : thumbList;
+      candidate = attr?.url || (typeof thumbList === 'string' ? thumbList : undefined);
+    }
+  }
+
+  // 3. Enclosure (standard RSS 2.0 image enclosure)
+  if (!candidate && item.enclosure && item.enclosure.url && typeof item.enclosure.url === 'string') {
+    candidate = item.enclosure.url;
+  }
+
+  // 4. Media group
+  if (!candidate && (item.mediaGroup || item['media:group'])) {
+    const group = item.mediaGroup || item['media:group'];
+    const mc = group?.mediaContent || group?.['media:content'] || group?.mediaThumbnail || group?.['media:thumbnail'];
+    if (Array.isArray(mc) && mc[0]) {
+      const attr = mc[0] && typeof mc[0] === 'object' && '$' in mc[0] ? (mc[0] as any).$ : mc[0];
+      candidate = attr?.url || (typeof mc[0] === 'string' ? mc[0] : undefined);
+    } else if (mc) {
+      const attr = mc && typeof mc === 'object' && '$' in mc ? (mc as any).$ : mc;
+      candidate = attr?.url || (typeof mc === 'string' ? mc : undefined);
+    }
+  }
+
+  // 5. Image tag
+  if (!candidate && item.image) {
+    candidate = item.image.url || (typeof item.image === 'string' ? item.image : undefined);
+  }
+
+  // 6. Embedded HTML img tag in description or content:encoded
+  if (!candidate) {
+    const rawHtml = (item.contentEncoded || item['content:encoded'] || item.content || item.description || '') as string;
+    if (typeof rawHtml === 'string' && rawHtml.includes('<img')) {
+      const imgMatch = rawHtml.match(/<img[^>]+src=["'](https?:\/\/[^"'\s>]+)["']/i);
+      if (imgMatch && imgMatch[1]) {
+        candidate = imgMatch[1];
+      }
+    }
+  }
+
+  if (!candidate || typeof candidate !== 'string') {
+    return undefined;
+  }
+
+  const trimmed = candidate.trim();
+  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    return undefined;
+  }
+
+  // Filter tracking beacons/analytics pixels
+  const lower = trimmed.toLowerCase();
+  if (
+    lower.includes('feedburner.com') ||
+    lower.includes('feedsportal.com') ||
+    lower.includes('doubleclick.net') ||
+    lower.includes('1x1') ||
+    lower.includes('beacon') ||
+    lower.includes('tracking') ||
+    lower.includes('pixel') ||
+    lower.includes('statcounter')
+  ) {
+    return undefined;
+  }
+
+  if (trimmed.startsWith('http://')) {
+    return trimmed.replace('http://', 'https://');
+  }
+
+  return trimmed;
+}
+
+/**
  * Format relative date string (e.g. "12m ago", "2h ago", "Today, 14:30")
  */
 export function formatPublishedAt(dateString?: string): { formatted: string; timestamp: number } {
@@ -339,15 +458,8 @@ export function normalizeRssItem(
   tagsSet.add(category.charAt(0).toUpperCase() + category.slice(1));
   tagsSet.add(source.name);
 
-  // Extract Image if provided legitimately in enclosure or media
-  let imageUrl: string | undefined = undefined;
-  if (item.enclosure && item.enclosure.url && typeof item.enclosure.url === 'string') {
-    imageUrl = item.enclosure.url;
-  } else if (item['media:content'] && item['media:content'].$ && item['media:content'].$.url) {
-    imageUrl = item['media:content'].$.url;
-  } else if (item['media:thumbnail'] && item['media:thumbnail'].$ && item['media:thumbnail'].$.url) {
-    imageUrl = item['media:thumbnail'].$.url;
-  }
+  // Extract Image if provided legitimately in enclosure, media, or content
+  const imageUrl = extractImageUrl(item);
 
   const linkHash = crypto.createHash('sha256').update(link).digest('hex').slice(0, 16);
   const id = `${source.id}-${linkHash}`;

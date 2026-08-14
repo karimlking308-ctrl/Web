@@ -31,11 +31,13 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ slug }) => {
   const [related, setRelated] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const { navigate } = useRouter();
 
   useEffect(() => {
     let mounted = true;
     setLoading(true);
+    setImageError(false);
     newsService.getArticleBySlug(slug).then((art) => {
       if (mounted && art) {
         setArticle(art);
@@ -187,13 +189,14 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ slug }) => {
           </div>
 
           {/* Hero Media */}
-          {article.imageUrl ? (
+          {article.imageUrl && !imageError ? (
             <div className="relative aspect-[16/9] md:aspect-[21/10] bg-slate-100 rounded-xl overflow-hidden border border-slate-200 shadow-xs">
               <img
                 src={article.imageUrl}
                 alt={article.title}
                 loading="lazy"
                 referrerPolicy="no-referrer"
+                onError={() => setImageError(true)}
                 className="w-full h-full object-cover"
               />
             </div>
