@@ -3,6 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { newsRouter } from './server/routes/newsRoutes';
 import { marketRouter } from './server/routes/marketRoutes';
+import { analysisRouter } from './server/routes/analysisRoutes';
 import { startIngestionScheduler, ingestAllSources } from './server/services/ingestion';
 
 async function startServer() {
@@ -50,6 +51,9 @@ async function startServer() {
 
   // Market Data API Routes
   app.use('/api/markets', marketRouter);
+
+  // AI Financial Analysis API Routes
+  app.use('/api/analysis', analysisRouter);
 
   // Initialize optional local background scheduler (safe for long-running Node processes; bypassed when in serverless mode)
   startIngestionScheduler(15 * 60 * 1000);

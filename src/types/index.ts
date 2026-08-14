@@ -49,6 +49,9 @@ export interface MarketAsset {
   change: number | null;
   changePercent: number | null;
   volume?: string;
+  marketCap?: string;
+  high24h?: number;
+  low24h?: number;
   status: 'active' | 'closed' | 'placeholder';
   updatedAt: string;
 }

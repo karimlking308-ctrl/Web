@@ -5,7 +5,7 @@ export const marketRouter = Router();
 
 /**
  * GET /api/markets
- * Fetches real-time market data quotes from Twelve Data (or cached data if within TTL).
+ * Fetches real-time crypto market data quotes (or cached data if within TTL).
  * Never exposes server API keys or private credentials.
  */
 marketRouter.get('/', async (req, res) => {

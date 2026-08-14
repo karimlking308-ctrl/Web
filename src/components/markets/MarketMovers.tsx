@@ -85,9 +85,9 @@ export const MarketMovers: React.FC<{ className?: string }> = ({ className = '' 
       <div className="my-3 py-2 px-3 rounded bg-blue-50/60 border border-blue-100 flex items-center justify-between text-xs text-slate-600">
         <div className="flex items-center gap-2">
           <Info className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-          <span className="text-[11px]">Real-time price & volume streams will populate here in Phase 3.</span>
+          <span className="text-[11px]">Real-time price & 24h volume indicators updated continuously from live crypto & equity market streams.</span>
         </div>
-        <span className="text-[10px] font-mono text-blue-700 font-bold uppercase">Architecture Ready</span>
+        <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-bold uppercase">Live Data</span>
       </div>
 
       {/* Grid of Market Assets */}

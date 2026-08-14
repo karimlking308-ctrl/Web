@@ -19,6 +19,17 @@ app.get('/api/health', (req, res) => {
 // Market Data API Route (Lightweight, zero database/ingestion dependencies)
 app.use('/api/markets', marketRouter);
 
+// Lazy-loaded Analysis Router
+app.use('/api/analysis', async (req, res, next) => {
+  try {
+    const { analysisRouter } = await import('../server/routes/analysisRoutes');
+    return analysisRouter(req, res, next);
+  } catch (err) {
+    console.error('[Lazy Analysis Router Error]:', err);
+    return res.status(500).json({ error: 'Failed to load analysis service' });
+  }
+});
+
 // Lazy-loaded News API Router
 app.use('/api/news', async (req, res, next) => {
   try {

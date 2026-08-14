@@ -55,7 +55,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({ asset, onClick, compact 
               Live Feed
             </span>
             <span className="text-[10px] font-mono bg-blue-50 text-blue-700 px-1.5 py-0.5 rounded border border-blue-200 font-semibold">
-              Phase 3 API
+              Market API
             </span>
           </div>
         )}

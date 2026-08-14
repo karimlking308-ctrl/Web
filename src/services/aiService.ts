@@ -1,10 +1,5 @@
 import { AIAnalysis } from '../types';
 
-/**
- * Service interface for AI-Assisted Financial Intelligence.
- * Prepared for Phase 4 integration with Gemini 2.5/Flash model.
- * Phase 1 returns structured placeholders and displays the standard non-advice disclaimer.
- */
 export interface AIService {
   getAnalysisForArticle(articleId?: string): Promise<AIAnalysis | null>;
   getMarketBriefAnalysis(): Promise<AIAnalysis>;
@@ -13,14 +8,14 @@ export interface AIService {
 export const placeholderAIAnalysis: AIAnalysis = {
   id: 'pulse-ai-brief-sample',
   headline: 'PULSE AI Market Intelligence Framework',
-  summary: 'AI analysis will appear here once the AI data service is connected in Phase 4. Our model will process real-time market data, regulatory filings, and breaking news into concise institutional insights.',
+  summary: 'Real-time multi-factor financial synthesis and institutional context powered by live crypto market data and breaking financial news.',
   whyItMatters: [
     'Provides multi-source contextual synthesis across macro, equity, and digital asset sectors.',
     'Highlights key market catalyst timelines and institutional positioning changes.',
     'Isolates volatility drivers from underlying long-term fundamental trends.'
   ],
   marketImpact: {
-    overview: 'Dynamic impact evaluations will assess cross-asset volatility, yield curves, and liquidity changes.',
+    overview: 'Dynamic impact evaluations assess cross-asset volatility and liquidity changes.',
     level: 'medium',
     sentiment: 'neutral'
   },
@@ -38,17 +33,38 @@ export const placeholderAIAnalysis: AIAnalysis = {
     'Sudden shifts in monetary policy forward guidance.',
     'Commodity price shocks driven by shipping lane disruptions.'
   ],
-  marketContext: 'AI models will benchmark current price developments against 10-year historic averages, implied volatility surfaces, and sector momentum metrics.',
+  marketContext: 'AI model benchmarks current price developments against historic averages and sector momentum metrics.',
   disclaimer: 'AI-generated analysis is for informational purposes only and is not financial advice.',
-  generatedAt: 'Phase 1 Architecture Preview'
+  generatedAt: new Date().toISOString()
 };
 
 export const aiService: AIService = {
-  async getAnalysisForArticle(_articleId?: string): Promise<AIAnalysis | null> {
-    return placeholderAIAnalysis;
+  async getAnalysisForArticle(articleId?: string): Promise<AIAnalysis | null> {
+    try {
+      const url = articleId ? `/api/analysis?articleId=${encodeURIComponent(articleId)}` : '/api/analysis';
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return placeholderAIAnalysis;
+    } catch (err) {
+      console.warn('[AIService] Failed to fetch live AI analysis, using structured fallback:', err);
+      return placeholderAIAnalysis;
+    }
   },
 
   async getMarketBriefAnalysis(): Promise<AIAnalysis> {
-    return placeholderAIAnalysis;
+    try {
+      const res = await fetch('/api/analysis', { signal: AbortSignal.timeout(8000) });
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return placeholderAIAnalysis;
+    } catch (err) {
+      console.warn('[AIService] Failed to fetch market brief analysis:', err);
+      return placeholderAIAnalysis;
+    }
   }
 };

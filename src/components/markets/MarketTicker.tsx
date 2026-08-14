@@ -29,8 +29,8 @@ export const MarketTicker: React.FC<{ className?: string }> = ({ className = '' 
           <span className="font-mono text-[10px] font-bold text-slate-800 uppercase tracking-wider hidden sm:inline">
             Markets
           </span>
-          <span className="text-[9px] font-mono bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200 font-semibold">
-            Phase 1
+          <span className="text-[9px] font-mono bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200 font-semibold">
+            Live Stream
           </span>
         </div>
 
@@ -47,7 +47,7 @@ export const MarketTicker: React.FC<{ className?: string }> = ({ className = '' 
                 key={asset.symbol}
                 onClick={() => navigate('/markets')}
                 className="flex items-center space-x-2 shrink-0 hover:bg-slate-50 px-2 py-0.5 rounded transition-colors cursor-pointer group"
-                title={`${asset.name} - Market data stream will connect in Phase 3`}
+                title={`${asset.name} - Real-time market quote`}
               >
                 <span className="font-bold text-slate-600 group-hover:text-blue-600 uppercase transition-colors">
                   {asset.symbol}

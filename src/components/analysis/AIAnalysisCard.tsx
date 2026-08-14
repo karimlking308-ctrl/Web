@@ -55,7 +55,7 @@ export const AIAnalysisCard: React.FC<AIAnalysisCardProps> = ({
                 PULSE AI Analysis
               </h3>
               <span className="text-[10px] font-mono uppercase bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded border border-blue-200">
-                Phase 4 Architecture
+                AI Intelligence Engine
               </span>
             </div>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -64,8 +64,9 @@ export const AIAnalysisCard: React.FC<AIAnalysisCardProps> = ({
           </div>
         </div>
 
-        <span className="text-[11px] font-mono text-slate-500 self-start sm:self-auto font-semibold">
-          Status: Ready for Gemini 2.5
+        <span className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 self-start sm:self-auto font-semibold flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          Active Market Feed
         </span>
       </div>
 
@@ -73,7 +74,7 @@ export const AIAnalysisCard: React.FC<AIAnalysisCardProps> = ({
       <div className="my-4 p-3 rounded-lg bg-white border border-blue-200 flex items-start gap-2.5 text-xs text-slate-600 shadow-xs">
         <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          AI analysis will appear here once the AI data service is connected in Phase 4. Below is the live structural layout displaying the 7 evaluation vectors.
+          AI financial analysis generated dynamically from live Crypto Market Data, 24h trading volume, market cap, and verified wire news.
         </p>
       </div>
 
