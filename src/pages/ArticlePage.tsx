@@ -39,20 +39,30 @@ export const ArticlePage: React.FC<ArticlePageProps> = ({ slug }) => {
     let mounted = true;
     setLoading(true);
     setImageError(false);
-    newsService.getArticleBySlug(slug).then((art) => {
-      if (mounted && art) {
-        setArticle(art);
-        // Set document title dynamically for SEO
-        document.title = `${art.title} | PULSE Financial News`;
+    newsService
+      .getArticleBySlug(slug)
+      .then((art) => {
+        if (mounted && art) {
+          setArticle(art);
+          document.title = `${art.title} | PULSE Financial News`;
 
-        newsService.getRelatedArticles(art.category, art.slug, 3).then((rel) => {
-          if (mounted) setRelated(rel);
-        });
-        setLoading(false);
-      } else if (mounted) {
-        setLoading(false);
-      }
-    });
+          newsService
+            .getRelatedArticles(art.category, art.slug, 3)
+            .then((rel) => {
+              if (mounted) setRelated(rel);
+            })
+            .catch(() => {});
+        } else if (mounted) {
+          setArticle(null);
+        }
+      })
+      .catch((err) => {
+        console.warn(`[ArticlePage] Failed to load article ${slug}:`, err);
+        if (mounted) setArticle(null);
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
     return () => {
       mounted = false;
     };

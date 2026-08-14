@@ -18,7 +18,7 @@ newsRouter.get('/', async (req: Request, res: Response) => {
     const tag = req.query.tag as string | undefined;
     const ticker = req.query.ticker as string | undefined;
 
-    let data = await newsStorage.getAllArticles({
+    const data = await newsStorage.getAllArticles({
       category,
       limit,
       offset,
@@ -26,16 +26,14 @@ newsRouter.get('/', async (req: Request, res: Response) => {
       ticker,
     });
 
+    // If database is completely empty on cold start, trigger non-blocking background ingestion
     if (data.total === 0 && offset === 0) {
-      console.log('[API /api/news] No articles found on initial query. Ingesting feeds on demand...');
-      await ingestAllSources();
-      data = await newsStorage.getAllArticles({
-        category,
-        limit,
-        offset,
-        tag,
-        ticker,
-      });
+      newsStorage.getStats().then(stats => {
+        if (stats.totalArticles === 0) {
+          console.log('[API /api/news] Database empty. Triggering non-blocking background ingestion...');
+          ingestAllSources().catch(err => console.error('[Background Ingestion Error]:', err));
+        }
+      }).catch(() => {});
     }
 
     res.json(data);
@@ -51,11 +49,14 @@ newsRouter.get('/', async (req: Request, res: Response) => {
  */
 newsRouter.get('/top', async (req: Request, res: Response) => {
   try {
-    let topStories = await newsStorage.getTopStories();
+    const topStories = await newsStorage.getTopStories();
     if (!topStories.featured && topStories.supporting.length === 0) {
-      console.log('[API /api/news/top] No top stories found. Ingesting feeds on demand...');
-      await ingestAllSources();
-      topStories = await newsStorage.getTopStories();
+      newsStorage.getStats().then(stats => {
+        if (stats.totalArticles === 0) {
+          console.log('[API /api/news/top] Database empty. Triggering non-blocking background ingestion...');
+          ingestAllSources().catch(err => console.error('[Background Ingestion Error]:', err));
+        }
+      }).catch(() => {});
     }
     res.json(topStories);
   } catch (err: any) {
@@ -70,13 +71,13 @@ newsRouter.get('/top', async (req: Request, res: Response) => {
  */
 newsRouter.get('/breaking', async (req: Request, res: Response) => {
   try {
-    let breaking = await newsStorage.getBreakingNews();
+    const breaking = await newsStorage.getBreakingNews();
     if (!breaking) {
-      const stats = await newsStorage.getStats();
-      if (stats.totalArticles === 0) {
-        await ingestAllSources();
-        breaking = await newsStorage.getBreakingNews();
-      }
+      newsStorage.getStats().then(stats => {
+        if (stats.totalArticles === 0) {
+          ingestAllSources().catch(err => console.error('[Background Ingestion Error]:', err));
+        }
+      }).catch(() => {});
     }
     res.json({ breaking });
   } catch (err: any) {
@@ -92,13 +93,13 @@ newsRouter.get('/breaking', async (req: Request, res: Response) => {
 newsRouter.get('/trending', async (req: Request, res: Response) => {
   try {
     const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 6));
-    let trending = await newsStorage.getTrendingStories(limit);
+    const trending = await newsStorage.getTrendingStories(limit);
     if (trending.length === 0) {
-      const stats = await newsStorage.getStats();
-      if (stats.totalArticles === 0) {
-        await ingestAllSources();
-        trending = await newsStorage.getTrendingStories(limit);
-      }
+      newsStorage.getStats().then(stats => {
+        if (stats.totalArticles === 0) {
+          ingestAllSources().catch(err => console.error('[Background Ingestion Error]:', err));
+        }
+      }).catch(() => {});
     }
     res.json({ trending });
   } catch (err: any) {

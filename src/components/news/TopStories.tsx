@@ -12,13 +12,22 @@ export const TopStories: React.FC<{ className?: string }> = ({ className = '' })
 
   useEffect(() => {
     let isMounted = true;
-    newsService.getTopStories().then((data) => {
-      if (isMounted) {
-        setFeatured(data.featured);
-        setSupporting(data.supporting);
-        setLoading(false);
-      }
-    });
+    newsService
+      .getTopStories()
+      .then((data) => {
+        if (isMounted) {
+          setFeatured(data.featured);
+          setSupporting(data.supporting);
+        }
+      })
+      .catch((err) => {
+        console.warn('[TopStories] Failed to load top stories:', err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
     return () => { isMounted = false; };
   }, []);
 

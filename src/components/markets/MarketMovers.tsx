@@ -13,12 +13,21 @@ export const MarketMovers: React.FC<{ className?: string }> = ({ className = '' 
 
   useEffect(() => {
     let isMounted = true;
-    marketService.getMarketMovers().then(data => {
-      if (isMounted) {
-        setMovers(data);
-        setLoading(false);
-      }
-    });
+    marketService
+      .getMarketMovers()
+      .then((data) => {
+        if (isMounted) {
+          setMovers(data);
+        }
+      })
+      .catch((err) => {
+        console.warn('[MarketMovers] Load error:', err);
+      })
+      .finally(() => {
+        if (isMounted) {
+          setLoading(false);
+        }
+      });
     return () => { isMounted = false; };
   }, []);
 

@@ -12,12 +12,21 @@ export const BreakingNews: React.FC<{ className?: string }> = ({ className = '' 
 
   useEffect(() => {
     let mounted = true;
-    newsService.getBreakingNews().then((data) => {
-      if (mounted) {
-        setBreaking(data);
-        setLoading(false);
-      }
-    });
+    newsService
+      .getBreakingNews()
+      .then((data) => {
+        if (mounted) {
+          setBreaking(data);
+        }
+      })
+      .catch((err) => {
+        console.warn('[BreakingNews] Failed to fetch breaking news:', err);
+      })
+      .finally(() => {
+        if (mounted) {
+          setLoading(false);
+        }
+      });
     return () => { mounted = false; };
   }, []);
 

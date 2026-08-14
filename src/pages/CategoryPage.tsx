@@ -81,15 +81,29 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ category }) => {
   const loadData = () => {
     setLoading(true);
     if (category === 'trending') {
-      newsService.getTrendingStories(12).then((items) => {
-        setArticles(items);
-        setLoading(false);
-      });
+      newsService
+        .getTrendingStories(12)
+        .then((items) => {
+          setArticles(items);
+        })
+        .catch(() => {
+          setArticles([]);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
-      newsService.getLatestNews({ category, limit: 16 }).then((res) => {
-        setArticles(res.articles);
-        setLoading(false);
-      });
+      newsService
+        .getLatestNews({ category, limit: 16 })
+        .then((res) => {
+          setArticles(res.articles);
+        })
+        .catch(() => {
+          setArticles([]);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 

@@ -24,7 +24,7 @@ export interface NewsService {
 export const newsService: NewsService = {
   async getBreakingNews(): Promise<Article | null> {
     try {
-      const res = await fetch('/api/news/breaking');
+      const res = await fetch('/api/news/breaking', { signal: AbortSignal.timeout(8000) });
       if (!res.ok) return null;
       const data = await res.json();
       return data.breaking || null;
@@ -36,7 +36,7 @@ export const newsService: NewsService = {
 
   async getTopStories(): Promise<{ featured: Article | null; supporting: Article[] }> {
     try {
-      const res = await fetch('/api/news/top');
+      const res = await fetch('/api/news/top', { signal: AbortSignal.timeout(8000) });
       if (!res.ok) {
         return { featured: null, supporting: [] };
       }
@@ -73,7 +73,7 @@ export const newsService: NewsService = {
       const qs = queryParams.toString();
       const url = qs ? `/api/news?${qs}` : '/api/news';
 
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) {
         return { articles: [], total: 0, hasMore: false };
       }
@@ -91,7 +91,7 @@ export const newsService: NewsService = {
 
   async getArticleBySlug(slug: string): Promise<Article | null> {
     try {
-      const res = await fetch(`/api/news/article/${encodeURIComponent(slug)}`);
+      const res = await fetch(`/api/news/article/${encodeURIComponent(slug)}`, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) return null;
       const data = await res.json();
       return data.article || null;
@@ -103,7 +103,7 @@ export const newsService: NewsService = {
 
   async getRelatedArticles(category: Category, currentSlug: string, limit = 3): Promise<Article[]> {
     try {
-      const res = await fetch(`/api/news/article/${encodeURIComponent(currentSlug)}`);
+      const res = await fetch(`/api/news/article/${encodeURIComponent(currentSlug)}`, { signal: AbortSignal.timeout(8000) });
       if (res.ok) {
         const data = await res.json();
         if (Array.isArray(data.related) && data.related.length > 0) {
@@ -126,7 +126,7 @@ export const newsService: NewsService = {
       const params = new URLSearchParams({ q: query });
       if (category) params.set('category', category);
 
-      const res = await fetch(`/api/news/search?${params.toString()}`);
+      const res = await fetch(`/api/news/search?${params.toString()}`, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) return [];
       const data = await res.json();
       return Array.isArray(data.results) ? data.results : [];
@@ -138,7 +138,7 @@ export const newsService: NewsService = {
 
   async getTrendingStories(limit = 6): Promise<Article[]> {
     try {
-      const res = await fetch(`/api/news/trending?limit=${limit}`);
+      const res = await fetch(`/api/news/trending?limit=${limit}`, { signal: AbortSignal.timeout(8000) });
       if (!res.ok) return [];
       const data = await res.json();
       return Array.isArray(data.trending) ? data.trending : [];
@@ -150,7 +150,7 @@ export const newsService: NewsService = {
 
   async refreshNews(): Promise<boolean> {
     try {
-      const res = await fetch('/api/news/refresh', { method: 'POST' });
+      const res = await fetch('/api/news/refresh', { method: 'POST', signal: AbortSignal.timeout(15000) });
       return res.ok;
     } catch (err) {
       console.warn('[NewsService] Failed to trigger refresh:', err);
