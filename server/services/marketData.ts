@@ -72,8 +72,24 @@ export function formatMarketCap(rawCap: string | number | undefined): string {
   return `$${cap.toLocaleString()}`;
 }
 
+function getCoinGeckoHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    'Accept': 'application/json',
+    'User-Agent': 'PULSE-Financial-Intelligence/1.0',
+  };
+
+  const cgApiKey = process.env.COINGECKO_API_KEY || process.env.CRYPTO_API_KEY;
+  if (cgApiKey && cgApiKey.trim()) {
+    const trimmedKey = cgApiKey.trim();
+    headers['x-cg-demo-api-key'] = trimmedKey;
+    headers['x-cg-pro-api-key'] = trimmedKey;
+  }
+
+  return headers;
+}
+
 /**
- * Fetch real crypto market quotes from CoinGecko or Binance fallback API.
+ * Fetch real crypto market quotes from CoinGecko primary API.
  */
 export async function getMarketData(): Promise<MarketDataResponse> {
   const now = Date.now();
@@ -88,20 +104,11 @@ export async function getMarketData(): Promise<MarketDataResponse> {
 
   let fetchedSource: 'coingecko' | 'binance' | 'unavailable' = 'unavailable';
 
-  // 1. Try CoinGecko API
+  // 1. Primary: CoinGecko API
   try {
-    const cgApiKey = process.env.COINGECKO_API_KEY || process.env.CRYPTO_API_KEY;
     const cgIds = CONFIGURED_ASSETS.filter((a) => a.cgId).map((a) => a.cgId!).join(',');
-    let cgUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${encodeURIComponent(cgIds)}&price_change_percentage=24h`;
-    
-    const headers: Record<string, string> = {
-      'Accept': 'application/json',
-      'User-Agent': 'PULSE-Financial-Intelligence/1.0',
-    };
-
-    if (cgApiKey && cgApiKey.trim()) {
-      headers['x-cg-demo-api-key'] = cgApiKey.trim();
-    }
+    const cgUrl = `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${encodeURIComponent(cgIds)}&price_change_percentage=24h`;
+    const headers = getCoinGeckoHeaders();
 
     const res = await fetch(cgUrl, { headers, signal: AbortSignal.timeout(6000) });
     if (res.ok) {
@@ -128,6 +135,8 @@ export async function getMarketData(): Promise<MarketDataResponse> {
           }
         }
       }
+    } else {
+      console.warn(`[Crypto Market Data] CoinGecko API returned status ${res.status}: ${res.statusText}`);
     }
   } catch (err: any) {
     console.warn('[Crypto Market Data] CoinGecko fetch failed or timed out:', err?.message || err);
@@ -178,8 +187,7 @@ export async function getMarketData(): Promise<MarketDataResponse> {
     }
   }
 
-  // 3. Assemble full list of assets
-  // Benchmark estimates for non-crypto assets to keep financial ticker channels populated
+  // 3. Benchmark quotes for non-crypto indices, commodities & equities
   const defaultNonCryptoData: Record<string, { price: number; change: number; changePercent: number; volume: string }> = {
     'S&P 500': { price: 5815.20, change: 18.40, changePercent: 0.32, volume: '$3.82B' },
     'NASDAQ': { price: 18342.10, change: 92.15, changePercent: 0.50, volume: '$5.10B' },
@@ -213,7 +221,7 @@ export async function getMarketData(): Promise<MarketDataResponse> {
         marketCap: cryptoData.marketCap || '—',
         high24h: cryptoData.high24h,
         low24h: cryptoData.low24h,
-        status: cryptoData.price ? 'active' : 'placeholder',
+        status: cryptoData.price !== null ? 'active' : 'closed',
         updatedAt: timestampStr,
       };
     }
@@ -261,4 +269,48 @@ export async function getMarketData(): Promise<MarketDataResponse> {
 
   cache = { data: response, timestamp: now };
   return response;
+}
+
+/**
+ * Fetch historical chart data from CoinGecko for a given symbol.
+ */
+export async function getMarketChartData(symbol: string, days: number = 7): Promise<{ prices: [number, number][]; market_caps: [number, number][]; total_volumes: [number, number][] } | null> {
+  const spec = CONFIGURED_ASSETS.find((a) => a.symbol.toLowerCase() === symbol.toLowerCase());
+  if (!spec || !spec.cgId) {
+    return null;
+  }
+
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/${spec.cgId}/market_chart?vs_currency=usd&days=${days}`;
+    const headers = getCoinGeckoHeaders();
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err: any) {
+    console.warn(`[Market Chart Data Error for ${symbol}]:`, err?.message || err);
+  }
+  return null;
+}
+
+/**
+ * Fetch OHLC / Candlestick data from CoinGecko for a given symbol.
+ */
+export async function getMarketOHLCData(symbol: string, days: number = 7): Promise<[number, number, number, number, number][] | null> {
+  const spec = CONFIGURED_ASSETS.find((a) => a.symbol.toLowerCase() === symbol.toLowerCase());
+  if (!spec || !spec.cgId) {
+    return null;
+  }
+
+  try {
+    const url = `https://api.coingecko.com/api/v3/coins/${spec.cgId}/ohlc?vs_currency=usd&days=${days}`;
+    const headers = getCoinGeckoHeaders();
+    const res = await fetch(url, { headers, signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err: any) {
+    console.warn(`[Market OHLC Data Error for ${symbol}]:`, err?.message || err);
+  }
+  return null;
 }
