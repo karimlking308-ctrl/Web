@@ -2,33 +2,19 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    --font-serif: 'Instrument Serif', Georgia, Cambria, 'Times New Roman', Times, serif;
-    --font-mono: 'IBM Plex Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    --font-brand: 'Cinzel', serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-arabic: 'Tajawal', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #f8fafc;
-    color: #0f172a;
     overflow-x: hidden;
   }
-}
 
-.font-editorial {
-  font-family: 'Instrument Serif', Georgia, serif;
-}
-
-.font-brand {
-  font-family: 'Cinzel', serif;
-  letter-spacing: 0.12em;
-}
-
-.font-mono-numbers {
-  font-family: 'IBM Plex Mono', monospace;
-  font-feature-settings: "tnum";
-  font-variant-numeric: tabular-nums;
+  [dir="rtl"] body {
+    font-family: var(--font-arabic), var(--font-sans);
+  }
 }
 
 /* Custom subtle scrollbar */
@@ -38,37 +24,22 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-  border-radius: 3px;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
 
-/* Custom shimmer animation for skeletons */
-@keyframes pulse-shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
-
-.animate-shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(226, 232, 240, 0.4) 0%,
-    rgba(226, 232, 240, 0.9) 50%,
-    rgba(226, 232, 240, 0.4) 100%
-  );
-  background-size: 200% 100%;
-  animation: pulse-shimmer 2.2s infinite ease-in-out;
-}
-
-

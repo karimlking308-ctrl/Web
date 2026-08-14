@@ -1,75 +1,57 @@
 import React from 'react';
-import { RouterProvider, useRouter } from './context/RouterContext';
+import { AppProvider, useApp } from './context/AppContext';
 import { Layout } from './components/layout/Layout';
 import { HomePage } from './pages/HomePage';
+import { ToolDetailPage } from './pages/ToolDetailPage';
 import { CategoryPage } from './pages/CategoryPage';
-import { ArticlePage } from './pages/ArticlePage';
+import { FavoritesPage } from './pages/FavoritesPage';
 import { SearchPage } from './pages/SearchPage';
 import { LegalPage } from './pages/LegalPage';
-import { Category } from './types';
 
 function AppContent() {
-  const { currentPath } = useRouter();
+  const { currentPath } = useApp();
 
   // Route Dispatcher
   const renderRoute = () => {
-    // Article Route: /article/:slug
-    if (currentPath.startsWith('/article/')) {
-      const slug = currentPath.replace('/article/', '').split('?')[0] || 'overview';
-      return <ArticlePage slug={slug} />;
+    // 1. Tool Route: /tool/:slug
+    if (currentPath.startsWith('/tool/')) {
+      const slug = currentPath.replace('/tool/', '').split('?')[0] || '';
+      return <ToolDetailPage toolSlug={slug} />;
     }
 
-    // Search Route: /search
+    // 2. Category Route: /category/:categoryId
+    if (currentPath.startsWith('/category/')) {
+      const catId = currentPath.replace('/category/', '').split('?')[0] || '';
+      return <CategoryPage categoryId={catId} />;
+    }
+
+    // 3. Favorites Route: /favorites
+    if (currentPath === '/favorites') {
+      return <FavoritesPage />;
+    }
+
+    // 4. Search Route: /search
     if (currentPath.startsWith('/search')) {
       return <SearchPage />;
     }
 
-    // Category Routes
-    const categories: Category[] = [
-      'markets',
-      'crypto',
-      'stocks',
-      'economy',
-      'technology',
-      'analysis',
-      'trending',
-    ];
-
-    for (const cat of categories) {
-      if (currentPath === `/${cat}` || currentPath.startsWith(`/${cat}/`)) {
-        return <CategoryPage category={cat} />;
-      }
-    }
-
-    // Legal / Company Routes
+    // 5. Legal / Company Info Routes
     if (currentPath === '/about') return <LegalPage pageType="about" />;
     if (currentPath === '/contact') return <LegalPage pageType="contact" />;
     if (currentPath === '/privacy') return <LegalPage pageType="privacy" />;
     if (currentPath === '/terms') return <LegalPage pageType="terms" />;
-    if (currentPath === '/cookies') return <LegalPage pageType="cookies" />;
-    if (currentPath === '/copyright') return <LegalPage pageType="copyright" />;
-    if (currentPath === '/disclaimer') return <LegalPage pageType="disclaimer" />;
-    if (currentPath === '/editorial-policy') return <LegalPage pageType="editorial-policy" />;
 
-    // Default Home Page Route (/)
+    // 6. Default Home Page Route (/)
     return <HomePage />;
   };
 
-  return (
-    <Layout
-      showBreakingNews={true}
-      showMarketTicker={true}
-    >
-      {renderRoute()}
-    </Layout>
-  );
+  return <Layout>{renderRoute()}</Layout>;
 }
 
 export default function App() {
   return (
-    <RouterProvider>
+    <AppProvider>
       <AppContent />
-    </RouterProvider>
+    </AppProvider>
   );
 }
-

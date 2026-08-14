@@ -1,217 +1,351 @@
-import React, { useState, useEffect } from 'react';
-import { TopStories } from '../components/news/TopStories';
-import { MarketMovers } from '../components/markets/MarketMovers';
-import { LatestNews } from '../components/news/LatestNews';
-import { AIAnalysisCard } from '../components/analysis/AIAnalysisCard';
-import { NewsletterSignup } from '../components/newsletter/NewsletterSignup';
-import { AdSlot } from '../components/advertising/AdSlot';
-import { SectionHeader } from '../components/common/SectionHeader';
-import { ArticleCard } from '../components/news/ArticleCard';
-import { newsService } from '../services/newsService';
-import { Article } from '../types';
-import { useRouter } from '../context/RouterContext';
-import { Flame, LineChart, Globe, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { useApp } from '../context/AppContext';
+import { allToolsData, categoriesData } from '../data/toolsData';
+import { ToolIcon } from '../components/common/ToolIcon';
+import {
+  Search,
+  Sparkles,
+  Zap,
+  ShieldCheck,
+  CheckCircle2,
+  ArrowRight,
+  Heart,
+  HelpCircle,
+  Mail,
+  Flame,
+  Check,
+  ChevronRight,
+  Star,
+  ExternalLink,
+} from 'lucide-react';
 
 export const HomePage: React.FC = () => {
-  const { navigate } = useRouter();
-  const [cryptoArticles, setCryptoArticles] = useState<Article[]>([]);
-  const [stockArticles, setStockArticles] = useState<Article[]>([]);
-  const [economyArticles, setEconomyArticles] = useState<Article[]>([]);
-  const [trendingArticles, setTrendingArticles] = useState<Article[]>([]);
+  const { lang, t, navigate, isFavorite, toggleFavorite, searchTerm, setSearchTerm } = useApp();
+  const isAr = lang === 'ar';
 
-  useEffect(() => {
-    let isMounted = true;
+  const [localQuery, setLocalQuery] = useState('');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
 
-    // Load category spotlights
-    newsService.getLatestNews({ category: 'crypto', limit: 2 }).then(res => {
-      if (isMounted) setCryptoArticles(res.articles);
-    });
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (localQuery.trim()) {
+      setSearchTerm(localQuery.trim());
+      navigate(`/search?q=${encodeURIComponent(localQuery.trim())}`);
+    }
+  };
 
-    newsService.getLatestNews({ category: 'stocks', limit: 2 }).then(res => {
-      if (isMounted) setStockArticles(res.articles);
-    });
+  const popularTools = allToolsData.filter((t) => t.isPopular).slice(0, 8);
 
-    newsService.getLatestNews({ category: 'economy', limit: 2 }).then(res => {
-      if (isMounted) setEconomyArticles(res.articles);
-    });
-
-    newsService.getTrendingStories(5).then(items => {
-      if (isMounted) setTrendingArticles(items);
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newsletterEmail && newsletterEmail.includes('@')) {
+      try {
+        await fetch('/api/newsletter', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: newsletterEmail }),
+        });
+      } catch {}
+      setSubscribed(true);
+      setNewsletterEmail('');
+    }
+  };
 
   return (
-    <div className="flex flex-col gap-10 md:gap-14">
-      {/* Top Banner Advertisement Slot */}
-      <AdSlot variant="banner" />
-
-      {/* Top Stories Section */}
-      <TopStories />
-
-      {/* Market Movers Component */}
-      <MarketMovers />
-
-      {/* Main Grid: Latest News Wire + Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Left / Center 8 Columns: Latest News */}
-        <div className="lg:col-span-8 flex flex-col gap-10">
-          {/* Latest News Feed */}
-          <LatestNews limit={6} />
-
-          {/* Inline Ad Slot */}
-          <AdSlot variant="inline" />
-
-          {/* Crypto Section Spotlight */}
-          <section className="w-full">
-            <SectionHeader
-              title="Crypto & Digital Assets"
-              subtitle="Bitcoin, Ethereum, digital asset flows, and regulatory developments"
-              viewAllLink="/crypto"
-              badge="Web3 Wire"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {cryptoArticles.length > 0 ? (
-                cryptoArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="standard" />
-                ))
-              ) : (
-                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
-                  Loading verified digital asset news wire...
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Stocks & Equities Spotlight */}
-          <section className="w-full">
-            <SectionHeader
-              title="Equities & Corporate Earnings"
-              subtitle="Wall Street earnings, corporate guidance, and sector movements"
-              viewAllLink="/stocks"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {stockArticles.length > 0 ? (
-                stockArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="standard" />
-                ))
-              ) : (
-                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
-                  Loading equity market reporting...
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* Economy & Macro Spotlight */}
-          <section className="w-full">
-            <SectionHeader
-              title="Economy & Central Banks"
-              subtitle="Monetary policy, inflation indicators, and sovereign debt dynamics"
-              viewAllLink="/economy"
-            />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {economyArticles.length > 0 ? (
-                economyArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="standard" />
-                ))
-              ) : (
-                <div className="col-span-2 p-8 bg-white border border-slate-200 rounded-xl text-center text-xs text-slate-500 font-mono">
-                  Loading macroeconomic wire coverage...
-                </div>
-              )}
-            </div>
-          </section>
+    <div className="space-y-16 pb-16">
+      {/* 1. Hero Section */}
+      <section className="relative pt-6 sm:pt-10 pb-8 text-center max-w-4xl mx-auto space-y-6">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-bold border border-amber-500/20 shadow-xs">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>{isAr ? 'أكثر من 39 أداة مجانية 100% فورية' : '39+ Free Instant Browser Tools'}</span>
         </div>
 
-        {/* Right 4 Columns: Sidebar Widgets */}
-        <aside className="lg:col-span-4 flex flex-col gap-8">
-          {/* Sidebar Advertisement */}
-          <AdSlot variant="sidebar" />
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+          {t('heroTitle')}{' '}
+          <span className="text-amber-500 underline decoration-amber-400/40 decoration-wavy decoration-2">
+            {t('heroHighlight')}
+          </span>
+        </h1>
 
-          {/* Trending Stories Widget */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-xs">
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2">
-                <Flame className="w-4 h-4 text-amber-500" />
-                <h3 className="font-bold text-slate-900 text-sm uppercase tracking-wider font-mono">
-                  Trending Wire
-                </h3>
-              </div>
-              <span className="text-[10px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-bold">
-                Live
-              </span>
-            </div>
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          {t('heroSubtitle')}
+        </p>
 
-            <div className="flex flex-col gap-3">
-              {trendingArticles.length > 0 ? (
-                trendingArticles.map((item, idx) => (
-                  <div
-                    key={item.id}
-                    onClick={() => navigate(`/article/${item.slug}`)}
-                    className="flex items-start gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer group"
-                  >
-                    <span className="font-mono font-extrabold text-lg text-slate-400 group-hover:text-blue-600 transition-colors shrink-0">
-                      {(idx + 1).toString().padStart(2, '0')}
-                    </span>
-                    <div className="flex flex-col gap-1">
-                      <h4 className="text-xs font-bold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug line-clamp-2">
-                        {item.title}
-                      </h4>
-                      <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
-                        <span className="text-blue-600 font-semibold">{item.source}</span>
-                        <span>•</span>
-                        <span>{item.publishedAt}</span>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="p-4 text-center text-xs font-mono text-slate-400">
-                  Calculating trending stories...
-                </div>
-              )}
+        {/* Hero Search Box */}
+        <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto relative mt-6">
+          <div className="relative flex items-center">
+            <div className="absolute left-4 rtl:left-auto rtl:right-4 pointer-events-none text-slate-400">
+              <Search className="w-5 h-5" />
             </div>
+            <input
+              type="text"
+              value={localQuery}
+              onChange={(e) => setLocalQuery(e.target.value)}
+              placeholder={t('searchPlaceholder')}
+              className="w-full pl-12 pr-28 rtl:pl-28 rtl:pr-12 py-4 bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 focus:border-amber-500 dark:focus:border-amber-500 rounded-2xl text-sm sm:text-base text-slate-800 dark:text-slate-100 shadow-md focus:outline-none transition-all"
+            />
+            <button
+              type="submit"
+              className="absolute right-2.5 rtl:right-auto rtl:left-2.5 px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors cursor-pointer shadow-xs"
+            >
+              {t('searchButton')}
+            </button>
+          </div>
+        </form>
+
+        {/* Trust Badges */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 max-w-3xl mx-auto text-xs">
+          <div className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+            <span>{t('trustFreeTitle')}</span>
           </div>
 
-          {/* Native Sponsored Slot */}
-          <AdSlot variant="native" />
-
-          {/* Verified News Engine Box */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 text-xs text-slate-700 flex flex-col gap-3 shadow-xs">
-            <h4 className="font-bold text-slate-900 font-mono uppercase tracking-wider text-xs flex items-center gap-2">
-              <Zap className="w-4 h-4 text-blue-600" />
-              <span>Real-Time Ingestion Engine</span>
-            </h4>
-            <p className="text-slate-600 leading-relaxed text-[11px]">
-              PULSE ingests, normalizes, and deduplicates coverage from CNBC, BBC, SEC, The Guardian, Federal Reserve, and verified wire services.
-            </p>
-            <div className="pt-2 border-t border-slate-200 font-mono text-[10px] text-slate-500 flex justify-between">
-              <span>Source Attribution</span>
-              <span className="text-emerald-700 font-bold">100% Verified</span>
-            </div>
+          <div className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+            <Zap className="w-4 h-4 text-amber-500 shrink-0" />
+            <span>{t('trustNoSignUpTitle')}</span>
           </div>
-        </aside>
-      </div>
 
-      {/* PULSE AI Analysis Section */}
-      <section className="w-full mt-4">
-        <SectionHeader
-          title="PULSE AI Market Synthesis"
-          subtitle="Multi-factor intelligence synthesizing macro catalysts, balance sheet fundamentals, and market risks"
-          viewAllLink="/analysis"
-          badge="Gemini 2.5 Ready"
-        />
-        <AIAnalysisCard />
+          <div className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+            <ShieldCheck className="w-4 h-4 text-blue-500 shrink-0" />
+            <span>{t('trustSecureTitle')}</span>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-medium">
+            <Star className="w-4 h-4 text-purple-500 shrink-0" />
+            <span>{t('trustFastTitle')}</span>
+          </div>
+        </div>
       </section>
 
-      {/* Newsletter Subscription Section */}
-      <div id="newsletter-section" className="w-full pt-4">
-        <NewsletterSignup />
-      </div>
+      {/* 2. Categories Grid */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              {t('browseCategories')}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              {isAr ? 'استكشف الأدوات مقسمة حسب تخصصك واحتياجك' : 'Explore toolsets organized by workflow'}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          {categoriesData.map((cat) => {
+            const count = allToolsData.filter((t) => t.category === cat.id).length;
+            return (
+              <div
+                key={cat.id}
+                onClick={() => navigate(`/category/${cat.id}`)}
+                className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 hover:shadow-md rounded-2xl transition-all cursor-pointer group flex flex-col justify-between"
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-3 ${cat.iconBg} group-hover:scale-110 transition-transform`}>
+                  <ToolIcon name={cat.icon} className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                    {isAr ? cat.nameAr : cat.name}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {count} {isAr ? 'أدوات' : 'tools'}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 3. Most Popular Tools */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Flame className="w-5 h-5 text-amber-500" />
+            <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+              {t('mostPopularTools')}
+            </h2>
+          </div>
+          <span className="text-xs text-slate-400 font-semibold">{popularTools.length} {isAr ? 'أدوات شائعة' : 'tools'}</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {popularTools.map((tool) => {
+            const fav = isFavorite(tool.id);
+            return (
+              <div
+                key={tool.id}
+                onClick={() => navigate(`/tool/${tool.slug}`)}
+                className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 hover:shadow-md rounded-2xl transition-all cursor-pointer group relative flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <ToolIcon name={tool.icon} className="w-5 h-5" />
+                    </div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavorite(tool.id);
+                      }}
+                      className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition-colors"
+                      title="Favorite"
+                    >
+                      <Heart className={`w-4 h-4 ${fav ? 'fill-rose-500 text-rose-500' : ''}`} />
+                    </button>
+                  </div>
+
+                  <h3 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                    {isAr ? tool.nameAr : tool.name}
+                  </h3>
+                  <p className="text-xs text-slate-500 line-clamp-2 mt-1 leading-relaxed">
+                    {isAr ? tool.descriptionAr : tool.description}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-bold">
+                  <span>{isAr ? 'فتح الأداة' : 'Launch Tool'}</span>
+                  <ArrowRight className={`w-3.5 h-3.5 group-hover:translate-x-1 transition-transform ${isAr ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 4. Category-by-Category Deep Showcase */}
+      {categoriesData.map((cat) => {
+        const catTools = allToolsData.filter((t) => t.category === cat.id).slice(0, 4);
+        return (
+          <section key={cat.id} className="space-y-4 pt-4 border-t border-slate-200/80 dark:border-slate-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${cat.iconBg}`}>
+                  <ToolIcon name={cat.icon} className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white">
+                    {isAr ? cat.nameAr : cat.name}
+                  </h2>
+                  <p className="text-xs text-slate-500 hidden sm:block">
+                    {isAr ? cat.descriptionAr : cat.description}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => navigate(`/category/${cat.id}`)}
+                className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>{isAr ? 'عرض كل الأدوات' : 'View all'}</span>
+                <ChevronRight className={`w-4 h-4 ${isAr ? 'rotate-180' : ''}`} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {catTools.map((tool) => (
+                <div
+                  key={tool.id}
+                  onClick={() => navigate(`/tool/${tool.slug}`)}
+                  className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 rounded-2xl transition-all cursor-pointer group flex flex-col justify-between"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 group-hover:bg-amber-500 group-hover:text-white transition-colors flex items-center justify-center shrink-0">
+                      <ToolIcon name={tool.icon} className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                        {isAr ? tool.nameAr : tool.name}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5 leading-relaxed">
+                        {isAr ? tool.descriptionAr : tool.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* 5. How It Works */}
+      <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 space-y-8">
+        <div className="text-center max-w-xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
+            {t('howItWorks')}
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            {isAr
+              ? 'ثلاث خطوات بسيطة ومباشرة لإنجاز مهامك فوراً بدون أي تعقيد'
+              : 'Three effortless steps to complete your tasks instantly'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center space-y-3 shadow-xs">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-500 text-white font-black text-lg flex items-center justify-center shadow-sm">
+              1
+            </div>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">{t('step1Title')}</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">{t('step1Desc')}</p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center space-y-3 shadow-xs">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-blue-500 text-white font-black text-lg flex items-center justify-center shadow-sm">
+              2
+            </div>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">{t('step2Title')}</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">{t('step2Desc')}</p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 text-center space-y-3 shadow-xs">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-500 text-white font-black text-lg flex items-center justify-center shadow-sm">
+              3
+            </div>
+            <h3 className="font-bold text-sm text-slate-900 dark:text-white">{t('step3Title')}</h3>
+            <p className="text-xs text-slate-500 leading-relaxed">{t('step3Desc')}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Newsletter Signup */}
+      <section className="bg-linear-to-br from-amber-500/10 via-slate-100 to-slate-50 dark:from-amber-500/10 dark:via-slate-900 dark:to-slate-900 border border-amber-500/20 rounded-3xl p-6 sm:p-10 text-center max-w-3xl mx-auto space-y-4">
+        <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center mx-auto shadow-md shadow-amber-500/30">
+          <Mail className="w-6 h-6" />
+        </div>
+
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+          {t('stayUpdated')}
+        </h2>
+        <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto">
+          {t('stayUpdatedDesc')}
+        </p>
+
+        {subscribed ? (
+          <div className="p-4 bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 rounded-xl font-bold text-xs inline-flex items-center gap-2">
+            <Check className="w-4 h-4" />
+            <span>{t('subscribedSuccess')}</span>
+          </div>
+        ) : (
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+            <input
+              type="email"
+              required
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              placeholder={t('emailPlaceholder')}
+              className="flex-1 px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none text-slate-800 dark:text-slate-100"
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm rounded-xl transition-colors cursor-pointer shadow-xs"
+            >
+              {t('subscribe')}
+            </button>
+          </form>
+        )}
+      </section>
     </div>
   );
 };

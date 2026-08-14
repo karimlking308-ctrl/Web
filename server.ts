@@ -1,62 +1,35 @@
 import express from 'express';
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
-import { newsRouter } from './server/routes/newsRoutes';
-import { marketRouter } from './server/routes/marketRoutes';
-import { analysisRouter } from './server/routes/analysisRoutes';
-import { startIngestionScheduler, ingestAllSources } from './server/services/ingestion';
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
 
-  // Basic middleware
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Health check endpoint
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
-      service: 'PULSE Financial Intelligence Engine',
-      phase: 2,
+      service: 'QuickKit Online Tools Engine',
+      version: '1.0.0',
       timestamp: new Date().toISOString(),
     });
   });
 
-  // Dedicated serverless cron ingestion endpoint (Vercel Cron, Google Cloud Scheduler, GitHub Actions)
-  app.all('/api/cron/ingest', async (req, res) => {
-    // Optional secret verification if CRON_SECRET is configured
-    const cronSecret = process.env.CRON_SECRET;
-    const authHeader = req.headers.authorization;
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-      return res.status(401).json({ error: 'Unauthorized cron request' });
+  // Optional newsletter signup endpoint (safe in-memory or 200 response)
+  app.post('/api/newsletter', (req, res) => {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ error: 'Valid email is required' });
     }
-
-    try {
-      const report = await ingestAllSources();
-      return res.json({
-        status: 'success',
-        message: 'Serverless cron ingestion completed',
-        report,
-      });
-    } catch (err: any) {
-      console.error('[Cron Ingest Error]:', err);
-      return res.status(500).json({ error: 'Ingestion failed' });
-    }
+    return res.json({
+      success: true,
+      message: 'Thank you for subscribing to QuickKit updates!',
+    });
   });
-
-  // News Ingestion API Routes
-  app.use('/api/news', newsRouter);
-
-  // Market Data API Routes
-  app.use('/api/markets', marketRouter);
-
-  // AI Financial Analysis API Routes
-  app.use('/api/analysis', analysisRouter);
-
-  // Initialize optional local background scheduler (safe for long-running Node processes; bypassed when in serverless mode)
-  startIngestionScheduler(15 * 60 * 1000);
 
   // Vite middleware for development vs static build for production
   if (process.env.NODE_ENV !== 'production') {
@@ -74,10 +47,10 @@ async function startServer() {
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`[PULSE Server] Running on http://0.0.0.0:${PORT}`);
+    console.log(`[QuickKit Server] Running on http://0.0.0.0:${PORT}`);
   });
 }
 
 startServer().catch(err => {
-  console.error('[PULSE Server] Failed to start:', err);
+  console.error('[QuickKit Server] Failed to start:', err);
 });

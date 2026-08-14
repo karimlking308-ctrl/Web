@@ -1,101 +1,50 @@
-export type Category = 
-  | 'markets' 
-  | 'crypto' 
-  | 'stocks' 
-  | 'economy' 
-  | 'technology' 
-  | 'analysis' 
-  | 'trending'
-  | 'business'
-  | 'energy'
-  | 'global'
-  | 'science';
+export type ToolCategory = 'image' | 'pdf' | 'code' | 'text' | 'calculators' | 'converters';
 
-export interface RelatedSource {
+export interface CategoryInfo {
+  id: ToolCategory;
   name: string;
-  url: string;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  icon: string;
+  badgeColor: string;
+  bgGradient: string;
+  iconBg: string;
+  iconColor: string;
 }
 
-export interface Article {
+export interface ToolHowToStep {
+  step: number;
+  title: string;
+  desc: string;
+}
+
+export interface ToolFAQ {
+  q: string;
+  a: string;
+}
+
+export interface ToolDefinition {
   id: string;
   slug: string;
-  title: string;
-  summary: string;
-  content?: string;
-  category: Category;
-  source: string;
-  sourceUrl?: string;
-  imageUrl?: string;
-  publishedAt: string;
-  publishedTimestamp?: number;
-  tags: string[];
-  tickers?: string[];
-  readTimeMinutes?: number;
-  isBreaking?: boolean;
-  isFeatured?: boolean;
-  sourceId?: string;
-  relatedSources?: RelatedSource[];
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export type MarketAssetType = 'crypto' | 'index' | 'commodity' | 'forex' | 'stock';
-
-export interface MarketAsset {
-  symbol: string;
   name: string;
-  type: MarketAssetType;
-  price: number | null;
-  change: number | null;
-  changePercent: number | null;
-  volume?: string;
-  marketCap?: string;
-  high24h?: number;
-  low24h?: number;
-  status: 'active' | 'closed' | 'placeholder';
-  updatedAt: string;
-}
-
-export interface MarketMoversData {
-  gainers: MarketAsset[];
-  losers: MarketAsset[];
-  mostActive: MarketAsset[];
-}
-
-export interface AIAnalysis {
-  id: string;
-  articleId?: string;
-  headline: string;
-  summary: string;
-  whyItMatters: string[];
-  marketImpact: {
-    overview: string;
-    level: 'high' | 'medium' | 'low';
-    sentiment: 'bullish' | 'bearish' | 'neutral';
-  };
-  bullishFactors: string[];
-  bearishFactors: string[];
-  keyRisks: string[];
-  marketContext: string;
-  disclaimer: string;
-  generatedAt: string;
-}
-
-export interface NewsletterSubscriber {
-  email: string;
-  subscribedAt: string;
-  status: 'pending' | 'subscribed';
-}
-
-export interface AdSlotProps {
-  variant: 'sidebar' | 'inline' | 'banner' | 'native';
-  className?: string;
-  id?: string;
-}
-
-export interface NavItem {
-  label: string;
-  path: string;
-  category?: Category;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  category: ToolCategory;
+  icon: string;
+  isPopular?: boolean;
   badge?: string;
+  features: string[];
+  featuresAr: string[];
+  howToUse: ToolHowToStep[];
+  howToUseAr: ToolHowToStep[];
+  faqs: ToolFAQ[];
+  faqsAr: ToolFAQ[];
+  relatedToolIds: string[];
+  keywords: string[];
+  keywordsAr: string[];
 }
+
+export type Language = 'en' | 'ar';
+export type ThemeMode = 'light' | 'dark';

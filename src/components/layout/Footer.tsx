@@ -1,135 +1,146 @@
 import React from 'react';
-import { useRouter } from '../../context/RouterContext';
-import { NewsletterSignup } from '../newsletter/NewsletterSignup';
-import { DisclaimerBanner } from '../common/DisclaimerBanner';
-import { Shield, ExternalLink } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
+import { categoriesData, allToolsData } from '../../data/toolsData';
+import { ToolIcon } from '../common/ToolIcon';
+import { Wrench, ShieldCheck, Heart, Github, Twitter, Mail } from 'lucide-react';
 
 export const Footer: React.FC = () => {
-  const { navigate } = useRouter();
+  const { lang, t, navigate } = useApp();
+  const isAr = lang === 'ar';
 
-  const sections = [
-    { label: 'Markets', path: '/markets' },
-    { label: 'Crypto', path: '/crypto' },
-    { label: 'Stocks', path: '/stocks' },
-    { label: 'Economy', path: '/economy' },
-    { label: 'Technology', path: '/technology' },
-    { label: 'Analysis', path: '/analysis' },
-    { label: 'Trending', path: '/trending' },
-  ];
-
-  const infoLinks = [
-    { label: 'About PULSE', path: '/about' },
-    { label: 'Editorial Policy', path: '/editorial-policy' },
-    { label: 'Contact Wire', path: '/contact' },
-    { label: 'Search Wire', path: '/search' },
-  ];
-
-  const legalLinks = [
-    { label: 'Privacy Policy', path: '/privacy' },
-    { label: 'Terms of Use', path: '/terms' },
-    { label: 'Cookie Policy', path: '/cookies' },
-    { label: 'Copyright & Content Policy', path: '/copyright' },
-    { label: 'Financial Disclaimer', path: '/disclaimer' },
-  ];
+  const popularTools = allToolsData.filter((t) => t.isPopular).slice(0, 6);
 
   return (
-    <footer className="w-full bg-[#0f172a] border-t border-slate-800 text-slate-400 mt-20">
+    <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12 pb-12 border-b border-slate-800">
-          {/* Brand Column */}
-          <div className="lg:col-span-4 flex flex-col gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-10">
+          {/* Col 1: Brand info */}
+          <div className="lg:col-span-2 space-y-4">
             <div
               onClick={() => navigate('/')}
-              className="flex flex-col cursor-pointer select-none group"
+              className="flex items-center gap-3 cursor-pointer select-none"
             >
-              <div className="flex items-center gap-2">
-                <div className="w-2.5 h-6 bg-blue-600 rounded-xs" />
-                <span className="font-brand font-extrabold text-2xl tracking-widest text-white">
-                  PULSE
-                </span>
+              <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-500/20">
+                <Wrench className="w-5 h-5" />
               </div>
-              <span className="text-[10px] font-mono tracking-[0.2em] text-slate-400 uppercase pl-4.5 mt-0.5 font-semibold">
-                MARKETS. NEWS. ANALYSIS.
+              <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+                {isAr ? 'كويك كيت' : 'QuickKit'}
               </span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Independent digital financial media platform delivering global economic coverage, equity market intelligence, cryptocurrency data, and institutional-grade AI synthesis.
+            <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-sm">
+              {t('footerDesc')}
             </p>
 
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-400 pt-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>Production Architecture: Phase 1 Active</span>
+            <div className="flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl text-xs text-slate-700 dark:text-slate-300 font-medium">
+              <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>
+                {isAr
+                  ? 'معالجة محلية داخل المتصفح 100%. بدون رفع ملفات.'
+                  : '100% Client-Side Processing. No files uploaded.'}
+              </span>
             </div>
           </div>
 
-          {/* Sections Links */}
-          <div className="lg:col-span-2 flex flex-col gap-3">
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              Markets & Sectors
-            </h4>
-            <ul className="space-y-2 text-xs font-mono">
-              {sections.map((item) => (
-                <li key={item.path}>
+          {/* Col 2: Categories */}
+          <div className="space-y-3 text-xs">
+            <h3 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
+              {t('categories')}
+            </h3>
+            <ul className="space-y-2">
+              {categoriesData.map((cat) => (
+                <li key={cat.id}>
                   <button
-                    onClick={() => navigate(item.path)}
-                    className="hover:text-blue-400 transition-colors text-left cursor-pointer"
+                    onClick={() => navigate(`/category/${cat.id}`)}
+                    className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
                   >
-                    {item.label}
+                    {isAr ? cat.nameAr : cat.name}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Information & Legal */}
-          <div className="lg:col-span-3 flex flex-col gap-3">
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white font-bold">
-              Company & Legal
-            </h4>
-            <ul className="space-y-2 text-xs font-mono">
-              {infoLinks.map((item) => (
-                <li key={item.path}>
+          {/* Col 3: Popular Tools */}
+          <div className="space-y-3 text-xs">
+            <h3 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
+              {t('popularTools')}
+            </h3>
+            <ul className="space-y-2">
+              {popularTools.map((tool) => (
+                <li key={tool.id}>
                   <button
-                    onClick={() => navigate(item.path)}
-                    className="hover:text-blue-400 transition-colors text-left cursor-pointer"
+                    onClick={() => navigate(`/tool/${tool.slug}`)}
+                    className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
                   >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-              <li className="pt-2 border-t border-slate-800" />
-              {legalLinks.map((item) => (
-                <li key={item.path}>
-                  <button
-                    onClick={() => navigate(item.path)}
-                    className="hover:text-slate-200 text-slate-400 transition-colors text-left cursor-pointer text-[11px]"
-                  >
-                    {item.label}
+                    {isAr ? tool.nameAr : tool.name}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Newsletter Column */}
-          <div className="lg:col-span-3">
-            <NewsletterSignup variant="compact" />
+          {/* Col 4: Legal & Support */}
+          <div className="space-y-3 text-xs">
+            <h3 className="font-bold text-slate-900 dark:text-white uppercase tracking-wider text-[11px]">
+              {t('support')} & {t('about')}
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <button
+                  onClick={() => navigate('/about')}
+                  className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+                >
+                  {t('aboutUs')}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/privacy')}
+                  className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+                >
+                  {t('privacyPolicy')}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/terms')}
+                  className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+                >
+                  {t('termsOfUse')}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigate('/contact')}
+                  className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+                >
+                  {t('contactUs')}
+                </button>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Disclaimer Area */}
-        <div className="py-6 border-b border-slate-800">
-          <DisclaimerBanner type="financial" />
-        </div>
-
-        {/* Copyright Bottom Bar */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-400">
-          <p>© {new Date().getFullYear()} PULSE Media Group. All rights reserved.</p>
+        {/* Bottom bar */}
+        <div className="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div>
+            © {new Date().getFullYear()} QuickKit. {t('allRightsReserved')}
+          </div>
           <div className="flex items-center gap-4">
-            <span>Production Host: sol-pump.store</span>
+            <button
+              onClick={() => navigate('/privacy')}
+              className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              {t('privacyPolicy')}
+            </button>
             <span>•</span>
-            <span>Editorial Wire</span>
+            <button
+              onClick={() => navigate('/terms')}
+              className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            >
+              {t('termsOfUse')}
+            </button>
           </div>
         </div>
       </div>

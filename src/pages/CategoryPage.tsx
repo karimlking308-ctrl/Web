@@ -1,245 +1,182 @@
-import React, { useState, useEffect } from 'react';
-import { Category, Article } from '../types';
-import { newsService } from '../services/newsService';
-import { ArticleCard } from '../components/news/ArticleCard';
-import { ArticleCardSkeleton } from '../components/common/Skeleton';
-import { AIAnalysisCard } from '../components/analysis/AIAnalysisCard';
-import { AdSlot } from '../components/advertising/AdSlot';
-import { MarketMovers } from '../components/markets/MarketMovers';
-import { Badge } from '../components/common/Badge';
-import { useRouter } from '../context/RouterContext';
-import { Layers, ArrowLeft, RefreshCw, Rss } from 'lucide-react';
+import React, { useState } from 'react';
+import { useApp } from '../context/AppContext';
+import { allToolsData, categoriesData } from '../data/toolsData';
+import { ToolCategory } from '../types';
+import { ToolIcon } from '../components/common/ToolIcon';
+import {
+  Search,
+  Sparkles,
+  Heart,
+  ChevronRight,
+  ArrowRight,
+  Filter,
+} from 'lucide-react';
 
 interface CategoryPageProps {
-  category: Category;
+  categoryId: string;
 }
 
-const CATEGORY_META: Record<Category, { title: string; subtitle: string; description: string }> = {
-  markets: {
-    title: 'Global Markets',
-    subtitle: 'Cross-Asset Intelligence & Macroeconomic Flows',
-    description: 'Comprehensive reporting covering equities, fixed income, foreign exchange, commodities, and international index movements.',
-  },
-  crypto: {
-    title: 'Cryptocurrency & Digital Assets',
-    subtitle: 'Bitcoin, Layer 1s, DeFi, Institutional Capital & Regulation',
-    description: 'Real-time coverage of digital asset market structure, spot ETF capital flows, on-chain dynamics, and regulatory policy.',
-  },
-  stocks: {
-    title: 'Stocks & Equities',
-    subtitle: 'Wall Street Reporting, Earnings, Valuation & Sector Rotations',
-    description: 'Tracking corporate financial statements, earnings calls, balance sheet leverage, guidance revisions, and institutional trading.',
-  },
-  economy: {
-    title: 'Economy & Central Banks',
-    subtitle: 'Monetary Policy, Inflation, Sovereign Debt & Labor Metrics',
-    description: 'In-depth macroeconomic analysis of central bank interest rate decisions, bond yield curves, and global trade dynamics.',
-  },
-  technology: {
-    title: 'Technology & Enterprise AI',
-    subtitle: 'Semiconductors, Cloud Infrastructure, Hardware & Enterprise Software',
-    description: 'Investigating venture funding, semiconductor supply chains, enterprise datacenter capacity, and AI hardware architecture.',
-  },
-  analysis: {
-    title: 'PULSE Financial Analysis',
-    subtitle: 'AI-Assisted Multi-Factor Intelligence & Structural Breakdown',
-    description: 'Institutional-grade contextual breakdowns explaining what happened, why it matters, market impact, and key risk vectors.',
-  },
-  trending: {
-    title: 'Trending Market Stories',
-    subtitle: 'High Velocity Financial Developments & Catalysts',
-    description: 'Stories and market developments attracting the highest institutional readership and market volume velocity across the wire.',
-  },
-  business: {
-    title: 'Business & Industry',
-    subtitle: 'Corporate Strategy, Mergers & Industry Developments',
-    description: 'Global business reporting, strategic acquisitions, supply chain logistics, and executive leadership coverage.',
-  },
-  energy: {
-    title: 'Energy & Commodities',
-    subtitle: 'Crude Oil, Natural Gas, Clean Power & Raw Materials',
-    description: 'Tracking international oil benchmarks, renewable energy transition infrastructure, and commodities logistics.',
-  },
-  global: {
-    title: 'Global Macro & Geopolitics',
-    subtitle: 'International Trade, Sovereign Policy & Emerging Markets',
-    description: 'Cross-border commerce, trade pacts, sovereign foreign reserves, and multilateral financial institution policy.',
-  },
-  science: {
-    title: 'Science & Breakthroughs',
-    subtitle: 'Biotech, Clean Tech & Research Innovations',
-    description: 'Commercial biotechnology advancements, pharmaceutical trials, and applied research impacting global capital.',
-  },
-};
+export const CategoryPage: React.FC<CategoryPageProps> = ({ categoryId }) => {
+  const { lang, t, navigate, isFavorite, toggleFavorite } = useApp();
+  const isAr = lang === 'ar';
 
-export const CategoryPage: React.FC<CategoryPageProps> = ({ category }) => {
-  const meta = CATEGORY_META[category] || CATEGORY_META.markets;
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { navigate } = useRouter();
+  const category = categoriesData.find((c) => c.id === categoryId);
+  const [filterQuery, setFilterQuery] = useState('');
 
-  const loadData = () => {
-    setLoading(true);
-    if (category === 'trending') {
-      newsService
-        .getTrendingStories(12)
-        .then((items) => {
-          setArticles(items);
-        })
-        .catch(() => {
-          setArticles([]);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    } else {
-      newsService
-        .getLatestNews({ category, limit: 16 })
-        .then((res) => {
-          setArticles(res.articles);
-        })
-        .catch(() => {
-          setArticles([]);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  };
+  if (!category) {
+    return (
+      <div className="max-w-4xl mx-auto py-16 text-center space-y-4">
+        <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">
+          {isAr ? 'القسم غير موجود' : 'Category Not Found'}
+        </h1>
+        <button
+          onClick={() => navigate('/')}
+          className="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl transition-colors shadow-xs"
+        >
+          {t('backToHome')}
+        </button>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    loadData();
-    document.title = `${meta.title} | PULSE Financial News`;
-  }, [category]);
+  const allCategoryTools = allToolsData.filter((t) => t.category === category.id);
+  const filteredTools = allCategoryTools.filter((t) => {
+    if (!filterQuery) return true;
+    const q = filterQuery.toLowerCase();
+    return (
+      t.name.toLowerCase().includes(q) ||
+      t.nameAr.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.descriptionAr.toLowerCase().includes(q) ||
+      t.keywords.some((k) => k.toLowerCase().includes(q))
+    );
+  });
 
   return (
-    <div className="flex flex-col gap-8 md:gap-10">
-      {/* Category Header */}
-      <div className="relative p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs overflow-hidden">
-        <div className="flex flex-col gap-3 relative z-10">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate('/')}
-              className="inline-flex items-center gap-1 text-xs font-mono text-slate-500 hover:text-blue-600 transition-colors cursor-pointer font-medium"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Home</span>
-            </button>
-            <span className="text-slate-300">/</span>
-            <Badge category={category} size="sm">
-              {category}
-            </Badge>
-          </div>
+    <div className="space-y-10 pb-16">
+      {/* Breadcrumb Navigation */}
+      <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+        <button
+          onClick={() => navigate('/')}
+          className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+        >
+          {isAr ? 'الرئيسية' : 'Home'}
+        </button>
+        <ChevronRight className={`w-3.5 h-3.5 ${isAr ? 'rotate-180' : ''}`} />
+        <span className="text-slate-800 dark:text-slate-200 font-semibold">
+          {isAr ? category.nameAr : category.name}
+        </span>
+      </nav>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#0f172a]">
-            {meta.title}
-          </h1>
-
-          <p className="text-slate-600 text-sm md:text-base max-w-3xl leading-relaxed">
-            {meta.description}
-          </p>
-
-          <div className="pt-2 flex items-center justify-between gap-3 text-xs font-mono text-slate-500">
-            <span className="flex items-center gap-1.5 font-medium text-blue-700">
-              <Rss className="w-3.5 h-3.5 text-blue-600" />
-              <span>Real-Time Feed Ingestion Active</span>
-            </span>
-            <button
-              onClick={loadData}
-              className="inline-flex items-center gap-1 text-slate-600 hover:text-blue-600 transition-colors cursor-pointer"
-            >
-              <RefreshCw className="w-3 h-3" />
-              <span>Refresh Wire</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Top Banner Ad */}
-      <AdSlot variant="banner" />
-
-      {/* If Analysis category, show prominent AI Analysis Card */}
-      {category === 'analysis' && (
-        <section className="w-full">
-          <AIAnalysisCard />
-        </section>
-      )}
-
-      {/* Content Layout: 8 columns articles, 4 columns sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Main Category Feed */}
-        <div className="lg:col-span-8 flex flex-col gap-6">
-          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-            <h2 className="text-lg font-bold text-slate-900 font-mono uppercase tracking-wider">
-              {meta.title} Coverage
-            </h2>
-            <span className="text-xs font-mono text-slate-500 font-medium">
-              {articles.length} Verified Stories
-            </span>
-          </div>
-
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <ArticleCardSkeleton key={i} variant="standard" />
-              ))}
+      {/* Category Header Banner */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-10 shadow-xs relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="flex items-start sm:items-center gap-5">
+            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center shrink-0 ${category.iconBg} shadow-xs`}>
+              <ToolIcon name={category.icon} className="w-8 h-8" />
             </div>
-          ) : articles.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {articles.map((article) => (
-                <ArticleCard key={article.id} article={article} variant="standard" />
-              ))}
-            </div>
-          ) : (
-            <div className="p-12 bg-white border border-slate-200 rounded-xl text-center flex flex-col items-center justify-center gap-2 shadow-xs">
-              <Layers className="w-8 h-8 text-slate-400 mb-1" />
-              <h3 className="text-base font-bold text-slate-900">No stories in this channel yet</h3>
-              <p className="text-xs text-slate-500 max-w-sm">
-                Stories are continuously ingested across our verified news feeds. Click refresh or check back shortly.
+
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1.5">
+                <span>{allCategoryTools.length} {isAr ? 'أدوات متاحة' : 'Tools Available'}</span>
+              </div>
+              <h1 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                {isAr ? category.nameAr : category.name}
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
+                {isAr ? category.descriptionAr : category.description}
               </p>
-              <button
-                onClick={loadData}
-                className="mt-2 px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-mono font-bold cursor-pointer hover:bg-blue-100 transition-colors"
-              >
-                Sync Channel
-              </button>
-            </div>
-          )}
-
-          {/* Inline Ad */}
-          <AdSlot variant="inline" />
-        </div>
-
-        {/* Sidebar */}
-        <aside className="lg:col-span-4 flex flex-col gap-6">
-          <AdSlot variant="sidebar" />
-
-          {/* Category Quick Context */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 text-xs shadow-xs">
-            <h3 className="font-bold text-slate-900 font-mono uppercase tracking-wider mb-3 text-xs">
-              Channel Intelligence
-            </h3>
-            <p className="text-slate-600 leading-relaxed text-xs mb-4">
-              PULSE monitors global wires to deliver unbiased editorial briefs, primary document links, and multi-source tracking for {meta.title}.
-            </p>
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 font-mono text-[11px] text-slate-600 space-y-1.5">
-              <div className="flex justify-between">
-                <span>Wire Status:</span>
-                <span className="text-blue-600 font-bold">Real Data Live</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Verified Sources:</span>
-                <span className="text-slate-700 font-semibold">Active</span>
-              </div>
             </div>
           </div>
 
-          <AdSlot variant="native" />
-        </aside>
+          {/* Quick filter within this category */}
+          <div className="w-full sm:w-72 relative">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 rtl:left-auto rtl:right-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={filterQuery}
+              onChange={(e) => setFilterQuery(e.target.value)}
+              placeholder={isAr ? 'تصفية الأدوات...' : 'Filter tools...'}
+              className="w-full pl-10 pr-4 rtl:pl-4 rtl:pr-10 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Category Bottom Market Movers */}
-      <MarketMovers />
+      {/* Tools Grid */}
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+            {isAr ? `جميع أدوات ${category.nameAr}` : `All ${category.name}`} ({filteredTools.length})
+          </h2>
+        </div>
+
+        {filteredTools.length === 0 ? (
+          <div className="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-3">
+            <p className="text-slate-500 text-sm">
+              {isAr ? 'لم يتم العثور على أدوات تطابق بحثك.' : 'No tools matched your search.'}
+            </p>
+            <button
+              onClick={() => setFilterQuery('')}
+              className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-amber-500 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+            >
+              {t('clearSearch')}
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredTools.map((tool) => {
+              const fav = isFavorite(tool.id);
+              return (
+                <div
+                  key={tool.id}
+                  onClick={() => navigate(`/tool/${tool.slug}`)}
+                  className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 hover:shadow-md rounded-2xl transition-all cursor-pointer group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                        <ToolIcon name={tool.icon} className="w-6 h-6" />
+                      </div>
+
+                      <div className="flex items-center gap-1.5">
+                        {tool.isPopular && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                            {isAr ? 'شائع' : 'Popular'}
+                          </span>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFavorite(tool.id);
+                          }}
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition-colors"
+                          title="Favorite"
+                        >
+                          <Heart className={`w-4 h-4 ${fav ? 'fill-rose-500 text-rose-500' : ''}`} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                      {isAr ? tool.nameAr : tool.name}
+                    </h3>
+
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
+                      {isAr ? tool.descriptionAr : tool.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-bold">
+                    <span>{isAr ? 'استخدام الأداة' : 'Open Tool'}</span>
+                    <ArrowRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${isAr ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
   );
 };

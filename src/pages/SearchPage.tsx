@@ -1,244 +1,193 @@
 import React, { useState, useEffect } from 'react';
-import { Article, Category } from '../types';
-import { newsService } from '../services/newsService';
-import { ArticleCard } from '../components/news/ArticleCard';
-import { ArticleCardSkeleton } from '../components/common/Skeleton';
-import { AdSlot } from '../components/advertising/AdSlot';
-import { useRouter } from '../context/RouterContext';
-import { Search, AlertCircle, RefreshCw, Layers, Zap } from 'lucide-react';
+import { useApp } from '../context/AppContext';
+import { allToolsData, categoriesData } from '../data/toolsData';
+import { ToolCategory } from '../types';
+import { ToolIcon } from '../components/common/ToolIcon';
+import {
+  Search,
+  Heart,
+  ChevronRight,
+  ArrowRight,
+  Sparkles,
+  X,
+  Filter,
+} from 'lucide-react';
 
 export const SearchPage: React.FC = () => {
-  const { searchQuery, setSearchQuery } = useRouter();
-  const [query, setQuery] = useState(searchQuery);
-  const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all');
-  const [results, setResults] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(Boolean(searchQuery.trim()));
-  const [error, setError] = useState<string | null>(null);
+  const { lang, t, navigate, isFavorite, toggleFavorite, searchTerm, setSearchTerm } = useApp();
+  const isAr = lang === 'ar';
 
-  const executeSearch = async (term: string, cat: Category | 'all') => {
-    if (!term.trim()) {
-      setResults([]);
-      setHasSearched(false);
-      return;
-    }
+  const [selectedCategory, setSelectedCategory] = useState<ToolCategory | 'all'>('all');
 
-    setLoading(true);
-    setError(null);
-    setHasSearched(true);
-
-    try {
-      const res = await newsService.searchNews(
-        term,
-        cat === 'all' ? undefined : cat
-      );
-      setResults(res);
-    } catch {
-      setError('Search service encountered a temporary error. Please retry.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Parse query from URL if not already in state
   useEffect(() => {
-    if (searchQuery) {
-      setQuery(searchQuery);
-      executeSearch(searchQuery, selectedCategory);
+    const urlParams = new URLSearchParams(window.location.search);
+    const q = urlParams.get('q');
+    if (q && q !== searchTerm) {
+      setSearchTerm(q);
     }
-  }, [searchQuery]);
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSearchQuery(query);
-    executeSearch(query, selectedCategory);
-  };
-
-  const handleCategoryChange = (cat: Category | 'all') => {
-    setSelectedCategory(cat);
-    if (query.trim()) {
-      executeSearch(query, cat);
+  const results = allToolsData.filter((tool) => {
+    if (selectedCategory !== 'all' && tool.category !== selectedCategory) {
+      return false;
     }
-  };
+    if (!searchTerm.trim()) return true;
 
-  const categories: { id: Category | 'all'; label: string }[] = [
-    { id: 'all', label: 'All Sectors' },
-    { id: 'markets', label: 'Markets' },
-    { id: 'crypto', label: 'Crypto' },
-    { id: 'stocks', label: 'Stocks' },
-    { id: 'economy', label: 'Economy' },
-    { id: 'technology', label: 'Tech' },
-    { id: 'analysis', label: 'Analysis' },
-  ];
-
-  const suggestedQueries = [
-    'Bitcoin',
-    'Federal Reserve',
-    'Semiconductors',
-    'Yields',
-    'Earnings',
-    'Inflation',
-  ];
+    const q = searchTerm.toLowerCase().trim();
+    return (
+      tool.name.toLowerCase().includes(q) ||
+      tool.nameAr.toLowerCase().includes(q) ||
+      tool.description.toLowerCase().includes(q) ||
+      tool.descriptionAr.toLowerCase().includes(q) ||
+      tool.keywords.some((k) => k.toLowerCase().includes(q)) ||
+      (tool.keywordsAr && tool.keywordsAr.some((k) => k.toLowerCase().includes(q)))
+    );
+  });
 
   return (
-    <div className="flex flex-col gap-8 max-w-7xl mx-auto">
-      {/* Search Header Container */}
-      <div className="p-6 sm:p-8 rounded-2xl bg-white border border-slate-200 shadow-xs">
-        <div className="max-w-3xl mx-auto flex flex-col gap-4 text-center">
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
-            Search PULSE Intelligence Wire
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600">
-            Query across global markets, macroeconomic reports, corporate filings, and verified news feeds
-          </p>
+    <div className="space-y-8 pb-16">
+      {/* Breadcrumb */}
+      <nav className="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+        <button
+          onClick={() => navigate('/')}
+          className="hover:text-amber-600 dark:hover:text-amber-400 transition-colors cursor-pointer"
+        >
+          {isAr ? 'الرئيسية' : 'Home'}
+        </button>
+        <ChevronRight className={`w-3.5 h-3.5 ${isAr ? 'rotate-180' : ''}`} />
+        <span className="text-slate-800 dark:text-slate-200 font-semibold">
+          {isAr ? 'نتائج البحث' : 'Search Results'}
+        </span>
+      </nav>
 
-          {/* Search Bar Form */}
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 mt-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search markets, companies, tickers, crypto..."
-                className="w-full bg-slate-50 border border-slate-300 focus:border-blue-600 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none transition-colors shadow-xs font-mono"
-              />
-            </div>
+      {/* Search Bar Container */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xs space-y-4">
+        <div className="relative">
+          <Search className="w-5 h-5 text-slate-400 absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={t('searchPlaceholder')}
+            className="w-full pl-12 pr-12 rtl:pl-12 rtl:pr-12 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-sm sm:text-base text-slate-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            autoFocus
+          />
+          {searchTerm && (
             <button
-              type="submit"
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-mono font-bold tracking-wider uppercase transition-colors cursor-pointer shadow-xs"
+              onClick={() => setSearchTerm('')}
+              className="absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
             >
-              Search
+              <X className="w-4 h-4" />
             </button>
-          </form>
+          )}
+        </div>
 
-          {/* Category Filter Chips */}
-          <div className="flex items-center justify-center gap-1.5 flex-wrap pt-2">
-            {categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => handleCategoryChange(c.id)}
-                className={`px-3 py-1 text-xs font-mono rounded-lg transition-colors cursor-pointer ${
-                  selectedCategory === c.id
-                    ? 'bg-blue-50 text-blue-700 border border-blue-300 font-bold shadow-xs'
-                    : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
-                }`}
-              >
-                {c.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Suggested Query Tags */}
-          <div className="flex items-center justify-center gap-2 flex-wrap text-xs text-slate-500 pt-1">
-            <span className="font-mono text-[11px] font-medium">Popular Searches:</span>
-            {suggestedQueries.map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  setQuery(item);
-                  setSearchQuery(item);
-                  executeSearch(item, selectedCategory);
-                }}
-                className="hover:text-blue-600 underline decoration-slate-300 cursor-pointer text-[11px] font-mono text-slate-600 font-medium"
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+        {/* Category Filters */}
+        <div className="flex flex-wrap items-center gap-2 pt-2">
+          <span className="text-xs font-bold text-slate-400 flex items-center gap-1">
+            <Filter className="w-3.5 h-3.5" />
+            {isAr ? 'تصفية:' : 'Filter:'}
+          </span>
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+              selectedCategory === 'all'
+                ? 'bg-amber-500 text-white'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+            }`}
+          >
+            {t('allTools')} ({allToolsData.length})
+          </button>
+          {categoriesData.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+                selectedCategory === cat.id
+                  ? 'bg-amber-500 text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+              }`}
+            >
+              {isAr ? cat.nameAr : cat.name}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Main Results Slot */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 flex flex-col gap-6">
-          {/* Status 1: Initial (Before Search) */}
-          {!hasSearched && !loading && (
-            <div className="p-12 bg-white border border-slate-200 rounded-xl text-center flex flex-col items-center justify-center gap-3 shadow-xs">
-              <Search className="w-10 h-10 text-slate-400 mb-1" />
-              <h3 className="text-base font-bold text-slate-900">Enter a keyword to search</h3>
-              <p className="text-xs text-slate-500 max-w-sm">
-                Search real-time financial reporting by ticker symbol, central bank statement, company name, or asset class.
-              </p>
-            </div>
-          )}
-
-          {/* Status 2: Loading */}
-          {loading && (
-            <div className="space-y-4">
-              <div className="h-4 bg-slate-200 w-48 rounded animate-pulse mb-4" />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <ArticleCardSkeleton key={i} variant="standard" />
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Status 3: Error */}
-          {!loading && error && (
-            <div className="p-8 rounded-xl bg-rose-50 border border-rose-200 text-center flex flex-col items-center justify-center gap-3">
-              <AlertCircle className="w-8 h-8 text-rose-600" />
-              <h3 className="text-base font-bold text-rose-900">Search Service Alert</h3>
-              <p className="text-xs text-rose-700">{error}</p>
-              <button
-                onClick={() => executeSearch(query, selectedCategory)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-xs font-mono text-slate-800 rounded-lg border border-slate-300 font-bold shadow-xs cursor-pointer hover:bg-slate-50"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Retry Search</span>
-              </button>
-            </div>
-          )}
-
-          {/* Status 4: No Results */}
-          {!loading && !error && hasSearched && results.length === 0 && (
-            <div className="p-12 bg-white border border-slate-200 rounded-xl text-center flex flex-col items-center justify-center gap-3 shadow-xs">
-              <Layers className="w-10 h-10 text-slate-400 mb-1" />
-              <h3 className="text-base font-bold text-slate-900">
-                No matching wire reports found for "{query}"
-              </h3>
-              <p className="text-xs text-slate-500 max-w-sm">
-                Try searching for broader terms like "crypto", "markets", "earnings", "tech", or "Fed".
-              </p>
-            </div>
-          )}
-
-          {/* Status 5: Results */}
-          {!loading && !error && hasSearched && results.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-200 pb-3 text-xs font-mono text-slate-500">
-                <span>
-                  Found <strong className="text-slate-900">{results.length}</strong> reports matching "{query}"
-                </span>
-                <span>Sorted by Recency & Relevance</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {results.map((art) => (
-                  <ArticleCard key={art.id} article={art} variant="standard" />
-                ))}
-              </div>
-            </div>
-          )}
-
-          <AdSlot variant="inline" />
-        </div>
-
-        {/* Sidebar */}
-        <aside className="lg:col-span-4 flex flex-col gap-6">
-          <AdSlot variant="sidebar" />
-          <div className="bg-white border border-slate-200 rounded-xl p-5 text-xs text-slate-600 shadow-xs">
-            <h3 className="font-bold text-slate-900 font-mono uppercase tracking-wider mb-2 text-xs flex items-center gap-1.5">
-              <Zap className="w-3.5 h-3.5 text-blue-600" />
-              <span>Full-Text News Index</span>
-            </h3>
-            <p className="text-xs leading-relaxed text-slate-600">
-              The search index performs multi-token search across verified sources (CNBC, BBC, The Guardian, Federal Reserve, SEC, CoinDesk) with instant categorization.
-            </p>
-          </div>
-          <AdSlot variant="native" />
-        </aside>
+      {/* Results Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+          {results.length} {t('toolsFound')} {searchTerm ? `for "${searchTerm}"` : ''}
+        </h1>
       </div>
+
+      {/* Results Grid */}
+      {results.length === 0 ? (
+        <div className="p-12 text-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl space-y-4 max-w-md mx-auto">
+          <p className="text-slate-500 text-sm">{t('noToolsFound')}</p>
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setSelectedCategory('all');
+            }}
+            className="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer shadow-xs"
+          >
+            {t('clearSearch')}
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {results.map((tool) => {
+            const fav = isFavorite(tool.id);
+            return (
+              <div
+                key={tool.id}
+                onClick={() => navigate(`/tool/${tool.slug}`)}
+                className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 hover:shadow-md rounded-2xl transition-all cursor-pointer group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <ToolIcon name={tool.icon} className="w-6 h-6" />
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      {tool.isPopular && (
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300">
+                          {isAr ? 'شائع' : 'Popular'}
+                        </span>
+                      )}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(tool.id);
+                        }}
+                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 transition-colors"
+                      >
+                        <Heart className={`w-4 h-4 ${fav ? 'fill-rose-500 text-rose-500' : ''}`} />
+                      </button>
+                    </div>
+                  </div>
+
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                    {isAr ? tool.nameAr : tool.name}
+                  </h3>
+
+                  <p className="text-xs text-slate-500 mt-1 leading-relaxed line-clamp-2">
+                    {isAr ? tool.descriptionAr : tool.description}
+                  </p>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-amber-600 dark:text-amber-400 font-bold">
+                  <span>{isAr ? 'فتح الأداة' : 'Launch Tool'}</span>
+                  <ArrowRight className={`w-4 h-4 group-hover:translate-x-1 transition-transform ${isAr ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
