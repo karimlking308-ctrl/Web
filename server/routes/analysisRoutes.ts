@@ -110,7 +110,7 @@ Provide an objective, institutional financial synthesis following the JSON schem
 8. "marketContext": Macro & crypto market evaluation based on real price levels.`;
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3.7-flash',
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
