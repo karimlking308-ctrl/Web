@@ -1,7 +1,5 @@
 import express from 'express';
-import { newsRouter } from '../server/routes/newsRoutes';
 import { marketRouter } from '../server/routes/marketRoutes';
-import { ingestAllSources } from '../server/services/ingestion';
 
 const app = express();
 
@@ -18,6 +16,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Market Data API Route (Lightweight, zero database/ingestion dependencies)
+app.use('/api/markets', marketRouter);
+
+// Lazy-loaded News API Router
+app.use('/api/news', async (req, res, next) => {
+  try {
+    const { newsRouter } = await import('../server/routes/newsRoutes');
+    return newsRouter(req, res, next);
+  } catch (err) {
+    console.error('[Lazy News Router Error]:', err);
+    return res.status(500).json({ error: 'Failed to load news service' });
+  }
+});
+
 // Serverless cron ingestion endpoint
 app.all('/api/cron/ingest', async (req, res) => {
   const cronSecret = process.env.CRON_SECRET;
@@ -27,6 +39,7 @@ app.all('/api/cron/ingest', async (req, res) => {
   }
 
   try {
+    const { ingestAllSources } = await import('../server/services/ingestion');
     const report = await ingestAllSources();
     return res.json({
       status: 'success',
@@ -38,9 +51,5 @@ app.all('/api/cron/ingest', async (req, res) => {
     return res.status(500).json({ error: 'Ingestion failed' });
   }
 });
-
-// API Routes
-app.use('/api/news', newsRouter);
-app.use('/api/markets', marketRouter);
 
 export default app;
