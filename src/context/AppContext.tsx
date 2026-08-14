@@ -23,7 +23,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // 1. Language state with localStorage
   const [lang, setLangState] = useState<Language>(() => {
     try {
-      const saved = localStorage.getItem('quickkit_lang');
+      const saved = localStorage.getItem('soltools_lang') || localStorage.getItem('quickkit_lang');
       if (saved === 'en' || saved === 'ar') return saved;
       return 'en';
     } catch {
@@ -34,7 +34,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
     try {
-      localStorage.setItem('quickkit_lang', newLang);
+      localStorage.setItem('soltools_lang', newLang);
     } catch {}
   };
 
@@ -46,7 +46,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // 2. Theme state with localStorage
   const [theme, setTheme] = useState<ThemeMode>(() => {
     try {
-      const saved = localStorage.getItem('quickkit_theme');
+      const saved = localStorage.getItem('soltools_theme') || localStorage.getItem('quickkit_theme');
       if (saved === 'dark' || saved === 'light') return saved;
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     } catch {
@@ -58,7 +58,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setTheme((prev) => {
       const next = prev === 'light' ? 'dark' : 'light';
       try {
-        localStorage.setItem('quickkit_theme', next);
+        localStorage.setItem('soltools_theme', next);
       } catch {}
       return next;
     });
@@ -75,7 +75,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // 3. Favorites state
   const [favorites, setFavorites] = useState<string[]>(() => {
     try {
-      const saved = localStorage.getItem('quickkit_favorites');
+      const saved = localStorage.getItem('soltools_favorites') || localStorage.getItem('quickkit_favorites');
       return saved ? JSON.parse(saved) : ['image-resizer', 'json-formatter', 'pdf-to-jpg', 'word-counter'];
     } catch {
       return ['image-resizer', 'json-formatter', 'pdf-to-jpg', 'word-counter'];
@@ -86,7 +86,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setFavorites((prev) => {
       const next = prev.includes(toolId) ? prev.filter((id) => id !== toolId) : [...prev, toolId];
       try {
-        localStorage.setItem('quickkit_favorites', JSON.stringify(next));
+        localStorage.setItem('soltools_favorites', JSON.stringify(next));
       } catch {}
       return next;
     });

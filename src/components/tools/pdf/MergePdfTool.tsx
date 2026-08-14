@@ -191,7 +191,7 @@ export const MergePdfTool: React.FC = () => {
               {mergedPdfUrl && (
                 <a
                   href={mergedPdfUrl}
-                  download="quickkit_merged.pdf"
+                  download="soltools_merged.pdf"
                   className="w-full py-2.5 px-4 rounded-xl font-bold flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white transition shadow cursor-pointer text-sm"
                 >
                   <Download className="w-4 h-4" />

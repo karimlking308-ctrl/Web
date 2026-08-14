@@ -1,6 +1,6 @@
 {
   "name": "Sol Tools — 200+ Free Online Tools",
-  "description": "All the tools you need for images, PDF, text, code, calculations and conversions. Simple, fast and free.",
+  "description": "Free online tools for images, PDF, files, code, text, calculations and conversions. Fast, simple and free to use.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

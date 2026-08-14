@@ -7,7 +7,7 @@ export const Base64Tool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [mode, setMode] = useState<'encode' | 'decode'>('encode');
-  const [inputText, setInputText] = useState<string>('Hello from QuickKit!');
+  const [inputText, setInputText] = useState<string>('Hello from Sol Tools!');
   const [outputText, setOutputText] = useState<string>('');
   const [urlSafe, setUrlSafe] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);

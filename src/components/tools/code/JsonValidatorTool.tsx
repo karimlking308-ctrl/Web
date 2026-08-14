@@ -6,7 +6,7 @@ export const JsonValidatorTool: React.FC = () => {
   const { lang } = useApp();
   const isAr = lang === 'ar';
 
-  const [inputJson, setInputJson] = useState<string>('{\n  "name": "QuickKit",\n  "version": 1.0,\n  "status": "active"\n}');
+  const [inputJson, setInputJson] = useState<string>('{\n  "name": "Sol Tools",\n  "version": 1.0,\n  "status": "active"\n}');
   const [validationResult, setValidationResult] = useState<{
     isValid: boolean;
     error: string | null;

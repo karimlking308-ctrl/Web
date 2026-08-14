@@ -6,7 +6,7 @@ export const HtmlFormatterTool: React.FC = () => {
   const { lang } = useApp();
   const isAr = lang === 'ar';
 
-  const sampleHtml = `<div class="card"><header><h1>QuickKit Tools</h1><p>Free Online Utilities</p></header><main><button onclick="alert('Hello')">Click Me</button></main></div>`;
+  const sampleHtml = `<div class="card"><header><h1>Sol Tools</h1><p>200+ Free Online Tools</p></header><main><button onclick="alert('Hello')">Click Me</button></main></div>`;
 
   const [inputCode, setInputCode] = useState<string>(sampleHtml);
   const [outputCode, setOutputCode] = useState<string>('');

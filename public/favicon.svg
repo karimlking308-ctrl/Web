@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="solGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fbbf24" />
+      <stop offset="50%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#d97706" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#solGrad)" />
+  <path
+    d="M23 10.5C23 8 20.8 6 18 6H12C9.2 6 7 8 7 10.5C7 13 9.2 15 12 15H20C22.8 15 25 17 25 19.5C25 22 22.8 24 20 24H14C11.2 24 9 22 9 19.5"
+    stroke="#ffffff"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+  <circle cx="18" cy="10.5" r="1.5" fill="#ffffff" />
+  <circle cx="14" cy="19.5" r="1.5" fill="#ffffff" />
+</svg>

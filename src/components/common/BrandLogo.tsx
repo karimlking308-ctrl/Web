@@ -7,12 +7,15 @@ interface BrandLogoProps {
   className?: string;
 }
 
-export const BrandMark: React.FC<{ size?: number; className?: string }> = ({
+export const BrandMark: React.FC<{ size?: number; className?: string; altText?: string }> = ({
   size = 40,
   className = '',
+  altText = 'Sol Tools Logo',
 }) => {
   return (
     <div
+      role="img"
+      aria-label={altText}
       className={`relative flex items-center justify-center shrink-0 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 text-white shadow-md shadow-amber-500/20 ${className}`}
       style={{ width: `${size}px`, height: `${size}px` }}
     >
@@ -23,6 +26,7 @@ export const BrandMark: React.FC<{ size?: number; className?: string }> = ({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="text-white drop-shadow-xs"
+        aria-hidden="true"
       >
         {/* Modern Sol Tools Modular Multi-Tool Grid / S-Nexus */}
         {/* Top utility segment */}
@@ -53,6 +57,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
     <div className={`flex items-center gap-2.5 sm:gap-3 select-none group ${className}`}>
       <BrandMark
         size={markSize}
+        altText={isArabic ? 'شعار سول تولز - +200 أداة مجانية أونلاين' : 'Sol Tools Logo - 200+ Free Online Tools'}
         className="group-hover:scale-105 transition-transform duration-200"
       />
       <div className="flex flex-col">

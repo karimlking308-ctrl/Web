@@ -114,11 +114,11 @@ export const allToolsData: ToolDefinition[] = [
       { step: 3, title: 'تحميل الصورة', desc: 'انقر على تحميل لحفظ صورتك بالأبعاد الجديدة فوراً.' }
     ],
     faqs: [
-      { q: 'Will resizing reduce my image quality?', a: 'QuickKit utilizes high-quality bicubic smoothing algorithms to preserve maximum sharpness during scaling.' },
+      { q: 'Will resizing reduce my image quality?', a: 'Sol Tools utilizes high-quality bicubic smoothing algorithms to preserve maximum sharpness during scaling.' },
       { q: 'Is my image uploaded to any server?', a: 'No, all image processing occurs directly in your browser using the HTML5 Canvas API.' }
     ],
     faqsAr: [
-      { q: 'هل يؤثر تغيير الحجم على جودة الصورة؟', a: 'يستخدم QuickKit خوارزميات تنعيم عالية الدقة للحفاظ على وضوح الصورة بأفضل جودة ممكنة.' },
+      { q: 'هل يؤثر تغيير الحجم على جودة الصورة؟', a: 'يستخدم Sol Tools خوارزميات تنعيم عالية الدقة للحفاظ على وضوح الصورة بأفضل جودة ممكنة.' },
       { q: 'هل يتم رفع الصور إلى أي خادم خارجي؟', a: 'لا، تتم جميع معالجات الصور محلياً بالكامل داخل متصفحك للحفاظ على خصوصيتك المطلقة.' }
     ],
     relatedToolIds: ['image-compressor', 'image-converter', 'image-cropper', 'image-rotator']
@@ -201,10 +201,10 @@ export const allToolsData: ToolDefinition[] = [
       { step: 3, title: 'التحميل', desc: 'انقر على تحميل للحصول على ملفك بالصيغة الجديدة.' }
     ],
     faqs: [
-      { q: 'Can I convert transparent PNGs to JPG?', a: 'Yes, QuickKit lets you specify the solid background fill color (e.g. white or black) for transparent images.' }
+      { q: 'Can I convert transparent PNGs to JPG?', a: 'Yes, Sol Tools lets you specify the solid background fill color (e.g. white or black) for transparent images.' }
     ],
     faqsAr: [
-      { q: 'هل يمكن تحويل الصور الشفافة إلى JPG؟', a: 'نعم، يتيح لك QuickKit اختيار لون الخلفية (مثل الأبيض أو الأسود) عند تحويل PNG الشفاف.' }
+      { q: 'هل يمكن تحويل الصور الشفافة إلى JPG؟', a: 'نعم، يتيح لك Sol Tools اختيار لون الخلفية (مثل الأبيض أو الأسود) عند تحويل PNG الشفاف.' }
     ],
     relatedToolIds: ['image-resizer', 'image-compressor', 'image-cropper']
   },

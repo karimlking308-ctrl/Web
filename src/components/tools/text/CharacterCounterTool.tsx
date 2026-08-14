@@ -7,7 +7,7 @@ export const CharacterCounterTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [text, setText] = useState<string>(
-    'Explore QuickKit — The lightning-fast suite of free online utilities for images, PDF, code, text, math and unit conversions.'
+    'Explore Sol Tools — The lightning-fast suite of free online utilities for images, PDF, code, text, math and unit conversions.'
   );
   const [copied, setCopied] = useState<boolean>(false);
 

@@ -6,7 +6,7 @@ export const JsonMinifierTool: React.FC = () => {
   const { lang } = useApp();
   const isAr = lang === 'ar';
 
-  const [inputJson, setInputJson] = useState<string>('{\n  "title": "QuickKit Tools",\n  "status": "active",\n  "count": 36,\n  "supported": ["Web", "Mobile", "API"]\n}');
+  const [inputJson, setInputJson] = useState<string>('{\n  "title": "Sol Tools",\n  "status": "active",\n  "count": 39,\n  "supported": ["Web", "Mobile", "API"]\n}');
   const [minifiedJson, setMinifiedJson] = useState<string>('');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
@@ -44,7 +44,7 @@ export const JsonMinifierTool: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'quickkit_minified.json';
+    a.download = 'soltools_minified.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

@@ -8,7 +8,7 @@ export const TextCleanerTool: React.FC = () => {
 
   const [input, setInput] = useState<string>(
     `<div class="article-body">
-  <p>  QuickKit provides   <b>essential</b> online tools.   </p>
+  <p>  Sol Tools provides   <b>essential</b> online tools.   </p>
 
   <p>All data stays    strictly   inside   your browser!  </p>
 

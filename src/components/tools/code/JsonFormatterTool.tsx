@@ -7,15 +7,15 @@ export const JsonFormatterTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const sampleJson = `{
-  "app": "QuickKit",
+  "app": "Sol Tools",
   "version": "1.0.0",
   "features": [
-    "100% Free Tools",
+    "200+ Free Tools",
     "Private Browser Processing",
     "No Sign Up Required"
   ],
   "stats": {
-    "totalTools": 36,
+    "totalTools": 39,
     "categories": 6,
     "rating": 4.9
   },
@@ -63,7 +63,7 @@ export const JsonFormatterTool: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'quickkit_formatted.json';
+    a.download = 'soltools_formatted.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

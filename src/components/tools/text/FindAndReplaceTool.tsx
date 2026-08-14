@@ -7,10 +7,10 @@ export const FindAndReplaceTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [text, setText] = useState<string>(
-    `The QuickKit suite makes online utilities fast. QuickKit is 100% free and QuickKit protects your personal privacy.`
+    `The Sol Tools suite makes online utilities fast. Sol Tools is 100% free and Sol Tools protects your personal privacy.`
   );
-  const [findStr, setFindStr] = useState<string>('QuickKit');
-  const [replaceStr, setReplaceStr] = useState<string>('QuickKit Pro');
+  const [findStr, setFindStr] = useState<string>('Sol Tools');
+  const [replaceStr, setReplaceStr] = useState<string>('Sol Tools Pro');
   const [matchCase, setMatchCase] = useState<boolean>(false);
   const [wholeWord, setWholeWord] = useState<boolean>(false);
   const [useRegex, setUseRegex] = useState<boolean>(false);

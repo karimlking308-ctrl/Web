@@ -7,7 +7,7 @@ export const WordCounterTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [text, setText] = useState<string>(
-    `QuickKit provides a versatile suite of browser-based utilities built for everyday productivity. All operations run locally inside your browser, guaranteeing total privacy and zero data leakage. Explore fast image resizers, PDF converters, and code beautifiers with ease.`
+    `Sol Tools provides a versatile suite of browser-based utilities built for everyday productivity. All operations run locally inside your browser, guaranteeing total privacy and zero data leakage. Explore fast image resizers, PDF converters, and code beautifiers with ease.`
   );
   const [copied, setCopied] = useState<boolean>(false);
 

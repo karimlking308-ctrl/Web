@@ -8,7 +8,7 @@ export const QrCodeGeneratorTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [qrType, setQrType] = useState<'url' | 'text' | 'wifi' | 'email'>('url');
-  const [content, setContent] = useState<string>('https://quickkit.tools');
+  const [content, setContent] = useState<string>('https://sol-pump.store');
   const [fgColor, setFgColor] = useState<string>('#1e293b');
   const [bgColor, setBgColor] = useState<string>('#ffffff');
   const [qrSize, setQrSize] = useState<number>(360);
@@ -288,7 +288,7 @@ export const QrCodeGeneratorTool: React.FC = () => {
           <div className="space-y-3">
             <a
               href={qrDataUrl || '#'}
-              download="quickkit_qrcode.png"
+              download="soltools_qrcode.png"
               className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition cursor-pointer"
             >
               <Download className="w-5 h-5" />

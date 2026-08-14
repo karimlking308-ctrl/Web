@@ -7,7 +7,7 @@ export const TextCaseConverterTool: React.FC = () => {
   const isAr = lang === 'ar';
 
   const [text, setText] = useState<string>(
-    'QuickKit offers an intuitive suite of free web developer tools and productivity converters.'
+    'Sol Tools offers an intuitive suite of free web developer tools and productivity converters.'
   );
   const [copied, setCopied] = useState<boolean>(false);
 
