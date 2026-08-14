@@ -1,8 +1,8 @@
 {
-  "crons": [
+  "rewrites": [
     {
-      "path": "/api/cron/ingest",
-      "schedule": "*/15 * * * *"
+      "source": "/api/(.*)",
+      "destination": "/api"
     }
   ]
 }
