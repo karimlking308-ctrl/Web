@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { allToolsData, categoriesData } from '../data/toolsData';
 import { ToolIcon } from '../components/common/ToolIcon';
+import { AdNativeBanner } from '../components/ads/AdNativeBanner';
+import { AdBanner160x300 } from '../components/ads/AdBanner160x300';
 import {
   Search,
   Sparkles,
@@ -212,6 +214,9 @@ export const HomePage: React.FC = () => {
           })}
         </div>
       </section>
+
+      {/* Adsterra Native Banner */}
+      <AdNativeBanner />
 
       {/* 4. Category-by-Category Deep Showcase */}
       {categoriesData.map((cat) => {

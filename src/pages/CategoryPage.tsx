@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { allToolsData, categoriesData } from '../data/toolsData';
 import { ToolCategory } from '../types';
 import { ToolIcon } from '../components/common/ToolIcon';
+import { AdNativeBanner } from '../components/ads/AdNativeBanner';
 import {
   Search,
   Sparkles,
@@ -177,6 +178,9 @@ export const CategoryPage: React.FC<CategoryPageProps> = ({ categoryId }) => {
           </div>
         )}
       </section>
+
+      {/* Adsterra Native Banner */}
+      <AdNativeBanner />
     </div>
   );
 };

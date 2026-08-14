@@ -63,7 +63,8 @@ export const PdfToJpgTool: React.FC = () => {
           await page.render({
             canvasContext: ctx,
             viewport: viewport,
-          }).promise;
+            canvas: canvas,
+          } as any).promise;
 
           const mime = `image/${format}`;
           const dataUrl = canvas.toDataURL(mime, 0.95);

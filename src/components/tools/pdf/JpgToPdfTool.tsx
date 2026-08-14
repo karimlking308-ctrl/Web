@@ -28,10 +28,10 @@ export const JpgToPdfTool: React.FC = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    Array.from(files).forEach((file) => {
+    Array.from(files).forEach((file: File) => {
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const src = event.target?.result as string;
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const src = (event.target?.result as string) || '';
         const img = new Image();
         img.onload = () => {
           setImages((prev) => [
@@ -115,7 +115,7 @@ export const JpgToPdfTool: React.FC = () => {
         doc.addImage(img.dataUrl, 'JPEG', renderX, renderY, renderW, renderH);
       });
 
-      const pdfBlob = doc.output('blob');
+      const pdfBlob = doc.output('blob') as Blob;
       const blobUrl = URL.createObjectURL(pdfBlob);
       setPdfDataUri(blobUrl);
     } catch (err) {

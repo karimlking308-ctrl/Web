@@ -3,6 +3,8 @@ import { useApp } from '../context/AppContext';
 import { allToolsData, categoriesData } from '../data/toolsData';
 import { ToolRenderer } from '../components/tools/ToolRenderer';
 import { ToolIcon } from '../components/common/ToolIcon';
+import { AdNativeBanner } from '../components/ads/AdNativeBanner';
+import { AdBanner160x300 } from '../components/ads/AdBanner160x300';
 import {
   Heart,
   Share2,
@@ -179,6 +181,9 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({ toolSlug }) => {
         <ToolRenderer toolId={tool.id} />
       </section>
 
+      {/* Adsterra Native Banner */}
+      <AdNativeBanner />
+
       {/* Key Features */}
       {features && features.length > 0 && (
         <section className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8">
@@ -284,28 +289,31 @@ export const ToolDetailPage: React.FC<ToolDetailPageProps> = ({ toolSlug }) => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {relatedTools.map((rTool) => (
-              <div
-                key={rTool.id}
-                onClick={() => navigate(`/tool/${rTool.slug}`)}
-                className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 rounded-2xl transition-all cursor-pointer group shadow-xs flex flex-col justify-between"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                    <ToolIcon name={rTool.icon} className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-xs text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-                      {isAr ? rTool.nameAr : rTool.name}
-                    </h3>
-                    <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">
-                      {isAr ? rTool.descriptionAr : rTool.description}
-                    </p>
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1 w-full">
+              {relatedTools.map((rTool) => (
+                <div
+                  key={rTool.id}
+                  onClick={() => navigate(`/tool/${rTool.slug}`)}
+                  className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 rounded-2xl transition-all cursor-pointer group shadow-xs flex flex-col justify-between"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                      <ToolIcon name={rTool.icon} className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-xs text-slate-800 dark:text-slate-200 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+                        {isAr ? rTool.nameAr : rTool.name}
+                      </h3>
+                      <p className="text-[11px] text-slate-500 line-clamp-2 mt-0.5">
+                        {isAr ? rTool.descriptionAr : rTool.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <AdBanner160x300 className="shrink-0" />
           </div>
         </section>
       )}
