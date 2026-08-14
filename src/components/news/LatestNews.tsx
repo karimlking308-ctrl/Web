@@ -113,7 +113,7 @@ export const LatestNews: React.FC<LatestNewsProps> = ({
           <Layers className="w-8 h-8 text-slate-400 mb-1" />
           <h4 className="text-base font-bold text-slate-900">No wire stories in this category</h4>
           <p className="text-xs text-slate-500 max-w-md">
-            Wire feeds and automated RSS pipelines will begin streaming stories for this channel in Phase 2.
+            No active wire reports in this channel right now. Select another feed or click retry to refresh.
           </p>
         </div>
       )}

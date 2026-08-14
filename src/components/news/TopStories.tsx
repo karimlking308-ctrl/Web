@@ -48,8 +48,8 @@ export const TopStories: React.FC<{ className?: string }> = ({ className = '' })
             {featured ? (
               <ArticleCard article={featured} variant="hero" />
             ) : (
-              <div className="p-8 bg-[#0d131f] border border-slate-800 rounded-xl text-center text-slate-400">
-                Top story content will appear here in Phase 2
+              <div className="p-8 bg-[#0d131f] border border-slate-800 rounded-xl text-center text-slate-400 font-mono text-xs">
+                Syncing top stories from verified wire feeds...
               </div>
             )}
           </div>

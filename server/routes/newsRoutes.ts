@@ -18,13 +18,25 @@ newsRouter.get('/', async (req: Request, res: Response) => {
     const tag = req.query.tag as string | undefined;
     const ticker = req.query.ticker as string | undefined;
 
-    const data = await newsStorage.getAllArticles({
+    let data = await newsStorage.getAllArticles({
       category,
       limit,
       offset,
       tag,
       ticker,
     });
+
+    if (data.total === 0 && offset === 0) {
+      console.log('[API /api/news] No articles found on initial query. Ingesting feeds on demand...');
+      await ingestAllSources();
+      data = await newsStorage.getAllArticles({
+        category,
+        limit,
+        offset,
+        tag,
+        ticker,
+      });
+    }
 
     res.json(data);
   } catch (err: any) {
@@ -39,7 +51,12 @@ newsRouter.get('/', async (req: Request, res: Response) => {
  */
 newsRouter.get('/top', async (req: Request, res: Response) => {
   try {
-    const topStories = await newsStorage.getTopStories();
+    let topStories = await newsStorage.getTopStories();
+    if (!topStories.featured && topStories.supporting.length === 0) {
+      console.log('[API /api/news/top] No top stories found. Ingesting feeds on demand...');
+      await ingestAllSources();
+      topStories = await newsStorage.getTopStories();
+    }
     res.json(topStories);
   } catch (err: any) {
     console.error('[API /api/news/top] Error:', err);
@@ -53,7 +70,14 @@ newsRouter.get('/top', async (req: Request, res: Response) => {
  */
 newsRouter.get('/breaking', async (req: Request, res: Response) => {
   try {
-    const breaking = await newsStorage.getBreakingNews();
+    let breaking = await newsStorage.getBreakingNews();
+    if (!breaking) {
+      const stats = await newsStorage.getStats();
+      if (stats.totalArticles === 0) {
+        await ingestAllSources();
+        breaking = await newsStorage.getBreakingNews();
+      }
+    }
     res.json({ breaking });
   } catch (err: any) {
     console.error('[API /api/news/breaking] Error:', err);
@@ -68,7 +92,14 @@ newsRouter.get('/breaking', async (req: Request, res: Response) => {
 newsRouter.get('/trending', async (req: Request, res: Response) => {
   try {
     const limit = Math.min(20, Math.max(1, parseInt(req.query.limit as string) || 6));
-    const trending = await newsStorage.getTrendingStories(limit);
+    let trending = await newsStorage.getTrendingStories(limit);
+    if (trending.length === 0) {
+      const stats = await newsStorage.getStats();
+      if (stats.totalArticles === 0) {
+        await ingestAllSources();
+        trending = await newsStorage.getTrendingStories(limit);
+      }
+    }
     res.json({ trending });
   } catch (err: any) {
     console.error('[API /api/news/trending] Error:', err);

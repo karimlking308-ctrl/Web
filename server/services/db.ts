@@ -1,6 +1,7 @@
 import { createClient, Client } from '@libsql/client';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 
 let dbClient: Client | null = null;
 let initPromise: Promise<Client> | null = null;
@@ -33,14 +34,32 @@ export function getDbClient(): Client {
     });
   } else {
     // Local embedded SQL database file
-    const dataDir = path.join(process.cwd(), 'data');
-    if (!fs.existsSync(dataDir)) {
-      try {
+    let dataDir = path.join(process.cwd(), 'data');
+    let isWritable = false;
+
+    try {
+      if (!fs.existsSync(dataDir)) {
         fs.mkdirSync(dataDir, { recursive: true });
-      } catch (err) {
-        // Ignore if directory already exists
+      }
+      const testFile = path.join(dataDir, '.permcheck');
+      fs.writeFileSync(testFile, 'ok');
+      fs.unlinkSync(testFile);
+      isWritable = true;
+    } catch (e) {
+      isWritable = false;
+    }
+
+    if (!isWritable) {
+      dataDir = path.join(os.tmpdir(), 'pulse-data');
+      if (!fs.existsSync(dataDir)) {
+        try {
+          fs.mkdirSync(dataDir, { recursive: true });
+        } catch (e) {
+          // ignore
+        }
       }
     }
+
     const dbPath = path.join(dataDir, 'pulse.db');
     dbClient = createClient({
       url: `file:${dbPath}`,
