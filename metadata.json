@@ -1,6 +1,6 @@
 {
-  "name": "Sol Tools — 200+ Free Online Tools",
-  "description": "Free online tools for images, PDF, files, code, text, calculations and conversions. Fast, simple and free to use.",
+  "name": "SOL-PUMP Commerce OS",
+  "description": "An all-in-one AI-powered commerce platform that allows entrepreneurs and businesses to build stores, manage products, orders, and scale globally.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -1,57 +1,82 @@
-import React from 'react';
-import { AppProvider, useApp } from './context/AppContext';
-import { Layout } from './components/layout/Layout';
-import { HomePage } from './pages/HomePage';
-import { ToolDetailPage } from './pages/ToolDetailPage';
-import { CategoryPage } from './pages/CategoryPage';
-import { FavoritesPage } from './pages/FavoritesPage';
-import { SearchPage } from './pages/SearchPage';
-import { LegalPage } from './pages/LegalPage';
+import React, { useState } from 'react';
+import { CommerceProvider, useCommerce } from './context/CommerceContext';
+import { LandingPage } from './components/commerce/LandingPage';
+import { AuthModal } from './components/commerce/AuthModal';
+import { OnboardingWizard } from './components/commerce/OnboardingWizard';
+import { MerchantDashboard } from './components/commerce/MerchantDashboard';
+import { LayoutDashboard, Globe } from 'lucide-react';
 
-function AppContent() {
-  const { currentPath } = useApp();
+function CommerceOSApp() {
+  const { isAuthenticated, login, logout } = useCommerce();
+  const [viewOverride, setViewOverride] = useState<'marketing' | 'dashboard' | 'auto'>('auto');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
-  // Route Dispatcher
-  const renderRoute = () => {
-    // 1. Tool Route: /tool/:slug
-    if (currentPath.startsWith('/tool/')) {
-      const slug = currentPath.replace('/tool/', '').split('?')[0] || '';
-      return <ToolDetailPage toolSlug={slug} />;
-    }
-
-    // 2. Category Route: /category/:categoryId
-    if (currentPath.startsWith('/category/')) {
-      const catId = currentPath.replace('/category/', '').split('?')[0] || '';
-      return <CategoryPage categoryId={catId} />;
-    }
-
-    // 3. Favorites Route: /favorites
-    if (currentPath === '/favorites') {
-      return <FavoritesPage />;
-    }
-
-    // 4. Search Route: /search
-    if (currentPath.startsWith('/search')) {
-      return <SearchPage />;
-    }
-
-    // 5. Legal / Company Info Routes
-    if (currentPath === '/about') return <LegalPage pageType="about" />;
-    if (currentPath === '/contact') return <LegalPage pageType="contact" />;
-    if (currentPath === '/privacy') return <LegalPage pageType="privacy" />;
-    if (currentPath === '/terms') return <LegalPage pageType="terms" />;
-
-    // 6. Default Home Page Route (/)
-    return <HomePage />;
+  const handleOpenAuth = (mode: 'login' | 'signup') => {
+    setAuthMode(mode);
+    setAuthModalOpen(true);
   };
 
-  return <Layout>{renderRoute()}</Layout>;
+  const isShowingDashboard = viewOverride === 'dashboard' ? true : viewOverride === 'marketing' ? false : isAuthenticated;
+
+  return (
+    <div className="min-h-screen bg-[#070a12] text-slate-100 font-sans relative">
+      {/* Quick View Mode Switcher Pill */}
+      <div className="fixed bottom-4 right-4 z-50 flex items-center gap-1.5 p-1 rounded-2xl bg-[#0f1422]/95 backdrop-blur-md border border-slate-700/80 shadow-2xl text-[11px] font-bold">
+        <button
+          onClick={() => {
+            setViewOverride('marketing');
+          }}
+          className={`px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition cursor-pointer ${
+            !isShowingDashboard
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <Globe className="w-3.5 h-3.5" />
+          <span>Marketing Site</span>
+        </button>
+
+        <button
+          onClick={() => {
+            if (!isAuthenticated) {
+              login('admin@sol-pump.store', 'password123');
+            }
+            setViewOverride('dashboard');
+          }}
+          className={`px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition cursor-pointer ${
+            isShowingDashboard
+              ? 'bg-indigo-600 text-white shadow-md'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          <LayoutDashboard className="w-3.5 h-3.5" />
+          <span>Merchant OS</span>
+        </button>
+      </div>
+
+      {isShowingDashboard ? (
+        <>
+          <MerchantDashboard />
+          <OnboardingWizard />
+        </>
+      ) : (
+        <LandingPage />
+      )}
+
+      <AuthModal
+        isOpen={authModalOpen}
+        initialMode={authMode}
+        onClose={() => setAuthModalOpen(false)}
+      />
+    </div>
+  );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <CommerceProvider>
+      <CommerceOSApp />
+    </CommerceProvider>
   );
 }
