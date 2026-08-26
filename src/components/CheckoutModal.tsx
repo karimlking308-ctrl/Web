@@ -437,6 +437,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         await generateSolanaToolkitZIP(generatedLicense);
       } else if (type === 'all') {
         await generateMasterBundleZIP(generatedLicense);
+      } else {
+        await generateMasterBundleZIP(generatedLicense || 'SOLPUMP-MASTER-2026');
       }
 
       setDownloadToast(`Started downloading ${labels[type] || 'package'}`);

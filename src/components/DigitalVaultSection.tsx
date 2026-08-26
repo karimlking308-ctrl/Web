@@ -298,6 +298,9 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
       } else if (productId === 'master-bundle') {
         await generateMasterBundleZIP(activeLicenseKey || 'SOLPUMP-MASTER-2026');
         setSuccessMessage('Master All-In-One Digital Vault Archive (.ZIP) package download started!');
+      } else {
+        await generateMasterBundleZIP(activeLicenseKey || 'SOLPUMP-VAULT-2026');
+        setSuccessMessage('Digital Asset Archive (.ZIP) package download started!');
       }
 
       setTimeout(() => setSuccessMessage(null), 5000);

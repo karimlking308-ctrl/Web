@@ -80,6 +80,8 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = ({
         await generateAIContentBatchScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-AI-2026');
       } else if (script.id === 'script-rust-tx-dispatcher') {
         await generateRustTxDispatcherScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-RUST-2026');
+      } else {
+        await generateBulkSenderScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-2026');
       }
       setDownloadToast(`Started downloading ${script.title} (.ZIP)`);
       setTimeout(() => setDownloadToast(null), 4000);

@@ -8,13 +8,19 @@ export function triggerBlobDownload(blob: Blob, filename: string) {
   anchor.style.display = 'none';
   anchor.href = url;
   anchor.download = filename;
+  anchor.rel = 'noopener noreferrer';
   anchor.setAttribute('target', '_blank');
   document.body.appendChild(anchor);
 
   try {
     anchor.click();
   } catch (err) {
-    console.error('Blob click error:', err);
+    console.warn('Direct anchor click failed, attempting window.open fallback:', err);
+    try {
+      window.open(url, '_blank');
+    } catch (winErr) {
+      console.error('Window open fallback failed:', winErr);
+    }
   }
 
   // Defer cleanup to prevent premature revocation of the blob URL in sandboxed containers
@@ -23,7 +29,7 @@ export function triggerBlobDownload(blob: Blob, filename: string) {
       document.body.removeChild(anchor);
     }
     URL.revokeObjectURL(url);
-  }, 3000);
+  }, 10000);
 }
 
 // -------------------------------------------------------------
