@@ -12,7 +12,6 @@ import { AboutSection } from './components/AboutSection';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
-import { CheckoutModal, PlanItem } from './components/CheckoutModal';
 import { AffiliateModal } from './components/AffiliateModal';
 import { LegalModal, LegalDocType } from './components/LegalModal';
 import { ToolItem } from './data/toolsData';
@@ -26,15 +25,8 @@ export default function App() {
   const [legalDocType, setLegalDocType] = useState<LegalDocType>('privacy');
   const [selectedTool, setSelectedTool] = useState<ToolItem | null>(null);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all');
-  const [selectedPlan, setSelectedPlan] = useState<PlanItem | null>(null);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [verifiedLicenseKey, setVerifiedLicenseKey] = useState<string>('');
 
   useEffect(() => {
-    const saved = localStorage.getItem('solpump_vault_license');
-    if (saved) {
-      setVerifiedLicenseKey(saved);
-    }
     // Capture any incoming referral query parameter ?ref=...
     captureReferralFromUrl();
   }, []);
@@ -43,6 +35,11 @@ export default function App() {
     setActiveSection(sectionId);
     if (sectionId === 'home') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    if (sectionId === 'community') {
+      window.open('https://t.me/solpump_store', '_blank');
       return;
     }
 
@@ -55,16 +52,6 @@ export default function App() {
   const handleSelectCategoryFromGrid = (categoryType: 'ai' | 'dev' | 'web3') => {
     setSelectedCategoryFilter(categoryType);
     scrollToSection('tools');
-  };
-
-  const handleSelectPlan = (plan: PlanItem) => {
-    setSelectedPlan(plan);
-    setIsCheckoutOpen(true);
-  };
-
-  const handleSuccessUnlock = (newLicenseKey: string) => {
-    setVerifiedLicenseKey(newLicenseKey);
-    localStorage.setItem('solpump_vault_license', newLicenseKey);
   };
 
   return (
@@ -81,56 +68,31 @@ export default function App() {
       <main className="flex-1 flex flex-col">
         {/* Hero Section */}
         <Hero
-          onExploreTools={() => scrollToSection('utility-tools')}
+          onExploreTools={() => scrollToSection('vault')}
           onOpenStore={() => scrollToSection('store')}
         />
 
-        {/* Interactive AI & Web3 Tools Grid */}
+        {/* Dedicated Digital Products & Asset Vault Downloads (Free Community Access) */}
+        <DigitalVaultSection />
+
+        {/* Ready-to-Deploy Developer Scripts Vault (Python, Node.js, Rust - Free Open Source) */}
+        <DeveloperScriptsVault />
+
+        {/* Interactive AI & Web3 Micro Tools Grid */}
         <InteractiveToolsGrid
-          onOpenStore={() => scrollToSection('store')}
+          onOpenStore={() => scrollToSection('vault')}
           onOpenLogin={() => setIsLoginOpen(true)}
         />
 
         {/* Free Lead-Magnet Utility: Solana Gas & Fee Estimator */}
         <SolanaFeeEstimator
-          onOpenStore={() => scrollToSection('store')}
+          onOpenStore={() => scrollToSection('vault')}
           onOpenVault={() => scrollToSection('vault')}
         />
 
-        {/* Digital Store & Pricing Section */}
+        {/* Free Community Resource Hub & 3 Pillars Section */}
         <PricingSection
-          onSelectPlan={handleSelectPlan}
-          onExploreFree={() => scrollToSection('utility-tools')}
-        />
-
-        {/* Ready-to-Deploy Developer Scripts Vault (Python, Node.js, Rust) */}
-        <DeveloperScriptsVault
-          activeLicenseKey={verifiedLicenseKey}
-          onSelectPlan={(planId) => {
-            if (planId === 'lifetime') {
-              handleSelectPlan({
-                id: 'lifetime-elite',
-                name: 'Lifetime Elite Bundle',
-                price: '$49',
-                period: 'One-time payment',
-                description: 'Complete master vault ownership: all developer scripts, bot engines, n8n workflows, and lifetime updates.',
-              });
-            } else {
-              handleSelectPlan({
-                id: 'pro-creator',
-                name: 'Pro Creator',
-                price: '$9',
-                period: 'per month',
-                description: 'Full access to all developer scripts, bots, workflows, and codebases.',
-              });
-            }
-          }}
-        />
-
-        {/* Dedicated Digital Products & Asset Vault Downloads */}
-        <DigitalVaultSection
-          verifiedLicenseKey={verifiedLicenseKey}
-          onOpenCheckout={handleSelectPlan}
+          onExploreFree={() => scrollToSection('developer-scripts')}
         />
 
         {/* 3 Main Pillars / Features Grid */}
@@ -161,7 +123,7 @@ export default function App() {
       <AffiliateModal
         isOpen={isAffiliateModalOpen}
         onClose={() => setIsAffiliateModalOpen(false)}
-        userWalletAddress={verifiedLicenseKey ? 'WalletConnected' : null}
+        userWalletAddress={'FreeCommunityMember'}
         onConnectWallet={() => {
           setIsAffiliateModalOpen(false);
           setIsLoginOpen(true);
@@ -173,15 +135,6 @@ export default function App() {
         initialDoc={legalDocType}
       />
       <ToolDetailModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        plan={selectedPlan}
-        onClose={() => {
-          setIsCheckoutOpen(false);
-          setSelectedPlan(null);
-        }}
-        onSuccessUnlock={handleSuccessUnlock}
-      />
     </div>
   );
-}
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Shield, ArrowUp, Key, FolderArchive, ArrowUpRight, MessageSquare, ExternalLink } from 'lucide-react';
+import { Sparkles, ArrowUp, FolderArchive, Send, CheckCircle2 } from 'lucide-react';
 import { SOCIAL_LINKS, TelegramIcon, TwitterXIcon, FacebookIcon } from './SocialLinks';
 
 interface FooterProps {
@@ -25,17 +25,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <span className="text-base font-bold text-white tracking-tight">
                 SolPump Store
               </span>
-              <span className="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-slate-800 text-emerald-400 border border-slate-700">
-                sol-pump.store
+              <span className="text-[10px] font-mono-code px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">
+                100% FREE HUB
               </span>
             </div>
             <p className="text-xs text-slate-400 max-w-sm leading-relaxed">
-              Professional platform for AI utilities, curated prompt vaults, developer toolkits, and Web3 digital creator solutions.
+              Open access community hub for n8n AI workflows, developer scripts, prompt databases, and Web3 digital creator toolkits.
             </p>
             
             <div className="flex items-center gap-2 text-[11px] font-mono-code text-slate-400 pt-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>Solana Non-Custodial Settlement Node</span>
+              <span className="text-emerald-400 font-semibold">100% Free Open Access • No Paywalls</span>
             </div>
 
             {/* Official Social Badges */}
@@ -97,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                   onClick={() => onNavigate('utility-tools')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Featured Tools
+                  Featured Micro Tools
                 </button>
               </li>
               <li>
@@ -105,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                   onClick={() => onNavigate('gas-calculator')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer flex items-center justify-between w-full"
                 >
-                  <span>Solana Fee Estimator</span>
+                  <span>Fee Estimator</span>
                   <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">Free</span>
                 </button>
               </li>
@@ -114,8 +114,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                   onClick={() => onNavigate('developer-scripts')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer flex items-center justify-between w-full"
                 >
-                  <span>Developer Scripts Vault</span>
-                  <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/15 text-amber-300 font-mono-code">CLI &amp; Bots</span>
+                  <span>Scripts Vault</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">Open Source</span>
                 </button>
               </li>
               <li>
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                   onClick={() => onNavigate('store')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Digital Store &amp; Pricing
+                  Free Resource Hub
                 </button>
               </li>
               <li>
@@ -132,7 +132,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                   className="text-emerald-400 font-semibold hover:text-emerald-300 transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <FolderArchive className="w-3 h-3" />
-                  <span>Digital Vault &amp; Downloads</span>
+                  <span>Digital Vault (1-Click Downloads)</span>
                 </button>
               </li>
               <li>
@@ -146,10 +146,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
             </ul>
           </div>
 
-          {/* Categories */}
+          {/* Free Digital Assets */}
           <div>
             <h4 className="text-xs font-mono-code uppercase font-semibold text-slate-200 mb-3">
-              Digital Assets
+              Free Downloads
             </h4>
             <ul className="space-y-2">
               <li
@@ -157,150 +157,98 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
                 className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
               >
                 <span>Telegram Mini-App &amp; Clicker</span>
-                <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/15 text-amber-300 font-mono-code">Hot</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">FREE</span>
               </li>
               <li
                 onClick={() => onNavigate('vault')}
                 className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
               >
                 <span>WhatsApp AI Auto-Responder</span>
-                <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">AI</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">FREE</span>
               </li>
               <li
                 onClick={() => onNavigate('vault')}
                 className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
               >
-                <span>Solana Token Sniper &amp; Bot</span>
-                <span className="text-[9px] px-1 py-0.2 rounded bg-teal-500/15 text-teal-300 font-mono-code">MEV</span>
+                <span>Solana Token Sniper Bot</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">FREE</span>
               </li>
               <li
                 onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
+                className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
               >
-                n8n AI Agent Workflows (.JSON)
+                <span>n8n AI Workflows (.JSON)</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">FREE</span>
               </li>
               <li
                 onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
+                className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
               >
-                Solana Telegram Buy-Bot
-              </li>
-              <li
-                onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
-              >
-                1,500+ AI Prompt Vault (JSON/MD)
-              </li>
-              <li
-                onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
-              >
-                Master All-In-One Bundle (.ZIP)
+                <span>1,500+ AI Prompt Vaults</span>
+                <span className="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">FREE</span>
               </li>
             </ul>
           </div>
 
-          {/* Official Community Links Card */}
+          {/* Telegram Community Column */}
           <div className="space-y-3">
-            <h4 className="text-xs font-mono-code uppercase font-semibold text-slate-200 mb-3">
-              Community &amp; Socials
+            <h4 className="text-xs font-mono-code uppercase font-semibold text-slate-200">
+              Developer Community
             </h4>
-            <div className="space-y-2">
-              <a
-                href={SOCIAL_LINKS.telegram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-[#229ED9]/50 transition-all flex items-center justify-between group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-[#229ED9]/15 flex items-center justify-center text-[#229ED9]">
-                    <TelegramIcon className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-medium text-slate-200 group-hover:text-[#229ED9] transition-colors">
-                      Telegram Channel
-                    </div>
-                    <div className="text-[10px] font-mono-code text-slate-400">
-                      @solana_pump_platform
-                    </div>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#229ED9] transition-colors" />
-              </a>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              Join our official Telegram for daily open source code drops, script support, and custom n8n workflow requests.
+            </p>
+            
+            <a
+              href="https://t.me/solpump_store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2.5 px-3 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 font-mono-code text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer"
+            >
+              <Send className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Join Telegram Community</span>
+            </a>
 
-              <a
-                href={SOCIAL_LINKS.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-600 transition-all flex items-center justify-between group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-white">
-                    <TwitterXIcon className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-medium text-slate-200 group-hover:text-white transition-colors">
-                      Twitter / X
-                    </div>
-                    <div className="text-[10px] font-mono-code text-slate-400">
-                      @Platform_launch
-                    </div>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition-colors" />
-              </a>
-
-              <a
-                href={SOCIAL_LINKS.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800/90 border border-slate-800 hover:border-[#1877F2]/50 transition-all flex items-center justify-between group"
-              >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-lg bg-[#1877F2]/15 flex items-center justify-center text-[#1877F2]">
-                    <FacebookIcon className="w-3.5 h-3.5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-medium text-slate-200 group-hover:text-[#1877F2] transition-colors">
-                      Facebook Page
-                    </div>
-                    <div className="text-[10px] font-mono-code text-slate-400">
-                      Official Page &amp; Share
-                    </div>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-[#1877F2] transition-colors" />
-              </a>
+            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-[11px] space-y-1">
+              <div className="text-slate-300 font-semibold flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Commercial License</span>
+              </div>
+              <p className="text-[10px] text-slate-400">
+                All downloaded code bases &amp; scripts are free for personal &amp; commercial use.
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono-code text-slate-400">
-          <p>© {new Date().getFullYear()} SolPump Store (sol-pump.store). All rights reserved.</p>
-          <div className="flex items-center gap-4">
+        {/* Bottom Legal & Copyright Bar */}
+        <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="text-slate-400 text-[11px] text-center sm:text-left">
+            © {new Date().getFullYear()} SolPump Store (sol-pump.store). All rights reserved. 100% Free Open Access Resource Hub.
+          </div>
+
+          <div className="flex items-center gap-4 text-[11px] text-slate-400">
             <button
               onClick={() => onOpenLegal('privacy')}
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
-              id="footer-privacy-btn"
+              className="hover:text-slate-200 transition-colors cursor-pointer"
             >
               Privacy Policy
             </button>
-            <span>·</span>
+            <span>•</span>
             <button
               onClick={() => onOpenLegal('terms')}
-              className="hover:text-emerald-400 transition-colors cursor-pointer"
-              id="footer-terms-btn"
+              className="hover:text-slate-200 transition-colors cursor-pointer"
             >
               Terms of Service
             </button>
-            <span>·</span>
+            <span>•</span>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors cursor-pointer"
+              title="Scroll to top"
+              aria-label="Scroll to top"
             >
-              <span>Back to Top</span>
-              <ArrowUp className="w-3 h-3" />
+              <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
@@ -308,4 +256,3 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
     </footer>
   );
 };
-
