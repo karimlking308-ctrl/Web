@@ -35,3 +35,27 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
 }
+
+/* Monetag In-Page Push & Floating Ad Banners Positioning Override */
+/* Prevent top header overlay & reposition push notifications cleanly to bottom-right */
+body > div[style*="position: fixed"]:not(#root),
+body > div[style*="position:fixed"]:not(#root),
+div[class*="ipp"]:not(#root),
+div[class*="push"]:not(#root),
+div[id*="container_"]:not(#root),
+div[id*="11659699"]:not(#root),
+div[id*="11659815"]:not(#root) {
+  top: auto !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  z-index: 40 !important;
+  max-width: calc(100vw - 32px) !important;
+  margin: 0 !important;
+}
+
+/* Ensure navbar header stays strictly above any floating ad widgets */
+header {
+  z-index: 50 !important;
+}
+
