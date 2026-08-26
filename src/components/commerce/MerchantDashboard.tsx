@@ -42,6 +42,9 @@ import {
 import { Logo } from '../common/Logo';
 import { StoreBuilder } from './StoreBuilder';
 import { AiAssistantModal } from './AiAssistantModal';
+import { ProductEditor } from './ProductEditor';
+import { ProductPreviewModal } from './ProductPreviewModal';
+import { ProductsCatalog } from './ProductsCatalog';
 import { Product, Order, DiscountCode } from '../../types/commerce';
 
 export const MerchantDashboard: React.FC = () => {
@@ -62,7 +65,11 @@ export const MerchantDashboard: React.FC = () => {
     updateOrderStatus,
     addDiscount,
     aiAssistantOpen,
-    setAiAssistantOpen
+    setAiAssistantOpen,
+    isCreatingProduct,
+    startCreatingProduct,
+    previewProduct,
+    closeProductPreview
   } = useCommerce();
 
   // Modals & local state
@@ -90,6 +97,18 @@ export const MerchantDashboard: React.FC = () => {
   const [newDiscType, setNewDiscType] = useState<'percentage' | 'fixed' | 'shipping'>('percentage');
   const [newDiscValue, setNewDiscValue] = useState('20');
   const [newDiscMin, setNewDiscMin] = useState('50');
+
+  // If user is creating/editing a product, render the full-screen Product Editor
+  if (isCreatingProduct) {
+    return (
+      <>
+        <ProductEditor />
+        {previewProduct && (
+          <ProductPreviewModal product={previewProduct} onClose={closeProductPreview} />
+        )}
+      </>
+    );
+  }
 
   const handleCreateProduct = (e: React.FormEvent) => {
     e.preventDefault();
@@ -721,7 +740,7 @@ export const MerchantDashboard: React.FC = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
                   {/* 1. Add Product */}
                   <button
-                    onClick={() => setShowAddProductModal(true)}
+                    onClick={startCreatingProduct}
                     className="p-4 rounded-2xl bg-white border border-slate-200/80 hover:border-indigo-400 hover:shadow-md transition text-left cursor-pointer group flex flex-col justify-between h-28"
                   >
                     <div className="w-8 h-8 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition">
@@ -790,158 +809,10 @@ export const MerchantDashboard: React.FC = () => {
           )}
 
           {/* ========================================================= */}
-          {/* B. PRODUCTS TAB (Matching reference products view) */}
+          {/* B. PRODUCTS TAB (Unified High-Density Products Catalog) */}
           {/* ========================================================= */}
           {activeTab === 'products' && (
-            <div className="space-y-6">
-              {/* Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <h1 className="text-2xl font-black text-slate-950 tracking-tight">Products</h1>
-                  <p className="text-xs text-slate-500 mt-0.5">Manage your catalog, stock levels, variants, and pricing</p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <button className="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                    <Download className="w-3.5 h-3.5" /> Export
-                  </button>
-                  <button className="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-bold text-slate-700 flex items-center gap-1.5 transition cursor-pointer">
-                    <Upload className="w-3.5 h-3.5" /> Import
-                  </button>
-                  <button
-                    onClick={() => setShowAddProductModal(true)}
-                    className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md shadow-indigo-600/25 flex items-center gap-1.5 transition cursor-pointer"
-                  >
-                    <Plus className="w-4 h-4" /> Add product
-                  </button>
-                </div>
-              </div>
-
-              {/* Status Tabs */}
-              <div className="flex items-center gap-2 border-b border-slate-200 text-xs font-bold">
-                {[
-                  { key: 'all', label: 'All' },
-                  { key: 'active', label: 'Active' },
-                  { key: 'draft', label: 'Draft' },
-                  { key: 'archived', label: 'Archived' }
-                ].map((t) => (
-                  <button
-                    key={t.key}
-                    onClick={() => setProductFilter(t.key as any)}
-                    className={`py-3 px-4 border-b-2 transition cursor-pointer ${
-                      productFilter === t.key
-                        ? 'border-indigo-600 text-indigo-600 font-extrabold'
-                        : 'border-transparent text-slate-500 hover:text-slate-900'
-                    }`}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Search & Filters Bar */}
-              <div className="bg-white p-3 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center gap-3">
-                <div className="relative flex-1 w-full">
-                  <Search className="absolute left-3.5 top-2.5 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={productSearch}
-                    onChange={(e) => setProductSearch(e.target.value)}
-                    placeholder="Search products by title or SKU..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2 pl-10 pr-4 text-xs text-slate-900 focus:outline-none focus:border-indigo-500"
-                  />
-                </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto">
-                  <button className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 flex items-center gap-1.5 cursor-pointer">
-                    <Filter className="w-3.5 h-3.5" /> Collection ▾
-                  </button>
-                  <button className="px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 flex items-center gap-1.5 cursor-pointer">
-                    More filters ▾
-                  </button>
-                </div>
-              </div>
-
-              {/* Products Table */}
-              <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
-                      <tr>
-                        <th className="py-3.5 px-4 w-12 text-center">
-                          <input type="checkbox" className="rounded accent-indigo-600" />
-                        </th>
-                        <th className="py-3.5 px-4">Product</th>
-                        <th className="py-3.5 px-4">Status</th>
-                        <th className="py-3.5 px-4">Inventory</th>
-                        <th className="py-3.5 px-4">Price</th>
-                        <th className="py-3.5 px-4">Sales</th>
-                        <th className="py-3.5 px-4 text-right">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {filteredProducts.map((p) => (
-                        <tr key={p.id} className="hover:bg-slate-50/60 transition group">
-                          <td className="py-3.5 px-4 text-center">
-                            <input type="checkbox" className="rounded accent-indigo-600" />
-                          </td>
-                          <td className="py-3.5 px-4">
-                            <div className="flex items-center gap-3">
-                              <img src={p.image} alt={p.title} className="w-10 h-10 rounded-xl object-cover border border-slate-200 shrink-0" />
-                              <div>
-                                <div className="font-bold text-slate-900">{p.title}</div>
-                                <div className="text-[11px] text-slate-400 font-mono">SKU: {p.sku}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="py-3.5 px-4">
-                            <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${
-                              p.status === 'active'
-                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
-                                : 'bg-slate-100 text-slate-600'
-                            }`}>
-                              {p.status === 'active' ? 'Active' : 'Draft'}
-                            </span>
-                          </td>
-                          <td className="py-3.5 px-4 font-semibold">
-                            {p.inventory > 0 ? (
-                              <span className="text-slate-700">{p.inventory} in stock</span>
-                            ) : (
-                              <span className="text-rose-600 font-bold">0 in stock</span>
-                            )}
-                          </td>
-                          <td className="py-3.5 px-4 font-black text-slate-950">
-                            ${p.price.toFixed(2)}
-                          </td>
-                          <td className="py-3.5 px-4 text-slate-600 font-medium">
-                            {p.salesCount || 0}
-                          </td>
-                          <td className="py-3.5 px-4 text-right">
-                            <button
-                              onClick={() => deleteProduct(p.id)}
-                              className="text-slate-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-slate-100 transition cursor-pointer"
-                              title="Delete product"
-                            >
-                              <MoreVertical className="w-4 h-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Pagination */}
-                <div className="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500 font-semibold">
-                  <span>Showing {filteredProducts.length} of {products.length} products</span>
-                  <div className="flex items-center gap-1">
-                    <button className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-40">&lt; Previous</button>
-                    <button className="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold">1</button>
-                    <button className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">2</button>
-                    <button className="px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50">Next &gt;</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ProductsCatalog />
           )}
 
           {/* ========================================================= */}
