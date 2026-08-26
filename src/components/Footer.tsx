@@ -60,6 +60,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('gas-calculator')}
+                  className="hover:text-emerald-400 transition-colors cursor-pointer flex items-center justify-between w-full"
+                >
+                  <span>Solana Fee Estimator</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">Free</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('store')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >

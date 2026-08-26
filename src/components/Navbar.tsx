@@ -33,6 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
   const navLinks = [
     { id: 'home', label: 'Home' },
     { id: 'utility-tools', label: 'Tools' },
+    { id: 'gas-calculator', label: 'Fee Estimator' },
     { id: 'store', label: 'Digital Store' },
     { id: 'vault', label: 'Digital Vault', isVault: true },
     { id: 'about', label: 'About' },

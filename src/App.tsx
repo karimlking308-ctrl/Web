@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { InteractiveToolsGrid } from './components/InteractiveToolsGrid';
+import { SolanaFeeEstimator } from './components/SolanaFeeEstimator';
 import { PricingSection } from './components/PricingSection';
 import { DigitalVaultSection } from './components/DigitalVaultSection';
 import { FeatureGrid } from './components/FeatureGrid';
@@ -78,6 +79,12 @@ export default function App() {
         <InteractiveToolsGrid
           onOpenStore={() => scrollToSection('store')}
           onOpenLogin={() => setIsLoginOpen(true)}
+        />
+
+        {/* Free Lead-Magnet Utility: Solana Gas & Fee Estimator */}
+        <SolanaFeeEstimator
+          onOpenStore={() => scrollToSection('store')}
+          onOpenVault={() => scrollToSection('vault')}
         />
 
         {/* Digital Store & Pricing Section */}
