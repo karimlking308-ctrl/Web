@@ -36,6 +36,10 @@ import {
   generateTelegramMiniAppZIP,
   generateWhatsAppAILeadGenZIP,
   generateSolanaSniperBotZIP,
+  generateBulkSenderScriptZIP,
+  generateTelegramBroadcastScriptZIP,
+  generateAIContentBatchScriptZIP,
+  generateRustTxDispatcherScriptZIP,
   generateN8nWorkflowsJSON,
   generateN8nWorkflowsZIP,
   generateWebhookBoilerplateZIP,
@@ -189,6 +193,14 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
         }
       } else if (productId === 'product-react-boilerplate') {
         await generateReactBoilerplateZIP(activeLicenseKey || 'SOLPUMP-DEV-2026');
+      } else if (productId === 'product-solana-bulk-sender') {
+        await generateBulkSenderScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-BULK-2026');
+      } else if (productId === 'product-telegram-broadcast-bot') {
+        await generateTelegramBroadcastScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-TG-2026');
+      } else if (productId === 'product-ai-content-batch-generator') {
+        await generateAIContentBatchScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-AI-2026');
+      } else if (productId === 'product-rust-tx-dispatcher') {
+        await generateRustTxDispatcherScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-RUST-2026');
       } else if (productId === 'product-solana-toolkit') {
         await generateSolanaToolkitZIP(activeLicenseKey || 'SOLPUMP-ANCHOR-2026');
       } else if (productId === 'master-bundle') {

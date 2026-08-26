@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { InteractiveToolsGrid } from './components/InteractiveToolsGrid';
 import { SolanaFeeEstimator } from './components/SolanaFeeEstimator';
 import { PricingSection } from './components/PricingSection';
+import { DeveloperScriptsVault } from './components/DeveloperScriptsVault';
 import { DigitalVaultSection } from './components/DigitalVaultSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { ToolCatalog } from './components/ToolCatalog';
@@ -91,6 +92,30 @@ export default function App() {
         <PricingSection
           onSelectPlan={handleSelectPlan}
           onExploreFree={() => scrollToSection('utility-tools')}
+        />
+
+        {/* Ready-to-Deploy Developer Scripts Vault (Python, Node.js, Rust) */}
+        <DeveloperScriptsVault
+          activeLicenseKey={verifiedLicenseKey}
+          onSelectPlan={(planId) => {
+            if (planId === 'lifetime') {
+              handleSelectPlan({
+                id: 'lifetime-elite',
+                name: 'Lifetime Elite Bundle',
+                price: '$49',
+                period: 'One-time payment',
+                description: 'Complete master vault ownership: all developer scripts, bot engines, n8n workflows, and lifetime updates.',
+              });
+            } else {
+              handleSelectPlan({
+                id: 'pro-creator',
+                name: 'Pro Creator',
+                price: '$9',
+                period: 'per month',
+                description: 'Full access to all developer scripts, bots, workflows, and codebases.',
+              });
+            }
+          }}
         />
 
         {/* Dedicated Digital Products & Asset Vault Downloads */}

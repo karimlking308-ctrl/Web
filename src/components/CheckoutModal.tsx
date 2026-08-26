@@ -23,6 +23,7 @@ import {
   Workflow,
   Bot,
   Webhook,
+  Terminal,
 } from 'lucide-react';
 import {
   PLATFORM_RECEIVING_WALLET,
@@ -36,6 +37,10 @@ import {
   generateTelegramMiniAppZIP,
   generateWhatsAppAILeadGenZIP,
   generateSolanaSniperBotZIP,
+  generateBulkSenderScriptZIP,
+  generateTelegramBroadcastScriptZIP,
+  generateAIContentBatchScriptZIP,
+  generateRustTxDispatcherScriptZIP,
   generateN8nWorkflowsJSON,
   generateN8nWorkflowsZIP,
   generateWebhookBoilerplateZIP,
@@ -281,11 +286,19 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   // Asset downloads from success modal
   const handleTriggerDownload = async (
-    type: 'telegram-zip' | 'whatsapp-zip' | 'sniper-zip' | 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
+    type: 'script-bulk-zip' | 'script-tg-zip' | 'script-ai-zip' | 'script-rust-zip' | 'telegram-zip' | 'whatsapp-zip' | 'sniper-zip' | 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
   ) => {
     setActiveDownload(type);
     try {
-      if (type === 'telegram-zip') {
+      if (type === 'script-bulk-zip') {
+        await generateBulkSenderScriptZIP(generatedLicense || 'SOLPUMP-SCRIPT-BULK-2026');
+      } else if (type === 'script-tg-zip') {
+        await generateTelegramBroadcastScriptZIP(generatedLicense || 'SOLPUMP-SCRIPT-TG-2026');
+      } else if (type === 'script-ai-zip') {
+        await generateAIContentBatchScriptZIP(generatedLicense || 'SOLPUMP-SCRIPT-AI-2026');
+      } else if (type === 'script-rust-zip') {
+        await generateRustTxDispatcherScriptZIP(generatedLicense || 'SOLPUMP-SCRIPT-RUST-2026');
+      } else if (type === 'telegram-zip') {
         await generateTelegramMiniAppZIP(generatedLicense || 'SOLPUMP-TMA-2026');
       } else if (type === 'whatsapp-zip') {
         await generateWhatsAppAILeadGenZIP(generatedLicense || 'SOLPUMP-WHATSAPP-2026');
@@ -440,6 +453,69 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </h4>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {/* Script: Bulk Token Sender */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('script-bulk-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">
+                      Solana Bulk Sender
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-mono-code font-bold">
+                      Python CLI
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Terminal className="w-3 h-3 text-amber-400" />
+                    <span>Airdrop Engine (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Script: Telegram Broadcast Bot */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('script-tg-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      Telegram Broadcaster
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono-code font-bold">
+                      Node.js
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Bot className="w-3 h-3 text-emerald-400" />
+                    <span>Anti-Flood Bot (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Script: AI Content Generator */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('script-ai-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">
+                      AI Batch Content
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-mono-code font-bold">
+                      Python AI
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-cyan-400" />
+                    <span>Markdown Bot (.ZIP)</span>
+                  </span>
+                </button>
+
                 {/* Product: Telegram Mini-App */}
                 <button
                   type="button"
