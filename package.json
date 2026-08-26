@@ -25,8 +25,7 @@
     "pdfjs-dist": "^6.2.108",
     "qrcode": "^1.5.4",
     "react": "^19.0.1",
-    "react-dom": "^19.0.1",
-    "stripe": "^22.5.0"
+    "react-dom": "^19.0.1"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

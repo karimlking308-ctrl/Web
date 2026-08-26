@@ -770,16 +770,18 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   };
 
-  // 5. Card Checkout & Stripe Payment Functions
-  const createCheckoutPaymentIntent = async (data: {
+  // 5. Cash on Delivery (COD) Checkout Function
+  const placeCodOrder = async (data: {
     items: Array<{ productId: string; variantId?: string; quantity: number }>;
     customerEmail: string;
     customerName: string;
+    customerPhone: string;
     shippingAddress?: any;
     discountCode?: string;
-  }): Promise<CreatePaymentIntentResponse> => {
+    notes?: string;
+  }): Promise<any> => {
     const storeId = store?.id || 'store-1';
-    const res = await fetch('/api/checkout/create-payment-intent', {
+    const res = await fetch('/api/checkout/place-cod-order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -789,24 +791,20 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
 
     const json = await res.json();
-    return json;
-  };
-
-  const verifyCheckoutPayment = async (paymentIntentId: string, orderId: string): Promise<{ success: boolean; paid: boolean; order?: any }> => {
-    const storeId = store?.id || 'store-1';
-    const res = await fetch('/api/checkout/verify-payment', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Store-Id': storeId
-      },
-      body: JSON.stringify({ paymentIntentId, orderId })
-    });
-
-    const json = await res.json();
-    if (json.success && json.order) {
-      // Sync local orders list
-      setOrders(prev => [json.order, ...prev.filter(o => o.id !== orderId)]);
+    if (json.success) {
+      try {
+        const ordRes = await fetch('/api/orders', {
+          headers: { 'X-Store-Id': storeId }
+        });
+        if (ordRes.ok) {
+          const ordJson = await ordRes.json();
+          if (ordJson.success && Array.isArray(ordJson.data)) {
+            setOrders(ordJson.data);
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
     }
     return json;
   };
@@ -1158,8 +1156,7 @@ export const CommerceProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         bulkDeleteProducts,
         importProductsFromCsv,
         exportProductsToCsv,
-        createCheckoutPaymentIntent,
-        verifyCheckoutPayment,
+        placeCodOrder,
         generateAiProductData,
         generateAiSeoData,
         updateOrderStatus,

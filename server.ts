@@ -3,7 +3,6 @@ import path from 'path';
 import crypto from 'crypto';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
-import Stripe from 'stripe';
 
 // User & Store interfaces for multi-tenant authentication
 interface UserAccount {
@@ -521,21 +520,6 @@ function getGemini(): GoogleGenAI | null {
     geminiClient = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
   }
   return geminiClient;
-}
-
-// Lazy Stripe client helper
-let stripeClient: Stripe | null = null;
-function getStripe(): Stripe | null {
-  if (!stripeClient && process.env.STRIPE_SECRET_KEY) {
-    try {
-      stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY, {
-        apiVersion: '2023-10-16' as any
-      });
-    } catch (err) {
-      console.error('[Stripe] Failed to initialize Stripe client:', err);
-    }
-  }
-  return stripeClient;
 }
 
 // Tenant verification helper (IDOR protection)
@@ -1233,17 +1217,16 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
   });
 
   // =========================================================================
-  // CHECKOUT, STRIPE PAYMENT & ORDERS APIS
+  // =========================================================================
+  // CASH ON DELIVERY (COD) CHECKOUT & ORDER MANAGEMENT APIS
   // =========================================================================
 
-  // 1. GET /api/checkout/config - Public payment gateway config
+  // 1. GET /api/checkout/config - Public checkout config (COD Mode)
   app.get('/api/checkout/config', (_req, res) => {
-    const isConfigured = Boolean(process.env.STRIPE_SECRET_KEY);
-    const pubKey = process.env.STRIPE_PUBLISHABLE_KEY || process.env.VITE_STRIPE_PUBLISHABLE_KEY || '';
     res.json({
       success: true,
-      configured: isConfigured,
-      publishableKey: pubKey,
+      configured: true,
+      paymentMethod: 'Cash on Delivery',
       currency: 'USD',
       domain: 'sol-pump.store'
     });
@@ -1273,11 +1256,11 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
     res.json({ success: true, data: order });
   });
 
-  // 4. POST /api/checkout/create-payment-intent - Create PaymentIntent with SERVER-SIDE PRICE CALCULATION
-  app.post('/api/checkout/create-payment-intent', async (req, res) => {
+  // 4. POST /api/checkout/place-cod-order - Place Cash on Delivery order with server-side validation & fraud protection
+  app.post('/api/checkout/place-cod-order', async (req, res) => {
     try {
       const storeId = getTenantStoreId(req);
-      const { items, customerEmail, customerName, shippingAddress, discountCode } = req.body;
+      const { items, customerEmail, customerName, customerPhone, shippingAddress, discountCode, notes } = req.body;
 
       if (!items || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ success: false, error: 'No items provided for checkout' });
@@ -1285,6 +1268,10 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
 
       if (!customerEmail || !customerEmail.includes('@')) {
         return res.status(400).json({ success: false, error: 'Valid customer email is required' });
+      }
+
+      if (!customerPhone || typeof customerPhone !== 'string' || customerPhone.trim().length < 7) {
+        return res.status(400).json({ success: false, error: 'Valid customer phone number is required for Cash on Delivery confirmation' });
       }
 
       const storeProducts = productsStore[storeId] || productsStore['store-1'] || [];
@@ -1336,55 +1323,26 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
       const shipping = calculatedSubtotal >= 100 ? 0 : 10.00;
       const tax = 0;
       const calculatedTotal = Math.max(1, calculatedSubtotal - discountAmount + shipping + tax);
-      const totalInCents = Math.round(calculatedTotal * 100);
 
       const orderNumber = `#${1000 + (ordersStore[storeId]?.length || 0) + 1}`;
       const orderId = `ord-${Date.now()}`;
 
-      // Initialize Stripe if configured
-      const stripe = getStripe();
-      let clientSecret: string | null = null;
-      let stripePaymentIntentId: string | null = null;
+      // Fraud & Duplicate check
+      const existingOrders = ordersStore[storeId] || [];
+      const recentDuplicate = existingOrders.find(
+        o => o.customerEmail === customerEmail && o.total === calculatedTotal && (Date.now() - new Date(o.createdAt).getTime() < 60000)
+      );
 
-      if (stripe) {
-        try {
-          const paymentIntent = await stripe.paymentIntents.create({
-            amount: totalInCents,
-            currency: 'usd',
-            receipt_email: customerEmail,
-            metadata: {
-              storeId,
-              orderId,
-              orderNumber,
-              customerEmail,
-              customerName: customerName || 'Valued Customer'
-            },
-            automatic_payment_methods: {
-              enabled: true
-            }
-          });
-
-          clientSecret = paymentIntent.client_secret;
-          stripePaymentIntentId = paymentIntent.id;
-        } catch (stripeErr: any) {
-          console.error('[Stripe] Failed to create PaymentIntent:', stripeErr);
-          return res.status(502).json({
-            success: false,
-            error: 'STRIPE_ERROR',
-            message: stripeErr.message || 'Stripe API payment creation failed'
-          });
-        }
-      } else {
-        console.warn('[Stripe] STRIPE_SECRET_KEY is not configured in environment.');
-      }
+      const isSuspicious = Boolean(recentDuplicate);
 
       // Record Order in server database
-      const newOrder: ServerOrder = {
+      const newOrder: any = {
         id: orderId,
         orderNumber,
         storeId,
         customerName: customerName || 'Valued Customer',
         customerEmail,
+        customerPhone: customerPhone.trim(),
         shippingAddress: shippingAddress || {
           street: '123 Commerce Way',
           city: 'San Francisco',
@@ -1399,11 +1357,10 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
         discount: discountAmount,
         total: calculatedTotal,
         currency: 'USD',
-        status: 'pending',
-        paymentStatus: stripe ? 'pending' : 'pending',
-        paymentMethod: 'card',
-        stripePaymentIntentId: stripePaymentIntentId || undefined,
-        stripeClientSecret: clientSecret || undefined,
+        status: isSuspicious ? 'pending' : 'pending',
+        paymentStatus: 'unpaid',
+        paymentMethod: 'Cash on Delivery (COD)',
+        merchantNotes: notes || (isSuspicious ? 'Flagged: Potential duplicate order within 60s' : 'New Cash on Delivery order awaiting merchant confirmation'),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
@@ -1413,11 +1370,19 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
       }
       ordersStore[storeId].unshift(newOrder);
 
-      return res.json({
+      // Decrement inventory & increment sales count
+      for (const item of verifiedItems) {
+        const product = storeProducts.find(p => p.id === item.productId);
+        if (product) {
+          product.inventory = Math.max(0, product.inventory - item.quantity);
+          product.salesCount = (product.salesCount || 0) + item.quantity;
+        }
+      }
+
+      console.log(`[COD Checkout] Placed Order ${orderNumber} for ${customerEmail} ($${calculatedTotal})`);
+
+      return res.status(201).json({
         success: true,
-        configured: Boolean(stripe),
-        clientSecret,
-        paymentIntentId: stripePaymentIntentId,
         orderId,
         orderNumber,
         amount: calculatedTotal,
@@ -1425,134 +1390,69 @@ Return ONLY valid JSON matching this exact structure (no code fences, no extra c
         shipping,
         discount: discountAmount,
         currency: 'USD',
-        publishableKey: process.env.STRIPE_PUBLISHABLE_KEY || process.env.VITE_STRIPE_PUBLISHABLE_KEY || ''
+        message: 'Order placed successfully with Cash on Delivery'
       });
     } catch (err: any) {
-      console.error('[Checkout] Error creating payment intent:', err);
+      console.error('[COD Checkout] Error placing order:', err);
       return res.status(500).json({ success: false, error: err.message || 'Internal checkout error' });
     }
   });
 
-  // 5. POST /api/checkout/verify-payment - Verify PaymentIntent & finalize order
-  app.post('/api/checkout/verify-payment', async (req, res) => {
-    try {
-      const storeId = getTenantStoreId(req);
-      const { paymentIntentId, orderId } = req.body;
+  // 5. POST /api/orders/:id/status - Update order status & payment status
+  app.post('/api/orders/:id/status', (req, res) => {
+    const storeId = getTenantStoreId(req);
+    const { id } = req.params;
+    const { status, paymentStatus, merchantNotes } = req.body;
 
-      if (!orderId) {
-        return res.status(400).json({ success: false, error: 'Order ID is required' });
-      }
+    const orders = ordersStore[storeId] || [];
+    const order = orders.find(o => o.id === id || o.orderNumber === id);
 
-      const orders = ordersStore[storeId] || [];
-      const order = orders.find(o => o.id === orderId);
-
-      if (!order) {
-        return res.status(404).json({ success: false, error: 'Order not found' });
-      }
-
-      const stripe = getStripe();
-      if (stripe && paymentIntentId) {
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        if (paymentIntent.status === 'succeeded') {
-          order.paymentStatus = 'paid';
-          order.status = 'processing';
-          order.updatedAt = new Date().toISOString();
-
-          // Decrement product inventory
-          const storeProducts = productsStore[storeId] || [];
-          for (const item of order.items) {
-            const product = storeProducts.find(p => p.id === item.productId);
-            if (product) {
-              product.inventory = Math.max(0, product.inventory - item.quantity);
-              product.salesCount = (product.salesCount || 0) + item.quantity;
-            }
-          }
-
-          console.log(`[Stripe] Payment verified for Order ${order.orderNumber} ($${order.total})`);
-          return res.json({ success: true, paid: true, order });
-        } else {
-          return res.json({ success: false, paid: false, status: paymentIntent.status });
-        }
-      }
-
-      // If simulated / test confirmation requested
-      order.paymentStatus = 'paid';
-      order.status = 'processing';
-      order.updatedAt = new Date().toISOString();
-
-      return res.json({ success: true, paid: true, order });
-    } catch (err: any) {
-      console.error('[Payment Verification] Error:', err);
-      return res.status(500).json({ success: false, error: err.message || 'Verification error' });
+    if (!order) {
+      return res.status(404).json({ success: false, error: 'Order not found' });
     }
+
+    if (status && ['pending', 'confirmed', 'preparing', 'shipped', 'out_for_delivery', 'delivered', 'cancelled', 'returned'].includes(status)) {
+      order.status = status;
+    }
+
+    if (paymentStatus && ['unpaid', 'cod', 'paid', 'failed', 'refunded'].includes(paymentStatus)) {
+      order.paymentStatus = paymentStatus;
+    }
+
+    if (merchantNotes !== undefined) {
+      order.merchantNotes = merchantNotes;
+    }
+
+    order.updatedAt = new Date().toISOString();
+
+    res.json({
+      success: true,
+      message: 'Order updated successfully',
+      data: order
+    });
   });
 
-  // 6. POST /api/webhooks/stripe - Stripe Webhook with Signature Verification & Idempotency
-  app.post('/api/webhooks/stripe', async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    const stripe = getStripe();
+  // 6. POST /api/orders/:id/notes - Add merchant internal notes
+  app.post('/api/orders/:id/notes', (req, res) => {
+    const storeId = getTenantStoreId(req);
+    const { id } = req.params;
+    const { notes } = req.body;
 
-    let event: Stripe.Event;
+    const orders = ordersStore[storeId] || [];
+    const order = orders.find(o => o.id === id || o.orderNumber === id);
 
-    if (stripe && webhookSecret && sig) {
-      try {
-        const rawBody = (req as any).rawBody || req.body;
-        event = stripe.webhooks.constructEvent(rawBody, sig as string, webhookSecret);
-      } catch (err: any) {
-        console.error(`[Stripe Webhook] Signature verification failed:`, err.message);
-        return res.status(400).send(`Webhook Error: ${err.message}`);
-      }
-    } else {
-      event = req.body;
+    if (!order) {
+      return res.status(404).json({ success: false, error: 'Order not found' });
     }
 
-    if (!event || !event.id) {
-      return res.status(400).json({ error: 'Invalid event payload' });
-    }
+    order.merchantNotes = notes || '';
+    order.updatedAt = new Date().toISOString();
 
-    // Idempotency check
-    if (processedWebhookEvents.has(event.id)) {
-      console.log(`[Stripe Webhook] Duplicate event ${event.id} skipped.`);
-      return res.json({ received: true, duplicate: true });
-    }
-    processedWebhookEvents.add(event.id);
-
-    console.log(`[Stripe Webhook] Received event: ${event.type} (${event.id})`);
-
-    switch (event.type) {
-      case 'payment_intent.succeeded': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const storeId = paymentIntent.metadata?.storeId || 'store-1';
-        const orderId = paymentIntent.metadata?.orderId;
-        const orders = ordersStore[storeId] || [];
-        const order = orders.find(o => o.id === orderId || o.stripePaymentIntentId === paymentIntent.id);
-        if (order) {
-          order.paymentStatus = 'paid';
-          order.status = 'processing';
-          order.updatedAt = new Date().toISOString();
-          console.log(`[Stripe Webhook] Order ${order.orderNumber} marked as PAID via webhook`);
-        }
-        break;
-      }
-      case 'payment_intent.payment_failed': {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
-        const storeId = paymentIntent.metadata?.storeId || 'store-1';
-        const orderId = paymentIntent.metadata?.orderId;
-        const orders = ordersStore[storeId] || [];
-        const order = orders.find(o => o.id === orderId || o.stripePaymentIntentId === paymentIntent.id);
-        if (order) {
-          order.paymentStatus = 'failed';
-          order.updatedAt = new Date().toISOString();
-          console.log(`[Stripe Webhook] Order ${order.orderNumber} marked as FAILED via webhook`);
-        }
-        break;
-      }
-      default:
-        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
-    }
-
-    res.json({ received: true });
+    res.json({
+      success: true,
+      message: 'Notes updated successfully',
+      data: order
+    });
   });
 
   // Newsletter endpoint
