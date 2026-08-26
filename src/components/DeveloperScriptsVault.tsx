@@ -44,6 +44,7 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = ({
   const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
   const [copiedCliId, setCopiedCliId] = useState<string | null>(null);
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [downloadToast, setDownloadToast] = useState<string | null>(null);
   const [activeModalScript, setActiveModalScript] = useState<DeveloperScript | null>(null);
 
   const filteredScripts = DEVELOPER_SCRIPTS.filter((script) => {
@@ -68,6 +69,7 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = ({
   const handleDownloadScript = async (script: DeveloperScript, e: React.MouseEvent) => {
     e.stopPropagation();
     setDownloadingId(script.id);
+    setDownloadToast(null);
 
     try {
       if (script.id === 'script-solana-bulk-sender') {
@@ -79,10 +81,14 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = ({
       } else if (script.id === 'script-rust-tx-dispatcher') {
         await generateRustTxDispatcherScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-RUST-2026');
       }
-    } catch (err) {
+      setDownloadToast(`Started downloading ${script.title} (.ZIP)`);
+      setTimeout(() => setDownloadToast(null), 4000);
+    } catch (err: any) {
       console.error('Failed to generate script ZIP:', err);
+      setDownloadToast(`Download failed: ${err?.message || 'Error'}`);
+      setTimeout(() => setDownloadToast(null), 4000);
     } finally {
-      setDownloadingId(null);
+      setTimeout(() => setDownloadingId(null), 1000);
     }
   };
 
@@ -189,6 +195,13 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = ({
             );
           })}
         </div>
+
+        {downloadToast && (
+          <div className="max-w-xl mx-auto mb-6 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono-code flex items-center justify-center gap-2 animate-in fade-in duration-200 shadow-lg">
+            <CheckCircle2 className="w-4 h-4 shrink-0" />
+            <span>{downloadToast}</span>
+          </div>
+        )}
 
         {/* Script Cards Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 mb-12">

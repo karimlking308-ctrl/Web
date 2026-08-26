@@ -116,6 +116,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   // Download feedback
   const [activeDownload, setActiveDownload] = useState<string | null>(null);
+  const [downloadToast, setDownloadToast] = useState<string | null>(null);
 
   // Fetch live SOL and TON prices when modal opens
   useEffect(() => {
@@ -382,6 +383,27 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     type: 'script-bulk-zip' | 'script-tg-zip' | 'script-ai-zip' | 'script-rust-zip' | 'telegram-zip' | 'whatsapp-zip' | 'sniper-zip' | 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
   ) => {
     setActiveDownload(type);
+    setDownloadToast(null);
+
+    const labels: Record<string, string> = {
+      'script-bulk-zip': 'Solana Bulk Sender Script (.ZIP)',
+      'script-tg-zip': 'Telegram Broadcast Bot (.ZIP)',
+      'script-ai-zip': 'AI Batch Content Generator (.ZIP)',
+      'script-rust-zip': 'Solana Rust Tx Dispatcher (.ZIP)',
+      'telegram-zip': 'Telegram Mini-App Clicker Game (.ZIP)',
+      'whatsapp-zip': 'WhatsApp AI Lead Gen System (.ZIP)',
+      'sniper-zip': 'Solana Token Sniper Bot (.ZIP)',
+      'n8n-json': 'n8n AI Workflows (.JSON)',
+      'n8n-zip': 'n8n Workflows Full Pack (.ZIP)',
+      'webhooks-zip': 'Webhook & API Boilerplates (.ZIP)',
+      'buybot-zip': 'Telegram Buy-Bot (.ZIP)',
+      'prompts-json': '1,500+ AI Prompts (.JSON)',
+      'prompts-md': '1,500+ AI Prompts Playbook (.MD)',
+      'react-zip': 'React 19 & Tailwind SaaS (.ZIP)',
+      'anchor-zip': 'Solana Anchor Toolkit (.ZIP)',
+      'all': 'Master Digital Vault Archive (.ZIP)',
+    };
+
     try {
       if (type === 'script-bulk-zip') {
         await generateBulkSenderScriptZIP(generatedLicense || 'SOLPUMP-SCRIPT-BULK-2026');
@@ -416,8 +438,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       } else if (type === 'all') {
         await generateMasterBundleZIP(generatedLicense);
       }
-    } catch (e) {
+
+      setDownloadToast(`Started downloading ${labels[type] || 'package'}`);
+      setTimeout(() => setDownloadToast(null), 4000);
+    } catch (e: any) {
       console.error(e);
+      setDownloadToast(`Download error: ${e?.message || 'Failed'}`);
+      setTimeout(() => setDownloadToast(null), 4000);
     } finally {
       setTimeout(() => setActiveDownload(null), 1200);
     }
@@ -556,6 +583,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 </span>
                 <span className="text-[10px] text-emerald-400">Instant Access</span>
               </h4>
+
+              {downloadToast && (
+                <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono-code flex items-center gap-2 animate-in fade-in duration-200">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>{downloadToast}</span>
+                </div>
+              )}
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {/* Script: Bulk Token Sender */}

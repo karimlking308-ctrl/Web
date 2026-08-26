@@ -208,50 +208,103 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
     setErrorMessage(null);
   };
 
+  // Helper for dynamic download button labels per product
+  const getDownloadButtonLabel = (id: string, title: string) => {
+    switch (id) {
+      case 'product-telegram-miniapp':
+        return 'Download Telegram Mini-App (.ZIP)';
+      case 'product-whatsapp-ai-leadgen':
+        return 'Download WhatsApp AI Agent (.ZIP)';
+      case 'product-solana-sniper-bot':
+        return 'Download Solana Sniper Bot (.ZIP)';
+      case 'product-webhook-boilerplates':
+        return 'Download Webhook Engines (.ZIP)';
+      case 'product-solana-buybot':
+        return 'Download Telegram Buy-Bot (.ZIP)';
+      case 'product-react-boilerplate':
+        return 'Download React 19 SaaS (.ZIP)';
+      case 'product-solana-bulk-sender':
+        return 'Download Solana Bulk Sender (.ZIP)';
+      case 'product-telegram-broadcast-bot':
+        return 'Download Telegram Broadcaster (.ZIP)';
+      case 'product-ai-content-batch-generator':
+        return 'Download AI Content Generator (.ZIP)';
+      case 'product-rust-tx-dispatcher':
+        return 'Download Rust Tx Dispatcher (.ZIP)';
+      case 'product-solana-toolkit':
+        return 'Download Solana Toolkit (.ZIP)';
+      default:
+        return `Download ${title} (.ZIP)`;
+    }
+  };
+
   // Trigger Asset Downloads
   const handleDownloadProduct = async (productId: string, specificFormat?: string) => {
-    setDownloadingId(productId + (specificFormat || ''));
+    const downloadKey = productId + (specificFormat || '');
+    setDownloadingId(downloadKey);
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
     try {
       if (productId === 'product-telegram-miniapp') {
         await generateTelegramMiniAppZIP(activeLicenseKey || 'SOLPUMP-TMA-2026');
+        setSuccessMessage('Telegram Mini-App & Clicker Game (.ZIP) package download started!');
       } else if (productId === 'product-whatsapp-ai-leadgen') {
         await generateWhatsAppAILeadGenZIP(activeLicenseKey || 'SOLPUMP-WHATSAPP-2026');
+        setSuccessMessage('WhatsApp AI Auto-Responder & Lead Gen System (.ZIP) package download started!');
       } else if (productId === 'product-solana-sniper-bot') {
         await generateSolanaSniperBotZIP(activeLicenseKey || 'SOLPUMP-SNIPER-2026');
+        setSuccessMessage('Solana Token Sniper & Launch Bot Kit (.ZIP) package download started!');
       } else if (productId === 'product-n8n-workflows') {
         if (specificFormat === 'json') {
           generateN8nWorkflowsJSON(activeLicenseKey || 'SOLPUMP-N8N-PRO-2026');
+          setSuccessMessage('n8n AI Workflows (.JSON) file download started!');
         } else {
           await generateN8nWorkflowsZIP(activeLicenseKey || 'SOLPUMP-N8N-PRO-2026');
+          setSuccessMessage('n8n AI Workflows Full Pack (.ZIP) package download started!');
         }
       } else if (productId === 'product-webhook-boilerplates') {
         await generateWebhookBoilerplateZIP(activeLicenseKey || 'SOLPUMP-WEBHOOK-2026');
+        setSuccessMessage('Webhook & API Integration Boilerplates (.ZIP) package download started!');
       } else if (productId === 'product-solana-buybot') {
         await generateTelegramBuyBotZIP(activeLicenseKey || 'SOLPUMP-BUYBOT-2026');
+        setSuccessMessage('Solana Telegram Buy-Bot (.ZIP) package download started!');
       } else if (productId === 'product-prompt-vault') {
         if (specificFormat === 'md') {
           generatePromptVaultMarkdown(activeLicenseKey || 'SOLPUMP-PRO-VAULT-2026');
+          setSuccessMessage('1,500+ AI Prompts Master Playbook (.MD) file download started!');
         } else {
           generatePromptVaultJSON(activeLicenseKey || 'SOLPUMP-PRO-VAULT-2026');
+          setSuccessMessage('1,500+ AI Prompts Vault (.JSON) file download started!');
         }
       } else if (productId === 'product-react-boilerplate') {
         await generateReactBoilerplateZIP(activeLicenseKey || 'SOLPUMP-DEV-2026');
+        setSuccessMessage('React 19 & Tailwind CSS Developer Boilerplate (.ZIP) package download started!');
       } else if (productId === 'product-solana-bulk-sender') {
         await generateBulkSenderScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-BULK-2026');
+        setSuccessMessage('Solana Bulk Token Sender CLI Script (.ZIP) package download started!');
       } else if (productId === 'product-telegram-broadcast-bot') {
         await generateTelegramBroadcastScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-TG-2026');
+        setSuccessMessage('Telegram Broadcast & Member Management Script (.ZIP) package download started!');
       } else if (productId === 'product-ai-content-batch-generator') {
         await generateAIContentBatchScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-AI-2026');
+        setSuccessMessage('AI Batch Content Generator Script (.ZIP) package download started!');
       } else if (productId === 'product-rust-tx-dispatcher') {
         await generateRustTxDispatcherScriptZIP(activeLicenseKey || 'SOLPUMP-SCRIPT-RUST-2026');
+        setSuccessMessage('Solana Rust High-Performance Tx Dispatcher (.ZIP) package download started!');
       } else if (productId === 'product-solana-toolkit') {
         await generateSolanaToolkitZIP(activeLicenseKey || 'SOLPUMP-ANCHOR-2026');
+        setSuccessMessage('Solana Smart Contract & Token Launch Toolkit (.ZIP) package download started!');
       } else if (productId === 'master-bundle') {
         await generateMasterBundleZIP(activeLicenseKey || 'SOLPUMP-MASTER-2026');
+        setSuccessMessage('Master All-In-One Digital Vault Archive (.ZIP) package download started!');
       }
-    } catch (err) {
+
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } catch (err: any) {
       console.error('Download error:', err);
+      setErrorMessage(`Download failed: ${err?.message || 'Could not generate asset package.'}`);
+      setTimeout(() => setErrorMessage(null), 5000);
     } finally {
       setTimeout(() => setDownloadingId(null), 1200);
     }
@@ -362,7 +415,7 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
                     ) : (
                       <Download className="w-3.5 h-3.5" />
                     )}
-                    <span>Download All 6 Products (.ZIP)</span>
+                    <span>Download Master Vault (.ZIP)</span>
                   </button>
 
                   <button
@@ -659,15 +712,7 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
                           ) : (
                             <Download className="w-4 h-4" />
                           )}
-                          <span>
-                            {prod.id === 'product-webhook-boilerplates'
-                              ? 'Download Webhook Engines (.ZIP)'
-                              : prod.id === 'product-solana-buybot'
-                              ? 'Download Telegram Buy-Bot (.ZIP)'
-                              : prod.id === 'product-react-boilerplate'
-                              ? 'Download React 19 SaaS (.ZIP)'
-                              : 'Download Solana Toolkit (.ZIP)'}
-                          </span>
+                          <span>{getDownloadButtonLabel(prod.id, prod.title)}</span>
                         </button>
                       )}
 

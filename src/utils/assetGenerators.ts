@@ -5,12 +5,25 @@ import { PLATFORM_RECEIVING_WALLET } from './solanaPayment';
 export function triggerBlobDownload(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
+  anchor.style.display = 'none';
   anchor.href = url;
   anchor.download = filename;
+  anchor.setAttribute('target', '_blank');
   document.body.appendChild(anchor);
-  anchor.click();
-  document.body.removeChild(anchor);
-  URL.revokeObjectURL(url);
+
+  try {
+    anchor.click();
+  } catch (err) {
+    console.error('Blob click error:', err);
+  }
+
+  // Defer cleanup to prevent premature revocation of the blob URL in sandboxed containers
+  setTimeout(() => {
+    if (document.body.contains(anchor)) {
+      document.body.removeChild(anchor);
+    }
+    URL.revokeObjectURL(url);
+  }, 3000);
 }
 
 // -------------------------------------------------------------
