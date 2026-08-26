@@ -1,0 +1,8 @@
+{
+  "name": "SolPump Store",
+  "description": "SolPump Store (sol-pump.store) — A modern, professional platform for AI utilities, developer tools, and Web3 digital creator assets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
