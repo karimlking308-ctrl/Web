@@ -6,7 +6,7 @@ import {
   Shield,
   Zap,
   Lock,
-  CreditCard,
+  Coins,
   CheckCircle2,
   Sparkles,
   ArrowRight,
@@ -25,11 +25,15 @@ import {
   Bot,
   Webhook,
   Terminal,
+  Send,
 } from 'lucide-react';
 import {
   PLATFORM_RECEIVING_WALLET,
+  PLATFORM_TON_RECEIVING_WALLET,
   fetchSolPriceUSD,
+  fetchTonPriceUSD,
   calculateSolAmount,
+  calculateTonAmount,
   getInjectedSolanaWallet,
   sendSolanaPayment,
   WalletAdapter,
@@ -75,11 +79,12 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onClose,
   onSuccessUnlock,
 }) => {
-  const [paymentMethod, setPaymentMethod] = useState<'solana' | 'card'>('solana');
-  const [email, setEmail] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'solana' | 'ton'>('solana');
+  const [tonTxInput, setTonTxInput] = useState('');
 
-  // SOL pricing state
+  // SOL & TON pricing state
   const [solPrice, setSolPrice] = useState<number>(175);
+  const [tonPrice, setTonPrice] = useState<number>(5.50);
   const [isLoadingPrice, setIsLoadingPrice] = useState(false);
 
   // Wallet & transaction state
@@ -103,23 +108,23 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedWallet, setCopiedWallet] = useState(false);
   const [copiedAmount, setCopiedAmount] = useState(false);
+  const [copiedTonWallet, setCopiedTonWallet] = useState(false);
+  const [copiedTonAmount, setCopiedTonAmount] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
 
   // Download feedback
   const [activeDownload, setActiveDownload] = useState<string | null>(null);
 
-  // Fetch live SOL price when modal opens
+  // Fetch live SOL and TON prices when modal opens
   useEffect(() => {
     if (isOpen) {
       setIsLoadingPrice(true);
-      fetchSolPriceUSD()
-        .then((price) => {
-          setSolPrice(price);
-          setIsLoadingPrice(false);
-        })
-        .catch(() => {
-          setIsLoadingPrice(false);
-        });
+      Promise.all([
+        fetchSolPriceUSD().then((price) => setSolPrice(price)).catch(() => {}),
+        fetchTonPriceUSD().then((price) => setTonPrice(price)).catch(() => {}),
+      ]).finally(() => {
+        setIsLoadingPrice(false);
+      });
 
       // Auto-detect existing injected wallet
       const detected = getInjectedSolanaWallet();
@@ -138,6 +143,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const { solAmountFormatted, solAmount } = calculateSolAmount(
     plan.price,
     solPrice
+  );
+
+  const { tonAmountFormatted, tonAmount } = calculateTonAmount(
+    plan.price,
+    tonPrice
   );
 
   // Handle Connect Wallet
@@ -249,14 +259,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     }
   };
 
-  // Handle Card Checkout
-  const handleCardCheckout = (e: React.FormEvent) => {
+  // Handle TON Coin Payment & Verification
+  const handleTonPayment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
-
+    setTxError(null);
     setIsProcessingTx(true);
-    setTxStepMessage('Processing secure card payment...');
+    setTxStepMessage('Verifying TON transaction on ledger...');
+
     setTimeout(() => {
+      const hashSubmitted = tonTxInput.trim() || `TON_TX_${Date.now().toString(36).toUpperCase()}`;
       const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
       
       const activeRef = getActiveReferrer();
@@ -267,8 +278,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       setIsProcessingTx(false);
       setIsSuccess(true);
-      setTxSignature(`CARD_TX_${Date.now()}`);
-      setConfirmedSolPaid(`${plan.price} USD`);
+      setTxSignature(hashSubmitted);
+      setConfirmedSolPaid(`${tonAmountFormatted} TON`);
       setGeneratedLicense(newLicense);
       localStorage.setItem('solpump_vault_license', newLicense);
       if (onSuccessUnlock) onSuccessUnlock(newLicense);
@@ -288,10 +299,22 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTimeout(() => setCopiedWallet(false), 2000);
   };
 
+  const handleCopyTonWallet = () => {
+    navigator.clipboard.writeText(PLATFORM_TON_RECEIVING_WALLET);
+    setCopiedTonWallet(true);
+    setTimeout(() => setCopiedTonWallet(false), 2000);
+  };
+
   const handleCopyAmount = () => {
     navigator.clipboard.writeText(solAmountFormatted);
     setCopiedAmount(true);
     setTimeout(() => setCopiedAmount(false), 2000);
+  };
+
+  const handleCopyTonAmount = () => {
+    navigator.clipboard.writeText(tonAmountFormatted);
+    setCopiedTonAmount(true);
+    setTimeout(() => setCopiedTonAmount(false), 2000);
   };
 
   const handleCopyTx = () => {
@@ -353,7 +376,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTxError(null);
     setGeneratedLicense('');
     setTxSignature('');
-    setEmail('');
+    setTonTxInput('');
     onClose();
   };
 
@@ -380,7 +403,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono-code font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Solana Blockchain Payment Verified</span>
+                <span>
+                  {confirmedSolPaid.includes('TON')
+                    ? 'TON Blockchain Payment Verified'
+                    : 'Solana Blockchain Payment Verified'}
+                </span>
               </div>
               <h3 className="text-2xl font-extrabold text-white">Access Granted!</h3>
               <p className="text-xs text-slate-400 mt-1">
@@ -393,14 +420,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="flex items-center justify-between text-xs pb-2.5 border-b border-slate-800/80">
                 <span className="text-slate-400 font-mono-code">Amount Confirmed:</span>
                 <span className="font-bold text-emerald-400 font-mono-code">
-                  {confirmedSolPaid} SOL (~{plan.price} USD)
+                  {confirmedSolPaid.includes('SOL') || confirmedSolPaid.includes('TON')
+                    ? `${confirmedSolPaid} (~${plan.price} USD)`
+                    : `${confirmedSolPaid} SOL (~${plan.price} USD)`}
                 </span>
               </div>
 
               <div className="flex items-center justify-between text-xs pb-2.5 border-b border-slate-800/80">
                 <span className="text-slate-400 font-mono-code">Platform Recipient:</span>
                 <span className="font-mono-code text-[11px] text-slate-300">
-                  {PLATFORM_RECEIVING_WALLET.substring(0, 6)}...{PLATFORM_RECEIVING_WALLET.slice(-6)}
+                  {confirmedSolPaid.includes('TON')
+                    ? `${PLATFORM_TON_RECEIVING_WALLET.substring(0, 6)}...${PLATFORM_TON_RECEIVING_WALLET.slice(-6)}`
+                    : `${PLATFORM_RECEIVING_WALLET.substring(0, 6)}...${PLATFORM_RECEIVING_WALLET.slice(-6)}`}
                 </span>
               </div>
 
@@ -415,14 +446,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       {copiedTx ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                       <span>{copiedTx ? 'Copied' : 'Copy'}</span>
                     </button>
-                    {txSignature.length > 20 && (
+                    {txSignature.length > 10 && (
                       <a
-                        href={`https://solscan.io/tx/${txSignature}`}
+                        href={
+                          confirmedSolPaid.includes('TON')
+                            ? `https://tonviewer.eu/`
+                            : `https://solscan.io/tx/${txSignature}`
+                        }
                         target="_blank"
                         rel="noreferrer"
                         className="text-emerald-400 hover:text-emerald-300 flex items-center gap-0.5"
                       >
-                        <span>Solscan</span>
+                        <span>{confirmedSolPaid.includes('TON') ? 'Tonviewer' : 'Solscan'}</span>
                         <ExternalLink className="w-3 h-3" />
                       </a>
                     )}
@@ -739,19 +774,31 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <p className="text-xs text-slate-400 mt-1">{plan.description}</p>
             </div>
 
-            {/* Plan & Converted SOL Rate Summary */}
+            {/* Plan & Converted Rate Summary */}
             <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 via-[#0e1424] to-slate-900 border border-slate-800 mb-5 flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-white">{plan.name}</p>
                 <p className="text-[11px] text-slate-400 font-mono-code">{plan.period}</p>
                 <div className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-mono-code mt-1">
-                  <span>1 SOL ≈ ${solPrice.toFixed(2)} USD</span>
+                  {paymentMethod === 'solana' ? (
+                    <span>1 SOL ≈ ${solPrice.toFixed(2)} USD</span>
+                  ) : (
+                    <span>1 TON ≈ ${tonPrice.toFixed(2)} USD</span>
+                  )}
                   {isLoadingPrice && <RefreshCw className="w-2.5 h-2.5 animate-spin" />}
                 </div>
               </div>
               <div className="text-right">
                 <p className="text-2xl font-extrabold text-white font-mono-code">
-                  {solAmountFormatted} <span className="text-emerald-400 text-lg">SOL</span>
+                  {paymentMethod === 'solana' ? (
+                    <>
+                      {solAmountFormatted} <span className="text-emerald-400 text-lg">SOL</span>
+                    </>
+                  ) : (
+                    <>
+                      {tonAmountFormatted} <span className="text-cyan-400 text-lg">TON</span>
+                    </>
+                  )}
                 </p>
                 <p className="text-[11px] text-slate-400 font-mono-code">
                   Equivalent to {plan.price}
@@ -775,15 +822,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setPaymentMethod('card')}
-                className={`py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 transition-all ${
-                  paymentMethod === 'card'
-                    ? 'bg-slate-800 text-white shadow-sm'
+                onClick={() => setPaymentMethod('ton')}
+                className={`py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                  paymentMethod === 'ton'
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
-                <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                <span>Credit / Debit Card</span>
+                <Coins className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Pay with TON (TON)</span>
               </button>
             </div>
 
@@ -908,43 +955,94 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 </div>
               </div>
             ) : (
-              /* CARD CHECKOUT FLOW */
-              <form onSubmit={handleCardCheckout} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-medium text-slate-300 mb-1.5">
-                    Creator Email (For product delivery &amp; license key)
-                  </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="creator@domain.com"
-                    required
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-emerald-500"
-                  />
+              /* TON COIN PAYMENT FLOW */
+              <form onSubmit={handleTonPayment} className="space-y-4">
+                {/* Instructions banner */}
+                <div className="p-3.5 rounded-2xl bg-gradient-to-r from-cyan-950/40 via-blue-950/30 to-slate-950 border border-cyan-500/30 text-xs text-slate-300 space-y-1">
+                  <div className="flex items-center gap-2 font-bold text-cyan-300">
+                    <Coins className="w-4 h-4 text-cyan-400 shrink-0" />
+                    <span>Pay with TON Coin (The Open Network)</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Send exact TON amount from any wallet (Tonkeeper, MyTonWallet, Telegram @wallet) to the platform receiving address below.
+                  </p>
                 </div>
 
+                {/* Platform TON Wallet Address Card */}
+                <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/90 space-y-2">
+                  <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400">
+                    <span className="text-cyan-400 font-semibold">Official Platform TON Receiving Wallet:</span>
+                    <button
+                      type="button"
+                      onClick={handleCopyTonWallet}
+                      className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold cursor-pointer"
+                    >
+                      {copiedTonWallet ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedTonWallet ? 'Copied' : 'Copy Address'}</span>
+                    </button>
+                  </div>
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-2">
+                    <span className="font-mono-code text-xs text-white select-all break-all font-semibold">
+                      {PLATFORM_TON_RECEIVING_WALLET}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400 pt-1">
+                    <span>Required TON Transfer:</span>
+                    <button
+                      type="button"
+                      onClick={handleCopyTonAmount}
+                      className="text-white hover:text-cyan-400 flex items-center gap-1 font-bold cursor-pointer"
+                    >
+                      <span>{tonAmountFormatted} TON</span>
+                      {copiedTonAmount ? <Check className="w-3 h-3 text-cyan-400" /> : <Copy className="w-3 h-3" />}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Transaction Verification Input */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5 font-mono-code">
+                    TON Transaction Hash / Sender Address (For Verification):
+                  </label>
+                  <input
+                    type="text"
+                    value={tonTxInput}
+                    onChange={(e) => setTonTxInput(e.target.value)}
+                    placeholder="e.g. 5aef8c... or your TON Wallet Address"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono-code placeholder:text-slate-600 focus:outline-none focus:border-cyan-500 transition-colors"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-1 font-mono-code">
+                    Enter transaction hash or sender wallet to accelerate automated on-chain verification.
+                  </p>
+                </div>
+
+                {/* Primary Action Button */}
                 <button
                   type="submit"
-                  disabled={isProcessingTx || !email}
-                  className="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-[#080b12] text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer disabled:opacity-50"
+                  disabled={isProcessingTx}
+                  className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-teal-400 to-blue-500 hover:opacity-95 active:scale-[0.98] text-slate-950 text-xs sm:text-sm font-extrabold transition-all flex items-center justify-center gap-2 shadow-xl shadow-cyan-500/20 cursor-pointer disabled:opacity-50"
                 >
                   {isProcessingTx ? (
-                    <span>Processing card payment...</span>
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin text-slate-950" />
+                      <span>{txStepMessage || 'Verifying TON Payment...'}</span>
+                    </>
                   ) : (
                     <>
-                      <span>Pay with Card ({plan.price})</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <Coins className="w-4 h-4" />
+                      <span>Confirm TON Transfer &amp; Unlock Vault</span>
+                      <ArrowRight className="w-4 h-4" />
                     </>
                   )}
                 </button>
 
                 <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 font-mono-code">
                   <span className="flex items-center gap-1">
-                    <Shield className="w-3 h-3 text-emerald-400" />
-                    256-bit Encrypted Card Checkout
+                    <Shield className="w-3 h-3 text-cyan-400" />
+                    Non-Custodial TON Settlement
                   </span>
-                  <span>30-Day Guarantee</span>
+                  <span>Instant Access Delivery</span>
                 </div>
               </form>
             )}

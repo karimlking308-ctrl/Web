@@ -4,9 +4,10 @@ import { SOCIAL_LINKS, TelegramIcon, TwitterXIcon, FacebookIcon } from './Social
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
+  onOpenLegal: (docType: 'privacy' | 'terms') => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -278,9 +279,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono-code text-slate-400">
           <p>© {new Date().getFullYear()} SolPump Store (sol-pump.store). All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <span className="hover:text-slate-300">Privacy Policy</span>
+            <button
+              onClick={() => onOpenLegal('privacy')}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
+              id="footer-privacy-btn"
+            >
+              Privacy Policy
+            </button>
             <span>·</span>
-            <span className="hover:text-slate-300">Terms of Service</span>
+            <button
+              onClick={() => onOpenLegal('terms')}
+              className="hover:text-emerald-400 transition-colors cursor-pointer"
+              id="footer-terms-btn"
+            >
+              Terms of Service
+            </button>
             <span>·</span>
             <button
               onClick={scrollToTop}

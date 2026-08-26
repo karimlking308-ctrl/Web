@@ -8,6 +8,7 @@ import {
 
 // Official Platform Receiving Address specified by User
 export const PLATFORM_RECEIVING_WALLET = 'D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR';
+export const PLATFORM_TON_RECEIVING_WALLET = 'UQCiZbTN81NeIW8vEaBxysaMEFC0JE5AxVRZY74Zng-f8eNr';
 
 // Solana Public RPC Endpoints
 export const SOLANA_RPC_ENDPOINTS = [
@@ -96,6 +97,74 @@ export async function fetchSolPriceUSD(): Promise<number> {
   }
 
   return 175.0; // Reliable fallback benchmark
+}
+
+// Real-time TON/USD price fetcher with fallback
+let cachedTonPrice: { price: number; timestamp: number } | null = null;
+
+export async function fetchTonPriceUSD(): Promise<number> {
+  const now = Date.now();
+  if (cachedTonPrice && now - cachedTonPrice.timestamp < 60000) {
+    return cachedTonPrice.price;
+  }
+
+  try {
+    const binanceRes = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=TONUSDT', {
+      headers: { Accept: 'application/json' },
+    });
+    if (binanceRes.ok) {
+      const data = await binanceRes.json();
+      const price = parseFloat(data.price);
+      if (price > 0) {
+        cachedTonPrice = { price, timestamp: now };
+        return price;
+      }
+    }
+  } catch (_e) {
+    // fallback
+  }
+
+  try {
+    const cgRes = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd'
+    );
+    if (cgRes.ok) {
+      const data = await cgRes.json();
+      if (data['the-open-network']?.usd) {
+        const price = Number(data['the-open-network'].usd);
+        cachedTonPrice = { price, timestamp: now };
+        return price;
+      }
+    }
+  } catch (_e) {
+    // fallback
+  }
+
+  return 5.50; // Market price fallback benchmark
+}
+
+export function calculateTonAmount(usdPriceStr: string, tonUsdRate: number): {
+  usdNumber: number;
+  tonAmount: number;
+  tonAmountFormatted: string;
+} {
+  const numericUsd = parseFloat(usdPriceStr.replace(/[^0-9.]/g, '')) || 0;
+  if (numericUsd <= 0 || tonUsdRate <= 0) {
+    return {
+      usdNumber: 0,
+      tonAmount: 0,
+      tonAmountFormatted: '0.00',
+    };
+  }
+
+  const exactTon = numericUsd / tonUsdRate;
+  const roundedTon = Math.round(exactTon * 100) / 100;
+
+  return {
+    usdNumber: numericUsd,
+    tonAmount: roundedTon,
+    tonAmountFormatted: roundedTon.toFixed(2),
+  };
 }
 
 // Convert USD price to exact SOL amount

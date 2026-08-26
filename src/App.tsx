@@ -14,6 +14,7 @@ import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
 import { CheckoutModal, PlanItem } from './components/CheckoutModal';
 import { AffiliateModal } from './components/AffiliateModal';
+import { LegalModal, LegalDocType } from './components/LegalModal';
 import { ToolItem } from './data/toolsData';
 import { captureReferralFromUrl } from './utils/affiliateStorage';
 
@@ -21,6 +22,8 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
+  const [isLegalOpen, setIsLegalOpen] = useState(false);
+  const [legalDocType, setLegalDocType] = useState<LegalDocType>('privacy');
   const [selectedTool, setSelectedTool] = useState<ToolItem | null>(null);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all');
   const [selectedPlan, setSelectedPlan] = useState<PlanItem | null>(null);
@@ -145,7 +148,13 @@ export default function App() {
       </main>
 
       {/* Global Footer */}
-      <Footer onNavigate={scrollToSection} />
+      <Footer
+        onNavigate={scrollToSection}
+        onOpenLegal={(docType) => {
+          setLegalDocType(docType);
+          setIsLegalOpen(true);
+        }}
+      />
 
       {/* Interactive Modals */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
@@ -157,6 +166,11 @@ export default function App() {
           setIsAffiliateModalOpen(false);
           setIsLoginOpen(true);
         }}
+      />
+      <LegalModal
+        isOpen={isLegalOpen}
+        onClose={() => setIsLegalOpen(false)}
+        initialDoc={legalDocType}
       />
       <ToolDetailModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
       <CheckoutModal
