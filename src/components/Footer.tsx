@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Shield, ArrowUp, Github, Twitter } from 'lucide-react';
+import { Sparkles, Shield, ArrowUp, Key, FolderArchive } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (sectionId: string) => void;
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </p>
             <div className="flex items-center gap-2 text-[11px] font-mono-code text-slate-400 pt-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <span>TLS 256-bit Encrypted Node</span>
+              <span>Solana Non-Custodial Settlement Node</span>
             </div>
           </div>
 
@@ -45,39 +45,40 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => onNavigate('home')}
-                  className="hover:text-emerald-400 transition-colors"
+                  className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
                   Home
                 </button>
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('features')}
-                  className="hover:text-emerald-400 transition-colors"
+                  onClick={() => onNavigate('utility-tools')}
+                  className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
-                  Platform Pillars
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('tools')}
-                  className="hover:text-emerald-400 transition-colors"
-                >
-                  Tools &amp; Vaults
+                  Featured Tools
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => onNavigate('store')}
-                  className="hover:text-emerald-400 transition-colors"
+                  className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
                   Digital Store &amp; Pricing
                 </button>
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('vault')}
+                  className="text-emerald-400 font-semibold hover:text-emerald-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <FolderArchive className="w-3 h-3" />
+                  <span>Digital Vault &amp; Downloads</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('about')}
-                  className="hover:text-emerald-400 transition-colors"
+                  className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
                   About &amp; FAQ
                 </button>
@@ -88,13 +89,45 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Categories */}
           <div>
             <h4 className="text-xs font-mono-code uppercase font-semibold text-slate-200 mb-3">
-              Tool Suites
+              Digital Assets
             </h4>
             <ul className="space-y-2">
-              <li className="text-slate-400 hover:text-white cursor-pointer">AI Prompt Vaults</li>
-              <li className="text-slate-400 hover:text-white cursor-pointer">Developer Micro-Utils</li>
-              <li className="text-slate-400 hover:text-white cursor-pointer">Solana Web3 Decoders</li>
-              <li className="text-slate-400 hover:text-white cursor-pointer">Zod / Type Synthesizers</li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                n8n AI Agent Workflows (.JSON)
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                Solana Telegram Buy-Bot
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                Webhook &amp; API Boilerplates
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                1,500+ AI Prompt Vault (JSON/MD)
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                React 19 SaaS Starter Kit
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer"
+              >
+                Master All-In-One Bundle (.ZIP)
+              </li>
             </ul>
           </div>
         </div>
@@ -109,7 +142,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <span>·</span>
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors"
+              className="flex items-center gap-1 text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
             >
               <span>Back to Top</span>
               <ArrowUp className="w-3 h-3" />

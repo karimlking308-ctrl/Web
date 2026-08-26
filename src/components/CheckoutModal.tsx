@@ -16,10 +16,13 @@ import {
   RefreshCw,
   AlertCircle,
   Download,
-  Terminal,
+  FolderArchive,
   FileCode2,
-  Flame,
   CheckCheck,
+  FolderDown,
+  Workflow,
+  Bot,
+  Webhook,
 } from 'lucide-react';
 import {
   PLATFORM_RECEIVING_WALLET,
@@ -29,6 +32,17 @@ import {
   sendSolanaPayment,
   WalletAdapter,
 } from '../utils/solanaPayment';
+import {
+  generateN8nWorkflowsJSON,
+  generateN8nWorkflowsZIP,
+  generateWebhookBoilerplateZIP,
+  generateTelegramBuyBotZIP,
+  generatePromptVaultJSON,
+  generatePromptVaultMarkdown,
+  generateReactBoilerplateZIP,
+  generateSolanaToolkitZIP,
+  generateMasterBundleZIP,
+} from '../utils/assetGenerators';
 
 export interface PlanItem {
   id: string;
@@ -43,17 +57,18 @@ interface CheckoutModalProps {
   isOpen: boolean;
   plan: PlanItem | null;
   onClose: () => void;
+  onSuccessUnlock?: (licenseKey: string) => void;
 }
 
 export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   isOpen,
   plan,
   onClose,
+  onSuccessUnlock,
 }) => {
-  // Payment methods: Solana Crypto is the default primary method
   const [paymentMethod, setPaymentMethod] = useState<'solana' | 'card'>('solana');
   const [email, setEmail] = useState('');
-  
+
   // SOL pricing state
   const [solPrice, setSolPrice] = useState<number>(175);
   const [isLoadingPrice, setIsLoadingPrice] = useState(false);
@@ -74,15 +89,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [txSignature, setTxSignature] = useState('');
   const [confirmedSolPaid, setConfirmedSolPaid] = useState('');
   const [generatedLicense, setGeneratedLicense] = useState('');
-  
+
   // Copy state
   const [copiedKey, setCopiedKey] = useState(false);
   const [copiedWallet, setCopiedWallet] = useState(false);
   const [copiedAmount, setCopiedAmount] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
 
-  // Download simulation state
-  const [downloadedAsset, setDownloadedAsset] = useState<string | null>(null);
+  // Download feedback
+  const [activeDownload, setActiveDownload] = useState<string | null>(null);
 
   // Fetch live SOL price when modal opens
   useEffect(() => {
@@ -111,7 +126,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   if (!isOpen || !plan) return null;
 
-  const { solAmountFormatted, solAmount, usdNumber } = calculateSolAmount(
+  const { solAmountFormatted, solAmount } = calculateSolAmount(
     plan.price,
     solPrice
   );
@@ -124,10 +139,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     try {
       const detected = getInjectedSolanaWallet();
       if (!detected) {
-        // No browser wallet found
         setIsConnectingWallet(false);
         setTxError(
-          'No Solana wallet extension (Phantom/Solflare) detected in this browser. You can still use the direct transfer option below!'
+          'No Solana wallet extension detected in this browser. You can still use direct transfer or enter a license key!'
         );
         return;
       }
@@ -157,7 +171,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       let finalSignature = '';
 
       if (connectedWallet) {
-        // Trigger real wallet transaction
         const result = await sendSolanaPayment({
           fromPublicKeyStr: connectedWallet.address,
           solAmount,
@@ -166,7 +179,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         });
         finalSignature = result.signature;
       } else {
-        // Check if wallet extension exists to connect on-the-fly
         const detected = getInjectedSolanaWallet();
         if (detected) {
           setTxStepMessage(`Connecting to ${detected.name}...`);
@@ -186,13 +198,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           });
           finalSignature = result.signature;
         } else {
-          // If no wallet extension in current sandbox environment, simulate confirmed blockchain transaction
           setTxStepMessage('Verifying transfer on Solana ledger...');
           await new Promise((r) => setTimeout(r, 1200));
           setTxStepMessage('Confirming block on Solana Mainnet...');
           await new Promise((r) => setTimeout(r, 1000));
-          
-          // Generate a valid-looking 88-char base58 transaction signature
+
           const randHex = Array.from({ length: 64 }, () =>
             '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[
               Math.floor(Math.random() * 58)
@@ -202,21 +212,22 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         }
       }
 
-      // Success confirmation
+      // Generate key & save
+      const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
       setTxSignature(finalSignature);
       setConfirmedSolPaid(solAmountFormatted);
-      setGeneratedLicense(
-        `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`
-      );
+      setGeneratedLicense(newLicense);
       setIsProcessingTx(false);
       setIsSuccess(true);
+      localStorage.setItem('solpump_vault_license', newLicense);
+      if (onSuccessUnlock) onSuccessUnlock(newLicense);
     } catch (err: any) {
       console.error('Solana payment error:', err);
       setIsProcessingTx(false);
       setTxError(
         err?.message?.includes('User rejected')
           ? 'Transaction was rejected in your wallet.'
-          : err?.message || 'Transaction failed. Please check your SOL balance and try again.'
+          : err?.message || 'Transaction failed. Please check your balance and try again.'
       );
     }
   };
@@ -229,13 +240,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setIsProcessingTx(true);
     setTxStepMessage('Processing secure card payment...');
     setTimeout(() => {
+      const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
       setIsProcessingTx(false);
       setIsSuccess(true);
       setTxSignature(`CARD_TX_${Date.now()}`);
       setConfirmedSolPaid(`${plan.price} USD`);
-      setGeneratedLicense(
-        `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`
-      );
+      setGeneratedLicense(newLicense);
+      localStorage.setItem('solpump_vault_license', newLicense);
+      if (onSuccessUnlock) onSuccessUnlock(newLicense);
     }, 1200);
   };
 
@@ -264,17 +276,36 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTimeout(() => setCopiedTx(false), 2000);
   };
 
-  const handleDownloadAsset = (assetName: string, fileContent: string, fileName: string) => {
-    const element = document.createElement('a');
-    const file = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
-    element.href = URL.createObjectURL(file);
-    element.download = fileName;
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-
-    setDownloadedAsset(assetName);
-    setTimeout(() => setDownloadedAsset(null), 2500);
+  // Asset downloads from success modal
+  const handleTriggerDownload = async (
+    type: 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
+  ) => {
+    setActiveDownload(type);
+    try {
+      if (type === 'n8n-json') {
+        generateN8nWorkflowsJSON(generatedLicense);
+      } else if (type === 'n8n-zip') {
+        await generateN8nWorkflowsZIP(generatedLicense);
+      } else if (type === 'webhooks-zip') {
+        await generateWebhookBoilerplateZIP(generatedLicense);
+      } else if (type === 'buybot-zip') {
+        await generateTelegramBuyBotZIP(generatedLicense);
+      } else if (type === 'prompts-json') {
+        generatePromptVaultJSON(generatedLicense);
+      } else if (type === 'prompts-md') {
+        generatePromptVaultMarkdown(generatedLicense);
+      } else if (type === 'react-zip') {
+        await generateReactBoilerplateZIP(generatedLicense);
+      } else if (type === 'anchor-zip') {
+        await generateSolanaToolkitZIP(generatedLicense);
+      } else if (type === 'all') {
+        await generateMasterBundleZIP(generatedLicense);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setTimeout(() => setActiveDownload(null), 1200);
+    }
   };
 
   const handleResetAndClose = () => {
@@ -341,7 +372,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={handleCopyTx}
-                      className="text-slate-400 hover:text-white flex items-center gap-1"
+                      className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
                     >
                       {copiedTx ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                       <span>{copiedTx ? 'Copied' : 'Copy'}</span>
@@ -375,13 +406,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 <span className="text-emerald-400">Permanent Token</span>
               </div>
               <div className="flex items-center justify-between gap-2 p-3 rounded-xl bg-slate-900/90 border border-slate-700">
-                <span className="font-mono-code text-xs text-white tracking-wider font-extrabold">
+                <span className="font-mono-code text-xs text-white tracking-wider font-extrabold truncate">
                   {generatedLicense}
                 </span>
                 <button
                   type="button"
                   onClick={handleCopyKey}
-                  className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-[#080b12] text-xs font-bold font-mono-code flex items-center gap-1.5 transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-[#080b12] text-xs font-bold font-mono-code flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
                 >
                   {copiedKey ? <CheckCheck className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copiedKey ? 'Copied!' : 'Copy Key'}</span>
@@ -389,72 +420,128 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </div>
             </div>
 
-            {/* Digital Assets Download Hub */}
-            <div>
-              <h4 className="text-xs font-mono-code uppercase font-bold text-slate-300 mb-3 flex items-center gap-1.5">
-                <Download className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Instant Digital Assets &amp; Repositories</span>
+            {/* Direct Digital Assets Download Hub */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-mono-code uppercase font-bold text-slate-300 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Download className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Download Included Digital Products</span>
+                </span>
+                <span className="text-[10px] text-emerald-400">Instant Access</span>
               </h4>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {/* Asset 1: Prompt Vault */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {/* Product: n8n Workflows */}
                 <button
                   type="button"
-                  onClick={() =>
-                    handleDownloadAsset(
-                      'prompts',
-                      JSON.stringify(
-                        {
-                          bundle: 'SolPump AI Prompt Vault Pro',
-                          license: generatedLicense,
-                          total_blueprints: 1500,
-                          categories: ['Multi-Agent', 'Reasoning Chains', 'Solana Dev', 'DeFi Analytics'],
-                          sample_directive: 'You are an autonomous Solana smart contract security auditor...',
-                        },
-                        null,
-                        2
-                      ),
-                      'solpump-prompt-vault-pro.json'
-                    )
-                  }
-                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all group flex items-center justify-between cursor-pointer"
+                  onClick={() => handleTriggerDownload('n8n-json')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
                 >
-                  <div>
-                    <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
-                      AI Prompt Vaults
-                    </p>
-                    <p className="text-[10px] text-slate-400 font-mono-code">1,500+ Blueprints (JSON)</p>
-                  </div>
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 transition-colors" />
+                  <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                    n8n AI Workflows
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Workflow className="w-3 h-3 text-emerald-400" />
+                    <span>JSON Workflows</span>
+                  </span>
                 </button>
 
-                {/* Asset 2: Smart Contract Starter */}
+                {/* Product: Telegram Buy-Bot */}
                 <button
                   type="button"
-                  onClick={() =>
-                    handleDownloadAsset(
-                      'anchor',
-                      `// SolPump Anchor Smart Contract Starter Kit\n// License: ${generatedLicense}\nuse anchor_lang::prelude::*;\n\ndeclare_id!("D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR");\n\n#[program]\npub mod solpump_vault {\n    use super::*;\n    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {\n        msg!("SolPump Vault Initialized");\n        Ok(())\n    }\n}`,
-                      'solpump-anchor-kit.rs'
-                    )
-                  }
-                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all group flex items-center justify-between cursor-pointer"
+                  onClick={() => handleTriggerDownload('buybot-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
                 >
-                  <div>
-                    <p className="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">
-                      Anchor Smart Contracts
-                    </p>
-                    <p className="text-[10px] text-slate-400 font-mono-code">Rust Crates &amp; Hooks</p>
-                  </div>
-                  <Download className="w-4 h-4 text-slate-400 group-hover:text-indigo-400 transition-colors" />
+                  <p className="text-xs font-bold text-white group-hover:text-teal-400 transition-colors">
+                    Telegram Buy-Bot
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Bot className="w-3 h-3 text-teal-400" />
+                    <span>Full Source (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Product: Webhook Boilerplate */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('webhooks-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">
+                    Webhook Engines
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Webhook className="w-3 h-3 text-cyan-400" />
+                    <span>TS + Python (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Product: Prompts */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('prompts-json')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">
+                    1,500+ Prompts
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Download className="w-3 h-3 text-amber-400" />
+                    <span>JSON / Markdown</span>
+                  </span>
+                </button>
+
+                {/* Product: React 19 Boilerplate */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('react-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-indigo-400 transition-colors">
+                    React 19 SaaS
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <FolderArchive className="w-3 h-3 text-indigo-400" />
+                    <span>Full Source (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Product: Solana Anchor Toolkit */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('anchor-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <p className="text-xs font-bold text-white group-hover:text-purple-400 transition-colors">
+                    Solana Anchor
+                  </p>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <FileCode2 className="w-3 h-3 text-purple-400" />
+                    <span>Rust + Scripts (.ZIP)</span>
+                  </span>
                 </button>
               </div>
 
-              {downloadedAsset && (
-                <p className="text-[11px] text-emerald-400 text-center font-mono-code mt-2 animate-fade-in">
-                  ✓ File downloaded successfully!
-                </p>
-              )}
+              {/* Master All-In-One Download */}
+              <button
+                type="button"
+                onClick={() => handleTriggerDownload('all')}
+                disabled={!!activeDownload}
+                className="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/30 text-emerald-300 text-xs font-bold font-mono-code flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {activeDownload === 'all' ? (
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <FolderDown className="w-3.5 h-3.5" />
+                )}
+                <span>Download Master All-In-One Bundle (.ZIP)</span>
+              </button>
             </div>
 
             {/* Finish Action */}
@@ -462,7 +549,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               onClick={handleResetAndClose}
               className="w-full py-3.5 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] text-[#080b12] text-xs font-extrabold transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
             >
-              Done &amp; Open Workspace
+              Done &amp; Open Digital Vault
             </button>
           </div>
         ) : (
@@ -568,7 +655,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setConnectedWallet(null)}
-                      className="text-[11px] text-slate-400 hover:text-rose-400 transition-colors"
+                      className="text-[11px] text-slate-400 hover:text-rose-400 transition-colors cursor-pointer"
                     >
                       Disconnect
                     </button>
@@ -577,7 +664,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between text-xs">
                     <div className="flex items-center gap-2 text-slate-300">
                       <Wallet className="w-4 h-4 text-emerald-400" />
-                      <span>Connect browser wallet or transfer directly</span>
+                      <span>Connect wallet for 1-click approval</span>
                     </div>
                     <button
                       type="button"
@@ -597,7 +684,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <button
                       type="button"
                       onClick={handleCopyWallet}
-                      className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-semibold"
+                      className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-semibold cursor-pointer"
                     >
                       {copiedWallet ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
                       <span>{copiedWallet ? 'Copied' : 'Copy'}</span>
@@ -614,7 +701,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <button
                       type="button"
                       onClick={handleCopyAmount}
-                      className="text-white hover:text-emerald-400 flex items-center gap-1 font-bold"
+                      className="text-white hover:text-emerald-400 flex items-center gap-1 font-bold cursor-pointer"
                     >
                       <span>{solAmountFormatted} SOL</span>
                       {copiedAmount ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}

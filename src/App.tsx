@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { InteractiveToolsGrid } from './components/InteractiveToolsGrid';
 import { PricingSection } from './components/PricingSection';
+import { DigitalVaultSection } from './components/DigitalVaultSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
@@ -19,6 +20,14 @@ export default function App() {
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all');
   const [selectedPlan, setSelectedPlan] = useState<PlanItem | null>(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [verifiedLicenseKey, setVerifiedLicenseKey] = useState<string>('');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('solpump_vault_license');
+    if (saved) {
+      setVerifiedLicenseKey(saved);
+    }
+  }, []);
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -41,6 +50,11 @@ export default function App() {
   const handleSelectPlan = (plan: PlanItem) => {
     setSelectedPlan(plan);
     setIsCheckoutOpen(true);
+  };
+
+  const handleSuccessUnlock = (newLicenseKey: string) => {
+    setVerifiedLicenseKey(newLicenseKey);
+    localStorage.setItem('solpump_vault_license', newLicenseKey);
   };
 
   return (
@@ -72,6 +86,12 @@ export default function App() {
           onExploreFree={() => scrollToSection('utility-tools')}
         />
 
+        {/* Dedicated Digital Products & Asset Vault Downloads */}
+        <DigitalVaultSection
+          verifiedLicenseKey={verifiedLicenseKey}
+          onOpenCheckout={handleSelectPlan}
+        />
+
         {/* 3 Main Pillars / Features Grid */}
         <FeatureGrid onSelectCategory={handleSelectCategoryFromGrid} />
 
@@ -99,6 +119,7 @@ export default function App() {
           setIsCheckoutOpen(false);
           setSelectedPlan(null);
         }}
+        onSuccessUnlock={handleSuccessUnlock}
       />
     </div>
   );

@@ -13,6 +13,7 @@
     "@solana/web3.js": "^1.98.4",
     "clsx": "^2.1.1",
     "express": "^4.21.2",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.475.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
     "@types/express": "^5.0.0",
+    "@types/jszip": "^3.4.1",
     "@types/node": "^22.13.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
