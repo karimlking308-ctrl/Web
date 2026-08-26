@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Menu, X, Shield, ArrowUpRight, Lock, Key, FolderArchive } from 'lucide-react';
+import { HeaderSocialBar, SOCIAL_LINKS, TelegramIcon, TwitterXIcon, FacebookIcon } from './SocialLinks';
 
 interface NavbarProps {
   onOpenLogin: () => void;
@@ -113,6 +114,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
 
         {/* Action Controls */}
         <div className="hidden sm:flex items-center gap-3">
+          {/* Social Channels Icons */}
+          <HeaderSocialBar />
+
           <button
             onClick={() => handleLinkClick('vault')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 font-mono-code transition-colors cursor-pointer"
@@ -151,7 +155,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
 
       {/* Mobile dropdown drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-800 bg-[#0b0f19] px-4 pt-3 pb-5 space-y-2 animate-in fade-in duration-150">
+        <div className="md:hidden border-b border-slate-800 bg-[#0b0f19] px-4 pt-3 pb-5 space-y-3 animate-in fade-in duration-150">
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <button
@@ -171,6 +175,42 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
                 )}
               </button>
             ))}
+          </div>
+
+          {/* Mobile Social Channels */}
+          <div className="pt-2.5 pb-1 border-t border-slate-800/80">
+            <div className="text-[10px] font-mono-code text-slate-400 uppercase tracking-wider mb-2 px-1">
+              Official Community Channels
+            </div>
+            <div className="grid grid-cols-3 gap-2">
+              <a
+                href={SOCIAL_LINKS.telegram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-[#229ED9] hover:border-[#229ED9]/40 text-xs font-mono-code transition-colors"
+              >
+                <TelegramIcon className="w-3.5 h-3.5 text-[#229ED9]" />
+                <span>Telegram</span>
+              </a>
+              <a
+                href={SOCIAL_LINKS.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-600 text-xs font-mono-code transition-colors"
+              >
+                <TwitterXIcon className="w-3.5 h-3.5 text-white" />
+                <span>Twitter</span>
+              </a>
+              <a
+                href={SOCIAL_LINKS.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 hover:text-[#1877F2] hover:border-[#1877F2]/40 text-xs font-mono-code transition-colors"
+              >
+                <FacebookIcon className="w-3.5 h-3.5 text-[#1877F2]" />
+                <span>Facebook</span>
+              </a>
+            </div>
           </div>
 
           <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 px-1">

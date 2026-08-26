@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Zap, Globe, Sparkles, ChevronDown, ChevronUp, Mail, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Zap, Globe, Sparkles, ChevronDown, ChevronUp, Mail, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { PLATFORM_STATS, FAQS } from '../data/toolsData';
+import { SOCIAL_LINKS, TelegramIcon, TwitterXIcon, FacebookIcon } from './SocialLinks';
 
 export const AboutSection: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -68,6 +69,45 @@ export const AboutSection: React.FC = () => {
                   <h4 className="text-xs font-bold text-slate-200">Production Ready</h4>
                   <p className="text-[11px] text-slate-400">Schema-compliant and tested across modern LLMs.</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Official Social Channels */}
+            <div className="mt-6 pt-5 border-t border-slate-800/80">
+              <p className="text-xs font-mono-code text-slate-400 uppercase tracking-wider mb-3">
+                Official Channels &amp; Community
+              </p>
+              <div className="flex flex-wrap gap-2.5">
+                <a
+                  href={SOCIAL_LINKS.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-[#229ED9]/50 hover:bg-[#229ED9]/10 text-slate-300 hover:text-[#229ED9] text-xs font-mono-code transition-all"
+                >
+                  <TelegramIcon className="w-4 h-4 text-[#229ED9]" />
+                  <span>Telegram Channel</span>
+                  <ArrowUpRight className="w-3 h-3 text-slate-500" />
+                </a>
+                <a
+                  href={SOCIAL_LINKS.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-600 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-mono-code transition-all"
+                >
+                  <TwitterXIcon className="w-4 h-4 text-white" />
+                  <span>Twitter / X</span>
+                  <ArrowUpRight className="w-3 h-3 text-slate-500" />
+                </a>
+                <a
+                  href={SOCIAL_LINKS.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-[#1877F2]/50 hover:bg-[#1877F2]/10 text-slate-300 hover:text-[#1877F2] text-xs font-mono-code transition-all"
+                >
+                  <FacebookIcon className="w-4 h-4 text-[#1877F2]" />
+                  <span>Facebook Page</span>
+                  <ArrowUpRight className="w-3 h-3 text-slate-500" />
+                </a>
               </div>
             </div>
           </div>
