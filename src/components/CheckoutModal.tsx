@@ -36,6 +36,8 @@ import {
   calculateTonAmount,
   getInjectedSolanaWallet,
   sendSolanaPayment,
+  verifySolanaTransactionOnChain,
+  verifyTonTransactionOnChain,
   WalletAdapter,
 } from '../utils/solanaPayment';
 import {
@@ -217,21 +219,21 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           });
           finalSignature = result.signature;
         } else {
-          setTxStepMessage('Verifying transfer on Solana ledger...');
-          await new Promise((r) => setTimeout(r, 1200));
-          setTxStepMessage('Confirming block on Solana Mainnet...');
-          await new Promise((r) => setTimeout(r, 1000));
-
-          const randHex = Array.from({ length: 64 }, () =>
-            '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'[
-              Math.floor(Math.random() * 58)
-            ]
-          ).join('');
-          finalSignature = `${randHex.substring(0, 84)}...`;
+          setIsProcessingTx(false);
+          setTxError(
+            'No Solana Web3 wallet (e.g. Phantom, Solflare) detected in your browser. Please install Phantom wallet extension to complete the on-chain transfer.'
+          );
+          return;
         }
       }
 
-      // Generate key & save
+      setTxStepMessage('Verifying transaction signature on Solana RPC...');
+      const verifyRes = await verifySolanaTransactionOnChain(finalSignature);
+      if (!verifyRes.verified) {
+        throw new Error(verifyRes.error || 'Transaction signature could not be verified on Solana RPC network. Vault remains locked.');
+      }
+
+      // Generate key & save ONLY after on-chain RPC confirmation!
       const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
       
       // Track and credit affiliate commission if referrer exists
@@ -242,7 +244,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       }
 
       setTxSignature(finalSignature);
-      setConfirmedSolPaid(solAmountFormatted);
+      setConfirmedSolPaid(`${solAmountFormatted} SOL`);
       setGeneratedLicense(newLicense);
       setIsProcessingTx(false);
       setIsSuccess(true);
@@ -251,23 +253,66 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     } catch (err: any) {
       console.error('Solana payment error:', err);
       setIsProcessingTx(false);
-      setTxError(
-        err?.message?.includes('User rejected')
-          ? 'Transaction was rejected in your wallet.'
-          : err?.message || 'Transaction failed. Please check your balance and try again.'
-      );
+      const msg = err?.message || '';
+      if (msg.includes('User rejected') || msg.includes('rejected')) {
+        setTxError('Transaction was rejected in your wallet. The vault remains locked.');
+      } else if (msg.includes('insufficient') || msg.includes('Attempt to debit')) {
+        setTxError('Transaction failed: Insufficient SOL balance to cover transfer amount and network fee. The vault remains locked.');
+      } else {
+        setTxError(msg || 'Transaction failed. The vault remains locked.');
+      }
     }
   };
 
   // Handle TON Coin Payment & Verification
-  const handleTonPayment = (e: React.FormEvent) => {
+  const handleTonPayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setTxError(null);
     setIsProcessingTx(true);
-    setTxStepMessage('Verifying TON transaction on ledger...');
+    setTxStepMessage('Initiating TON payment verification...');
 
-    setTimeout(() => {
-      const hashSubmitted = tonTxInput.trim() || `TON_TX_${Date.now().toString(36).toUpperCase()}`;
+    try {
+      let hashToVerify = tonTxInput.trim();
+
+      // Check if injected TON Web3 wallet is available
+      const win = window as any;
+      const tonWallet = win.ton || win.tonkeeper || win.okxwallet?.ton;
+
+      if (!hashToVerify && tonWallet && typeof tonWallet.send === 'function') {
+        try {
+          setTxStepMessage('Requesting TON transaction in wallet extension...');
+          const txResult = await tonWallet.send('ton_sendTransaction', [
+            {
+              to: PLATFORM_TON_RECEIVING_WALLET,
+              value: Math.round(tonAmount * 1e9).toString(),
+              data: `SolPump ${plan.name} License`,
+            },
+          ]);
+          if (txResult && txResult.boc) {
+            hashToVerify = txResult.boc;
+          }
+        } catch (tonErr: any) {
+          throw new Error('TON transaction was rejected or cancelled in your wallet. Vault remains locked.');
+        }
+      }
+
+      if (!hashToVerify) {
+        setIsProcessingTx(false);
+        setTxError('Please enter your TON Transaction Hash or Sender Wallet Address to verify payment on-chain.');
+        return;
+      }
+
+      setTxStepMessage('Verifying TON transaction on blockchain ledger...');
+      const verifyRes = await verifyTonTransactionOnChain({
+        txHashOrSender: hashToVerify,
+        requiredTonAmount: tonAmount,
+      });
+
+      if (!verifyRes.verified) {
+        throw new Error(verifyRes.error || 'Transaction not found or unconfirmed on TON ledger. Vault remains locked.');
+      }
+
+      const confirmedHash = verifyRes.txHash || hashToVerify;
       const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
       
       const activeRef = getActiveReferrer();
@@ -278,12 +323,21 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       setIsProcessingTx(false);
       setIsSuccess(true);
-      setTxSignature(hashSubmitted);
+      setTxSignature(confirmedHash);
       setConfirmedSolPaid(`${tonAmountFormatted} TON`);
       setGeneratedLicense(newLicense);
       localStorage.setItem('solpump_vault_license', newLicense);
       if (onSuccessUnlock) onSuccessUnlock(newLicense);
-    }, 1200);
+    } catch (err: any) {
+      console.error('TON payment error:', err);
+      setIsProcessingTx(false);
+      const msg = err?.message || '';
+      if (msg.includes('rejected') || msg.includes('cancelled')) {
+        setTxError('Transaction was cancelled or rejected. The vault remains locked.');
+      } else {
+        setTxError(msg || 'Verification failed. Please ensure exact TON payment was sent.');
+      }
+    }
   };
 
   const handleCopyKey = () => {

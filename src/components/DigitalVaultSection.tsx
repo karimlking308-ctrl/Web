@@ -53,6 +53,8 @@ import {
 import {
   PLATFORM_RECEIVING_WALLET,
   getInjectedSolanaWallet,
+  verifySolanaTransactionOnChain,
+  verifyTonTransactionOnChain,
 } from '../utils/solanaPayment';
 import { PlanItem } from './CheckoutModal';
 
@@ -99,31 +101,74 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
     }
   }, [verifiedLicenseKey]);
 
-  // Handle Manual License Verification
-  const handleVerifyLicense = (e: React.FormEvent) => {
+  // Handle Manual License or On-Chain Tx Verification
+  const handleVerifyLicense = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
     setSuccessMessage(null);
 
     const cleanInput = licenseInput.trim();
     if (!cleanInput) {
-      setErrorMessage('Please enter a license key or Solana transaction signature.');
+      setErrorMessage('Please enter a license key or on-chain transaction signature.');
       return;
     }
 
     setIsVerifying(true);
-    setTimeout(() => {
+
+    try {
+      const upper = cleanInput.toUpperCase();
+      // Check 1: Standard verified license key format
+      if (upper.startsWith('SOLPUMP-') && upper.length >= 15) {
+        setIsUnlocked(true);
+        setActiveLicenseKey(upper);
+        localStorage.setItem('solpump_vault_license', upper);
+        setSuccessMessage('Creator License Key verified! All digital assets, source codes, and n8n workflows unlocked.');
+        setLicenseInput('');
+        setIsVerifying(false);
+        return;
+      }
+
+      // Check 2: Solana transaction signature on-chain verification
+      if (cleanInput.length >= 60 && !cleanInput.includes(' ')) {
+        const solVerify = await verifySolanaTransactionOnChain(cleanInput);
+        if (solVerify.verified) {
+          const generatedKey = `SOLPUMP-TX-${cleanInput.substring(0, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+          setIsUnlocked(true);
+          setActiveLicenseKey(generatedKey);
+          localStorage.setItem('solpump_vault_license', generatedKey);
+          setSuccessMessage('Solana transaction signature verified on-chain! Digital Vault unlocked.');
+          setLicenseInput('');
+          setIsVerifying(false);
+          return;
+        }
+      }
+
+      // Check 3: TON transaction hash on-chain verification
+      const tonVerify = await verifyTonTransactionOnChain({
+        txHashOrSender: cleanInput,
+        requiredTonAmount: 1.5,
+      });
+      if (tonVerify.verified) {
+        const generatedKey = `SOLPUMP-TON-${(tonVerify.txHash || cleanInput).substring(0, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+        setIsUnlocked(true);
+        setActiveLicenseKey(generatedKey);
+        localStorage.setItem('solpump_vault_license', generatedKey);
+        setSuccessMessage('TON transaction hash confirmed on-chain! Digital Vault unlocked.');
+        setLicenseInput('');
+        setIsVerifying(false);
+        return;
+      }
+
+      // Fallback: Invalid input
       setIsVerifying(false);
-      const validKey = cleanInput.toUpperCase();
-      setIsUnlocked(true);
-      setActiveLicenseKey(validKey);
-      localStorage.setItem('solpump_vault_license', validKey);
-      setSuccessMessage('Vault access granted! All digital assets and n8n workflows are now unlocked.');
-      setLicenseInput('');
-    }, 700);
+      setErrorMessage('Invalid license key or unverified transaction signature. The vault remains locked.');
+    } catch (err: any) {
+      setIsVerifying(false);
+      setErrorMessage(err?.message || 'Verification failed. The vault remains locked.');
+    }
   };
 
-  // Handle Wallet Verification
+  // Handle Wallet Connection (Links address ONLY, does NOT unlock vault)
   const handleVerifyWallet = async () => {
     setErrorMessage(null);
     setSuccessMessage(null);
@@ -134,7 +179,7 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
       if (!detected) {
         setIsVerifying(false);
         setErrorMessage(
-          'No Solana wallet extension detected. You can unlock using your Creator License Key below!'
+          'No Solana wallet extension detected in browser. Please install Phantom wallet or enter a verified License Key.'
         );
         return;
       }
@@ -142,16 +187,15 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
       const res = await detected.adapter.connect();
       const pubkey = res.publicKey?.toString() || detected.adapter.publicKey?.toString() || '';
       setConnectedWallet(pubkey);
-
-      const generatedKey = `SOLPUMP-WALLET-${pubkey.substring(0, 4)}-${pubkey.slice(-4)}-${Date.now().toString().slice(-4)}`;
-      setIsUnlocked(true);
-      setActiveLicenseKey(generatedKey);
-      localStorage.setItem('solpump_vault_license', generatedKey);
-      setSuccessMessage(`Connected wallet ${pubkey.substring(0, 6)}...${pubkey.slice(-6)} verified!`);
       setIsVerifying(false);
+
+      // CRITICAL SECURITY FIX: Link wallet ONLY, DO NOT GRANT ACCESS UNTIL PAID!
+      setSuccessMessage(
+        `Wallet ${pubkey.substring(0, 6)}...${pubkey.slice(-6)} linked! Note: Connecting a wallet links your address only. To unlock vault downloads, please complete payment or enter a verified license key.`
+      );
     } catch (err: any) {
       setIsVerifying(false);
-      setErrorMessage(err?.message || 'Wallet connection was cancelled.');
+      setErrorMessage(err?.message || 'Wallet connection was cancelled or rejected.');
     }
   };
 
@@ -289,7 +333,7 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
                 <p className="text-xs text-slate-300 mt-1">
                   {isUnlocked
                     ? `Active Token: ${activeLicenseKey}`
-                    : 'Unlock instantly with your purchased license key or verified Solana wallet.'}
+                    : 'Connect wallet to link address, or unlock instantly with a verified on-chain payment / license key.'}
                 </p>
               </div>
             </div>
@@ -338,7 +382,7 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
                     className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-white flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
                   >
                     <Wallet className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Verify Wallet</span>
+                    <span>Connect / Link Wallet</span>
                   </button>
 
                   <button
