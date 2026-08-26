@@ -33,6 +33,9 @@ import {
 } from 'lucide-react';
 import { DIGITAL_PRODUCTS, DigitalProduct } from '../data/digitalProducts';
 import {
+  generateTelegramMiniAppZIP,
+  generateWhatsAppAILeadGenZIP,
+  generateSolanaSniperBotZIP,
   generateN8nWorkflowsJSON,
   generateN8nWorkflowsZIP,
   generateWebhookBoilerplateZIP,
@@ -162,7 +165,13 @@ export const DigitalVaultSection: React.FC<DigitalVaultSectionProps> = ({
     setDownloadingId(productId + (specificFormat || ''));
 
     try {
-      if (productId === 'product-n8n-workflows') {
+      if (productId === 'product-telegram-miniapp') {
+        await generateTelegramMiniAppZIP(activeLicenseKey || 'SOLPUMP-TMA-2026');
+      } else if (productId === 'product-whatsapp-ai-leadgen') {
+        await generateWhatsAppAILeadGenZIP(activeLicenseKey || 'SOLPUMP-WHATSAPP-2026');
+      } else if (productId === 'product-solana-sniper-bot') {
+        await generateSolanaSniperBotZIP(activeLicenseKey || 'SOLPUMP-SNIPER-2026');
+      } else if (productId === 'product-n8n-workflows') {
         if (specificFormat === 'json') {
           generateN8nWorkflowsJSON(activeLicenseKey || 'SOLPUMP-N8N-PRO-2026');
         } else {

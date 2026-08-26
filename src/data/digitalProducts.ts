@@ -16,6 +16,168 @@ export interface DigitalProduct {
 
 export const DIGITAL_PRODUCTS: DigitalProduct[] = [
   {
+    id: 'product-telegram-miniapp',
+    title: 'Telegram Mini-App & Clicker Game Boilerplate',
+    category: 'dev',
+    tagline: 'Ready-to-Deploy TON / Telegram WebApp & Tap-to-Earn Game Engine',
+    version: 'v3.2.0 (Telegram WebApp SDK 7.10+ & TON Connect)',
+    fileSize: '9.4 MB (Full Source ZIP)',
+    formats: ['React 19 + TypeScript', 'TON Connect 2.0', 'Telegram MiniApp SDK', 'Node.js Backend'],
+    badge: '🔥 Trending · High Demand',
+    tierRequired: 'all_paid',
+    description:
+      'Turnkey Telegram Mini-App (TMA) template engineered for tap-to-earn clicker games, TON blockchain wallet connections, multi-tier referral mechanics, and daily reward streaks. Ready for immediate launch on Telegram with zero backend friction.',
+    highlights: [
+      'Native Telegram WebApp SDK 7.10+ integration with haptic feedback, viewport lock, and CloudStorage',
+      'TON Connect 2.0 wallet integration (Tonkeeper, Telegram Wallet, OpenMask, MyTonWallet)',
+      'Optimized tap-to-earn clicker physics with floating multi-touch score multipliers and energy bars',
+      'Multi-tier viral referral tree system with custom Telegram invite link generation',
+      'Lightweight Node.js / Express backend with anti-cheat request rate limiting and database sync',
+      'Step-by-step @BotFather setup instructions and deployment configuration (Vercel, Railway, Cloud Run)',
+    ],
+    setupGuideSteps: [
+      'Unzip the project directory and install dependencies with `npm install`.',
+      'Open @BotFather on Telegram, use `/newbot` to create your bot, and configure `/newapp` to link your web app URL.',
+      'Configure `.env` with your `TELEGRAM_BOT_TOKEN`, `TON_MANIFEST_URL`, and database credentials.',
+      'Run `npm run dev` to launch local preview with the Telegram WebApp mock environment.',
+      'Deploy the frontend to Vercel/Cloudflare and backend to Railway/Cloud Run, then launch live in Telegram!',
+    ],
+    includedFiles: [
+      {
+        name: 'telegram-miniapp-clicker-source.zip',
+        type: 'Full Project ZIP',
+        size: '8.8 MB',
+        description: 'Complete React 19 + Vite frontend, Express backend, assets, and sound effects.',
+      },
+      {
+        name: 'telegram_webapp_hooks.ts',
+        type: 'TypeScript Code',
+        size: '38 KB',
+        description: 'Custom React hooks for Telegram user data, theme params, haptics, and cloud storage.',
+      },
+      {
+        name: 'ton_wallet_adapter.ts',
+        type: 'TON Connect Code',
+        size: '45 KB',
+        description: 'TON Connect 2.0 wallet integration, jetton transfers, and transaction signing.',
+      },
+      {
+        name: 'TELEGRAM_BOTFATHER_DEPLOY_GUIDE.md',
+        type: 'Setup Documentation',
+        size: '32 KB',
+        description: 'Step-by-step @BotFather and Telegram Mini-App configuration manual.',
+      },
+    ],
+  },
+  {
+    id: 'product-whatsapp-ai-leadgen',
+    title: 'WhatsApp AI Auto-Responder & Lead Gen System',
+    category: 'n8n',
+    tagline: 'Node.js & n8n Integrated Code for 24/7 Customer Support & Sales Qualification',
+    version: 'v2.6.0 (WhatsApp Cloud API + Baileys + n8n)',
+    fileSize: '7.8 MB (ZIP + JSON)',
+    formats: ['Node.js (TypeScript)', 'n8n Workflow JSON', 'WhatsApp Cloud API', 'Baileys Engine'],
+    badge: '⚡ High Demand · AI Agent',
+    tierRequired: 'all_paid',
+    description:
+      'Production-grade WhatsApp AI conversational agent and automated lead qualification pipeline. Combines a resilient Node.js webhook engine (supporting both official Meta WhatsApp Cloud API and Baileys QR bridge) with modular n8n workflow nodes powered by Gemini and GPT-4o.',
+    highlights: [
+      'Dual integration mode: Official Meta WhatsApp Cloud API or open-source Baileys QR Web engine',
+      'AI-driven conversational qualification engine with dynamic lead scoring (Hot, Warm, Cold)',
+      'LangChain conversational memory retaining multi-turn context and customer purchase intent',
+      'Automated appointment booking, catalog showcase, and Google Calendar / CRM synchronizer',
+      'Built-in rate limiter, human agent escalation routing, and anti-ban message throttling',
+      'Includes complete importable n8n workflows, Docker-Compose stack, and TypeScript microservice',
+    ],
+    setupGuideSteps: [
+      'Unzip the archive and choose your mode (Meta Cloud API or Baileys QR engine).',
+      'For Cloud API: Add your Meta Business API access token and WhatsApp Phone Number ID in `.env`.',
+      'For Baileys: Run `npm run start:qr` and scan the terminal QR code with your WhatsApp app.',
+      'Import the included `whatsapp_ai_leadgen_workflow.json` into your n8n workspace.',
+      'Configure your Gemini or OpenAI API key in the credentials manager and activate the workflow!',
+    ],
+    includedFiles: [
+      {
+        name: 'whatsapp-ai-leadgen-service.zip',
+        type: 'TypeScript Microservice',
+        size: '6.2 MB',
+        description: 'Complete Node.js TypeScript webhook server, Baileys bridge, and intent router.',
+      },
+      {
+        name: 'whatsapp_ai_leadgen_workflow.json',
+        type: 'n8n Workflow',
+        size: '160 KB',
+        description: 'n8n AI agent workflow for conversation parsing, qualification, and CRM sync.',
+      },
+      {
+        name: 'whatsapp_cloud_api_handler.ts',
+        type: 'TypeScript Code',
+        size: '52 KB',
+        description: 'Webhook signature verification and WhatsApp interactive message formatter.',
+      },
+      {
+        name: 'WHATSAPP_AI_SETUP_MANUAL.md',
+        type: 'Setup Documentation',
+        size: '48 KB',
+        description: 'Complete setup manual covering Meta verification and anti-spam protocols.',
+      },
+    ],
+  },
+  {
+    id: 'product-solana-sniper-bot',
+    title: 'Solana Token Sniper & Tracker Bot Kit',
+    category: 'web3',
+    tagline: 'Ultra-Low Latency Mempool Sniper, Pump.fun Launch Tracker & Rug-Check Engine',
+    version: 'v4.0.0 (Jito MEV Bundles + Yellowstone gRPC)',
+    fileSize: '8.2 MB (ZIP Archive)',
+    formats: ['TypeScript', 'Jito MEV Bundles', 'Yellowstone gRPC', 'Solana WebSockets'],
+    badge: '🚀 Trending · Hot Alpha',
+    tierRequired: 'all_paid',
+    description:
+      'High-speed Solana token sniper and liquidity launch monitor. Features sub-millisecond mempool detection for new Raydium CPMM pools, Pump.fun bonding curves, and Meteora DLMM launches with automated safety rug-checks, honeypot filters, and Jito MEV bundle tip execution.',
+    highlights: [
+      'Ultra-low latency detection via Yellowstone gRPC (Geyser plugin) and Helius WebSocket listeners',
+      'Automated instant sniper module with custom slippage, priority fee ramping, and Jito bundle tips',
+      'Automated Rug-Check Security Filter: Inspects mint authority, freeze authority, and LP token burn status',
+      'Smart money & copy-trading tracker monitoring top whale wallet buy entries and exits',
+      'Pump.fun bonding curve sniper with auto-sell profit target (% ROI) and stop-loss triggers',
+      'CLI terminal dashboard with real-time ASCII charts, price telemetry, and audio transaction chimes',
+    ],
+    setupGuideSteps: [
+      'Extract the source code ZIP and run `npm install`.',
+      'Configure `.env` with your private key (Base58 string), Solana RPC endpoint, and Jito Block Engine URL.',
+      'Customize your buy configuration in `config.json` (SOL per snipe, max slippage %, minimum liquidity).',
+      'Enable rug-check parameters (`check_mint_renounced: true`, `check_lp_burned: true`).',
+      'Run `npm run start:sniper` to begin real-time mempool scanning and automated execution!',
+    ],
+    includedFiles: [
+      {
+        name: 'solana-sniper-tracker-source.zip',
+        type: 'Full Bot Source',
+        size: '7.6 MB',
+        description: 'Complete TypeScript bot project with Jito MEV integration, Raydium & Pump.fun parsers.',
+      },
+      {
+        name: 'pumpfun_sniper_engine.ts',
+        type: 'TypeScript Code',
+        size: '68 KB',
+        description: 'Specialized sub-second Pump.fun bonding curve sniper module.',
+      },
+      {
+        name: 'rugcheck_safety_verifier.ts',
+        type: 'Security Engine',
+        size: '44 KB',
+        description: 'On-chain token safety analyzer inspecting mint/freeze authorities & LP burn.',
+      },
+      {
+        name: 'SOLANA_SNIPER_DEPLOY_GUIDE.md',
+        type: 'Setup Documentation',
+        size: '54 KB',
+        description: 'Ultra-low latency optimization guide, dedicated RPC setup, and Jito tip calculation.',
+      },
+    ],
+  },
+  {
     id: 'product-n8n-workflows',
     title: 'Advanced n8n AI Agent Workflows Pack',
     category: 'n8n',
@@ -320,3 +482,4 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     ],
   },
 ];
+

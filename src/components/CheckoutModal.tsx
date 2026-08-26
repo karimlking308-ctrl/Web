@@ -33,6 +33,9 @@ import {
   WalletAdapter,
 } from '../utils/solanaPayment';
 import {
+  generateTelegramMiniAppZIP,
+  generateWhatsAppAILeadGenZIP,
+  generateSolanaSniperBotZIP,
   generateN8nWorkflowsJSON,
   generateN8nWorkflowsZIP,
   generateWebhookBoilerplateZIP,
@@ -278,11 +281,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   // Asset downloads from success modal
   const handleTriggerDownload = async (
-    type: 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
+    type: 'telegram-zip' | 'whatsapp-zip' | 'sniper-zip' | 'n8n-json' | 'n8n-zip' | 'webhooks-zip' | 'buybot-zip' | 'prompts-json' | 'prompts-md' | 'react-zip' | 'anchor-zip' | 'all'
   ) => {
     setActiveDownload(type);
     try {
-      if (type === 'n8n-json') {
+      if (type === 'telegram-zip') {
+        await generateTelegramMiniAppZIP(generatedLicense || 'SOLPUMP-TMA-2026');
+      } else if (type === 'whatsapp-zip') {
+        await generateWhatsAppAILeadGenZIP(generatedLicense || 'SOLPUMP-WHATSAPP-2026');
+      } else if (type === 'sniper-zip') {
+        await generateSolanaSniperBotZIP(generatedLicense || 'SOLPUMP-SNIPER-2026');
+      } else if (type === 'n8n-json') {
         generateN8nWorkflowsJSON(generatedLicense);
       } else if (type === 'n8n-zip') {
         await generateN8nWorkflowsZIP(generatedLicense);
@@ -431,6 +440,69 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               </h4>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {/* Product: Telegram Mini-App */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('telegram-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-amber-400 transition-colors">
+                      Telegram Mini-App
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/20 text-amber-300 font-mono-code font-bold">
+                      Trending
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span>TON + React 19 (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Product: WhatsApp AI Lead Gen */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('whatsapp-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                      WhatsApp AI Agent
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono-code font-bold">
+                      High Demand
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Bot className="w-3 h-3 text-emerald-400" />
+                    <span>Node + n8n (.ZIP)</span>
+                  </span>
+                </button>
+
+                {/* Product: Solana Sniper Bot */}
+                <button
+                  type="button"
+                  onClick={() => handleTriggerDownload('sniper-zip')}
+                  disabled={!!activeDownload}
+                  className="p-3 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-left transition-all flex flex-col justify-between cursor-pointer disabled:opacity-50 group"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-bold text-white group-hover:text-teal-400 transition-colors">
+                      Solana Sniper Bot
+                    </p>
+                    <span className="text-[9px] px-1 py-0.2 rounded bg-teal-500/20 text-teal-300 font-mono-code font-bold">
+                      Hot Alpha
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono-code text-slate-400 mt-2 flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-teal-400" />
+                    <span>Jito MEV (.ZIP)</span>
+                  </span>
+                </button>
+
                 {/* Product: n8n Workflows */}
                 <button
                   type="button"

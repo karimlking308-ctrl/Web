@@ -94,6 +94,27 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-2">
               <li
                 onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
+              >
+                <span>Telegram Mini-App &amp; Clicker</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-amber-500/15 text-amber-300 font-mono-code">Hot</span>
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
+              >
+                <span>WhatsApp AI Auto-Responder</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-300 font-mono-code">AI</span>
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
+                className="text-slate-400 hover:text-white cursor-pointer flex items-center justify-between"
+              >
+                <span>Solana Token Sniper &amp; Bot</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-teal-500/15 text-teal-300 font-mono-code">MEV</span>
+              </li>
+              <li
+                onClick={() => onNavigate('vault')}
                 className="text-slate-400 hover:text-white cursor-pointer"
               >
                 n8n AI Agent Workflows (.JSON)
@@ -108,19 +129,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('vault')}
                 className="text-slate-400 hover:text-white cursor-pointer"
               >
-                Webhook &amp; API Boilerplates
-              </li>
-              <li
-                onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
-              >
                 1,500+ AI Prompt Vault (JSON/MD)
-              </li>
-              <li
-                onClick={() => onNavigate('vault')}
-                className="text-slate-400 hover:text-white cursor-pointer"
-              >
-                React 19 SaaS Starter Kit
               </li>
               <li
                 onClick={() => onNavigate('vault')}
