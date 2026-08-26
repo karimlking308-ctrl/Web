@@ -1,6 +1,0 @@
-{
-  "name": "SOL-PUMP Commerce OS",
-  "description": "An all-in-one AI-powered commerce platform that allows entrepreneurs and businesses to build stores, manage products, orders, and scale globally.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
