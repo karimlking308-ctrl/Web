@@ -13,11 +13,14 @@ import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
 import { CheckoutModal, PlanItem } from './components/CheckoutModal';
+import { AffiliateModal } from './components/AffiliateModal';
 import { ToolItem } from './data/toolsData';
+import { captureReferralFromUrl } from './utils/affiliateStorage';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isAffiliateModalOpen, setIsAffiliateModalOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<ToolItem | null>(null);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all');
   const [selectedPlan, setSelectedPlan] = useState<PlanItem | null>(null);
@@ -29,6 +32,8 @@ export default function App() {
     if (saved) {
       setVerifiedLicenseKey(saved);
     }
+    // Capture any incoming referral query parameter ?ref=...
+    captureReferralFromUrl();
   }, []);
 
   const scrollToSection = (sectionId: string) => {
@@ -64,6 +69,7 @@ export default function App() {
       {/* Top Navigation */}
       <Navbar
         onOpenLogin={() => setIsLoginOpen(true)}
+        onOpenAffiliate={() => setIsAffiliateModalOpen(true)}
         activeSection={activeSection}
         onNavigate={scrollToSection}
       />
@@ -143,6 +149,15 @@ export default function App() {
 
       {/* Interactive Modals */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <AffiliateModal
+        isOpen={isAffiliateModalOpen}
+        onClose={() => setIsAffiliateModalOpen(false)}
+        userWalletAddress={verifiedLicenseKey ? 'WalletConnected' : null}
+        onConnectWallet={() => {
+          setIsAffiliateModalOpen(false);
+          setIsLoginOpen(true);
+        }}
+      />
       <ToolDetailModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
       <CheckoutModal
         isOpen={isCheckoutOpen}

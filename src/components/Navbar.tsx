@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Menu, X, Shield, ArrowUpRight, Lock, Key, FolderArchive } from 'lucide-react';
+import { Sparkles, Menu, X, Shield, ArrowUpRight, Lock, Key, FolderArchive, Users } from 'lucide-react';
 import { HeaderSocialBar, SOCIAL_LINKS, TelegramIcon, TwitterXIcon, FacebookIcon } from './SocialLinks';
 
 interface NavbarProps {
   onOpenLogin: () => void;
+  onOpenAffiliate: () => void;
   activeSection: string;
   onNavigate: (sectionId: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNavigate }) => {
+export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, onOpenAffiliate, activeSection, onNavigate }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -118,6 +119,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
           <HeaderSocialBar />
 
           <button
+            onClick={onOpenAffiliate}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-[11px] text-emerald-400 font-mono-code transition-colors cursor-pointer"
+          >
+            <Users className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Affiliates (30%)</span>
+          </button>
+
+          <button
             onClick={() => handleLinkClick('vault')}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-300 font-mono-code transition-colors cursor-pointer"
           >
@@ -211,6 +220,19 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogin, activeSection, onNa
                 <span>Facebook</span>
               </a>
             </div>
+          </div>
+
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAffiliate();
+              }}
+              className="w-full py-2.5 px-3 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-mono-code text-xs font-semibold flex items-center justify-center gap-2"
+            >
+              <Users className="w-4 h-4 text-emerald-400" />
+              <span>Affiliate &amp; Referral Program (30%)</span>
+            </button>
           </div>
 
           <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400 px-1">

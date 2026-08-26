@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getActiveReferrer, recordReferredPurchase } from '../utils/affiliateStorage';
 import {
   X,
   Check,
@@ -222,6 +223,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
       // Generate key & save
       const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+      
+      // Track and credit affiliate commission if referrer exists
+      const activeRef = getActiveReferrer();
+      if (activeRef) {
+        const numericUsd = parseFloat(plan.price.replace(/[^0-9.]/g, '')) || 9;
+        recordReferredPurchase(activeRef, plan.id, plan.name, numericUsd, solPrice);
+      }
+
       setTxSignature(finalSignature);
       setConfirmedSolPaid(solAmountFormatted);
       setGeneratedLicense(newLicense);
@@ -249,6 +258,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTxStepMessage('Processing secure card payment...');
     setTimeout(() => {
       const newLicense = `SOLPUMP-${plan.id.toUpperCase()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+      
+      const activeRef = getActiveReferrer();
+      if (activeRef) {
+        const numericUsd = parseFloat(plan.price.replace(/[^0-9.]/g, '')) || 9;
+        recordReferredPurchase(activeRef, plan.id, plan.name, numericUsd, solPrice);
+      }
+
       setIsProcessingTx(false);
       setIsSuccess(true);
       setTxSignature(`CARD_TX_${Date.now()}`);
