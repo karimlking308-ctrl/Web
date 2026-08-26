@@ -83,6 +83,7 @@ export const MerchantDashboard: React.FC = () => {
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showAddDiscountModal, setShowAddDiscountModal] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [mobileMoreOpen, setMobileMoreOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [productFilter, setProductFilter] = useState<'all' | 'active' | 'draft' | 'archived'>('all');
   const [productSearch, setProductSearch] = useState('');
@@ -182,9 +183,9 @@ export const MerchantDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex font-sans antialiased overflow-hidden">
       {/* ------------------------------------------------------------- */}
-      {/* 1. SOPHISTICATED NEUTRAL SIDEBAR */}
+      {/* 1. SOPHISTICATED NEUTRAL SIDEBAR (Desktop) */}
       {/* ------------------------------------------------------------- */}
-      <aside className="w-64 bg-white border-r border-slate-200 flex flex-col shrink-0 z-30 select-none">
+      <aside className="hidden md:flex w-64 bg-white border-r border-slate-200 flex-col shrink-0 z-30 select-none">
         {/* Sidebar Header */}
         <div className="h-16 px-5 border-b border-slate-200 flex items-center justify-between">
           <Logo size="md" light={false} showTagline={true} />
@@ -384,9 +385,40 @@ export const MerchantDashboard: React.FC = () => {
       {/* ------------------------------------------------------------- */}
       {/* 2. REFINED MAIN CONTENT WORKSPACE */}
       {/* ------------------------------------------------------------- */}
-      <div className="flex-1 flex flex-col bg-slate-50 text-slate-900 h-screen overflow-y-auto">
-        {/* Top Navigation Bar */}
-        <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-20 shrink-0">
+      <div className="flex-1 flex flex-col bg-slate-50 text-slate-900 h-screen overflow-y-auto pb-20 md:pb-0">
+        {/* Mobile Top Header Bar */}
+        <header className="md:hidden h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between sticky top-0 z-30 shrink-0">
+          <div className="flex items-center gap-2">
+            <Logo size="sm" light={false} showTagline={false} />
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setAiAssistantOpen(true)}
+              className="p-2 rounded-xl bg-indigo-50 text-indigo-700"
+              title="AI Copilot"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+            </button>
+            <button
+              onClick={() => setCommandPaletteOpen(true)}
+              className="p-2 rounded-xl text-slate-600 hover:bg-slate-100"
+              title="Search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => addNotificationToast('info', 'System Status', 'All edge checkout nodes operational.')}
+              className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 relative"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-indigo-600 ring-2 ring-white" />
+            </button>
+          </div>
+        </header>
+
+        {/* Desktop Top Navigation Bar */}
+        <header className="hidden md:flex h-16 bg-white border-b border-slate-200 px-6 items-center justify-between sticky top-0 z-20 shrink-0">
           {/* Global Search Input */}
           <div className="flex items-center gap-2 max-w-md w-full">
             <button
@@ -1395,6 +1427,169 @@ export const MerchantDashboard: React.FC = () => {
 
       {/* Global Toast Notifications Container */}
       <ToastContainer toasts={toasts} onDismiss={removeToast} />
+
+      {/* Mobile Bottom Navigation Bar */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 px-2 py-2 flex items-center justify-around shadow-lg">
+        <button
+          onClick={() => setActiveTab('overview')}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition ${
+            activeTab === 'overview' ? 'text-indigo-600 font-bold' : 'text-slate-500 font-medium'
+          }`}
+        >
+          <LayoutDashboard className="w-5 h-5" />
+          <span className="text-[10px]">Home</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('orders')}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition relative ${
+            activeTab === 'orders' ? 'text-indigo-600 font-bold' : 'text-slate-500 font-medium'
+          }`}
+        >
+          <ShoppingBag className="w-5 h-5" />
+          <span className="text-[10px]">Orders</span>
+          {orders.length > 0 && (
+            <span className="absolute top-0 right-2 w-4 h-4 bg-indigo-600 text-white rounded-full text-[9px] font-bold flex items-center justify-center">
+              {orders.length}
+            </span>
+          )}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('products')}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition ${
+            activeTab === 'products' ? 'text-indigo-600 font-bold' : 'text-slate-500 font-medium'
+          }`}
+        >
+          <Package className="w-5 h-5" />
+          <span className="text-[10px]">Products</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('customers')}
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition ${
+            activeTab === 'customers' ? 'text-indigo-600 font-bold' : 'text-slate-500 font-medium'
+          }`}
+        >
+          <Users className="w-5 h-5" />
+          <span className="text-[10px]">Customers</span>
+        </button>
+
+        <button
+          onClick={() => setMobileMoreOpen(true)}
+          className="flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition text-slate-500 font-medium hover:text-slate-900 cursor-pointer"
+        >
+          <MoreVertical className="w-5 h-5" />
+          <span className="text-[10px]">More</span>
+        </button>
+      </nav>
+
+      {/* Mobile More Menu Modal / Bottom Sheet */}
+      {mobileMoreOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-2xs flex items-end justify-center md:hidden">
+          <div className="bg-white w-full rounded-t-3xl p-6 space-y-6 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-200">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div>
+                <h3 className="text-base font-black text-slate-900">Merchant Tools & Menu</h3>
+                <p className="text-xs text-slate-500">{store?.name || 'Solpump Store'}</p>
+              </div>
+              <button
+                onClick={() => setMobileMoreOpen(false)}
+                className="p-2 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => { setActiveTab('inventory'); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left flex items-center gap-3 hover:bg-slate-100 cursor-pointer"
+              >
+                <Boxes className="w-5 h-5 text-indigo-600" />
+                <div>
+                  <div className="font-bold text-xs text-slate-900">Inventory</div>
+                  <div className="text-[10px] text-slate-500">Stock & Warehouses</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('discounts'); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left flex items-center gap-3 hover:bg-slate-100 cursor-pointer"
+              >
+                <Percent className="w-5 h-5 text-emerald-600" />
+                <div>
+                  <div className="font-bold text-xs text-slate-900">Discounts</div>
+                  <div className="text-[10px] text-slate-500">Coupons & Promos</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('analytics'); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left flex items-center gap-3 hover:bg-slate-100 cursor-pointer"
+              >
+                <BarChart3 className="w-5 h-5 text-purple-600" />
+                <div>
+                  <div className="font-bold text-xs text-slate-900">Analytics</div>
+                  <div className="text-[10px] text-slate-500">Reports & KPIs</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setAiAssistantOpen(true); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-indigo-50 border border-indigo-200 text-left flex items-center gap-3 hover:bg-indigo-100 cursor-pointer"
+              >
+                <Sparkles className="w-5 h-5 text-indigo-600" />
+                <div>
+                  <div className="font-bold text-xs text-indigo-900">AI Commerce</div>
+                  <div className="text-[10px] text-indigo-600">Smart Business Copilot</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setShowStoreBuilder(true); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left flex items-center gap-3 hover:bg-slate-100 cursor-pointer"
+              >
+                <Globe className="w-5 h-5 text-sky-600" />
+                <div>
+                  <div className="font-bold text-xs text-slate-900">Online Store</div>
+                  <div className="text-[10px] text-slate-500">Store Builder & Theme</div>
+                </div>
+              </button>
+
+              <button
+                onClick={() => { setActiveTab('settings'); setMobileMoreOpen(false); }}
+                className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left flex items-center gap-3 hover:bg-slate-100 cursor-pointer"
+              >
+                <Settings className="w-5 h-5 text-slate-700" />
+                <div>
+                  <div className="font-bold text-xs text-slate-900">Store Settings</div>
+                  <div className="text-[10px] text-slate-500">Preferences & Profile</div>
+                </div>
+              </button>
+            </div>
+
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-9 h-9 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center">
+                  {user?.name ? user.name.charAt(0) : 'A'}
+                </div>
+                <div>
+                  <div className="font-bold text-xs text-slate-900">{user?.name || 'Alexander'}</div>
+                  <div className="text-[10px] text-slate-500">{store?.domain || 'sol-pump.store'}</div>
+                </div>
+              </div>
+              <button
+                onClick={() => { logout(); setMobileMoreOpen(false); }}
+                className="px-4 py-2 rounded-xl bg-rose-50 text-rose-600 font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Log out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

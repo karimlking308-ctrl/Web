@@ -68,6 +68,7 @@ interface ServerOrder {
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   paymentStatus: 'unpaid' | 'pending' | 'paid' | 'failed' | 'refunded';
   paymentMethod: string;
+  merchantNotes?: string;
   stripePaymentIntentId?: string;
   stripeClientSecret?: string;
   createdAt: string;
