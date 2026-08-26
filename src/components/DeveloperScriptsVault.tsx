@@ -14,6 +14,7 @@ import {
   Send,
 } from 'lucide-react';
 import { DEVELOPER_SCRIPTS, DeveloperScript } from '../data/developerScripts';
+import { triggerMonetagDirectLink } from '../utils/monetag';
 import {
   generateBulkSenderScriptZIP,
   generateTelegramBroadcastScriptZIP,
@@ -57,6 +58,7 @@ export const DeveloperScriptsVault: React.FC<DeveloperScriptsVaultProps> = () =>
 
   const handleDownloadScript = async (script: DeveloperScript, e: React.MouseEvent) => {
     e.stopPropagation();
+    triggerMonetagDirectLink();
     setDownloadingId(script.id);
     setDownloadToast(null);
 

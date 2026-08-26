@@ -17,6 +17,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 import { DIGITAL_PRODUCTS, DigitalProduct } from '../data/digitalProducts';
+import { triggerMonetagDirectLink } from '../utils/monetag';
 import {
   generateTelegramMiniAppZIP,
   generateWhatsAppAILeadGenZIP,
@@ -82,6 +83,9 @@ export const DigitalVaultSection: React.FC = () => {
 
   // Trigger Asset Downloads - 1-Click Instant Direct Access
   const handleDownloadProduct = async (productId: string, specificFormat?: string) => {
+    // Trigger Monetag direct link monetized navigation tab
+    triggerMonetagDirectLink();
+
     const downloadKey = productId + (specificFormat || '');
     setDownloadingId(downloadKey);
     setSuccessMessage(null);

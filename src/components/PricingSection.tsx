@@ -11,6 +11,7 @@ import {
   Code2,
 } from 'lucide-react';
 import { generateMasterBundleZIP } from '../utils/assetGenerators';
+import { triggerMonetagDirectLink } from '../utils/monetag';
 
 interface PricingSectionProps {
   onSelectPlan?: (plan: any) => void;
@@ -21,6 +22,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({ onExploreFree })
   const [downloading, setDownloading] = React.useState(false);
 
   const handleDownloadAll = async () => {
+    triggerMonetagDirectLink();
     setDownloading(true);
     try {
       await generateMasterBundleZIP('SOLPUMP-FREE-OPEN-ACCESS');
