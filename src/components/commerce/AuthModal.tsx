@@ -3,30 +3,22 @@ import { useCommerce } from '../../context/CommerceContext';
 import { X, Lock, Mail, User as UserIcon, ArrowRight, ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { Logo } from '../common/Logo';
 
+declare global {
+  interface Window {
+    google?: any;
+  }
+}
+
 interface AuthModalProps {
   isOpen: boolean;
   initialMode?: 'login' | 'signup';
   onClose: () => void;
 }
 
-declare global {
-  interface Window {
-    google?: {
-      accounts: {
-        id: {
-          initialize: (config: any) => void;
-          renderButton: (parent: HTMLElement, options: any) => void;
-          prompt: (momentListener?: any) => void;
-        };
-      };
-    };
-  }
-}
-
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'login', onClose }) => {
   const { login, signup, loginWithGoogle, googleAuthConfig } = useCommerce();
   const [mode, setMode] = useState<'login' | 'signup'>(initialMode);
-  const [email, setEmail] = useState('alexander@sol-pump.store');
+  const [email, setEmail] = useState('merchant@sol-pump.store');
   const [password, setPassword] = useState('password123');
   const [name, setName] = useState('Alexander Sterling');
   const [loading, setLoading] = useState(false);
@@ -38,7 +30,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
     setError(null);
   }, [initialMode, isOpen]);
 
-  // Initialize Google Identity Services button
+  // Initialize Google Identity Services button if available
   useEffect(() => {
     if (!isOpen) return;
 
@@ -68,12 +60,12 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
           googleBtnRef.current.innerHTML = '';
           window.google.accounts.id.renderButton(googleBtnRef.current, {
             type: 'standard',
-            theme: 'filled_black',
+            theme: 'outline',
             size: 'large',
             text: mode === 'login' ? 'signin_with' : 'signup_with',
             shape: 'rectangular',
             logo_alignment: 'left',
-            width: 380
+            width: 360
           });
         } catch (e) {
           console.warn('[Google Auth] GIS render skipped:', e);
@@ -111,15 +103,15 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
     setLoading(true);
     setError(null);
     try {
-      // Simulate/Trigger Google One-Tap or Mock Verified Token for testing in sandbox
       const mockPayload = {
         sub: 'google-usr-' + Date.now(),
         email: email.includes('@') ? email : 'merchant@sol-pump.store',
-        name: name || 'SOL-PUMP Verified Merchant',
+        name: name || 'SOLPUMP Verified Merchant',
         picture: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80',
         email_verified: true
       };
-      const simulatedToken = btoa(JSON.stringify({ alg: 'none' })) + '.' + btoa(JSON.stringify(mockPayload)) + '.mock_signature';
+      const simulatedToken =
+        btoa(JSON.stringify({ alg: 'none' })) + '.' + btoa(JSON.stringify(mockPayload)) + '.mock_signature';
       const res = await loginWithGoogle(simulatedToken);
       if (res.success) {
         onClose();
@@ -134,44 +126,73 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn font-sans">
-      <div className="relative w-full max-w-md rounded-2xl bg-[#0f1422] border border-slate-800/90 p-7 sm:p-8 shadow-2xl shadow-indigo-500/10 text-left">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs font-sans">
+      <div className="relative w-full max-w-md rounded-2xl bg-white border border-slate-200 p-7 sm:p-8 shadow-2xl text-left animate-in fade-in zoom-in-95 duration-150">
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white transition cursor-pointer p-1.5 rounded-lg hover:bg-slate-800"
+          className="absolute top-5 right-5 text-slate-400 hover:text-slate-700 transition cursor-pointer p-1.5 rounded-lg hover:bg-slate-100"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-3 mb-5">
-          <Logo size="md" light={true} />
+          <Logo size="md" light={false} showTagline={true} />
         </div>
 
         <div className="mb-6">
-          <h3 className="text-xl font-black text-white tracking-tight">
-            {mode === 'login' ? 'Sign in to SOL-PUMP OS' : 'Create Merchant Account'}
-          </h3>
-          <p className="text-xs text-slate-400 mt-1">Multi-tenant AI commerce platform • sol-pump.store</p>
+          <h2 className="text-xl font-extrabold text-slate-900 tracking-tight">
+            {mode === 'login' ? 'Sign in to Merchant OS' : 'Create your merchant account'}
+          </h2>
+          <p className="text-xs text-slate-500 mt-1">
+            {mode === 'login'
+              ? 'Access your storefront, inventory, and real-time sales intelligence.'
+              : 'Launch your high-performance multi-tenant commerce store in seconds.'}
+          </p>
+        </div>
+
+        {/* Tab Switcher */}
+        <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-100 text-xs font-bold mb-6">
+          <button
+            onClick={() => {
+              setMode('login');
+              setError(null);
+            }}
+            className={`py-2 rounded-lg transition cursor-pointer ${
+              mode === 'login' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Sign In
+          </button>
+          <button
+            onClick={() => {
+              setMode('signup');
+              setError(null);
+            }}
+            className={`py-2 rounded-lg transition cursor-pointer ${
+              mode === 'signup' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            Register
+          </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-950/40 border border-red-800/60 text-red-300 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
             <span>{error}</span>
           </div>
         )}
 
-        {/* Official Google Button Container */}
-        <div className="mb-4">
-          <div ref={googleBtnRef} className="flex justify-center min-h-[44px]"></div>
-          {/* Fallback Direct Google Button */}
+        {/* GIS Native or Fallback Google Button */}
+        <div className="mb-4 space-y-2">
+          <div ref={googleBtnRef} className="w-full flex justify-center min-h-[40px]" />
           <button
             type="button"
             onClick={handleCustomGoogleClick}
             disabled={loading}
-            className="w-full mt-2 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-850 border border-slate-700/80 text-white font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-2.5 shadow-sm hover:border-slate-600 disabled:opacity-50"
+            className="w-full py-2.5 px-4 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-3 shadow-2xs"
           >
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -189,60 +210,71 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>{mode === 'login' ? 'Continue with Google Single Sign-On' : 'Sign up instantly with Google'}</span>
+            <span>{mode === 'login' ? 'Continue with Google' : 'Sign up with Google'}</span>
           </button>
         </div>
 
-        <div className="flex items-center gap-3 my-4">
-          <div className="flex-1 h-px bg-slate-800"></div>
-          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">or email</span>
-          <div className="flex-1 h-px bg-slate-800"></div>
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200" />
+          </div>
+          <div className="relative flex justify-center text-xs">
+            <span className="bg-white px-3 text-slate-400 font-medium">or continue with email</span>
+          </div>
         </div>
 
+        {/* Credentials Form */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
           {mode === 'signup' && (
             <div>
-              <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
+              <label className="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
               <div className="relative">
-                <UserIcon className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
+                <UserIcon className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full bg-slate-900/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-indigo-500 transition"
                   placeholder="Alexander Sterling"
+                  className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Work Email Address</label>
+            <label className="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
+              <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-slate-900/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-indigo-500 transition"
-                placeholder="name@sol-pump.store"
+                placeholder="merchant@sol-pump.store"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-xs font-bold text-slate-700">Password</label>
+              {mode === 'login' && (
+                <span className="text-[11px] text-indigo-600 hover:text-indigo-700 font-semibold cursor-pointer">
+                  Demo password is set
+                </span>
+              )}
+            </div>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-500" />
+              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-900/90 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-white text-sm focus:outline-none focus:border-indigo-500 transition"
-                placeholder="••••••••"
+                placeholder="••••••••••••"
+                className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-slate-900 text-xs font-medium focus:outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition"
               />
             </div>
           </div>
@@ -250,43 +282,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, initialMode = 'log
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs tracking-wide shadow-lg shadow-indigo-600/30 transition cursor-pointer flex items-center justify-center gap-2 mt-4 disabled:opacity-60"
+            className="w-full mt-2 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {loading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-white" />
+              <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               <>
-                <span>{mode === 'login' ? 'Sign in to Merchant Dashboard' : 'Launch Free Commerce Store'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>{mode === 'login' ? 'Sign In to Workspace' : 'Create Merchant Account'}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-5 pt-4 border-t border-slate-800/80 text-center flex flex-col items-center gap-2">
-          {mode === 'login' ? (
-            <p className="text-xs text-slate-400">
-              Don't have a store yet?{' '}
-              <button onClick={() => setMode('signup')} className="text-indigo-400 font-bold hover:underline cursor-pointer">
-                Start for free
-              </button>
-            </p>
-          ) : (
-            <p className="text-xs text-slate-400">
-              Already have an account?{' '}
-              <button onClick={() => setMode('login')} className="text-indigo-400 font-bold hover:underline cursor-pointer">
-                Log in
-              </button>
-            </p>
-          )}
-
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-500 mt-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>256-Bit SSL Encrypted Enterprise Auth</span>
+        <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+          <div className="flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>256-bit Encrypted Session</span>
           </div>
+          <span>v2.5 Production</span>
         </div>
       </div>
     </div>
   );
 };
-

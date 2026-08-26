@@ -1,78 +1,103 @@
 import React, { useState } from 'react';
 import { useCommerce } from '../../context/CommerceContext';
-import { 
-  Sparkles, 
-  ArrowRight, 
-  Check, 
-  ShoppingBag, 
-  Globe, 
-  TrendingUp, 
-  Layers, 
-  ShieldCheck, 
-  Zap, 
-  BarChart3, 
-  Sliders, 
-  Boxes, 
-  Percent, 
-  Megaphone, 
-  ChevronRight, 
-  Star, 
-  Store, 
-  Tag, 
-  Smartphone, 
-  Monitor,
-  Heart,
+import {
+  Sparkles,
+  ArrowRight,
+  Check,
+  ShoppingBag,
+  TrendingUp,
+  Layers,
+  ShieldCheck,
+  Zap,
+  BarChart3,
+  Boxes,
+  Percent,
+  ChevronRight,
+  Store,
+  CreditCard,
+  Users,
   Search,
-  User,
-  ShoppingBag as CartIcon
+  CheckCircle2,
+  Package,
+  Activity,
+  ArrowUpRight,
+  Lock,
+  Globe,
+  Sliders,
+  DollarSign
 } from 'lucide-react';
 import { Logo } from '../common/Logo';
 import { AuthModal } from './AuthModal';
+import { CheckoutModal } from './CheckoutModal';
 
-export const LandingPage: React.FC = () => {
-  const { setActiveTab } = useCommerce();
+interface LandingPageProps {
+  onExplorePlatform?: () => void;
+}
+
+export const LandingPage: React.FC<LandingPageProps> = ({ onExplorePlatform }) => {
+  const { products, setViewMode, login } = useCommerce();
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+  const [previewProduct, setPreviewProduct] = useState<any>(products[0] || null);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [activeHeroTab, setActiveHeroTab] = useState<'overview' | 'orders' | 'ai'>('overview');
 
   const openAuth = (mode: 'login' | 'signup') => {
     setAuthMode(mode);
     setAuthModalOpen(true);
   };
 
-  return (
-    <div className="min-h-screen bg-[#070a12] text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-indigo-500 selection:text-white">
-      {/* ------------------------------------------------------------- */}
-      {/* 1. PUBLIC NAVIGATION HEADER */}
-      {/* ------------------------------------------------------------- */}
-      <header className="sticky top-0 z-40 bg-[#070a12]/80 backdrop-blur-xl border-b border-slate-800/80 transition">
-        <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between">
-          <div className="flex items-center gap-10">
-            <Logo size="md" light={true} />
+  const handleStartMerchantOS = () => {
+    if (onExplorePlatform) {
+      onExplorePlatform();
+    } else {
+      login('merchant@sol-pump.store', 'password123');
+    }
+  };
 
-            <nav className="hidden md:flex items-center gap-8 text-xs font-bold text-slate-300">
-              <a href="#features" className="hover:text-white transition">Features</a>
-              <a href="#ai-section" className="hover:text-white transition flex items-center gap-1">
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+      {/* ------------------------------------------------------------- */}
+      {/* 1. ENTERPRISE NAVIGATION BAR */}
+      {/* ------------------------------------------------------------- */}
+      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 transition-all">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Logo size="md" light={false} showTagline={true} />
+
+            <nav className="hidden md:flex items-center gap-6 text-xs font-semibold text-slate-600">
+              <a href="#features" className="hover:text-slate-950 transition">
+                Products
+              </a>
+              <a href="#solutions" className="hover:text-slate-950 transition">
+                Solutions
+              </a>
+              <a href="#ai-commerce" className="hover:text-slate-950 transition flex items-center gap-1.5">
                 <span>AI Commerce</span>
-                <span className="text-[9px] uppercase px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-400 font-extrabold border border-indigo-500/30">
-                  New
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold border border-indigo-200/60">
+                  v2.5
                 </span>
               </a>
-              <a href="#pricing" className="hover:text-white transition">Pricing</a>
-              <a href="#testimonials" className="hover:text-white transition">Customers</a>
+              <a href="#pricing" className="hover:text-slate-950 transition">
+                Pricing
+              </a>
+              <a href="#security" className="hover:text-slate-950 transition">
+                Security
+              </a>
             </nav>
           </div>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => openAuth('login')}
-              className="text-xs font-bold text-slate-300 hover:text-white px-4 py-2 rounded-xl transition cursor-pointer"
+              className="text-xs font-bold text-slate-700 hover:text-slate-950 px-3.5 py-2 rounded-lg hover:bg-slate-100 transition cursor-pointer"
             >
               Log in
             </button>
             <button
-              onClick={() => openAuth('signup')}
-              className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs shadow-lg shadow-indigo-600/30 transition cursor-pointer flex items-center gap-2"
+              onClick={handleStartMerchantOS}
+              className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs hover:shadow-sm transition cursor-pointer flex items-center gap-1.5 active:scale-[0.98]"
             >
               <span>Start for free</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -84,621 +109,818 @@ export const LandingPage: React.FC = () => {
       {/* ------------------------------------------------------------- */}
       {/* 2. HERO SECTION */}
       {/* ------------------------------------------------------------- */}
-      <section className="relative pt-20 pb-28 px-6 overflow-hidden">
-        {/* Subtle Ambient Violet Glow */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none" />
-
-        <div className="max-w-5xl mx-auto text-center relative z-10 space-y-6">
-          {/* Top Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 text-slate-300 text-xs font-bold shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
-            <span>All-in-one Commerce Platform</span>
+      <section className="relative pt-16 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden bg-gradient-to-b from-white to-slate-50/80 border-b border-slate-200">
+        <div className="max-w-5xl mx-auto text-center space-y-6">
+          {/* Release Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200/80 text-indigo-800 text-xs font-semibold shadow-2xs">
+            <span className="w-2 h-2 rounded-full bg-indigo-600 animate-pulse" />
+            <span>SOLPUMP 2.5 — The Commerce Operating System</span>
           </div>
 
-          {/* Main Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-white tracking-tight leading-[1.08] max-w-4xl mx-auto">
-            Everything you need to <span className="bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent">build, run, and scale</span> your commerce.
+          {/* Positioning Headline */}
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.12] max-w-4xl mx-auto">
+            The operating system for <span className="text-indigo-600">modern commerce</span>.
           </h1>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-slate-400 font-medium max-w-2xl mx-auto leading-relaxed">
-            Launch your store, manage your multi-tenant business, and grow your sales — all from one intelligent commerce platform.
+          <p className="text-base sm:text-lg text-slate-600 font-normal max-w-2xl mx-auto leading-relaxed">
+            Build your store, manage your business, understand your customers, and grow with intelligent commerce tools.
           </p>
 
-          {/* Hero Buttons */}
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+          {/* Hero CTAs */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
-              onClick={() => openAuth('signup')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-indigo-600/35 transition cursor-pointer flex items-center justify-center gap-2.5"
+              onClick={handleStartMerchantOS}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-sm transition cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98]"
             >
               <span>Start for free</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => openAuth('login')}
-              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700 font-extrabold text-sm transition cursor-pointer flex items-center justify-center gap-2"
+              onClick={handleStartMerchantOS}
+              className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-bold text-sm shadow-2xs transition cursor-pointer flex items-center justify-center gap-2"
             >
               <span>Explore the platform</span>
+              <ArrowUpRight className="w-4 h-4 text-slate-400" />
             </button>
           </div>
-        </div>
 
-        {/* ------------------------------------------------------------- */}
-        {/* HERO VISUAL: Desktop Mockup + Floating Widgets + Mobile Phone */}
-        {/* ------------------------------------------------------------- */}
-        <div className="mt-16 max-w-6xl mx-auto relative">
-          {/* Main Desktop Storefront Frame */}
-          <div className="rounded-2xl bg-[#0f1422] border border-slate-800 p-2 sm:p-4 shadow-2xl shadow-indigo-950/40 relative z-10 overflow-hidden">
-            {/* Window Browser Header */}
-            <div className="flex items-center justify-between px-3 py-2 border-b border-slate-800/80 mb-3 text-xs">
-              <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
-              </div>
-              <div className="px-4 py-1 rounded-lg bg-slate-900/90 text-slate-400 font-mono text-[11px] border border-slate-800">
-                https://sol-pump.store
-              </div>
-              <div className="w-12" />
-            </div>
-
-            {/* Inner Storefront Content */}
-            <div className="bg-white rounded-xl text-slate-900 overflow-hidden">
-              {/* Store Header */}
-              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between text-xs">
-                <div className="font-black text-slate-950 text-base tracking-tight">SOLPUMP STORE</div>
-                <div className="hidden sm:flex items-center gap-6 font-semibold text-slate-600">
-                  <span className="text-indigo-600">Summer 2026</span>
-                  <span>Bags</span>
-                  <span>Eyewear</span>
-                  <span>Accessories</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Search className="w-4 h-4 text-slate-500" />
-                  <CartIcon className="w-4 h-4 text-slate-500" />
-                </div>
-              </div>
-
-              {/* Store Hero Banner */}
-              <div className="bg-gradient-to-r from-slate-950 to-slate-900 text-white p-8 sm:p-12 text-center">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-indigo-400 mb-2 block">
-                  New Arrivals
-                </span>
-                <h3 className="text-2xl sm:text-4xl font-black tracking-tight mb-2">Summer Collection</h3>
-                <p className="text-xs sm:text-sm text-slate-400 max-w-md mx-auto mb-6">
-                  Handcrafted full-grain goods engineered for maximum longevity and everyday elegance.
-                </p>
-                <span className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs shadow-md">
-                  Shop Catalog &rarr;
-                </span>
-              </div>
-
-              {/* Product Cards Grid */}
-              <div className="p-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {[
-                  { title: 'Leather Travel Bag', price: '$129.00', img: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&q=80' },
-                  { title: 'Aviator Sunglasses', price: '$89.00', img: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80' },
-                  { title: 'Chronograph Watch', price: '$189.00', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80' },
-                  { title: 'Sport Running Shoes', price: '$149.00', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80' }
-                ].map((item, idx) => (
-                  <div key={idx} className="rounded-xl border border-slate-100 p-3 hover:shadow-lg transition group">
-                    <img src={item.img} alt={item.title} className="w-full h-32 object-cover rounded-lg mb-2" />
-                    <div className="font-bold text-slate-900 text-xs truncate">{item.title}</div>
-                    <div className="text-xs font-extrabold text-indigo-600 mt-0.5">{item.price}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* FLOATING WIDGET 1: Total Sales Metric (Top Left) */}
-          <div className="hidden md:flex absolute -top-6 -left-6 z-20 bg-[#0f1422]/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-4 shadow-2xl items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400">
-              <TrendingUp className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-[11px] font-semibold text-slate-400">Total Sales</div>
-              <div className="text-lg font-black text-white">$128,645.60</div>
-              <div className="text-[10px] font-bold text-emerald-400">+12.5% this week</div>
-            </div>
-          </div>
-
-          {/* FLOATING WIDGET 2: AI Assistant Widget (Top Right) */}
-          <div className="hidden lg:flex absolute top-12 -right-8 z-20 bg-[#0f1422]/95 backdrop-blur-md border border-slate-700/80 rounded-2xl p-4 shadow-2xl flex-col gap-2 max-w-xs text-left">
-            <div className="flex items-center gap-2 text-xs font-bold text-white">
-              <Sparkles className="w-4 h-4 text-indigo-400" />
-              <span>AI Assistant</span>
-            </div>
-            <p className="text-xs text-slate-300 font-medium">
-              "How can I help you grow your store today?"
-            </p>
-            <div className="flex flex-wrap gap-1.5 pt-1">
-              <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-semibold">
-                Analyze sales
-              </span>
-              <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-semibold">
-                Create a discount
-              </span>
-              <span className="px-2 py-1 bg-slate-800 text-slate-300 rounded text-[10px] font-semibold">
-                Write description
-              </span>
-            </div>
-          </div>
-
-          {/* FLOATING WIDGET 3: Mobile Store Mockup (Bottom Right) */}
-          <div className="hidden sm:block absolute -bottom-10 -right-6 z-20 w-64 bg-slate-950 rounded-[32px] p-2 border-4 border-slate-800 shadow-2xl">
-            <div className="bg-white text-slate-900 rounded-[24px] p-3 text-left overflow-hidden">
-              <div className="text-[10px] font-black text-slate-950 flex items-center justify-between mb-2">
-                <span>SOLPUMP STORE</span>
-                <span className="text-[9px] text-indigo-600 font-bold">2 items</span>
-              </div>
-              <div className="h-16 bg-slate-900 text-white rounded-lg p-2 text-center flex flex-col justify-center mb-2">
-                <span className="text-[9px] font-bold">Summer 2026</span>
-                <span className="text-[11px] font-black text-indigo-300">Save 20% Today</span>
-              </div>
-              <div className="space-y-1.5 text-[10px]">
-                <div className="flex items-center gap-2 p-1 rounded bg-slate-50 border border-slate-100">
-                  <div className="w-6 h-6 rounded bg-slate-200" />
-                  <div className="truncate font-bold">Leather Backpack</div>
-                  <div className="ml-auto font-black text-indigo-600">$129</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
-      {/* 3. LOGO TRUST BADGES */}
-      {/* ------------------------------------------------------------- */}
-      <section className="py-12 border-y border-slate-800/60 bg-[#0c101d]/60">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-6">
-            Trusted by 10,000+ modern businesses worldwide
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 opacity-60 font-black text-sm tracking-widest text-slate-400">
-            <span>LOOM</span>
-            <span>KANBA</span>
-            <span>CACTUS</span>
-            <span>POLARIS</span>
-            <span>CIRCLE</span>
-            <span>CLOUDWAVE</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
-      {/* 4. FEATURES GRID (8 Cards matching the reference) */}
-      {/* ------------------------------------------------------------- */}
-      <section id="features" className="py-24 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Powerful features to grow your business
-          </h2>
-          <p className="text-sm sm:text-base text-slate-400 font-medium">
-            Everything you need in one platform. No coding required.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            {
-              icon: Store,
-              title: 'Build Your Store',
-              desc: 'Drag-and-drop visual store builder with customizable layouts, high-converting checkout, and mobile responsiveness.'
-            },
-            {
-              icon: Globe,
-              title: 'Sell Everywhere',
-              desc: 'Seamlessly sell across your website, Instagram, Facebook, TikTok, POS, and international marketplaces.'
-            },
-            {
-              icon: Sparkles,
-              title: 'AI-Powered Commerce',
-              desc: 'Generate product copy, automated email campaigns, smart pricing recommendations, and sales predictions.'
-            },
-            {
-              icon: Boxes,
-              title: 'Manage Everything',
-              desc: 'Centralized catalog management, multi-warehouse stock sync, barcode tracking, and automated fulfillment.'
-            },
-            {
-              icon: Percent,
-              title: 'Increase Sales',
-              desc: 'Smart promo codes, flash sale countdowns, abandoned checkout recovery, and dynamic upselling at checkout.'
-            },
-            {
-              icon: BarChart3,
-              title: 'Understand Your Business',
-              desc: 'Real-time profit tracking, customer lifetime value metrics, cohort retention charts, and traffic insights.'
-            },
-            {
-              icon: Layers,
-              title: 'Apps & Integrations',
-              desc: 'Connect Stripe, PayPal, Apple Pay, Google Pay, DHL, FedEx, Mailchimp, and custom REST & GraphQL APIs.'
-            },
-            {
-              icon: ShieldCheck,
-              title: 'Secure & Reliable',
-              desc: 'Multi-tenant architecture with 99.99% uptime, automated DDoS protection, and PCI-DSS Level 1 compliance.'
-            }
-          ].map((item, idx) => {
-            const Icon = item.icon;
-            return (
-              <div
-                key={idx}
-                className="bg-[#0f1422] rounded-2xl border border-slate-800 p-6 flex flex-col justify-between hover:border-indigo-500/50 hover:shadow-xl transition group"
-              >
-                <div>
-                  <div className="w-10 h-10 rounded-xl bg-indigo-600/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 mb-4 group-hover:bg-indigo-600 group-hover:text-white transition">
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
-      {/* 5. AI COMMERCE SHOWCASE SECTION */}
-      {/* ------------------------------------------------------------- */}
-      <section id="ai-section" className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="bg-[#0f1422] border border-slate-800 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            {/* Left Content */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-500/30">
-                <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Next-Gen Commerce Intelligence</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-                Your business, smarter with AI
-              </h2>
-              <p className="text-sm text-slate-400 leading-relaxed">
-                Save dozens of hours every week. SOLPUMP's AI copilot handles copywriting, SEO, marketing campaigns, and data analysis automatically.
-              </p>
-
-              <div className="space-y-3 pt-2">
-                {[
-                  'AI store builder from a single prompt',
-                  'High-converting AI product descriptions',
-                  'Automated email campaign copy & segmentation',
-                  'Real-time sales insights & revenue projections',
-                  '24/7 autonomous customer inquiries copilot'
-                ].map((txt, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-xs font-semibold text-slate-200">
-                    <div className="w-5 h-5 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3" />
-                    </div>
-                    <span>{txt}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="pt-4">
-                <button
-                  onClick={() => openAuth('signup')}
-                  className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs shadow-lg shadow-indigo-600/30 transition cursor-pointer flex items-center gap-2"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  <span>Try AI Commerce Assistant</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Right Interactive AI Card Mockup */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-                <div className="text-xs font-bold text-white flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-indigo-400" />
-                  <span>AI Store Generator</span>
-                </div>
-                <span className="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                  Ready
-                </span>
-              </div>
-
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs text-slate-300 font-mono">
-                &gt; "I sell handmade Moroccan leather bags and travel accessories."
-              </div>
-
-              <div className="space-y-2 text-xs">
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Generating store structure
-                  </span>
-                  <span className="text-slate-500">Done</span>
-                </div>
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Generating 4 curated products
-                  </span>
-                  <span className="text-slate-500">Done</span>
-                </div>
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Writing SEO titles & descriptions
-                  </span>
-                  <span className="text-slate-500">Done</span>
-                </div>
-                <div className="flex items-center justify-between text-slate-300">
-                  <span className="flex items-center gap-2">
-                    <Check className="w-3.5 h-3.5 text-emerald-400" /> Applying Apex Modern luxury theme
-                  </span>
-                  <span className="text-slate-500">Done</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => openAuth('signup')}
-                className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer"
-              >
-                Launch Generated Store &rarr;
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
-      {/* 6. PRICING TIERS */}
-      {/* ------------------------------------------------------------- */}
-      <section id="pricing" className="py-24 px-6 max-w-7xl mx-auto text-center">
-        <div className="max-w-2xl mx-auto mb-12 space-y-3">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Flexible plans for every stage
-          </h2>
-          <p className="text-sm text-slate-400 font-medium">
-            Start free. Upgrade anytime as your business expands.
-          </p>
-
-          {/* Billing Switch */}
-          <div className="pt-4 flex items-center justify-center gap-3 text-xs font-bold">
-            <span className={billingCycle === 'monthly' ? 'text-white' : 'text-slate-500'}>Monthly</span>
-            <button
-              onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'yearly' : 'monthly')}
-              className="w-12 h-6 rounded-full bg-slate-800 border border-slate-700 p-1 relative transition cursor-pointer"
-            >
-              <div className={`w-4 h-4 rounded-full bg-indigo-500 transition-all ${billingCycle === 'yearly' ? 'ml-6' : 'ml-0'}`} />
-            </button>
-            <span className={billingCycle === 'yearly' ? 'text-white' : 'text-slate-500'}>
-              Yearly <strong className="text-indigo-400 font-extrabold">(Save 20%)</strong>
+          {/* Trust points */}
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 font-medium">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Zero setup fees</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Card & Stripe Ready</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>Autonomous AI Intelligence</span>
             </span>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 text-left">
-          {[
-            {
-              name: 'Free',
-              price: '$0',
-              period: '/mo',
-              desc: 'For new creators testing products',
-              features: ['1 Storefront', 'Up to 10 products', '2.0% transaction fee', 'Basic analytics']
-            },
-            {
-              name: 'Starter',
-              price: billingCycle === 'yearly' ? '$7' : '$9',
-              period: '/mo',
-              desc: 'For early stage growing brands',
-              features: ['Unlimited products', 'Custom domain support', '1.5% transaction fee', 'Discount codes']
-            },
-            {
-              name: 'Growth',
-              popular: true,
-              price: billingCycle === 'yearly' ? '$23' : '$29',
-              period: '/mo',
-              desc: 'Most popular for scaling merchants',
-              features: ['Everything in Starter', 'AI Commerce Assistant', '0.5% transaction fee', 'Multi-location inventory', 'Priority support']
-            },
-            {
-              name: 'Pro',
-              price: billingCycle === 'yearly' ? '$63' : '$79',
-              period: '/mo',
-              desc: 'For established high volume retailers',
-              features: ['0% transaction fees', 'Custom checkout scripts', 'Advanced cohort analytics', 'Dedicated account manager']
-            },
-            {
-              name: 'Enterprise',
-              price: 'Custom',
-              period: '',
-              desc: 'For global retail networks',
-              features: ['Custom SLA 99.99%', 'Dedicated cloud instance', 'Custom ERP sync', 'Unlimited team seats']
-            }
-          ].map((plan, idx) => (
-            <div
-              key={idx}
-              className={`rounded-2xl p-6 flex flex-col justify-between relative ${
-                plan.popular
-                  ? 'bg-[#141b2d] border-2 border-indigo-500 shadow-2xl shadow-indigo-600/20'
-                  : 'bg-[#0f1422] border border-slate-800'
-              }`}
-            >
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-extrabold uppercase tracking-wider shadow-md">
-                  Most Popular
+        {/* ------------------------------------------------------------- */}
+        {/* REALISTIC HERO PRODUCT VISUAL (Merchant OS Window) */}
+        {/* ------------------------------------------------------------- */}
+        <div className="mt-12 max-w-6xl mx-auto">
+          <div className="rounded-2xl bg-white border border-slate-200 shadow-xl overflow-hidden text-left">
+            {/* Top Window Bar */}
+            <div className="px-4 py-3 bg-slate-100/80 border-b border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-300" />
+                </div>
+                <span className="text-slate-300 mx-1">|</span>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white border border-slate-200 text-slate-600 text-[11px] font-mono shadow-2xs">
+                  <Lock className="w-3 h-3 text-emerald-600" />
+                  <span>app.sol-pump.store/admin/overview</span>
+                </div>
+              </div>
+
+              {/* View Switcher Tabs inside Hero Preview */}
+              <div className="flex items-center gap-1 bg-slate-200/70 p-0.5 rounded-lg text-xs font-semibold">
+                <button
+                  onClick={() => setActiveHeroTab('overview')}
+                  className={`px-3 py-1 rounded-md transition cursor-pointer ${
+                    activeHeroTab === 'overview' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Overview
+                </button>
+                <button
+                  onClick={() => setActiveHeroTab('orders')}
+                  className={`px-3 py-1 rounded-md transition cursor-pointer ${
+                    activeHeroTab === 'orders' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  Live Orders
+                </button>
+                <button
+                  onClick={() => setActiveHeroTab('ai')}
+                  className={`px-3 py-1 rounded-md transition cursor-pointer ${
+                    activeHeroTab === 'ai' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  AI Insights
+                </button>
+              </div>
+            </div>
+
+            {/* Dashboard Content Inside Hero Visual */}
+            <div className="p-6 bg-slate-50 space-y-6">
+              {activeHeroTab === 'overview' && (
+                <>
+                  {/* Top Stats Banner */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+                    <div>
+                      <h2 className="text-lg font-bold text-slate-900">Good morning, Alexander</h2>
+                      <p className="text-xs text-slate-500">Here is your live store performance for today.</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        ● Store Live & Syncing
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 4 Metric Cards */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Total Revenue</div>
+                      <div className="text-2xl font-extrabold text-slate-900 mt-1">$128,645.60</div>
+                      <div className="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3.5 h-3.5" />
+                        <span>+12.5% vs last month</span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Net Orders</div>
+                      <div className="text-2xl font-extrabold text-slate-900 mt-1">1,482</div>
+                      <div className="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3.5 h-3.5" />
+                        <span>+8.2% vs last month</span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Conversion Rate</div>
+                      <div className="text-2xl font-extrabold text-slate-900 mt-1">3.42%</div>
+                      <div className="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3.5 h-3.5" />
+                        <span>+0.6% vs benchmark</span>
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Avg Order Value</div>
+                      <div className="text-2xl font-extrabold text-slate-900 mt-1">$86.80</div>
+                      <div className="text-xs font-bold text-emerald-600 flex items-center gap-1 mt-1">
+                        <TrendingUp className="w-3.5 h-3.5" />
+                        <span>+$4.10 from recommendations</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Minimal Sales Chart & AI Summary */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className="lg:col-span-2 p-5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <div className="text-sm font-bold text-slate-900">Revenue & Volume (Last 30 Days)</div>
+                          <div className="text-xs text-slate-500">Daily breakdown with auto-forecast overlay</div>
+                        </div>
+                        <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2 py-1 rounded">Daily</span>
+                      </div>
+
+                      {/* Clean CSS SVG Area Chart */}
+                      <div className="h-40 w-full flex items-end gap-2 pt-4">
+                        {[40, 55, 48, 65, 72, 60, 85, 95, 78, 88, 110, 92, 115, 128, 140].map((val, idx) => (
+                          <div key={idx} className="flex-1 flex flex-col items-center gap-1 group relative">
+                            <div
+                              style={{ height: `${(val / 140) * 100}%` }}
+                              className="w-full rounded-t-sm bg-indigo-600/85 group-hover:bg-indigo-600 transition-all cursor-pointer"
+                            />
+                            <span className="text-[9px] text-slate-400 hidden group-hover:block absolute -top-6 bg-slate-900 text-white px-1.5 py-0.5 rounded font-mono">
+                              ${val * 100}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="flex justify-between text-[10px] text-slate-400 font-mono pt-2 border-t border-slate-100 mt-2">
+                        <span>Day 1</span>
+                        <span>Day 10</span>
+                        <span>Day 20</span>
+                        <span>Day 30</span>
+                      </div>
+                    </div>
+
+                    {/* AI Opportunities side panel */}
+                    <div className="p-5 rounded-xl bg-indigo-900 text-white shadow-2xs flex flex-col justify-between">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2 text-indigo-200 text-xs font-bold">
+                          <Sparkles className="w-4 h-4 text-indigo-300" />
+                          <span>AI Intelligence Feed</span>
+                        </div>
+                        <div className="p-3 rounded-lg bg-indigo-950/60 border border-indigo-700/50 space-y-1">
+                          <div className="text-xs font-bold text-white">3 High-Yield Opportunities</div>
+                          <div className="text-[11px] text-indigo-200 leading-relaxed">
+                            Restocking Backpacks and bundling Watch + Sunglasses can yield an estimated{' '}
+                            <span className="text-emerald-400 font-bold">+$2,480</span> this week.
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={handleStartMerchantOS}
+                        className="mt-4 w-full py-2 rounded-lg bg-white hover:bg-slate-100 text-indigo-950 font-bold text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <span>Open Merchant OS</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {activeHeroTab === 'orders' && (
+                <div className="p-5 rounded-xl bg-white border border-slate-200 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-slate-900">Recent Transactions</span>
+                    <span className="text-xs text-slate-500 font-medium">Auto-updated via Stripe & Card Network</span>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-xs">
+                      <thead>
+                        <tr className="border-b border-slate-200 text-slate-500 text-[11px]">
+                          <th className="py-2">Order</th>
+                          <th className="py-2">Customer</th>
+                          <th className="py-2">Payment</th>
+                          <th className="py-2">Status</th>
+                          <th className="py-2 text-right">Total</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 font-medium">
+                        <tr>
+                          <td className="py-3 font-mono font-bold text-indigo-600">#1029</td>
+                          <td className="py-3 text-slate-900">Elena Rostova</td>
+                          <td className="py-3 text-slate-500">Credit Card (Visa)</td>
+                          <td className="py-3">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              Paid
+                            </span>
+                          </td>
+                          <td className="py-3 text-right font-bold text-slate-900">$129.00</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 font-mono font-bold text-indigo-600">#1028</td>
+                          <td className="py-3 text-slate-900">Marcus Chen</td>
+                          <td className="py-3 text-slate-500">Credit Card (Mastercard)</td>
+                          <td className="py-3">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                              Paid
+                            </span>
+                          </td>
+                          <td className="py-3 text-right font-bold text-slate-900">$189.00</td>
+                        </tr>
+                        <tr>
+                          <td className="py-3 font-mono font-bold text-indigo-600">#1027</td>
+                          <td className="py-3 text-slate-900">Sarah Jenkins</td>
+                          <td className="py-3 text-slate-500">Credit Card (Amex)</td>
+                          <td className="py-3">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200">
+                              Processing
+                            </span>
+                          </td>
+                          <td className="py-3 text-right font-bold text-slate-900">$89.00</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
 
-              <div>
-                <div className="font-extrabold text-white text-base mb-1">{plan.name}</div>
-                <div className="text-xs text-slate-400 mb-4">{plan.desc}</div>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-3xl font-black text-white">{plan.price}</span>
-                  <span className="text-xs text-slate-400 font-bold">{plan.period}</span>
-                </div>
-
-                <div className="space-y-2.5 text-xs text-slate-300 mb-6">
-                  {plan.features.map((f, fIdx) => (
-                    <div key={fIdx} className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
-                      <span>{f}</span>
+              {activeHeroTab === 'ai' && (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="text-xs font-bold text-amber-700 flex items-center gap-1.5">
+                      <Package className="w-3.5 h-3.5" />
+                      <span>Inventory Reorder Alert</span>
                     </div>
-                  ))}
-                </div>
-              </div>
+                    <div className="text-xs text-slate-600">
+                      Product <strong className="text-slate-900">Leather Travel Backpack</strong> will run out in 6 days
+                      based on current velocity.
+                    </div>
+                    <button
+                      onClick={handleStartMerchantOS}
+                      className="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+                    >
+                      Draft supplier PO →
+                    </button>
+                  </div>
 
-              <button
-                onClick={() => openAuth('signup')}
-                className={`w-full py-2.5 rounded-xl font-bold text-xs transition cursor-pointer ${
-                  plan.popular
-                    ? 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30'
-                    : 'bg-slate-800 hover:bg-slate-700 text-white'
-                }`}
-              >
-                Get Started
-              </button>
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="text-xs font-bold text-emerald-700 flex items-center gap-1.5">
+                      <DollarSign className="w-3.5 h-3.5" />
+                      <span>Abandoned Cart Recovery</span>
+                    </div>
+                    <div className="text-xs text-slate-600">
+                      14 buyers left checkout in the last 24h. Automated email sequence can recover estimated $1,240.
+                    </div>
+                    <button
+                      onClick={handleStartMerchantOS}
+                      className="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+                    >
+                      Send recovery sequence →
+                    </button>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-white border border-slate-200 space-y-2">
+                    <div className="text-xs font-bold text-indigo-700 flex items-center gap-1.5">
+                      <Sliders className="w-3.5 h-3.5" />
+                      <span>Margin Optimization</span>
+                    </div>
+                    <div className="text-xs text-slate-600">
+                      Demand elasticity indicates you can increase <strong className="text-slate-900">Classic Aviator</strong>{' '}
+                      price to $94 without conversion loss.
+                    </div>
+                    <button
+                      onClick={handleStartMerchantOS}
+                      className="text-xs font-bold text-indigo-600 hover:text-indigo-700"
+                    >
+                      Review price test →
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------- */}
-      {/* 7. CUSTOMER TESTIMONIALS */}
+      {/* 3. HONEST PLATFORM ARCHITECTURE METRICS */}
       {/* ------------------------------------------------------------- */}
-      <section id="testimonials" className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-          <h2 className="text-3xl font-black text-white tracking-tight">Loved by high-growth merchants</h2>
-          <p className="text-xs text-slate-400 font-medium">Real stories from merchants operating on SOLPUMP</p>
+      <section className="py-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200 bg-white">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <div className="text-3xl font-extrabold text-slate-900 font-mono">99.99%</div>
+            <div className="text-xs text-slate-500 font-medium mt-1">Edge Availability & SLA</div>
+          </div>
+          <div>
+            <div className="text-3xl font-extrabold text-slate-900 font-mono">&lt; 45ms</div>
+            <div className="text-xs text-slate-500 font-medium mt-1">Global API Latency</div>
+          </div>
+          <div>
+            <div className="text-3xl font-extrabold text-slate-900 font-mono">256-bit</div>
+            <div className="text-xs text-slate-500 font-medium mt-1">End-to-End SSL Encryption</div>
+          </div>
+          <div>
+            <div className="text-3xl font-extrabold text-indigo-600 font-mono">0% Fee</div>
+            <div className="text-xs text-slate-500 font-medium mt-1">Platform Surcharge on Direct Sales</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 4. STRUCTURED CAPABILITIES & FEATURE GRID */}
+      {/* ------------------------------------------------------------- */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-14">
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Complete Platform Suite</div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Everything your commerce business needs.
+          </h2>
+          <p className="text-sm text-slate-600">
+            A unified operating system replacing fragmented plugins, complex sync connectors, and disjointed tools.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-          {[
-            {
-              quote: "Switching to SOLPUMP doubled our conversion rate in 3 weeks. The built-in AI copilot writes our campaign emails and saves 10+ hours weekly.",
-              name: "Sarah Johnson",
-              role: "Founder, Artisan Bag Co.",
-              rating: 5
-            },
-            {
-              quote: "The speed and inventory synchronization across our online shop and pop-up locations is unmatched. It feels like software built for 2026.",
-              name: "Michael Chen",
-              role: "Owner, Vanguard Optics",
-              rating: 5
-            },
-            {
-              quote: "Setup was completed in under 10 minutes. The multi-tenant security, checkout speed, and clean design helped us pass $100k in monthly revenue.",
-              name: "Fatima Zahra",
-              role: "Creative Director, Zahra Atelier",
-              rating: 5
-            }
-          ].map((t, idx) => (
-            <div key={idx} className="bg-[#0f1422] rounded-2xl border border-slate-800 p-6 flex flex-col justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Card 1: Products & Multi-Variant Catalog */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+              <Package className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Products & Variant Matrix</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Create and manage thousands of SKUs, nested variant combinations (Size, Color, Material), cost accounting,
+              barcode labels, and high-resolution media galleries.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Multi-attribute variant generator</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Margin & profit calculation engine</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 2: Orders & Settlement */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <ShoppingBag className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Orders & Fulfillment Flow</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Track customer orders from checkout to doorstep. Issue refunds, split shipments, assign carrier tracking
+              numbers, and generate PDF invoices with one click.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Automated order status lifecycle</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>One-click refunds & cancellations</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 3: Customers & CRM */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+              <Users className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Customers & LTV Intelligence</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Maintain deep profiles for every buyer. Track lifetime value, repeat order rates, preferred categories, and
+              tag high-value VIP accounts automatically.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Customer segmentation (VIP, New, Inactive)</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Purchase history and activity timeline</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 4: Inventory & Low Stock Automation */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+              <Boxes className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Operational Inventory</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Real-time stock reservation during active checkouts. Custom low-stock threshold triggers, multi-warehouse
+              tracking, and bulk stock adjustments.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Threshold-based low stock warnings</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Instant bulk stock updates</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 5: Card & Stripe Payments */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+              <CreditCard className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Card & Global Payments</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Seamless 256-bit SSL encrypted card checkout. Server-side price calculation prevents tampering, with full
+              webhook verification for order confirmation.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Stripe PaymentIntents & 3D Secure</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Server-authoritative discount calculations</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Card 6: Real-Time Analytics */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs hover:border-slate-300 transition space-y-4">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+              <BarChart3 className="w-5 h-5" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">Real-Time Financial Analytics</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Comprehensive visibility into sales volume, conversion rates, channel acquisition, average order values,
+              and profitability trends across customizable date ranges.
+            </p>
+            <ul className="text-xs text-slate-500 space-y-2 pt-2 border-t border-slate-100">
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Multi-period comparison (Today, 7D, 30D, 12M)</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span>Product-by-product profitability metrics</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 5. AI COMMERCE DEEP DIVE SECTION */}
+      {/* ------------------------------------------------------------- */}
+      <section id="ai-commerce" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto space-y-12">
+          <div className="text-center space-y-3 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Native Intelligence Layer</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">Your store, powered by intelligence.</h2>
+            <p className="text-sm text-slate-400 leading-relaxed">
+              SOLPUMP doesn't just display historical charts. It continuously analyzes sales trends, customer behavior,
+              inventory velocity, abandoned carts, and margin opportunities to give you clear, actionable guidance.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-3">
+              <div className="text-emerald-400 text-xs font-bold font-mono">INSIGHT 01 • REVENUE GROWTH</div>
+              <div className="text-base font-bold text-white">«Revenue is up 18% this week.»</div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Growth driven predominantly by organic search traffic landing on Bags & Leather. Recommending a 10%
+                accessory upsell at checkout to increase basket size.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-3">
+              <div className="text-amber-400 text-xs font-bold font-mono">INSIGHT 02 • INVENTORY RESTOCK</div>
+              <div className="text-base font-bold text-white">«Leather Travel Backpack approaching low inventory.»</div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                At current sales rate of 12 units/day, stock will deplete in 4 days. Direct PO generation prepared for
+                supplier.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-800/80 border border-slate-700/80 space-y-3">
+              <div className="text-indigo-400 text-xs font-bold font-mono">INSIGHT 03 • BASKET AFFINITY</div>
+              <div className="text-base font-bold text-white">«Buyers of Watch frequently purchase Sunglasses.»</div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                42% co-purchase correlation identified. Automated bundle created saving buyers $15 while boosting gross
+                margin.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-8 rounded-2xl bg-indigo-950/60 border border-indigo-800/60 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-white">Ask SOLPUMP anything about your business</h3>
+              <p className="text-xs text-indigo-200 max-w-xl leading-relaxed">
+                Query in plain English: "Why did sales drop yesterday?", "Who are my top 10% most loyal customers?",
+                "Which SKU has the highest profit margin?"
+              </p>
+            </div>
+            <button
+              onClick={handleStartMerchantOS}
+              className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-md transition cursor-pointer shrink-0 flex items-center gap-2"
+            >
+              <span>Test AI Workspace</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------- */}
+      {/* 6. TRANSPARENT PRICING GRID */}
+      {/* ------------------------------------------------------------- */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
+        <div className="text-center space-y-3 max-w-2xl mx-auto">
+          <div className="text-xs font-bold text-indigo-600 uppercase tracking-widest">Predictable Pricing</div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Simple plans for businesses of every scale.
+          </h2>
+          <p className="text-sm text-slate-600">
+            No hidden gateway fees, no punitive transaction penalties. Upgrade or downgrade anytime.
+          </p>
+
+          {/* Billing Switcher */}
+          <div className="inline-flex items-center p-1 rounded-xl bg-slate-200/70 text-xs font-bold mt-2">
+            <button
+              onClick={() => setBillingCycle('monthly')}
+              className={`px-4 py-1.5 rounded-lg transition cursor-pointer ${
+                billingCycle === 'monthly' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600'
+              }`}
+            >
+              Monthly Billing
+            </button>
+            <button
+              onClick={() => setBillingCycle('yearly')}
+              className={`px-4 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5 ${
+                billingCycle === 'yearly' ? 'bg-white text-slate-900 shadow-2xs' : 'text-slate-600'
+              }`}
+            >
+              <span>Annual Billing</span>
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800">Save 20%</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {/* Free Plan */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-5 flex flex-col justify-between">
+            <div className="space-y-4">
               <div>
-                <div className="flex gap-1 text-amber-400 mb-4">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-6 font-medium">
-                  "{t.quote}"
-                </p>
+                <div className="text-sm font-bold text-slate-900">Free</div>
+                <div className="text-xs text-slate-500 mt-0.5">For launching your first store</div>
               </div>
-              <div className="pt-4 border-t border-slate-800/80">
-                <div className="font-bold text-xs text-white">{t.name}</div>
-                <div className="text-[11px] text-slate-400">{t.role}</div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold text-slate-900">$0</span>
+                <span className="text-xs text-slate-500 font-medium">/ month</span>
               </div>
+              <ul className="text-xs text-slate-600 space-y-2.5 pt-4 border-t border-slate-100 font-medium">
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Up to 25 Products</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Subdomain (you.sol-pump.store)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Standard Checkout Flow</span>
+                </li>
+              </ul>
             </div>
-          ))}
+            <button
+              onClick={() => openAuth('signup')}
+              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition cursor-pointer"
+            >
+              Start Free
+            </button>
+          </div>
+
+          {/* Growth Plan (Popular) */}
+          <div className="p-6 rounded-2xl bg-white border-2 border-indigo-600 shadow-lg shadow-indigo-600/5 space-y-5 flex flex-col justify-between relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-indigo-600 text-white text-[10px] font-extrabold uppercase tracking-wider">
+              Most Popular
+            </div>
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm font-bold text-slate-900">Growth</div>
+                <div className="text-xs text-slate-500 mt-0.5">For active, scaling stores</div>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold text-slate-900">
+                  ${billingCycle === 'monthly' ? '29' : '24'}
+                </span>
+                <span className="text-xs text-slate-500 font-medium">/ month</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2.5 pt-4 border-t border-slate-100 font-medium">
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Unlimited Products</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Custom Domains</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>AI Product & SEO Generator</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Abandoned Cart Automations</span>
+                </li>
+              </ul>
+            </div>
+            <button
+              onClick={() => openAuth('signup')}
+              className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs transition cursor-pointer"
+            >
+              Start 14-Day Trial
+            </button>
+          </div>
+
+          {/* Pro Plan */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-5 flex flex-col justify-between">
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm font-bold text-slate-900">Pro</div>
+                <div className="text-xs text-slate-500 mt-0.5">For high-volume merchants</div>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold text-slate-900">
+                  ${billingCycle === 'monthly' ? '79' : '65'}
+                </span>
+                <span className="text-xs text-slate-500 font-medium">/ month</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2.5 pt-4 border-t border-slate-100 font-medium">
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Everything in Growth</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>AI Business Copilot & Queries</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Advanced Customer LTV Analytics</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>5 Staff Account Seats</span>
+                </li>
+              </ul>
+            </div>
+            <button
+              onClick={() => openAuth('signup')}
+              className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition cursor-pointer"
+            >
+              Get Started
+            </button>
+          </div>
+
+          {/* Enterprise Plan */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-5 flex flex-col justify-between">
+            <div className="space-y-4">
+              <div>
+                <div className="text-sm font-bold text-slate-900">Enterprise</div>
+                <div className="text-xs text-slate-500 mt-0.5">Dedicated infrastructure</div>
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-3xl font-extrabold text-slate-900">
+                  ${billingCycle === 'monthly' ? '299' : '249'}
+                </span>
+                <span className="text-xs text-slate-500 font-medium">/ month</span>
+              </div>
+              <ul className="text-xs text-slate-600 space-y-2.5 pt-4 border-t border-slate-100 font-medium">
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Custom Multi-Store Routing</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Dedicated Account Manager</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>99.99% Uptime Guarantee</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>Custom ERP / Warehouse Connectors</span>
+                </li>
+              </ul>
+            </div>
+            <button
+              onClick={() => openAuth('signup')}
+              className="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition cursor-pointer"
+            >
+              Contact Sales
+            </button>
+          </div>
         </div>
       </section>
 
       {/* ------------------------------------------------------------- */}
-      {/* 8. FINAL CTA BANNER */}
+      {/* 7. ENTERPRISE FOOTER */}
       {/* ------------------------------------------------------------- */}
-      <section className="py-20 px-6 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-br from-indigo-950 via-[#0f1422] to-slate-950 rounded-3xl border border-indigo-500/30 p-10 sm:p-16 text-center space-y-6 relative overflow-hidden shadow-2xl">
-          <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-              Ready to build your success story?
-            </h2>
-            <p className="text-sm text-slate-300 font-medium">
-              Join thousands of fast-growing businesses already operating on SOLPUMP.
-            </p>
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <button
-                onClick={() => openAuth('signup')}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-sm shadow-xl shadow-indigo-600/35 transition cursor-pointer flex items-center justify-center gap-2"
-              >
-                <span>Start for free</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => openAuth('login')}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700 font-extrabold text-sm transition cursor-pointer"
-              >
-                <span>Explore the platform</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------------- */}
-      {/* 9. FOOTER */}
-      {/* ------------------------------------------------------------- */}
-      <footer className="border-t border-slate-800/80 bg-[#070a12] py-16 px-6 text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
-          <div className="col-span-2 space-y-4">
-            <Logo size="md" light={true} />
-            <p className="text-slate-400 max-w-sm leading-relaxed">
-              SOLPUMP is the all-in-one AI-powered commerce operating system for modern brands, multi-location retailers, and global merchants.
-            </p>
-            <div className="text-[11px] text-slate-500">
-              Official Production Domain: <strong className="text-slate-300">sol-pump.store</strong>
-            </div>
+      <footer className="border-t border-slate-200 bg-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-slate-500">
+          <div className="flex items-center gap-3">
+            <Logo size="sm" light={false} showTagline={true} />
+            <span>© 2026 SOLPUMP Commerce OS. All rights reserved.</span>
           </div>
 
-          <div>
-            <div className="font-bold text-white uppercase tracking-wider text-[11px] mb-3">Product</div>
-            <ul className="space-y-2">
-              <li><a href="#features" className="hover:text-white transition">Store Builder</a></li>
-              <li><a href="#ai-section" className="hover:text-white transition">AI Copilot</a></li>
-              <li><a href="#features" className="hover:text-white transition">Multi-Warehouse</a></li>
-              <li><a href="#pricing" className="hover:text-white transition">Pricing</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="font-bold text-white uppercase tracking-wider text-[11px] mb-3">Resources</div>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition">API Reference</a></li>
-              <li><a href="#" className="hover:text-white transition">Merchant Guides</a></li>
-              <li><a href="#" className="hover:text-white transition">Community</a></li>
-            </ul>
-          </div>
-
-          <div>
-            <div className="font-bold text-white uppercase tracking-wider text-[11px] mb-3">Company & Legal</div>
-            <ul className="space-y-2">
-              <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition">Security & Compliance</a></li>
-              <li><a href="#" className="hover:text-white transition">System Status</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px]">
-          <div>© 2026 SOLPUMP. All rights reserved.</div>
-          <div className="flex items-center gap-4">
-            <span className="hover:text-white cursor-pointer">English (US) ▾</span>
-            <span className="hover:text-white cursor-pointer">Privacy</span>
-            <span className="hover:text-white cursor-pointer">Terms</span>
+          <div className="flex items-center gap-6 font-semibold">
+            <a href="#features" className="hover:text-slate-900 transition">
+              Products
+            </a>
+            <a href="#solutions" className="hover:text-slate-900 transition">
+              Solutions
+            </a>
+            <a href="#pricing" className="hover:text-slate-900 transition">
+              Pricing
+            </a>
+            <a href="#ai-commerce" className="hover:text-slate-900 transition">
+              AI Commerce
+            </a>
+            <span className="text-slate-300">|</span>
+            <span className="font-mono text-slate-600">Production Domain: sol-pump.store</span>
           </div>
         </div>
       </footer>
 
-      {/* Auth Modal */}
+      {/* Authentication Modal */}
       <AuthModal
         isOpen={authModalOpen}
         initialMode={authMode}
         onClose={() => setAuthModalOpen(false)}
       />
+
+      {/* Card Checkout Modal for demo purchases */}
+      {previewProduct && checkoutOpen && (
+        <CheckoutModal
+          isOpen={checkoutOpen}
+          onClose={() => setCheckoutOpen(false)}
+          product={previewProduct}
+          quantity={1}
+        />
+      )}
     </div>
   );
 };
