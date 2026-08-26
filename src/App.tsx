@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { InteractiveToolsGrid } from './components/InteractiveToolsGrid';
+import { PricingSection } from './components/PricingSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
+import { CheckoutModal, PlanItem } from './components/CheckoutModal';
 import { ToolItem } from './data/toolsData';
 
 export default function App() {
@@ -15,6 +17,8 @@ export default function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<ToolItem | null>(null);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState('all');
+  const [selectedPlan, setSelectedPlan] = useState<PlanItem | null>(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
@@ -34,6 +38,11 @@ export default function App() {
     scrollToSection('tools');
   };
 
+  const handleSelectPlan = (plan: PlanItem) => {
+    setSelectedPlan(plan);
+    setIsCheckoutOpen(true);
+  };
+
   return (
     <div className="min-h-screen bg-[#080b12] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
       {/* Top Navigation */}
@@ -48,13 +57,19 @@ export default function App() {
         {/* Hero Section */}
         <Hero
           onExploreTools={() => scrollToSection('utility-tools')}
-          onOpenStore={() => scrollToSection('tools')}
+          onOpenStore={() => scrollToSection('store')}
         />
 
         {/* Interactive AI & Web3 Tools Grid */}
         <InteractiveToolsGrid
-          onOpenStore={() => scrollToSection('tools')}
+          onOpenStore={() => scrollToSection('store')}
           onOpenLogin={() => setIsLoginOpen(true)}
+        />
+
+        {/* Digital Store & Pricing Section */}
+        <PricingSection
+          onSelectPlan={handleSelectPlan}
+          onExploreFree={() => scrollToSection('utility-tools')}
         />
 
         {/* 3 Main Pillars / Features Grid */}
@@ -77,6 +92,14 @@ export default function App() {
       {/* Interactive Modals */}
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
       <ToolDetailModal tool={selectedTool} onClose={() => setSelectedTool(null)} />
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        plan={selectedPlan}
+        onClose={() => {
+          setIsCheckoutOpen(false);
+          setSelectedPlan(null);
+        }}
+      />
     </div>
   );
 }
