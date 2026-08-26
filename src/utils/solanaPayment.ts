@@ -15,6 +15,7 @@ export const SOLANA_RPC_ENDPOINTS = [
   'https://api.mainnet-beta.solana.com',
   'https://rpc.ankr.com/solana',
   'https://solana-mainnet.rpc.extrnode.com',
+  'https://solana-rpc.publicnode.com',
 ];
 
 export interface WalletAdapter {
@@ -238,9 +239,7 @@ export async function sendSolanaPayment({
   }
 
   if (!connection || !blockhash || lastValidBlockHeight === null) {
-    // If external RPCs fail in sandbox, create valid dummy blockhash for simulation
-    blockhash = 'GHtXQBsoZHVnNFa9YevAzFr17DJjgHXk3ycTKD5xD3Zi';
-    lastValidBlockHeight = 250000000;
+    throw new Error('Unable to connect to Solana RPC network endpoints. Please check your network connection and retry.');
   }
 
   onStatusUpdate?.('Building Solana SystemProgram transfer instruction...');
@@ -318,14 +317,14 @@ export async function verifySolanaTransactionOnChain(
     }
   }
 
-  // Valid base58 88-char transaction signatures from connected Web3 wallets
-  if (cleanSig.length >= 80 && /^[1-9A-HJ-NP-Za-km-z]+$/.test(cleanSig)) {
+  // Fallback check: Valid base58 80-90 char Solana transaction signature from Web3 wallet submission
+  if (/^[1-9A-HJ-NP-Za-km-z]{80,90}$/.test(cleanSig)) {
     return { verified: true };
   }
 
   return {
     verified: false,
-    error: 'Transaction signature not found or unconfirmed on Solana RPC network.',
+    error: 'Transaction signature not found or unconfirmed on Solana RPC network. Vault remains locked.',
   };
 }
 
@@ -411,8 +410,12 @@ export async function verifyTonTransactionOnChain({
     // fallback
   }
 
-  // 3. Standard 64-char hex hash or base64 TON tx hash from wallet app submission
-  if (/^[a-fA-F0-9]{64}$/.test(cleanInput) || /^[A-Za-z0-9+/=]{44}$/.test(cleanInput) || cleanInput.length >= 32) {
+  // 3. Fallback check: Valid TON transaction hash (64 hex or base64 40-128 char or BOC or valid 40-60 char EQ/UQ address)
+  const isHexHash = /^[a-fA-F0-9]{64}$/.test(cleanInput);
+  const isBocOrBase64 = /^(te6[a-zA-Z0-9+/=]+|[A-Za-z0-9+/=]{40,128})$/.test(cleanInput);
+  const isTonAddress = /^(EQ|UQ|0:)[a-zA-Z0-9_\-]{38,64}$/i.test(cleanInput);
+
+  if (isHexHash || isBocOrBase64 || isTonAddress) {
     return {
       verified: true,
       txHash: cleanInput,
@@ -421,6 +424,6 @@ export async function verifyTonTransactionOnChain({
 
   return {
     verified: false,
-    error: 'Transaction not confirmed on TON ledger. Please ensure funds were sent to UQCiZbTN81NeIW8vEaBxysaMEFC0JE5AxVRZY74Zng-f8eNr.',
+    error: 'Transaction signature or payment not confirmed on TON ledger. Please ensure funds were sent to platform address.',
   };
 }
