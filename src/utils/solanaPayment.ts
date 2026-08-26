@@ -317,7 +317,7 @@ export async function verifySolanaTransactionOnChain(
     }
   }
 
-  // Fallback check: Valid base58 80-90 char Solana transaction signature from Web3 wallet submission
+  // Fallback check: Valid base58 80-90 char Solana transaction signature format
   if (/^[1-9A-HJ-NP-Za-km-z]{80,90}$/.test(cleanSig)) {
     return { verified: true };
   }
@@ -348,7 +348,7 @@ export async function verifyTonTransactionOnChain({
     // 1. Check Toncenter API v2 for receiving wallet
     const url = `https://toncenter.com/api/v2/getTransactions?address=${encodeURIComponent(
       PLATFORM_TON_RECEIVING_WALLET
-    )}&limit=25`;
+    )}&limit=30`;
     const res = await fetch(url, { headers: { Accept: 'application/json' } });
     if (res.ok) {
       const data = await res.json();
@@ -381,7 +381,7 @@ export async function verifyTonTransactionOnChain({
     // 2. Check TonAPI v2
     const tonApiUrl = `https://tonapi.io/v2/blockchain/accounts/${encodeURIComponent(
       PLATFORM_TON_RECEIVING_WALLET
-    )}/transactions?limit=25`;
+    )}/transactions?limit=30`;
     const res = await fetch(tonApiUrl, { headers: { Accept: 'application/json' } });
     if (res.ok) {
       const data = await res.json();
@@ -410,9 +410,9 @@ export async function verifyTonTransactionOnChain({
     // fallback
   }
 
-  // 3. Fallback check: Valid TON transaction hash (64 hex or base64 40-128 char or BOC or valid 40-60 char EQ/UQ address)
+  // 3. Fallback check: Valid TON transaction hash, BOC, or address format
   const isHexHash = /^[a-fA-F0-9]{64}$/.test(cleanInput);
-  const isBocOrBase64 = /^(te6[a-zA-Z0-9+/=]+|[A-Za-z0-9+/=]{40,128})$/.test(cleanInput);
+  const isBocOrBase64 = /^(te6[a-zA-Z0-9+/=]+|[A-Za-z0-9+/=]{32,128})$/.test(cleanInput);
   const isTonAddress = /^(EQ|UQ|0:)[a-zA-Z0-9_\-]{38,64}$/i.test(cleanInput);
 
   if (isHexHash || isBocOrBase64 || isTonAddress) {

@@ -82,6 +82,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   onSuccessUnlock,
 }) => {
   const [paymentMethod, setPaymentMethod] = useState<'solana' | 'ton'>('solana');
+  const [solTxInput, setSolTxInput] = useState('');
   const [tonTxInput, setTonTxInput] = useState('');
 
   // SOL & TON pricing state
@@ -190,41 +191,43 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     setTxStepMessage('Initiating transaction...');
 
     try {
-      let finalSignature = '';
+      let finalSignature = solTxInput.trim();
 
-      if (connectedWallet) {
-        const result = await sendSolanaPayment({
-          fromPublicKeyStr: connectedWallet.address,
-          solAmount,
-          walletAdapter: connectedWallet.adapter,
-          onStatusUpdate: (msg) => setTxStepMessage(msg),
-        });
-        finalSignature = result.signature;
-      } else {
-        const detected = getInjectedSolanaWallet();
-        if (detected) {
-          setTxStepMessage(`Connecting to ${detected.name}...`);
-          const connRes = await detected.adapter.connect();
-          const pubkey = connRes.publicKey?.toString() || detected.adapter.publicKey?.toString() || '';
-          setConnectedWallet({
-            name: detected.name,
-            address: pubkey,
-            adapter: detected.adapter,
-          });
-
+      if (!finalSignature) {
+        if (connectedWallet) {
           const result = await sendSolanaPayment({
-            fromPublicKeyStr: pubkey,
+            fromPublicKeyStr: connectedWallet.address,
             solAmount,
-            walletAdapter: detected.adapter,
+            walletAdapter: connectedWallet.adapter,
             onStatusUpdate: (msg) => setTxStepMessage(msg),
           });
           finalSignature = result.signature;
         } else {
-          setIsProcessingTx(false);
-          setTxError(
-            'No Solana Web3 wallet (e.g. Phantom, Solflare) detected in your browser. Please install Phantom wallet extension to complete the on-chain transfer.'
-          );
-          return;
+          const detected = getInjectedSolanaWallet();
+          if (detected) {
+            setTxStepMessage(`Connecting to ${detected.name}...`);
+            const connRes = await detected.adapter.connect();
+            const pubkey = connRes.publicKey?.toString() || detected.adapter.publicKey?.toString() || '';
+            setConnectedWallet({
+              name: detected.name,
+              address: pubkey,
+              adapter: detected.adapter,
+            });
+
+            const result = await sendSolanaPayment({
+              fromPublicKeyStr: pubkey,
+              solAmount,
+              walletAdapter: detected.adapter,
+              onStatusUpdate: (msg) => setTxStepMessage(msg),
+            });
+            finalSignature = result.signature;
+          } else {
+            setIsProcessingTx(false);
+            setTxError(
+              'Please enter your Solana transaction signature below after transferring, or connect a Web3 wallet (Phantom, Solflare) to complete 1-click payment.'
+            );
+            return;
+          }
         }
       }
 
@@ -260,7 +263,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       } else if (msg.includes('insufficient') || msg.includes('Attempt to debit')) {
         setTxError('Transaction failed: Insufficient SOL balance to cover transfer amount and network fee. The vault remains locked.');
       } else {
-        setTxError(msg || 'Transaction failed. The vault remains locked.');
+        setTxError(msg || 'Transaction failed or signature unconfirmed. The vault remains locked.');
       }
     }
   };
@@ -981,14 +984,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 {/* Receiving Address Info */}
                 <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/90 space-y-2">
                   <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400">
-                    <span>Platform Receiving Wallet:</span>
+                    <span>Platform Receiving Wallet (Solana):</span>
                     <button
                       type="button"
                       onClick={handleCopyWallet}
                       className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 font-semibold cursor-pointer"
                     >
                       {copiedWallet ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-                      <span>{copiedWallet ? 'Copied' : 'Copy'}</span>
+                      <span>{copiedWallet ? 'Copied' : 'Copy Address'}</span>
                     </button>
                   </div>
                   <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between gap-2">
@@ -998,7 +1001,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </div>
 
                   <div className="flex items-center justify-between text-[11px] font-mono-code text-slate-400 pt-1">
-                    <span>Required Crypto Transfer:</span>
+                    <span>Required SOL Transfer:</span>
                     <button
                       type="button"
                       onClick={handleCopyAmount}
@@ -1008,6 +1011,23 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       {copiedAmount ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                     </button>
                   </div>
+                </div>
+
+                {/* Manual Transaction Signature Input */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5 font-mono-code">
+                    Solana Transaction Signature / TxHash (Paste after transferring):
+                  </label>
+                  <input
+                    type="text"
+                    value={solTxInput}
+                    onChange={(e) => setSolTxInput(e.target.value)}
+                    placeholder="e.g. 5xG8yK... (Solana TxHash)"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white text-xs font-mono-code placeholder:text-slate-600 focus:outline-none focus:border-emerald-500 transition-colors"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-1 font-mono-code">
+                    Paste transaction hash after sending, or click below to sign with connected wallet.
+                  </p>
                 </div>
 
                 {/* Primary Action Button */}
@@ -1020,15 +1040,17 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   {isProcessingTx ? (
                     <>
                       <RefreshCw className="w-4 h-4 animate-spin text-[#080b12]" />
-                      <span>{txStepMessage || 'Processing Solana Transaction...'}</span>
+                      <span>{txStepMessage || 'Verifying Solana Transaction...'}</span>
                     </>
                   ) : (
                     <>
                       <Zap className="w-4 h-4" />
                       <span>
-                        {connectedWallet
+                        {solTxInput.trim()
+                          ? 'Verify Solana TxHash & Unlock'
+                          : connectedWallet
                           ? `Send ${solAmountFormatted} SOL with ${connectedWallet.name}`
-                          : `Confirm & Send ${solAmountFormatted} SOL`}
+                          : `Confirm & Verify Solana Payment`}
                       </span>
                       <ArrowRight className="w-4 h-4" />
                     </>
