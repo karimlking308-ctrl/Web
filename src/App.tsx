@@ -10,6 +10,7 @@ import { FeatureGrid } from './components/FeatureGrid';
 import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
 import { BackersHubSection } from './components/BackersHubSection';
+import { InvestorsHubSection } from './components/InvestorsHubSection';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
@@ -108,6 +109,9 @@ export default function App() {
 
         {/* Direct Backers & Support Hub (TON, Solana, $sopump CA) */}
         <BackersHubSection />
+
+        {/* Official Investors & Intellectual Property (IP) Overview */}
+        <InvestorsHubSection />
 
         {/* About, Stats & FAQ Section */}
         <AboutSection />

@@ -29,6 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
     { id: 'store', label: 'Free Hub' },
     { id: 'vault', label: 'Digital Vault', isVault: true },
     { id: 'backers-hub', label: 'Backers & Token' },
+    { id: 'investors-hub', label: 'Investors & IP' },
     { id: 'community', label: 'Telegram Hub' },
     { id: 'about', label: 'About' },
   ];

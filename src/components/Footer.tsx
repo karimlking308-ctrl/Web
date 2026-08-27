@@ -145,6 +145,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('investors-hub')}
+                  className="text-teal-400 font-medium hover:text-teal-300 transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>Investors &amp; IP Hub</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-teal-500/15 text-teal-300 font-mono-code">Overview</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('about')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
