@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sparkles, Menu, X, Send, FolderArchive, Users, CheckCircle2 } from 'lucide-react';
 import { HeaderSocialBar, TelegramIcon } from './SocialLinks';
+import { GlobalSearchBar } from './GlobalSearchBar';
 
 interface NavbarProps {
   onOpenLogin: () => void;
@@ -112,7 +113,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
         </nav>
 
         {/* Action Controls */}
-        <div className="hidden sm:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
+          {/* Global Quick Search Bar */}
+          <GlobalSearchBar onNavigate={onNavigate} />
+
           {/* Social Channels Icons */}
           <HeaderSocialBar />
 
@@ -135,14 +139,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
           </button>
         </div>
 
-        {/* Mobile menu trigger */}
+        {/* Medium/Tablet Search Bar (hidden on lg, visible on md/sm) */}
+        <div className="hidden md:flex lg:hidden items-center gap-2">
+          <GlobalSearchBar onNavigate={onNavigate} />
+          <button
+            onClick={() => handleLinkClick('vault')}
+            className="px-3 py-1.5 rounded-full bg-emerald-500 text-[#080b12] text-xs font-bold font-mono-code flex items-center gap-1"
+          >
+            <FolderArchive className="w-3.5 h-3.5" />
+            <span>Vault</span>
+          </button>
+        </div>
+
+        {/* Mobile menu trigger and quick search */}
         <div className="flex items-center gap-2 md:hidden">
+          <GlobalSearchBar onNavigate={onNavigate} />
           <button
             onClick={() => handleLinkClick('vault')}
             className="px-2.5 py-1.5 rounded-lg bg-emerald-500 text-[#080b12] text-xs font-bold font-mono-code flex items-center gap-1"
           >
             <FolderArchive className="w-3.5 h-3.5" />
-            <span>Vault (Free)</span>
+            <span>Vault</span>
           </button>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -157,6 +174,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
       {/* Mobile dropdown drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-800 bg-[#0b0f19] px-4 pt-3 pb-5 space-y-3 animate-in fade-in duration-150">
+          <div className="pb-1">
+            <GlobalSearchBar
+              onNavigate={(id) => {
+                handleLinkClick(id);
+              }}
+            />
+          </div>
+
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <button
