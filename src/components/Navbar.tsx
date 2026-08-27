@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
     { id: 'utility-tools', label: 'Tools' },
     { id: 'gas-calculator', label: 'Fee Estimator' },
     { id: 'developer-scripts', label: 'Scripts Vault' },
-    { id: 'store', label: 'Pricing & Pro' },
+    { id: 'store', label: 'Pricing & Pro', isPro: true },
     { id: 'vault', label: 'Digital Vault', isVault: true },
     { id: 'backers-hub', label: 'Backers & Token' },
     { id: 'investors-hub', label: 'Investors & IP' },
@@ -91,10 +91,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
                 {link.isVault && (
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 )}
+                {link.isPro && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                )}
                 <span>{link.label}</span>
                 {link.isVault && (
                   <span className="text-[9px] font-mono-code px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold">
                     FREE
+                  </span>
+                )}
+                {link.isPro && (
+                  <span className="text-[9px] font-mono-code px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">
+                    PRO
                   </span>
                 )}
               </button>
@@ -163,6 +171,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAffiliate, activeSection, 
                 {link.isVault && (
                   <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">
                     100% FREE
+                  </span>
+                )}
+                {link.isPro && (
+                  <span className="text-[10px] font-mono-code px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30">
+                    PRO / WEB3
                   </span>
                 )}
               </button>

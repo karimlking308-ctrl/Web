@@ -121,9 +121,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onNavigate('store')}
-                  className="hover:text-cyan-400 transition-colors cursor-pointer"
+                  className="hover:text-cyan-400 transition-colors cursor-pointer flex items-center justify-between w-full"
                 >
-                  Pro &amp; Enterprise Pricing
+                  <span>Pro &amp; Enterprise Pricing</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-500/15 text-cyan-300 font-mono-code">PRO</span>
                 </button>
               </li>
               <li>
