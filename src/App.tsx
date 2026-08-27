@@ -12,6 +12,7 @@ import { AboutSection } from './components/AboutSection';
 import { BackersHubSection } from './components/BackersHubSection';
 import { InvestorsHubSection } from './components/InvestorsHubSection';
 import { DeveloperDocsSection } from './components/DeveloperDocsSection';
+import { TrustSecurityHubSection } from './components/TrustSecurityHubSection';
 import { TokenStatsTicker } from './components/TokenStatsTicker';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
@@ -120,6 +121,14 @@ export default function App() {
 
         {/* Developer Documentation & API Hub */}
         <DeveloperDocsSection />
+
+        {/* Decentralized Trust, Security & Legal Hub */}
+        <TrustSecurityHubSection
+          onOpenLegalDoc={(type) => {
+            setLegalDocType(type);
+            setIsLegalOpen(true);
+          }}
+        />
 
         {/* About, Stats & FAQ Section */}
         <AboutSection />
