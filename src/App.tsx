@@ -11,6 +11,7 @@ import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
 import { BackersHubSection } from './components/BackersHubSection';
 import { InvestorsHubSection } from './components/InvestorsHubSection';
+import { TokenStatsTicker } from './components/TokenStatsTicker';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
@@ -73,6 +74,9 @@ export default function App() {
           onExploreTools={() => scrollToSection('vault')}
           onOpenStore={() => scrollToSection('store')}
         />
+
+        {/* Live Token & Market Stats Ticker ($sopump • TON Network) */}
+        <TokenStatsTicker />
 
         {/* Dedicated Digital Products & Asset Vault Downloads (Free Community Access) */}
         <DigitalVaultSection />
