@@ -121,9 +121,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               <li>
                 <button
                   onClick={() => onNavigate('store')}
-                  className="hover:text-emerald-400 transition-colors cursor-pointer"
+                  className="hover:text-cyan-400 transition-colors cursor-pointer"
                 >
-                  Free Resource Hub
+                  Pro &amp; Enterprise Pricing
                 </button>
               </li>
               <li>
