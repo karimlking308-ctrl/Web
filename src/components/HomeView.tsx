@@ -131,7 +131,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="flex-1 flex flex-col bg-[#080b12] animate-in fade-in duration-300">
+    <div className="flex-1 flex flex-col bg-transparent animate-in fade-in duration-300">
       {/* 1. Hero Section */}
       <Hero
         onExploreTools={() => onNavigate('vault')}
@@ -145,7 +145,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       <FeatureGrid onSelectCategory={handleSelectCategoryFromGrid} />
 
       {/* 4. Dedicated Standalone Workspaces & Hub Portals */}
-      <section className="py-16 bg-[#060913] border-t border-b border-slate-800/80 relative">
+      <section className="py-16 bg-[#060913]/70 backdrop-blur-sm border-t border-b border-slate-800/80 relative">
         {/* Glow backdrop */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-b from-cyan-500/5 via-purple-500/5 to-transparent blur-[160px] pointer-events-none" />
 
@@ -233,7 +233,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
       </section>
 
       {/* 5. Trust & Open Source Commitment Banner */}
-      <section className="py-14 bg-[#080b12] relative overflow-hidden">
+      <section className="py-14 bg-transparent relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-[#0b1020] via-[#0d1428] to-[#0b1020] border border-slate-800/80 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="space-y-3 max-w-2xl text-center lg:text-left">

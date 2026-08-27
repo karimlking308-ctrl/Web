@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
+import { GlobalNeuralBackground } from './components/GlobalNeuralBackground';
 import { HomeView } from './components/HomeView';
 import { PageViewWrapper } from './components/PageViewWrapper';
 import { InteractiveToolsGrid } from './components/InteractiveToolsGrid';
@@ -138,7 +139,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080b12] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
+    <div className="min-h-screen bg-[#080b12] text-slate-100 flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-300 relative">
+      {/* Fixed Persistent 60FPS Neural Background with 2-Second Smooth State Cross-Fading */}
+      <GlobalNeuralBackground activeSection={activeSection} />
+
       {/* Sticky Persistent Top Navigation Bar */}
       <Navbar
         onOpenLogin={() => setIsLoginOpen(true)}

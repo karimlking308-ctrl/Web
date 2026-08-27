@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, Sparkles, Terminal, ShieldCheck, Zap, Send, Copy, Check, CheckCircle2 } from 'lucide-react';
-import { HeroInteractiveCanvas } from './HeroInteractiveCanvas';
 
 interface HeroProps {
   onExploreTools: () => void;
@@ -27,12 +26,9 @@ await downloadOpenVaultPackage({
   };
 
   return (
-    <section id="home" className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-[#03070d]">
-      {/* Deep Dark-Teal Gradient Base */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030a10] via-[#04151e] to-[#03070d] pointer-events-none" />
-      
-      {/* High-Performance 60FPS Interactive Neural / Blockchain Ledger Canvas */}
-      <HeroInteractiveCanvas />
+    <section id="home" className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-transparent">
+      {/* Subtle Depth Gradient Base */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#030a10]/40 via-transparent to-[#03070d]/60 pointer-events-none" />
 
       {/* Layered Subtle PCB Circuit Board Traces Behind Network */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
