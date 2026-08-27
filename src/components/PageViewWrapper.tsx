@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight, ArrowLeft, Home, Sparkles, Layers, ArrowUpRight } from 'lucide-react';
+import { ContextAwareBackground } from './backgrounds/ContextAwareBackground';
 
 export interface PageViewWrapperProps {
   pageId: string;
@@ -56,10 +57,13 @@ export const PageViewWrapper: React.FC<PageViewWrapperProps> = ({
 
   return (
     <div className="flex-1 flex flex-col bg-[#080b12] text-slate-100 relative overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-300">
+      {/* Context-Aware Dynamic 60FPS Page Background Animation */}
+      <ContextAwareBackground pageId={pageId} />
+
       {/* Background Ambient Lighting Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-cyan-500/10 via-emerald-500/5 to-transparent blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/3 -left-48 w-96 h-96 bg-purple-500/5 blur-[160px] pointer-events-none" />
-      <div className="absolute top-1/3 -right-48 w-96 h-96 bg-emerald-500/5 blur-[160px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-cyan-500/10 via-emerald-500/5 to-transparent blur-[140px] pointer-events-none z-0" />
+      <div className="absolute top-1/3 -left-48 w-96 h-96 bg-purple-500/5 blur-[160px] pointer-events-none z-0" />
+      <div className="absolute top-1/3 -right-48 w-96 h-96 bg-emerald-500/5 blur-[160px] pointer-events-none z-0" />
 
       {/* Persistent Page Header Bar & Breadcrumb Navigation */}
       <div className="border-b border-slate-800/80 bg-[#060913]/90 backdrop-blur-md pt-8 pb-10 sm:pt-10 sm:pb-12 relative z-10">
