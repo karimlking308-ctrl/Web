@@ -9,6 +9,7 @@ import { DigitalVaultSection } from './components/DigitalVaultSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
+import { BackersHubSection } from './components/BackersHubSection';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
 import { ToolDetailModal } from './components/ToolDetailModal';
@@ -104,6 +105,9 @@ export default function App() {
           selectedCategoryFilter={selectedCategoryFilter}
           onFilterChange={(filter) => setSelectedCategoryFilter(filter)}
         />
+
+        {/* Direct Backers & Support Hub (TON, Solana, $sopump CA) */}
+        <BackersHubSection />
 
         {/* About, Stats & FAQ Section */}
         <AboutSection />
