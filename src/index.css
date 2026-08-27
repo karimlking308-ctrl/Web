@@ -36,6 +36,41 @@
   background: #334155;
 }
 
+/* Animations for Copy Toast & Micro-interactions */
+@keyframes toastSlideUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.95);
+  }
+  60% {
+    transform: translate(-50%, -2px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+.animate-toast-in {
+  animation: toastSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes copiedPulse {
+  0% {
+    transform: scale(0.98);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-copied-pop {
+  animation: copiedPulse 0.25s ease-out forwards;
+}
+
 /* Monetag In-Page Push & Floating Ad Banners Positioning Override */
 /* Prevent top header overlay & reposition push notifications cleanly to bottom-right */
 body > div[style*="position: fixed"]:not(#root),
