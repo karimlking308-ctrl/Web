@@ -24,10 +24,13 @@ interface GlobalNeuralBackgroundProps {
   activeSection?: string;
 }
 
-export const GlobalNeuralBackground: React.FC<GlobalNeuralBackgroundProps> = () => {
+export const GlobalNeuralBackground: React.FC<GlobalNeuralBackgroundProps> = ({ activeSection = 'home' }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const isHome = activeSection === 'home';
 
   useEffect(() => {
+    if (!isHome) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d', { alpha: true });
@@ -269,8 +272,38 @@ export const GlobalNeuralBackground: React.FC<GlobalNeuralBackgroundProps> = () 
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, []);
+  }, [isHome]);
 
+  // If on a secondary page, render the clean, professional static pure CSS tech grid background
+  if (!isHome) {
+    return (
+      <div
+        id="global-static-tech-grid-background"
+        className="fixed inset-0 pointer-events-none -z-10 overflow-hidden select-none"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          zIndex: -1,
+          backgroundColor: '#0a0b10',
+          backgroundImage: `
+            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px)
+          `,
+          backgroundSize: '32px 32px',
+        }}
+        aria-hidden="true"
+      >
+        {/* Subtle Vignette & Depth Lighting */}
+        <div className="absolute inset-0 bg-radial from-transparent via-[#0a0b10]/40 to-[#0a0b10]/90 pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-gradient-to-b from-cyan-500/5 via-emerald-500/3 to-transparent blur-[140px] pointer-events-none" />
+      </div>
+    );
+  }
+
+  // Home Page: Active, moving green/cyan neural network animation canvas
   return (
     <div
       id="global-neural-background"
