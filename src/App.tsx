@@ -154,13 +154,6 @@ export default function App() {
           <HomeView
             onNavigate={navigateToSection}
             onOpenLogin={() => setIsLoginOpen(true)}
-            onSelectTool={(tool) => setSelectedTool(tool)}
-            selectedCategoryFilter={selectedCategoryFilter}
-            onFilterChange={(filter) => setSelectedCategoryFilter(filter)}
-            onOpenLegalDoc={(type) => {
-              setLegalDocType(type);
-              setIsLegalOpen(true);
-            }}
           />
         )}
 

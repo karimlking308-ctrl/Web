@@ -2,19 +2,6 @@ import React from 'react';
 import { Hero } from './Hero';
 import { TokenStatsTicker } from './TokenStatsTicker';
 import { FeatureGrid } from './FeatureGrid';
-import { DigitalVaultSection } from './DigitalVaultSection';
-import { DeveloperScriptsVault } from './DeveloperScriptsVault';
-import { InteractiveToolsGrid } from './InteractiveToolsGrid';
-import { SolanaFeeEstimator } from './SolanaFeeEstimator';
-import { PricingSection } from './PricingSection';
-import { ToolCatalog } from './ToolCatalog';
-import { BackersHubSection } from './BackersHubSection';
-import { InvestorsHubSection } from './InvestorsHubSection';
-import { DeveloperDocsSection } from './DeveloperDocsSection';
-import { TrustSecurityHubSection } from './TrustSecurityHubSection';
-import { AboutSection } from './AboutSection';
-import { ToolItem } from '../data/toolsData';
-import { LegalDocType } from './LegalModal';
 import {
   ArrowRight,
   Terminal,
@@ -25,30 +12,123 @@ import {
   BookOpen,
   ShieldCheck,
   Coins,
-  Building,
+  Building2,
+  Code2,
+  Lock,
+  Layers,
+  CheckCircle2,
+  Cpu,
+  ArrowUpRight,
 } from 'lucide-react';
 
 interface HomeViewProps {
   onNavigate: (sectionId: string) => void;
   onOpenLogin: () => void;
-  onSelectTool: (tool: ToolItem) => void;
-  selectedCategoryFilter: string;
-  onFilterChange: (filter: string) => void;
-  onOpenLegalDoc: (type: LegalDocType) => void;
 }
 
-export const HomeView: React.FC<HomeViewProps> = ({
-  onNavigate,
-  onOpenLogin,
-  onSelectTool,
-  selectedCategoryFilter,
-  onFilterChange,
-  onOpenLegalDoc,
-}) => {
+export const HomeView: React.FC<HomeViewProps> = ({ onNavigate }) => {
   const handleSelectCategoryFromGrid = (categoryType: 'ai' | 'dev' | 'web3') => {
-    onFilterChange(categoryType);
     onNavigate('utility-tools');
   };
+
+  const portalCards = [
+    {
+      id: 'developer-scripts',
+      icon: <Terminal className="w-5 h-5 text-emerald-400" />,
+      badge: 'Open Source Python/Node/Rust',
+      badgeColor: 'emerald',
+      title: 'Developer Scripts Vault',
+      description:
+        'Battle-tested automation scripts for Solana bulk airdrops, Jito MEV frontrunning protection, Telegram broadcast engines, and AI content batching.',
+      features: ['Solana Airdrop Engine', 'Jito MEV Sniper', 'Telegram Clicker Bot', 'Instant Source Copy'],
+      actionText: 'Enter Scripts Vault',
+      borderHover: 'hover:border-emerald-500/50',
+    },
+    {
+      id: 'utility-tools',
+      icon: <Wrench className="w-5 h-5 text-indigo-400" />,
+      badge: 'Interactive Micro-Tools',
+      badgeColor: 'indigo',
+      title: 'Interactive Web3 & AI Tools',
+      description:
+        'Client-side developer utilities designed for instant API payload formatting, AI agent prompt optimization, secret key obfuscation, and SPL token inspection.',
+      features: ['AI Prompt Optimizer', 'JSON Payload Formatter', 'Key Obfuscator', 'SPL Inspector'],
+      actionText: 'Explore Micro-Tools',
+      borderHover: 'hover:border-indigo-500/50',
+    },
+    {
+      id: 'gas-calculator',
+      icon: <Zap className="w-5 h-5 text-cyan-400" />,
+      badge: 'Live Solana Estimator',
+      badgeColor: 'cyan',
+      title: 'Solana Gas & Priority Fee Suite',
+      description:
+        'Real-time compute unit pricing, priority fee multiplier, and lamport-to-USD calculator. Guarantee high-speed transaction landing during network congestion.',
+      features: ['Real-time CU Pricing', 'Priority Multipliers', 'Lamport to USD', 'Dynamic Sliders'],
+      actionText: 'Launch Fee Calculator',
+      borderHover: 'hover:border-cyan-500/50',
+    },
+    {
+      id: 'vault',
+      icon: <FolderArchive className="w-5 h-5 text-purple-400" />,
+      badge: '100% Free ZIP Downloads',
+      badgeColor: 'purple',
+      title: 'VIP Digital Asset Vault',
+      description:
+        'Instant 1-click client-side ZIP bundle generators for n8n AI agent workflows, WhatsApp lead bots, Telegram mini-apps, and 1,500+ master system prompts.',
+      features: ['n8n AI Workflows', 'Telegram Mini-Apps', 'Prompt Databases', 'SHA-256 Verified'],
+      actionText: 'Open Digital Vault',
+      borderHover: 'hover:border-purple-500/50',
+    },
+    {
+      id: 'store',
+      icon: <Cpu className="w-5 h-5 text-amber-400" />,
+      badge: 'Lifetime Licenses',
+      badgeColor: 'amber',
+      title: 'Pro & Enterprise Store',
+      description:
+        'Transparent lifetime licensing with decentralized multi-crypto checkout in TON, SOL, or $sopump token. Includes automated TxID bot verification & key dispenser.',
+      features: ['Pro License ($49)', 'Enterprise IP ($299)', 'Multi-Crypto Web3', 'Automated Dispenser'],
+      actionText: 'View Licensing Plans',
+      borderHover: 'hover:border-amber-500/50',
+    },
+    {
+      id: 'dev-docs',
+      icon: <BookOpen className="w-5 h-5 text-cyan-400" />,
+      badge: 'Interactive REST API',
+      badgeColor: 'cyan',
+      title: 'Developer Docs & API Hub',
+      description:
+        'Live interactive REST endpoints (GET /api/v1/tools, GET /api/v1/token/sopump, GET /api/v1/rates/solana, POST /api/v1/license/verify) and client SDK reference.',
+      features: ['Interactive API Console', 'cURL Code Generator', 'TypeScript/Python SDKs', 'Microservices Spec'],
+      actionText: 'Open Docs & API Hub',
+      borderHover: 'hover:border-cyan-500/50',
+    },
+    {
+      id: 'backers-hub',
+      icon: <Coins className="w-5 h-5 text-emerald-400" />,
+      badge: 'TON Mainnet Jetton',
+      badgeColor: 'emerald',
+      title: 'Backers & $sopump Token Hub',
+      description:
+        'Explore the verified TON Jetton contract (TEP-74), DeDust DEX liquidity pool reserves, staking rewards, and backer governance privileges.',
+      features: ['Verified TEP-74 Jetton', 'DeDust DEX Pools', 'Staking Rewards', 'Backer Desk'],
+      actionText: 'Explore Token Hub',
+      borderHover: 'hover:border-emerald-500/50',
+    },
+    {
+      id: 'investors-hub',
+      icon: <Building2 className="w-5 h-5 text-purple-400" />,
+      badge: 'Institutional IP Asset',
+      badgeColor: 'purple',
+      title: 'Investors & IP Acquisition',
+      description:
+        'Institutional IP licensing, proprietary codebase valuation, modular infrastructure portfolio, and direct strategic partnership contact desk.',
+      features: ['Codebase IP Valuation', 'Full Commercial Rights', 'Modular Tech Stack', 'Institutional Inquiries'],
+      actionText: 'View Investor Hub',
+      borderHover: 'hover:border-purple-500/50',
+    },
+  ];
 
   return (
     <div className="flex-1 flex flex-col bg-[#080b12] animate-in fade-in duration-300">
@@ -61,157 +141,136 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 2. Live Token & Market Stats Ticker ($sopump • TON Network) */}
       <TokenStatsTicker />
 
-      {/* 3. Quick Hub Launchpad / Multi-View Navigation Cards */}
-      <section className="py-12 bg-[#060913] border-b border-slate-800/80 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono font-bold uppercase mb-2">
+      {/* 3. The 3 Core Architectural Pillars */}
+      <FeatureGrid onSelectCategory={handleSelectCategoryFromGrid} />
+
+      {/* 4. Dedicated Standalone Workspaces & Hub Portals */}
+      <section className="py-16 bg-[#060913] border-t border-b border-slate-800/80 relative">
+        {/* Glow backdrop */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-b from-cyan-500/5 via-purple-500/5 to-transparent blur-[160px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="space-y-3 max-w-2xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono font-bold uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Dedicated Ecosystem Hubs</span>
+                <span>Dedicated Standalone Workspaces</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                Explore Standalone Workspaces
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                Modular Developer Ecosystem
               </h2>
+              <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
+                Each hub is an isolated, high-performance workspace designed for speed, clarity, and zero-clutter execution. Select any portal below to enter.
+              </p>
             </div>
-            <span className="text-xs font-mono text-slate-400">
-              Select any hub to enter its focused standalone view
-            </span>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono text-slate-500 hidden sm:inline">
+                8 Standalone Views Available
+              </span>
+              <button
+                type="button"
+                onClick={() => onNavigate('developer-scripts')}
+                className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#080b12] text-xs font-mono font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>Browse All Scripts</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1: Scripts Vault */}
-            <div
-              onClick={() => onNavigate('developer-scripts')}
-              className="p-5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-800 hover:border-emerald-500/50 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
-            >
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-105 transition-transform">
-                  <Terminal className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white group-hover:text-emerald-300 transition-colors mb-1">
-                  Developer Scripts
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  Executable Python, Node.js &amp; Rust scripts for Solana airdrops, Jito MEV sniping, and Telegram automation.
-                </p>
-              </div>
-              <span className="text-xs font-mono text-emerald-400 flex items-center gap-1 font-semibold">
-                Open Scripts Page <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
+          {/* Grid of Dedicated Workspace Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {portalCards.map((card) => (
+              <div
+                key={card.id}
+                onClick={() => onNavigate(card.id)}
+                className={`p-6 rounded-3xl bg-[#0b0f1a]/80 hover:bg-[#0e1424] border border-slate-800/90 ${card.borderHover} transition-all duration-200 cursor-pointer group flex flex-col justify-between shadow-lg shadow-black/40 relative overflow-hidden`}
+              >
+                {/* Top Corner Glow on hover */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-xl group-hover:bg-cyan-500/10 transition-colors pointer-events-none" />
 
-            {/* Card 2: Interactive Micro-Tools */}
-            <div
-              onClick={() => onNavigate('utility-tools')}
-              className="p-5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-800 hover:border-indigo-500/50 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
-            >
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mb-3 group-hover:scale-105 transition-transform">
-                  <Wrench className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition-colors mb-1">
-                  Micro-Tools &amp; Catalog
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  Interactive AI prompt optimizers, API payload formatters, secret obfuscators, and SPL metadata inspectors.
-                </p>
-              </div>
-              <span className="text-xs font-mono text-indigo-400 flex items-center gap-1 font-semibold">
-                Open Tools Page <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <div className="w-11 h-11 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      {card.icon}
+                    </div>
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-slate-900/90 border border-slate-800 text-slate-300">
+                      {card.badge}
+                    </span>
+                  </div>
 
-            {/* Card 3: Gas & Priority Fee Estimator */}
-            <div
-              onClick={() => onNavigate('gas-calculator')}
-              className="p-5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-800 hover:border-cyan-500/50 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
-            >
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-3 group-hover:scale-105 transition-transform">
-                  <Zap className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors mb-1">
-                  Solana Fee Estimator
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  Live compute unit pricing, priority fee multipliers, and lamport-to-USD conversion calculator.
-                </p>
-              </div>
-              <span className="text-xs font-mono text-cyan-400 flex items-center gap-1 font-semibold">
-                Open Estimator <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
+                  <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors mb-2">
+                    {card.title}
+                  </h3>
 
-            {/* Card 4: 100% Free VIP Vault */}
-            <div
-              onClick={() => onNavigate('vault')}
-              className="p-5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-800 hover:border-purple-500/50 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
-            >
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-3 group-hover:scale-105 transition-transform">
-                  <FolderArchive className="w-5 h-5" />
+                  <p className="text-xs text-slate-400 leading-relaxed mb-4 line-clamp-3">
+                    {card.description}
+                  </p>
+
+                  {/* Bullet Feature highlights */}
+                  <div className="space-y-1.5 mb-6">
+                    {card.features.map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-2 text-[11px] font-mono text-slate-300">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                        <span className="truncate">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors mb-1">
-                  Digital Asset Vault
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed mb-4">
-                  1-click ZIP downloads of n8n AI agent workflows, prompt master databases, and production boilerplates.
-                </p>
+
+                <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-cyan-400 group-hover:text-cyan-300 flex items-center gap-1.5">
+                    <span>{card.actionText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-slate-600 group-hover:text-cyan-400 transition-colors" />
+                </div>
               </div>
-              <span className="text-xs font-mono text-purple-400 flex items-center gap-1 font-semibold">
-                Open Digital Vault <ArrowRight className="w-3.5 h-3.5" />
-              </span>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 4. Dedicated Digital Products & Asset Vault Downloads (Free Community Access) */}
-      <DigitalVaultSection />
+      {/* 5. Trust & Open Source Commitment Banner */}
+      <section className="py-14 bg-[#080b12] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-[#0b1020] via-[#0d1428] to-[#0b1020] border border-slate-800/80 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-8">
+            <div className="space-y-3 max-w-2xl text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono font-bold uppercase">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Audited &amp; Non-Custodial Architecture</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                100% Client-Side Execution &amp; MIT Licensed
+              </h3>
+              <p className="text-slate-400 text-sm leading-relaxed">
+                All micro-tools run entirely in your local browser sandbox. Private keys, prompt payloads, and secrets never touch external servers or third-party databases.
+              </p>
+            </div>
 
-      {/* 5. Ready-to-Deploy Developer Scripts Vault (Python, Node.js, Rust - Free Open Source) */}
-      <DeveloperScriptsVault />
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto shrink-0">
+              <button
+                type="button"
+                onClick={() => onNavigate('trust-legal-hub')}
+                className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-mono font-bold text-white transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+              >
+                <Lock className="w-4 h-4 text-emerald-400" />
+                <span>Inspect Audit &amp; Legal Hub</span>
+              </button>
 
-      {/* 6. Interactive AI & Web3 Micro Tools Grid */}
-      <InteractiveToolsGrid
-        onOpenStore={() => onNavigate('vault')}
-        onOpenLogin={onOpenLogin}
-      />
-
-      {/* 7. Free Lead-Magnet Utility: Solana Gas & Fee Estimator */}
-      <SolanaFeeEstimator
-        onOpenStore={() => onNavigate('vault')}
-        onOpenVault={() => onNavigate('vault')}
-      />
-
-      {/* 8. Free Community Resource Hub & 3 Pillars Section */}
-      <PricingSection onExploreFree={() => onNavigate('developer-scripts')} />
-
-      {/* 9. 3 Main Pillars / Features Grid */}
-      <FeatureGrid onSelectCategory={handleSelectCategoryFromGrid} />
-
-      {/* 10. Tools & Digital Store Directory */}
-      <ToolCatalog
-        onSelectTool={onSelectTool}
-        selectedCategoryFilter={selectedCategoryFilter}
-        onFilterChange={onFilterChange}
-      />
-
-      {/* 11. Direct Backers & Support Hub (TON, Solana, $sopump CA) */}
-      <BackersHubSection />
-
-      {/* 12. Official Investors & Intellectual Property (IP) Overview */}
-      <InvestorsHubSection />
-
-      {/* 13. Developer Documentation & API Hub */}
-      <DeveloperDocsSection />
-
-      {/* 14. Decentralized Trust, Security & Legal Hub */}
-      <TrustSecurityHubSection onOpenLegalDoc={onOpenLegalDoc} />
-
-      {/* 15. About, Stats & FAQ Section */}
-      <AboutSection />
+              <button
+                type="button"
+                onClick={() => onNavigate('dev-docs')}
+                className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-[#080b12] text-xs font-mono font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-cyan-500/20"
+              >
+                <Code2 className="w-4 h-4" />
+                <span>View API Documentation</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
