@@ -11,6 +11,7 @@ import { ToolCatalog } from './components/ToolCatalog';
 import { AboutSection } from './components/AboutSection';
 import { BackersHubSection } from './components/BackersHubSection';
 import { InvestorsHubSection } from './components/InvestorsHubSection';
+import { DeveloperDocsSection } from './components/DeveloperDocsSection';
 import { TokenStatsTicker } from './components/TokenStatsTicker';
 import { Footer } from './components/Footer';
 import { LoginModal } from './components/LoginModal';
@@ -116,6 +117,9 @@ export default function App() {
 
         {/* Official Investors & Intellectual Property (IP) Overview */}
         <InvestorsHubSection />
+
+        {/* Developer Documentation & API Hub */}
+        <DeveloperDocsSection />
 
         {/* About, Stats & FAQ Section */}
         <AboutSection />

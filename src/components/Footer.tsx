@@ -164,6 +164,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenLegal }) => {
               </li>
               <li>
                 <button
+                  onClick={() => onNavigate('dev-docs')}
+                  className="text-cyan-400 font-medium hover:text-cyan-300 transition-colors cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>Developer Docs &amp; API</span>
+                  <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-500/15 text-cyan-300 font-mono-code">REST</span>
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => onNavigate('about')}
                   className="hover:text-emerald-400 transition-colors cursor-pointer"
                 >
