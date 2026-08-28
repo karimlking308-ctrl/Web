@@ -31,6 +31,19 @@ import {
   Mic,
   MicOff,
   AlertCircle,
+  Database,
+  Search,
+  Hash,
+  Braces,
+  Layers,
+  Workflow,
+  KeyRound,
+  CheckCircle2,
+  Globe,
+  RefreshCw,
+  FileText,
+  Binary,
+  Boxes,
 } from 'lucide-react';
 import {
   generateTelegramMiniAppZIP,
@@ -51,11 +64,21 @@ export interface ChatMessage {
     code: string;
     title?: string;
   };
-  interactiveWidget?: 'solana-fee' | 'bitcoin-calc' | 'json-validator' | 'key-masker' | 'vault-download';
+  interactiveWidget?:
+    | 'solana-fee'
+    | 'bitcoin-calc'
+    | 'json-validator'
+    | 'key-masker'
+    | 'vault-download'
+    | 'mock-generator'
+    | 'regex-builder'
+    | 'sql-builder'
+    | 'web3-contract'
+    | 'crypto-utilities';
   quickAction?: {
     label: string;
     sectionId: string;
-    icon?: 'zap' | 'terminal' | 'vault' | 'shield' | 'code' | 'coins' | 'store';
+    icon?: 'zap' | 'terminal' | 'vault' | 'shield' | 'code' | 'coins' | 'store' | 'database' | 'hash';
   };
 }
 
@@ -116,6 +139,60 @@ export const MainChatApp: React.FC = () => {
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [keyToMask, setKeyToMask] = useState('5KnbzN5yS8V6j9BvL5wP8xQz2rE3tY4uI1oP0aS9dF8gH7jK6lZ5x');
   const [maskedResult, setMaskedResult] = useState<string | null>(null);
+
+  // 1. API & JSON Mock Generator state
+  const [mockType, setMockType] = useState<'users' | 'orders' | 'crypto-tx' | 'saas'>('crypto-tx');
+  const [mockCount, setMockCount] = useState<number>(3);
+  const [mockCopied, setMockCopied] = useState(false);
+
+  // 2. Regex Builder & Tester state
+  const [regexPattern, setRegexPattern] = useState('^0x[a-fA-F0-9]{40}$');
+  const [regexFlags, setRegexFlags] = useState('i');
+  const [regexTestText, setRegexTestText] = useState('0x71C8fb86633665c789053802a730417614e610d4');
+
+  // 3. SQL Query Builder state
+  const [sqlDialect, setSqlDialect] = useState<'postgresql' | 'mysql' | 'sqlite'>('postgresql');
+  const [sqlTemplate, setSqlTemplate] = useState<'cte-volume' | 'paginated-window' | 'upsert-conflict' | 'indexing'>('cte-volume');
+
+  // 4. Web3 / Smart Contract Snippets state
+  const [web3Tab, setWeb3Tab] = useState<'jupiter' | 'raydium' | 'anchor' | 'ton-connect' | 'ton-jetton'>('jupiter');
+
+  // 5. Base64, JWT, & Hash Utilities state
+  const [cryptoTab, setCryptoTab] = useState<'base64' | 'jwt' | 'hasher'>('base64');
+  const [base64Input, setBase64Input] = useState('Hello SolPump Store Web3 Developer!');
+  const [base64Mode, setBase64Mode] = useState<'encode' | 'decode'>('encode');
+  const [jwtInput, setJwtInput] = useState('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlNvbFB1bXAgRGV2Iiwicm9sZSI6InZpcF9idWlsZGVyIiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE4MDAwMDAwMDB9.dz48yZ5sUqjW1-sample-signature-only');
+  const [hashInput, setHashInput] = useState('sol-pump.store-free-open-source-2026');
+  const [hashAlgo, setHashAlgo] = useState<'SHA-256' | 'SHA-512'>('SHA-256');
+  const [calculatedHash, setCalculatedHash] = useState<string>('');
+
+  // Live hash calculator effect
+  useEffect(() => {
+    let isCancelled = false;
+    async function updateHash() {
+      if (!hashInput) {
+        setCalculatedHash('');
+        return;
+      }
+      try {
+        const msgUint8 = new TextEncoder().encode(hashInput);
+        const hashBuffer = await crypto.subtle.digest(hashAlgo, msgUint8);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
+        if (!isCancelled) {
+          setCalculatedHash(hashHex);
+        }
+      } catch (err) {
+        if (!isCancelled) {
+          setCalculatedHash('Hashing error');
+        }
+      }
+    }
+    updateHash();
+    return () => {
+      isCancelled = true;
+    };
+  }, [hashInput, hashAlgo]);
 
   // Current active messages
   const activeSession = sessions.find((s) => s.id === activeSessionId);
@@ -385,18 +462,253 @@ Test key masking below:`,
       };
     }
 
+    // 7. API & JSON Mock Generator
+    if (q.includes('mock') || q.includes('faker') || q.includes('dataset') || q.includes('dummy data') || q.includes('mock api') || q.includes('sample json')) {
+      return {
+        content: `### ⚡ Instant API & JSON Mock Dataset Generator
+
+Create production-ready mock datasets and endpoint handlers on the fly for frontend prototypes, load tests, and Web3 apps.
+
+- **Realistic Schemas**: Includes UUIDs, Solana Base58 addresses, ISO timestamps, and nested items.
+- **Runnable Endpoint**: Includes ready-to-use Express/TypeScript mock router code.
+
+Configure and generate mock records live below:`,
+        interactiveWidget: 'mock-generator',
+        codeSnippet: {
+          language: 'typescript',
+          title: 'Express.js Mock API Route with Pagination',
+          code: `import express, { Request, Response } from 'express';
+
+const router = express.Router();
+
+// GET /api/v1/mock/transactions
+router.get('/transactions', (req: Request, res: Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = Math.min(parseInt(req.query.limit as string) || 10, 50);
+
+  const mockData = Array.from({ length: limit }, (_, i) => ({
+    id: \`tx_\${Date.now()}_\${i}\`,
+    slot: 289410290 + i * 4,
+    type: i % 2 === 0 ? 'JUPITER_SWAP' : 'SPL_TRANSFER',
+    tokenSymbol: i % 2 === 0 ? 'SOL' : 'USDC',
+    amount: parseFloat((Math.random() * 15 + 0.1).toFixed(4)),
+    feeLamports: 5000 + Math.floor(Math.random() * 10000),
+    status: 'CONFIRMED',
+    timestamp: new Date(Date.now() - i * 120000).toISOString(),
+  }));
+
+  res.json({
+    page,
+    limit,
+    total: 250,
+    hasMore: page * limit < 250,
+    data: mockData,
+  });
+});
+
+export default router;`,
+        },
+      };
+    }
+
+    // 8. Regex & SQL Query Builder
+    if (q.includes('regex') || q.includes('regexp') || q.includes('pattern') || q.includes('sql') || q.includes('postgres') || q.includes('cte') || q.includes('query')) {
+      if (q.includes('sql') || q.includes('postgres') || q.includes('sqlite') || q.includes('mysql') || q.includes('cte') || q.includes('window function')) {
+        return {
+          content: `### 📊 Production SQL Query & CTE Builder
+
+Generate battle-tested SQL queries optimized with Common Table Expressions (CTEs), window functions, and proper indexing for high performance.
+
+- **Rolling Volume Analytics**: Uses \`SUM(...) OVER (ORDER BY date ROWS BETWEEN...)\`.
+- **Deduplication & Window Ranking**: Uses \`ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)\`.
+- **High Concurrency Upserts**: \`INSERT ... ON CONFLICT (...) DO UPDATE\`.
+
+Select dialect and inspect queries below:`,
+          interactiveWidget: 'sql-builder',
+          codeSnippet: {
+            language: 'sql',
+            title: 'PostgreSQL 7-Day Rolling Volume & Moving Average CTE',
+            code: `-- Compute 7-day rolling volume & moving average for Web3 swaps
+WITH daily_metrics AS (
+  SELECT
+    DATE_TRUNC('day', block_time) AS trade_date,
+    token_symbol,
+    COUNT(tx_id) AS total_swaps,
+    SUM(volume_usd) AS daily_volume_usd
+  FROM dex_swaps
+  WHERE block_time >= NOW() - INTERVAL '60 days'
+  GROUP BY 1, 2
+)
+SELECT
+  trade_date,
+  token_symbol,
+  daily_volume_usd,
+  -- 7-Day Rolling Volume Window Function
+  SUM(daily_volume_usd) OVER (
+    PARTITION BY token_symbol
+    ORDER BY trade_date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS rolling_7d_volume_usd,
+  -- 7-Day Moving Average
+  AVG(daily_volume_usd) OVER (
+    PARTITION BY token_symbol
+    ORDER BY trade_date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS moving_avg_7d_usd
+FROM daily_metrics
+ORDER BY token_symbol, trade_date DESC;`,
+          },
+        };
+      }
+
+      return {
+        content: `### 🔍 Production Regular Expression (Regex) Builder & Tester
+
+Convert natural language requests into production-grade regular expressions with test match assertions and edge-case handling.
+
+- **Web3 Address Matching**: Matches Ethereum \`0x\` (40 hex chars) and Solana Base58 (32-44 base58 chars).
+- **Security Validation**: JWT tokens, UUIDv4, strict email formats, and URL slugs.
+
+Test your pattern live against arbitrary strings below:`,
+        interactiveWidget: 'regex-builder',
+        codeSnippet: {
+          language: 'typescript',
+          title: 'TypeScript Web3 Address & Signature Validator',
+          code: `// Production Regular Expressions for Web3 Strings
+export const REGEX_PATTERNS = {
+  // Ethereum 0x Address (40 Hex characters)
+  ETHEREUM_ADDRESS: /^0x[a-fA-F0-9]{40}$/,
+
+  // Solana Base58 Public Key (32-44 characters, no 0, O, I, l)
+  SOLANA_ADDRESS: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/,
+
+  // Solana 64-byte Transaction Signature (Base58, 87-88 chars)
+  SOLANA_TX_SIGNATURE: /^[1-9A-HJ-NP-Za-km-z]{87,88}$/,
+
+  // JWT Token Format (3 base64url segments)
+  JWT_TOKEN: /^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*$/,
+
+  // UUID v4
+  UUID_V4: /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+};
+
+export function isValidSolanaAddress(addr: string): boolean {
+  return REGEX_PATTERNS.SOLANA_ADDRESS.test(addr.trim());
+}`,
+        },
+      };
+    }
+
+    // 9. Web3 & Solana / TON Smart Contract Snippets
+    if (q.includes('ton') || q.includes('tact') || q.includes('jetton') || q.includes('func') || q.includes('jupiter') || q.includes('raydium') || q.includes('swap') || q.includes('anchor') || q.includes('smart contract') || q.includes('contract')) {
+      return {
+        content: `### 🪐 Web3 & Solana / TON Smart Contract & Swap Engine
+
+Battle-tested code snippets for Solana DEX Swaps, Priority Fees, Anchor 0.30+ programs, and TON Connect / Tact Jetton transfers.
+
+- **Jupiter Swap API v6**: Quote API + serialized swap transaction with dynamic priority fees.
+- **Raydium AMM**: SDK v2 pool swap instructions and slip limits.
+- **TON Tact / FunC**: Jetton transfer messages and TON Connect 2.0 wallet payloads.
+
+Switch between contract templates and copy runnable code below:`,
+        interactiveWidget: 'web3-contract',
+        codeSnippet: {
+          language: 'typescript',
+          title: 'Jupiter Swap API v6 Integration (TypeScript)',
+          code: `import { Connection, Keypair, VersionedTransaction } from '@solana/web3.js';
+
+export async function executeJupiterSwap(
+  connection: Connection,
+  wallet: Keypair,
+  inputMint: string, // e.g. SOL mint: So11111111111111111111111111111111111111112
+  outputMint: string, // e.g. USDC mint: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+  amountLamports: number,
+  slippageBps: number = 50 // 0.5%
+) {
+  // 1. Get Quote
+  const quoteUrl = \`https://quote-api.jup.ag/v6/quote?inputMint=\${inputMint}&outputMint=\${outputMint}&amount=\${amountLamports}&slippageBps=\${slippageBps}&maxAccounts=64\`;
+  const quoteRes = await fetch(quoteUrl);
+  const quoteResponse = await quoteRes.json();
+
+  // 2. Get Serialized Swap Transaction with dynamic priority fee
+  const swapRes = await fetch('https://quote-api.jup.ag/v6/swap', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      quoteResponse,
+      userPublicKey: wallet.publicKey.toBase58(),
+      wrapAndUnwrapSol: true,
+      dynamicComputeUnitLimit: true,
+      prioritizationFeeLamports: 'auto', // Dynamic priority pricing
+    }),
+  });
+  const { swapTransaction } = await swapRes.json();
+
+  // 3. Deserialize & Sign
+  const swapTransactionBuf = Buffer.from(swapTransaction, 'base64');
+  const transaction = VersionedTransaction.deserialize(swapTransactionBuf);
+  transaction.sign([wallet]);
+
+  // 4. Execute on Solana
+  const txid = await connection.sendRawTransaction(transaction.serialize(), {
+    skipPreflight: false,
+    maxRetries: 3,
+  });
+
+  return txid;
+}`,
+        },
+      };
+    }
+
+    // 10. Base64, JWT, & Hash Utilities
+    if (q.includes('base64') || q.includes('jwt') || q.includes('hash') || q.includes('sha256') || q.includes('sha512') || q.includes('md5') || q.includes('encode') || q.includes('decode') || q.includes('crypto')) {
+      return {
+        content: `### 🔐 Base64, JWT, & Cryptographic Hash Suite
+
+Perform live encoding, decoding, token payload inspection, and cryptographic hashing client-side without sending private data to any remote server.
+
+- **Base64 Encoder/Decoder**: Safe UTF-8 text conversion.
+- **JWT Inspector**: Formats JSON Header & Payload, displays signature algo, and verifies token expiration countdown.
+- **Cryptographic Hasher**: Calculates SHA-256 and SHA-512 hashes using browser-native Web Crypto API.
+
+Use the live interactive suite below:`,
+        interactiveWidget: 'crypto-utilities',
+        codeSnippet: {
+          language: 'typescript',
+          title: 'Browser & Node.js SHA-256 Hash Function',
+          code: `// Universal Cryptographic SHA-256 Hasher
+export async function sha256(message: string): Promise<string> {
+  // Browser Web Crypto API
+  if (typeof window !== 'undefined' && window.crypto?.subtle) {
+    const msgUint8 = new TextEncoder().encode(message);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  // Node.js fallback
+  const crypto = await import('crypto');
+  return crypto.createHash('sha256').update(message).digest('hex');
+}`,
+        },
+      };
+    }
+
     // General fallback
     return {
-      content: `### 🤖 SolPump Web3 AI Assistant
+      content: `### 🤖 SolPump Developer AI Assistant & Script Generator
 
-I can assist you with:
+I can generate code, calculate fees, and execute utilities for:
 - **⚡ Solana Gas & Priority Fees**: Real-time compute unit pricing & priority multipliers.
 - **🪙 Bitcoin & UTXO Mechanics**: Satoshi conversions, vByte estimation & fee rates.
-- **🛠️ Open-Source Developer Scripts**: Bulk airdrop engines, Jito MEV protection, Telegram broadcast bots.
-- **📦 VIP Digital Asset Vault**: 1-click free ZIP downloads (Telegram Mini-App, WhatsApp AI Lead Bot, n8n Workflows).
-- **🔧 Client-Side Micro-Tools**: JSON RPC formatters, key obfuscation, and prompt optimizers.
+- **📦 Mock Datasets & API Generators**: Realistic REST / GraphQL mock schemas and Express routes.
+- **🔍 Regex & SQL Query Builders**: Production regular expressions and optimized CTE / window queries.
+- **🪐 Web3 & Solana / TON Smart Contracts**: Jupiter v6, Raydium SDK, Anchor 0.30+, and TON Tact jettons.
+- **🔐 Base64, JWT, & Hash Utilities**: Client-side encoding, JWT token parsing, and SHA-256 hashing.
+- **📦 1-Click Free VIP Asset Downloads**: Telegram Mini-App, WhatsApp AI bot, n8n Workflows.
 
-Ask a technical question or type what you need!`,
+Ask any developer question or select an interactive tool!`,
     };
   };
 
@@ -844,16 +1156,16 @@ ${dynamicMeta.content}
         <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 w-full max-w-4xl mx-auto flex flex-col justify-between">
           <div className="flex-1 flex flex-col justify-start space-y-6 pb-6">
             {messages.length === 0 ? (
-              <div className="flex-1 flex flex-col items-center justify-center text-center my-auto py-16 space-y-6 animate-in fade-in duration-300">
+              <div className="flex-1 flex flex-col items-center justify-center text-center my-auto py-16 space-y-4 animate-in fade-in duration-300">
                 <div className="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center shadow-inner">
                   <Sparkles className="w-6 h-6 text-cyan-400" />
                 </div>
-                <div className="space-y-2 max-w-lg">
-                  <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+                <div className="space-y-2 max-w-md">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                     What can I help you build today?
                   </h1>
-                  <p className="text-slate-400 text-sm leading-relaxed">
-                    Ask for Solana priority fees, Bitcoin calculations, automation scripts, or 1-click free ZIP downloads.
+                  <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">
+                    Ask for code snippets, calculations, smart contracts, mock datasets, or Web3 utilities.
                   </p>
                 </div>
               </div>
@@ -879,27 +1191,100 @@ ${dynamicMeta.content}
                     >
                       {/* Text / Markdown Content */}
                       <div className="space-y-2 text-xs sm:text-sm text-slate-200 leading-relaxed">
-                        {msg.content.split('\n\n').map((paragraph, pIdx) => {
-                          if (paragraph.startsWith('### ')) {
-                            return (
-                              <h3 key={pIdx} className="text-sm sm:text-base font-bold text-white pt-1">
-                                {paragraph.replace('### ', '')}
-                              </h3>
+                        {(() => {
+                          const codeBlockRegex = /```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g;
+                          const parts: React.ReactNode[] = [];
+                          let lastIndex = 0;
+                          let match;
+                          let blockIndex = 0;
+
+                          const renderParagraphs = (text: string) => {
+                            return text.split('\n\n').map((paragraph, pIdx) => {
+                              if (paragraph.startsWith('### ')) {
+                                return (
+                                  <h3 key={pIdx} className="text-sm sm:text-base font-bold text-white pt-1">
+                                    {paragraph.replace('### ', '')}
+                                  </h3>
+                                );
+                              }
+                              if (paragraph.startsWith('#### ')) {
+                                return (
+                                  <h4 key={pIdx} className="text-xs sm:text-sm font-bold text-cyan-300 pt-1">
+                                    {paragraph.replace('#### ', '')}
+                                  </h4>
+                                );
+                              }
+                              return (
+                                <p key={pIdx} className="whitespace-pre-line">
+                                  {paragraph}
+                                </p>
+                              );
+                            });
+                          };
+
+                          while ((match = codeBlockRegex.exec(msg.content)) !== null) {
+                            if (match.index > lastIndex) {
+                              const textChunk = msg.content.slice(lastIndex, match.index);
+                              parts.push(
+                                <div key={`text-${blockIndex}`} className="space-y-2">
+                                  {renderParagraphs(textChunk)}
+                                </div>
+                              );
+                            }
+
+                            const language = match[1] || 'code';
+                            const codeSnippet = match[2].trim();
+                            const codeId = `${msg.id}-block-${blockIndex}`;
+
+                            parts.push(
+                              <div
+                                key={`code-${blockIndex}`}
+                                className="rounded-2xl bg-[#05070d] border border-slate-800 p-3 sm:p-4 font-mono text-xs text-slate-300 relative group overflow-hidden my-3"
+                              >
+                                <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-800/80 text-[11px] text-slate-400">
+                                  <span className="font-bold text-white flex items-center gap-1.5">
+                                    <FileCode2 className="w-3.5 h-3.5 text-cyan-400" />
+                                    <span className="uppercase text-[10px] tracking-wider text-cyan-300 font-mono">{language}</span>
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleCopyCode(codeSnippet, codeId)}
+                                    className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[11px]"
+                                  >
+                                    {copiedCodeId === codeId ? (
+                                      <>
+                                        <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                        <span className="text-emerald-400 font-mono">Copied</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <Copy className="w-3.5 h-3.5" />
+                                        <span className="font-mono">Copy</span>
+                                      </>
+                                    )}
+                                  </button>
+                                </div>
+                                <pre className="text-slate-300 overflow-x-auto whitespace-pre leading-relaxed text-[11px] sm:text-xs">
+                                  {codeSnippet}
+                                </pre>
+                              </div>
+                            );
+
+                            lastIndex = match.index + match[0].length;
+                            blockIndex++;
+                          }
+
+                          if (lastIndex < msg.content.length) {
+                            const remainingText = msg.content.slice(lastIndex);
+                            parts.push(
+                              <div key="text-final" className="space-y-2">
+                                {renderParagraphs(remainingText)}
+                              </div>
                             );
                           }
-                          if (paragraph.startsWith('#### ')) {
-                            return (
-                              <h4 key={pIdx} className="text-xs sm:text-sm font-bold text-cyan-300 pt-1">
-                                {paragraph.replace('#### ', '')}
-                              </h4>
-                            );
-                          }
-                          return (
-                            <p key={pIdx} className="whitespace-pre-line">
-                              {paragraph}
-                            </p>
-                          );
-                        })}
+
+                          return parts;
+                        })()}
                       </div>
 
                       {/* IN-STREAM INTERACTIVE WIDGET: Solana Fee Calculator */}
@@ -1181,6 +1566,934 @@ ${dynamicMeta.content}
                           )}
                         </div>
                       )}
+
+                      {/* 1. IN-STREAM INTERACTIVE WIDGET: API & JSON Mock Generator */}
+                      {msg.interactiveWidget === 'mock-generator' && (() => {
+                        const getMockData = () => {
+                          if (mockType === 'users') {
+                            return Array.from({ length: mockCount }, (_, i) => ({
+                              id: `usr_${1000 + i}`,
+                              username: ['sol_whale', 'cyber_dev', 'phantom_trader', 'tact_builder', 'defi_architect'][i % 5] + `_${i + 1}`,
+                              email: `builder${i + 1}@sol-pump.store`,
+                              role: i === 0 ? 'ADMIN' : 'DEVELOPER',
+                              walletAddress: i % 2 === 0 ? '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU' : '0x71C8fb86633665c789053802a730417614e610d4',
+                              tier: 'VIP_UNLOCKED',
+                              balanceSol: parseFloat((Math.random() * 25 + 1.5).toFixed(3)),
+                              createdAt: new Date(Date.now() - i * 86400000).toISOString(),
+                            }));
+                          }
+                          if (mockType === 'orders') {
+                            return Array.from({ length: mockCount }, (_, i) => ({
+                              orderId: `ord_${Date.now()}_${i + 1}`,
+                              customer: `sol_user_${i + 1}`,
+                              items: [
+                                { sku: 'SKU-VIP-VAULT', title: 'Solana Sniper Bot Template', qty: 1, priceSol: 0.05 },
+                                { sku: 'SKU-TG-MINIAPP', title: 'Telegram Clicker Mini-App', qty: 1, priceSol: 0.0 },
+                              ],
+                              totalSol: 0.05,
+                              totalUsd: 9.75,
+                              status: ['COMPLETED', 'CONFIRMED', 'PENDING'][i % 3],
+                              txSignature: '5mN9a' + Math.random().toString(36).substring(2, 15) + '...sol',
+                              timestamp: new Date().toISOString(),
+                            }));
+                          }
+                          if (mockType === 'saas') {
+                            return Array.from({ length: mockCount }, (_, i) => ({
+                              tenantId: `org_${2000 + i}`,
+                              plan: ['DEVELOPER_PRO', 'ENTERPRISE_NODE', 'STARTER_DEV'][i % 3],
+                              monthlyFeeUsd: [49, 199, 19][i % 3],
+                              rateLimitRps: [100, 500, 25][i % 3],
+                              apiKeysActive: 2 + i,
+                              webhooksConfigured: ['https://api.myclient.app/webhooks/solana'],
+                              renewalStatus: 'ACTIVE_AUTO_RENEW',
+                            }));
+                          }
+                          // Default: crypto-tx
+                          return Array.from({ length: mockCount }, (_, i) => ({
+                            txHash: '5xZ' + Math.random().toString(36).substring(2, 10) + '9kQ' + Math.random().toString(36).substring(2, 8),
+                            slot: 289410200 + i * 12,
+                            protocol: i % 2 === 0 ? 'JUPITER_V6' : 'RAYDIUM_AMM',
+                            inputToken: { symbol: 'SOL', amount: parseFloat((1.25 * (i + 1)).toFixed(3)) },
+                            outputToken: { symbol: 'USDC', amount: parseFloat((243.5 * (i + 1)).toFixed(2)) },
+                            priorityFeeLamports: 15000 + i * 5000,
+                            computeUnitsUsed: 184200 + i * 12000,
+                            status: 'CONFIRMED',
+                            blockTime: new Date(Date.now() - i * 45000).toISOString(),
+                          }));
+                        };
+
+                        const mockDataObj = getMockData();
+                        const mockJsonString = JSON.stringify(mockDataObj, null, 2);
+
+                        const downloadJsonFile = () => {
+                          const blob = new Blob([mockJsonString], { type: 'application/json' });
+                          const url = URL.createObjectURL(blob);
+                          const a = document.createElement('a');
+                          a.href = url;
+                          a.download = `mock_${mockType}_dataset.json`;
+                          a.click();
+                          URL.revokeObjectURL(url);
+                        };
+
+                        return (
+                          <div className="p-4 rounded-2xl bg-[#080a10] border border-cyan-500/30 space-y-3.5 my-3 text-xs">
+                            <div className="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+                              <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                                <Database className="w-4 h-4" />
+                                <span>API & JSON Mock Dataset Generator</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  onClick={downloadJsonFile}
+                                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-mono text-[10px] border border-slate-700 transition-colors cursor-pointer"
+                                  title="Download .json file"
+                                >
+                                  <Download className="w-3 h-3 text-cyan-400" />
+                                  <span>Download .json</span>
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(mockJsonString);
+                                    setMockCopied(true);
+                                    setTimeout(() => setMockCopied(false), 1500);
+                                  }}
+                                  className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/40 font-mono text-[10px] transition-colors cursor-pointer"
+                                >
+                                  {mockCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                  <span>{mockCopied ? 'Copied!' : 'Copy JSON'}</span>
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Controls */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <label className="text-[11px] text-slate-400 font-mono">Dataset Schema:</label>
+                                <div className="grid grid-cols-2 gap-1.5">
+                                  {[
+                                    { id: 'crypto-tx', label: 'Crypto Swaps' },
+                                    { id: 'users', label: 'Users & Wallets' },
+                                    { id: 'orders', label: 'Store Orders' },
+                                    { id: 'saas', label: 'SaaS Tenants' },
+                                  ].map((tab) => (
+                                    <button
+                                      key={tab.id}
+                                      type="button"
+                                      onClick={() => setMockType(tab.id as any)}
+                                      className={`px-2 py-1.5 rounded-lg text-[11px] font-mono text-center transition-all cursor-pointer ${
+                                        mockType === tab.id
+                                          ? 'bg-cyan-500 text-[#080b12] font-bold shadow'
+                                          : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                                      }`}
+                                    >
+                                      {tab.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="space-y-1">
+                                <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                                  <span>Record Count:</span>
+                                  <span className="font-bold text-cyan-400">{mockCount} Items</span>
+                                </div>
+                                <input
+                                  type="range"
+                                  min={1}
+                                  max={8}
+                                  value={mockCount}
+                                  onChange={(e) => setMockCount(Number(e.target.value))}
+                                  className="w-full accent-cyan-400 cursor-pointer mt-2"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Live JSON Preview */}
+                            <div className="rounded-xl bg-[#04060a] border border-slate-800/80 p-3 max-h-56 overflow-y-auto font-mono text-[11px] text-slate-300">
+                              <pre className="whitespace-pre">{mockJsonString}</pre>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* 2. IN-STREAM INTERACTIVE WIDGET: Regex Builder & Tester */}
+                      {msg.interactiveWidget === 'regex-builder' && (() => {
+                        let isRegexValid = true;
+                        let matchCount = 0;
+                        let matchesList: string[] = [];
+
+                        try {
+                          const rx = new RegExp(regexPattern, regexFlags);
+                          if (regexFlags.includes('g')) {
+                            const found = regexTestText.match(rx);
+                            if (found) {
+                              matchCount = found.length;
+                              matchesList = found;
+                            }
+                          } else {
+                            const found = rx.exec(regexTestText);
+                            if (found) {
+                              matchCount = 1;
+                              matchesList = [found[0]];
+                            }
+                          }
+                        } catch (err) {
+                          isRegexValid = false;
+                        }
+
+                        const presets = [
+                          { label: 'Solana Base58', pattern: '^[1-9A-HJ-NP-Za-km-z]{32,44}$', flags: '', sample: '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU' },
+                          { label: 'Ethereum 0x', pattern: '^0x[a-fA-F0-9]{40}$', flags: 'i', sample: '0x71C8fb86633665c789053802a730417614e610d4' },
+                          { label: 'JWT Token', pattern: '^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*$', flags: '', sample: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature' },
+                          { label: 'UUID v4', pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$', flags: 'i', sample: '123e4567-e89b-12d3-a456-426614174000' },
+                          { label: 'Email Format', pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$', flags: 'i', sample: 'developer@sol-pump.store' },
+                        ];
+
+                        return (
+                          <div className="p-4 rounded-2xl bg-[#080a10] border border-cyan-500/30 space-y-3.5 my-3 text-xs">
+                            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                              <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                                <Search className="w-4 h-4" />
+                                <span>Live Regular Expression (Regex) Tester</span>
+                              </div>
+                              <span className="text-[10px] font-mono text-slate-400">Real-Time Match Engine</span>
+                            </div>
+
+                            {/* Preset Buttons */}
+                            <div className="space-y-1">
+                              <span className="text-[10px] font-mono text-slate-400">Presets:</span>
+                              <div className="flex flex-wrap gap-1.5">
+                                {presets.map((p) => (
+                                  <button
+                                    key={p.label}
+                                    type="button"
+                                    onClick={() => {
+                                      setRegexPattern(p.pattern);
+                                      setRegexFlags(p.flags);
+                                      setRegexTestText(p.sample);
+                                    }}
+                                    className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-cyan-300 border border-slate-800 font-mono text-[10px] transition-colors cursor-pointer"
+                                  >
+                                    {p.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Regex Input & Flags */}
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
+                              <div className="sm:col-span-3 space-y-1">
+                                <label className="text-[11px] text-slate-400 font-mono">Regex Pattern:</label>
+                                <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 focus-within:border-cyan-400">
+                                  <span className="text-slate-400 font-mono text-xs pr-1">/</span>
+                                  <input
+                                    type="text"
+                                    value={regexPattern}
+                                    onChange={(e) => setRegexPattern(e.target.value)}
+                                    className="w-full bg-transparent font-mono text-xs text-white focus:outline-none"
+                                    placeholder="e.g. ^0x[a-fA-F0-9]{40}$"
+                                  />
+                                  <span className="text-slate-400 font-mono text-xs pl-1">/</span>
+                                </div>
+                              </div>
+
+                              <div className="space-y-1">
+                                <label className="text-[11px] text-slate-400 font-mono">Flags (g,i,m):</label>
+                                <input
+                                  type="text"
+                                  value={regexFlags}
+                                  onChange={(e) => setRegexFlags(e.target.value)}
+                                  className="w-full p-2 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-white focus:outline-none focus:border-cyan-400"
+                                  placeholder="e.g. i"
+                                />
+                              </div>
+                            </div>
+
+                            {/* Test String */}
+                            <div className="space-y-1">
+                              <label className="text-[11px] text-slate-400 font-mono">Test String Input:</label>
+                              <textarea
+                                value={regexTestText}
+                                onChange={(e) => setRegexTestText(e.target.value)}
+                                rows={2}
+                                className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-slate-200 focus:outline-none focus:border-cyan-400"
+                                placeholder="Paste test string to evaluate..."
+                              />
+                            </div>
+
+                            {/* Match Result Banner */}
+                            {!isRegexValid ? (
+                              <div className="p-2.5 rounded-xl bg-rose-950/50 border border-rose-800 text-rose-300 font-mono text-[11px]">
+                                ⚠️ Invalid Regular Expression Syntax
+                              </div>
+                            ) : (
+                              <div className={`p-3 rounded-xl border font-mono text-xs flex items-center justify-between ${
+                                matchCount > 0
+                                  ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+                                  : 'bg-slate-900 border-slate-800 text-slate-400'
+                              }`}>
+                                <div className="flex items-center gap-2">
+                                  {matchCount > 0 ? (
+                                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                                  ) : (
+                                    <AlertCircle className="w-4 h-4 text-slate-400" />
+                                  )}
+                                  <span>{matchCount > 0 ? `Match Found (${matchCount} occurrence${matchCount > 1 ? 's' : ''})` : 'No Match'}</span>
+                                </div>
+                                {matchCount > 0 && (
+                                  <div className="flex gap-1 overflow-x-auto max-w-[200px]">
+                                    {matchesList.slice(0, 3).map((m, idx) => (
+                                      <span key={idx} className="px-1.5 py-0.5 rounded bg-emerald-900/60 border border-emerald-700 text-[10px] truncate">
+                                        {m}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+
+                      {/* 3. IN-STREAM INTERACTIVE WIDGET: SQL Query Builder */}
+                      {msg.interactiveWidget === 'sql-builder' && (() => {
+                        const getSqlText = () => {
+                          if (sqlTemplate === 'cte-volume') {
+                            if (sqlDialect === 'sqlite') {
+                              return `-- SQLite 7-Day Rolling Volume Aggregate
+WITH daily_agg AS (
+  SELECT
+    strftime('%Y-%m-%d', timestamp) AS trade_day,
+    token_pair,
+    SUM(amount_usd) AS daily_vol
+  FROM swaps
+  GROUP BY 1, 2
+)
+SELECT
+  trade_day,
+  token_pair,
+  daily_vol,
+  SUM(daily_vol) OVER (PARTITION BY token_pair ORDER BY trade_day ROWS 6 PRECEDING) AS rolling_7d_volume
+FROM daily_agg;`;
+                            }
+                            return `-- ${sqlDialect === 'postgresql' ? 'PostgreSQL' : 'MySQL 8.0+'} 7-Day Rolling Volume CTE
+WITH daily_swaps AS (
+  SELECT
+    DATE_TRUNC('day', block_time) AS trade_date,
+    token_symbol,
+    COUNT(tx_id) AS total_swaps,
+    SUM(volume_usd) AS daily_volume_usd
+  FROM dex_swaps
+  WHERE block_time >= NOW() - INTERVAL '30 days'
+  GROUP BY 1, 2
+)
+SELECT
+  trade_date,
+  token_symbol,
+  daily_volume_usd,
+  SUM(daily_volume_usd) OVER (
+    PARTITION BY token_symbol
+    ORDER BY trade_date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS rolling_7d_volume_usd,
+  AVG(daily_volume_usd) OVER (
+    PARTITION BY token_symbol
+    ORDER BY trade_date
+    ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+  ) AS moving_avg_7d_usd
+FROM daily_swaps
+ORDER BY token_symbol, trade_date DESC;`;
+                          }
+                          if (sqlTemplate === 'paginated-window') {
+                            return `-- Cursor Pagination with Window Ranking & Total Count
+WITH ranked_transactions AS (
+  SELECT
+    tx_signature,
+    block_slot,
+    from_wallet,
+    amount_sol,
+    created_at,
+    ROW_NUMBER() OVER (ORDER BY created_at DESC) AS row_num,
+    COUNT(*) OVER () AS total_matching_records
+  FROM solana_transactions
+  WHERE from_wallet = '7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU'
+)
+SELECT *
+FROM ranked_transactions
+WHERE row_num BETWEEN 1 AND 25;`;
+                          }
+                          if (sqlTemplate === 'upsert-conflict') {
+                            if (sqlDialect === 'mysql') {
+                              return `-- MySQL 8.0+ Insert with ON DUPLICATE KEY UPDATE
+INSERT INTO token_accounts (wallet_address, mint_address, balance_raw, updated_at)
+VALUES ('7xKXtg2CW87...', 'EPjFWdd5Aufq...', 5000000, NOW())
+ON DUPLICATE KEY UPDATE
+  balance_raw = VALUES(balance_raw),
+  updated_at = NOW();`;
+                            }
+                            return `-- PostgreSQL 14+ / SQLite UPSERT with ON CONFLICT
+INSERT INTO token_accounts (wallet_address, mint_address, balance_raw, updated_at)
+VALUES ('7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 5000000, NOW())
+ON CONFLICT (wallet_address, mint_address)
+DO UPDATE SET
+  balance_raw = EXCLUDED.balance_raw,
+  updated_at = NOW();`;
+                          }
+                          // Default: indexing
+                          return `-- High-Performance B-Tree & Partial Indexes for Web3 Analytics
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_dex_swaps_token_date
+ON dex_swaps (token_symbol, block_time DESC);
+
+-- Partial Index for high-value priority fee transactions
+CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_high_priority_fees
+ON dex_swaps (priority_fee_lamports)
+WHERE priority_fee_lamports > 50000;`;
+                        };
+
+                        const currentSql = getSqlText();
+
+                        return (
+                          <div className="p-4 rounded-2xl bg-[#080a10] border border-cyan-500/30 space-y-3.5 my-3 text-xs">
+                            <div className="flex items-center justify-between pb-2.5 border-b border-slate-800">
+                              <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                                <Database className="w-4 h-4" />
+                                <span>SQL Query & Architecture Builder</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(currentSql);
+                                  setCopiedCodeId('sql-builder');
+                                  setTimeout(() => setCopiedCodeId(null), 1500);
+                                }}
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-mono text-[10px] border border-cyan-500/40 cursor-pointer"
+                              >
+                                {copiedCodeId === 'sql-builder' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                <span>{copiedCodeId === 'sql-builder' ? 'Copied' : 'Copy SQL'}</span>
+                              </button>
+                            </div>
+
+                            {/* Selectors */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                              <div className="space-y-1">
+                                <label className="text-[11px] text-slate-400 font-mono">SQL Dialect:</label>
+                                <div className="grid grid-cols-3 gap-1.5">
+                                  {(['postgresql', 'mysql', 'sqlite'] as const).map((d) => (
+                                    <button
+                                      key={d}
+                                      type="button"
+                                      onClick={() => setSqlDialect(d)}
+                                      className={`px-2 py-1.5 rounded-lg text-[10px] font-mono text-center uppercase transition-all cursor-pointer ${
+                                        sqlDialect === d
+                                          ? 'bg-cyan-500 text-[#080b12] font-bold'
+                                          : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                                      }`}
+                                    >
+                                      {d}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              <div className="space-y-1">
+                                <label className="text-[11px] text-slate-400 font-mono">Pattern / Query Goal:</label>
+                                <select
+                                  value={sqlTemplate}
+                                  onChange={(e) => setSqlTemplate(e.target.value as any)}
+                                  className="w-full p-2 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-white focus:outline-none focus:border-cyan-400 cursor-pointer"
+                                >
+                                  <option value="cte-volume">7-Day Rolling Volume CTE</option>
+                                  <option value="paginated-window">Cursor Window Ranking & Count</option>
+                                  <option value="upsert-conflict">UPSERT (ON CONFLICT / DUP KEY)</option>
+                                  <option value="indexing">B-Tree & Partial Composite Indexing</option>
+                                </select>
+                              </div>
+                            </div>
+
+                            {/* SQL Preview Box */}
+                            <div className="rounded-xl bg-[#04060a] border border-slate-800 p-3 font-mono text-[11px] text-slate-300 overflow-x-auto">
+                              <pre className="whitespace-pre leading-relaxed">{currentSql}</pre>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* 4. IN-STREAM INTERACTIVE WIDGET: Web3 & Smart Contract Snippets */}
+                      {msg.interactiveWidget === 'web3-contract' && (() => {
+                        const web3Snippets: Record<string, { title: string; lang: string; code: string }> = {
+                          jupiter: {
+                            title: 'Jupiter Swap API v6 (TypeScript)',
+                            lang: 'typescript',
+                            code: `import { Connection, Keypair, VersionedTransaction } from '@solana/web3.js';
+
+export async function executeJupiterSwap(connection: Connection, wallet: Keypair) {
+  // 1. Fetch Best Route Quote
+  const quoteUrl = 'https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v&amount=1000000000&slippageBps=50';
+  const quoteRes = await fetch(quoteUrl);
+  const quoteData = await quoteRes.json();
+
+  // 2. Request serialized transaction with auto-priority fee
+  const swapRes = await fetch('https://quote-api.jup.ag/v6/swap', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      quoteResponse: quoteData,
+      userPublicKey: wallet.publicKey.toBase58(),
+      dynamicComputeUnitLimit: true,
+      prioritizationFeeLamports: 'auto',
+    }),
+  });
+  const { swapTransaction } = await swapRes.json();
+
+  // 3. Deserialize, Sign, & Broadcast
+  const tx = VersionedTransaction.deserialize(Buffer.from(swapTransaction, 'base64'));
+  tx.sign([wallet]);
+  return await connection.sendRawTransaction(tx.serialize());
+}`,
+                          },
+                          raydium: {
+                            title: 'Raydium AMM Pool Swap Instruction (TypeScript)',
+                            lang: 'typescript',
+                            code: `import { Connection, PublicKey, Transaction } from '@solana/web3.js';
+import { Liquidity, Token, TokenAmount, Percent } from '@raydium-io/raydium-sdk';
+
+export async function buildRaydiumSwapTx(
+  connection: Connection,
+  poolKeys: any,
+  userOwner: PublicKey,
+  amountInLamports: number,
+  slippagePercent: number = 1
+) {
+  const slippage = new Percent(slippagePercent, 100);
+  const inputAmount = new TokenAmount(poolKeys.baseMint, amountInLamports);
+
+  const { minAmountOut } = Liquidity.computeAmountOut({
+    poolKeys,
+    poolInfo: await Liquidity.fetchInfo({ connection, poolKeys }),
+    amountIn: inputAmount,
+    currencyOut: poolKeys.quoteMint,
+    slippage,
+  });
+
+  const { innerTransactions } = await Liquidity.makeSwapInstructionSimple({
+    connection,
+    poolKeys,
+    userKeys: { owner: userOwner, payer: userOwner },
+    amountIn: inputAmount,
+    amountOut: minAmountOut,
+    fixedSide: 'in',
+  });
+
+  return innerTransactions;
+}`,
+                          },
+                          anchor: {
+                            title: 'Solana Anchor 0.30 Counter Program (Rust)',
+                            lang: 'rust',
+                            code: `use anchor_lang::prelude::*;
+
+declare_id!("8uXm3Fv7B9Wk5L...sol");
+
+#[program]
+pub mod sol_pump_counter {
+    use super::*;
+
+    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+        let counter = &mut ctx.accounts.counter;
+        counter.count = 0;
+        counter.authority = *ctx.accounts.authority.key;
+        Ok(())
+    }
+
+    pub fn increment(ctx: Context<Increment>) -> Result<()> {
+        let counter = &mut ctx.accounts.counter;
+        counter.count = counter.count.checked_add(1).ok_or(ErrorCode::Overflow)?;
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Initialize<'info> {
+    #[account(init, payer = authority, space = 8 + 8 + 32)]
+    pub counter: Account<'info, CounterAccount>,
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[account]
+pub struct CounterAccount {
+    pub count: u64,
+    pub authority: Pubkey,
+}
+
+#[error_code]
+pub enum ErrorCode {
+    #[msg("Numerical Overflow Occurred")]
+    Overflow,
+}`,
+                          },
+                          'ton-connect': {
+                            title: 'TON Connect 2.0 Jetton Transfer Message',
+                            lang: 'typescript',
+                            code: `import { TonConnectUI } from '@tonconnect/ui';
+import { beginCell, toNano, Address } from '@ton/core';
+
+export async function sendTonJettonTransfer(
+  tonConnectUI: TonConnectUI,
+  jettonWalletAddress: string,
+  recipientAddress: string,
+  jettonAmountNano: bigint,
+  queryId: number = 0
+) {
+  // Build standard TEP-74 Jetton transfer body
+  const body = beginCell()
+    .storeUint(0xf8a7cd5, 32) // op::transfer
+    .storeUint(queryId, 64)   // query_id
+    .storeCoins(jettonAmountNano) // jetton amount
+    .storeAddress(Address.parse(recipientAddress)) // to_address
+    .storeAddress(Address.parse(tonConnectUI.account!.address)) // response_destination
+    .storeBit(0) // custom_payload (none)
+    .storeCoins(toNano('0.01')) // forward_ton_amount
+    .storeBit(0) // forward_payload (none)
+    .endCell();
+
+  const transaction = {
+    validUntil: Math.floor(Date.now() / 1000) + 360,
+    messages: [
+      {
+        address: jettonWalletAddress,
+        amount: toNano('0.05').toString(), // attached gas fee in TON
+        payload: body.toBoc().toString('base64'),
+      },
+    ],
+  };
+
+  return await tonConnectUI.sendTransaction(transaction);
+}`,
+                          },
+                          'ton-jetton': {
+                            title: 'TON Tact Contract: Jetton Transfer Hook',
+                            lang: 'tact',
+                            code: `import "@stdlib/deploy";
+
+message JettonTransfer {
+    queryId: Int as uint64;
+    amount: Int as coins;
+    destination: Address;
+    response_destination: Address;
+    custom_payload: Cell?;
+    forward_ton_amount: Int as coins;
+    forward_payload: Slice as remaining;
+}
+
+contract JettonVault with Deployable {
+    owner: Address;
+    totalLocked: Int as coins;
+
+    init(owner: Address) {
+        self.owner = owner;
+        self.totalLocked = 0;
+    }
+
+    receive(msg: JettonTransfer) {
+        let ctx: Context = context();
+        require(ctx.value >= ton("0.05"), "Insufficient gas attached");
+        self.totalLocked = self.totalLocked + msg.amount;
+    }
+
+    get fun getLockedBalance(): Int {
+        return self.totalLocked;
+    }
+}`,
+                          },
+                        };
+
+                        const activeSnippet = web3Snippets[web3Tab] || web3Snippets.jupiter;
+
+                        return (
+                          <div className="p-4 rounded-2xl bg-[#080a10] border border-cyan-500/30 space-y-3.5 my-3 text-xs">
+                            <div className="flex items-center justify-between pb-2.5 border-b border-slate-800">
+                              <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                                <Workflow className="w-4 h-4" />
+                                <span>Web3, Solana & TON Smart Contracts</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(activeSnippet.code);
+                                  setCopiedCodeId('web3-contract');
+                                  setTimeout(() => setCopiedCodeId(null), 1500);
+                                }}
+                                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 font-mono text-[10px] border border-cyan-500/40 cursor-pointer"
+                              >
+                                {copiedCodeId === 'web3-contract' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                                <span>{copiedCodeId === 'web3-contract' ? 'Copied' : 'Copy Code'}</span>
+                              </button>
+                            </div>
+
+                            {/* Tabs */}
+                            <div className="flex flex-wrap gap-1.5">
+                              {[
+                                { id: 'jupiter', label: 'Jupiter v6 API' },
+                                { id: 'raydium', label: 'Raydium AMM' },
+                                { id: 'anchor', label: 'Anchor 0.30' },
+                                { id: 'ton-connect', label: 'TON Connect 2.0' },
+                                { id: 'ton-jetton', label: 'TON Tact Contract' },
+                              ].map((t) => (
+                                <button
+                                  key={t.id}
+                                  type="button"
+                                  onClick={() => setWeb3Tab(t.id as any)}
+                                  className={`px-2.5 py-1.5 rounded-lg text-[11px] font-mono transition-all cursor-pointer ${
+                                    web3Tab === t.id
+                                      ? 'bg-cyan-500 text-[#080b12] font-bold shadow'
+                                      : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                                  }`}
+                                >
+                                  {t.label}
+                                </button>
+                              ))}
+                            </div>
+
+                            {/* Code Container */}
+                            <div className="rounded-xl bg-[#04060a] border border-slate-800 p-3 font-mono text-[11px] text-slate-300 max-h-64 overflow-y-auto">
+                              <div className="text-[10px] text-cyan-400 font-bold mb-2 pb-1 border-b border-slate-800/80">
+                                // {activeSnippet.title}
+                              </div>
+                              <pre className="whitespace-pre leading-relaxed">{activeSnippet.code}</pre>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* 5. IN-STREAM INTERACTIVE WIDGET: Base64, JWT, & Hash Utilities */}
+                      {msg.interactiveWidget === 'crypto-utilities' && (() => {
+                        let base64Result = '';
+                        let base64Error = false;
+                        if (base64Mode === 'encode') {
+                          try {
+                            base64Result = btoa(unescape(encodeURIComponent(base64Input)));
+                          } catch {
+                            base64Error = true;
+                          }
+                        } else {
+                          try {
+                            base64Result = decodeURIComponent(escape(atob(base64Input)));
+                          } catch {
+                            base64Error = true;
+                          }
+                        }
+
+                        // JWT Parser
+                        let jwtHeaderObj: any = null;
+                        let jwtPayloadObj: any = null;
+                        let jwtExpiryDate: string | null = null;
+                        let jwtIsExpired = false;
+                        let jwtError = false;
+
+                        try {
+                          const parts = jwtInput.trim().split('.');
+                          if (parts.length >= 2) {
+                            jwtHeaderObj = JSON.parse(decodeURIComponent(escape(atob(parts[0].replace(/-/g, '+').replace(/_/g, '/')))));
+                            jwtPayloadObj = JSON.parse(decodeURIComponent(escape(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')))));
+                            if (jwtPayloadObj && jwtPayloadObj.exp) {
+                              const expMs = jwtPayloadObj.exp * 1000;
+                              jwtExpiryDate = new Date(expMs).toLocaleString();
+                              jwtIsExpired = Date.now() > expMs;
+                            }
+                          } else {
+                            jwtError = true;
+                          }
+                        } catch {
+                          jwtError = true;
+                        }
+
+                        return (
+                          <div className="p-4 rounded-2xl bg-[#080a10] border border-cyan-500/30 space-y-3.5 my-3 text-xs">
+                            <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                              <div className="flex items-center gap-2 text-cyan-400 font-bold">
+                                <KeyRound className="w-4 h-4" />
+                                <span>Base64, JWT & Cryptographic Hasher</span>
+                              </div>
+                              <span className="text-[10px] font-mono text-emerald-400">100% Client-Side Sandbox</span>
+                            </div>
+
+                            {/* Utility Selector */}
+                            <div className="grid grid-cols-3 gap-1.5">
+                              {[
+                                { id: 'base64', label: 'Base64 Tool' },
+                                { id: 'jwt', label: 'JWT Inspector' },
+                                { id: 'hasher', label: 'Hash Digest' },
+                              ].map((tab) => (
+                                <button
+                                  key={tab.id}
+                                  type="button"
+                                  onClick={() => setCryptoTab(tab.id as any)}
+                                  className={`px-2 py-1.5 rounded-lg text-[11px] font-mono text-center transition-all cursor-pointer ${
+                                    cryptoTab === tab.id
+                                      ? 'bg-cyan-500 text-[#080b12] font-bold shadow'
+                                      : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                                  }`}
+                                >
+                                  {tab.label}
+                                </button>
+                              ))}
+                            </div>
+
+                            {/* Tab 1: Base64 */}
+                            {cryptoTab === 'base64' && (
+                              <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[11px] font-mono text-slate-400">Mode:</span>
+                                  <div className="flex rounded-lg overflow-hidden border border-slate-800">
+                                    <button
+                                      type="button"
+                                      onClick={() => setBase64Mode('encode')}
+                                      className={`px-2.5 py-1 text-[10px] font-mono cursor-pointer ${
+                                        base64Mode === 'encode' ? 'bg-cyan-500 text-black font-bold' : 'bg-slate-900 text-slate-400'
+                                      }`}
+                                    >
+                                      Encode UTF-8
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setBase64Mode('decode')}
+                                      className={`px-2.5 py-1 text-[10px] font-mono cursor-pointer ${
+                                        base64Mode === 'decode' ? 'bg-cyan-500 text-black font-bold' : 'bg-slate-900 text-slate-400'
+                                      }`}
+                                    >
+                                      Decode
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <textarea
+                                  value={base64Input}
+                                  onChange={(e) => setBase64Input(e.target.value)}
+                                  rows={2}
+                                  className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-white focus:outline-none focus:border-cyan-400"
+                                  placeholder={base64Mode === 'encode' ? 'Text to encode...' : 'Base64 string to decode...'}
+                                />
+
+                                <div className="p-3 rounded-xl bg-[#04060a] border border-slate-800 flex items-center justify-between gap-2 font-mono text-xs">
+                                  <span className="text-cyan-300 break-all">
+                                    {base64Error ? '⚠️ Invalid Base64 String' : base64Result || '(Output empty)'}
+                                  </span>
+                                  {!base64Error && base64Result && (
+                                    <button
+                                      type="button"
+                                      onClick={() => navigator.clipboard.writeText(base64Result)}
+                                      className="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white cursor-pointer shrink-0"
+                                      title="Copy Result"
+                                    >
+                                      <Copy className="w-3.5 h-3.5" />
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Tab 2: JWT Inspector */}
+                            {cryptoTab === 'jwt' && (
+                              <div className="space-y-3">
+                                <textarea
+                                  value={jwtInput}
+                                  onChange={(e) => setJwtInput(e.target.value)}
+                                  rows={2}
+                                  className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-200 focus:outline-none focus:border-cyan-400"
+                                  placeholder="Paste JWT Token (header.payload.signature)..."
+                                />
+
+                                {jwtError ? (
+                                  <div className="p-2.5 rounded-xl bg-rose-950/40 border border-rose-800 text-rose-300 text-[11px] font-mono">
+                                    ⚠️ Invalid JWT Format. Must have at least header and payload segments separated by dots.
+                                  </div>
+                                ) : (
+                                  <div className="space-y-2">
+                                    {jwtExpiryDate && (
+                                      <div className={`p-2 rounded-lg border text-[11px] font-mono flex items-center justify-between ${
+                                        jwtIsExpired ? 'bg-rose-950/40 border-rose-800 text-rose-300' : 'bg-emerald-950/40 border-emerald-800 text-emerald-300'
+                                      }`}>
+                                        <span>Expiration Status:</span>
+                                        <span className="font-bold">{jwtIsExpired ? `Expired (${jwtExpiryDate})` : `Valid until ${jwtExpiryDate}`}</span>
+                                      </div>
+                                    )}
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                      <div className="p-2.5 rounded-xl bg-[#04060a] border border-slate-800 space-y-1">
+                                        <span className="text-[10px] text-slate-400 font-mono font-bold">HEADER</span>
+                                        <pre className="font-mono text-[10px] text-cyan-300 overflow-x-auto">
+                                          {JSON.stringify(jwtHeaderObj, null, 2)}
+                                        </pre>
+                                      </div>
+
+                                      <div className="p-2.5 rounded-xl bg-[#04060a] border border-slate-800 space-y-1">
+                                        <span className="text-[10px] text-slate-400 font-mono font-bold">PAYLOAD</span>
+                                        <pre className="font-mono text-[10px] text-emerald-300 overflow-x-auto">
+                                          {JSON.stringify(jwtPayloadObj, null, 2)}
+                                        </pre>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+
+                            {/* Tab 3: Cryptographic Hasher */}
+                            {cryptoTab === 'hasher' && (
+                              <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                  <span className="text-[11px] font-mono text-slate-400">Algorithm:</span>
+                                  <div className="flex gap-1">
+                                    {(['SHA-256', 'SHA-512'] as const).map((algo) => (
+                                      <button
+                                        key={algo}
+                                        type="button"
+                                        onClick={() => setHashAlgo(algo)}
+                                        className={`px-2.5 py-1 rounded-lg text-[10px] font-mono cursor-pointer ${
+                                          hashAlgo === algo
+                                            ? 'bg-cyan-500 text-black font-bold'
+                                            : 'bg-slate-900 text-slate-400 border border-slate-800'
+                                        }`}
+                                      >
+                                        {algo}
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                <textarea
+                                  value={hashInput}
+                                  onChange={(e) => setHashInput(e.target.value)}
+                                  rows={2}
+                                  className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs text-white focus:outline-none focus:border-cyan-400"
+                                  placeholder="Enter text to hash..."
+                                />
+
+                                <div className="space-y-1">
+                                  <div className="flex items-center justify-between text-[10px] font-mono text-slate-400">
+                                    <span>{hashAlgo} Hex Digest:</span>
+                                    <button
+                                      type="button"
+                                      onClick={() => navigator.clipboard.writeText(calculatedHash)}
+                                      className="flex items-center gap-1 text-cyan-400 hover:text-white cursor-pointer"
+                                    >
+                                      <Copy className="w-3 h-3" />
+                                      <span>Copy Digest</span>
+                                    </button>
+                                  </div>
+                                  <div className="p-2.5 rounded-xl bg-[#04060a] border border-slate-800 font-mono text-[11px] text-cyan-300 break-all">
+                                    {calculatedHash || '(Computing...)'}
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       {/* IN-STREAM CODE SNIPPET BLOCK */}
                       {msg.codeSnippet && (
