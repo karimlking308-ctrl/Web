@@ -47,8 +47,6 @@ import {
   Image as ImageIcon,
   Maximize2,
   X,
-  Languages,
-  ChevronDown,
 } from 'lucide-react';
 import {
   generateTelegramMiniAppZIP,
@@ -114,18 +112,8 @@ export interface ChatSession {
   messages: ChatMessage[];
 }
 
-export const SPEECH_LANGUAGES = [
-  { code: 'ar-MA', label: 'الدارجة المغربية', region: 'Morocco (Darija)', flag: '🇲🇦', short: '🇲🇦 Darija' },
-  { code: 'en-US', label: 'English (US)', region: 'United States', flag: '🇺🇸', short: '🇺🇸 English' },
-  { code: 'fr-FR', label: 'Français (French)', region: 'France / Global', flag: '🇫🇷', short: '🇫🇷 Français' },
-  { code: 'ar-SA', label: 'العربية الفصحى', region: 'Standard Arabic', flag: '🇸🇦', short: '🇸🇦 العربية' },
-  { code: 'es-ES', label: 'Español (Spanish)', region: 'Spain / Global', flag: '🇪🇸', short: '🇪🇸 Español' },
-  { code: 'de-DE', label: 'Deutsch (German)', region: 'Germany', flag: '🇩🇪', short: '🇩🇪 Deutsch' },
-];
-
 const STORAGE_KEY_SESSIONS = 'solpump_chat_sessions_v1';
 const STORAGE_KEY_ACTIVE_ID = 'solpump_active_chat_id_v1';
-const STORAGE_KEY_SPEECH_LANG = 'solpump_speech_lang_v1';
 
 export const MainChatApp: React.FC = () => {
   // Chat sessions state
@@ -156,25 +144,6 @@ export const MainChatApp: React.FC = () => {
     }
     return false;
   });
-
-  const [speechLang, setSpeechLang] = useState<string>(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        const saved = localStorage.getItem(STORAGE_KEY_SPEECH_LANG);
-        if (saved) return saved;
-        // Default to Moroccan Darija ar-MA, or browser language if matches
-        const navLang = navigator.language;
-        if (navLang?.startsWith('ar')) return 'ar-MA';
-        if (navLang?.startsWith('fr')) return 'fr-FR';
-        if (navLang?.startsWith('es')) return 'es-ES';
-        if (navLang?.startsWith('de')) return 'de-DE';
-      }
-    } catch {
-      // ignore
-    }
-    return 'ar-MA';
-  });
-  const [showSpeechLangMenu, setShowSpeechLangMenu] = useState(false);
 
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -1642,7 +1611,7 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
       const SpeechRecognition =
         (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
-      recognition.lang = speechLang || 'ar-MA';
+      recognition.lang = (typeof navigator !== 'undefined' && navigator.language) ? navigator.language : 'en-US';
       recognition.continuous = true;
       recognition.interimResults = true;
       recognition.maxAlternatives = 1;
@@ -1696,25 +1665,6 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
       setSpeechError('Could not access microphone. Please check browser permissions.');
       setIsListening(false);
       setTimeout(() => setSpeechError(null), 5000);
-    }
-  };
-
-  const handleSelectSpeechLang = (code: string) => {
-    setSpeechLang(code);
-    try {
-      localStorage.setItem(STORAGE_KEY_SPEECH_LANG, code);
-    } catch {
-      // ignore
-    }
-    setShowSpeechLangMenu(false);
-    // If currently listening, restart recognition with new language
-    if (isListening && recognitionRef.current) {
-      try {
-        recognitionRef.current.stop();
-      } catch {
-        // ignore
-      }
-      setIsListening(false);
     }
   };
 
@@ -3760,7 +3710,7 @@ contract JettonVault with Deployable {
                     </span>
                     <span className="font-bold tracking-wide">Listening...</span>
                     <span className="text-[11px] text-rose-400/90 hidden sm:inline">
-                      ({SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || speechLang} • Speak naturally)
+                      (Transcribing voice in real-time)
                     </span>
                   </div>
                   <button
@@ -3780,7 +3730,7 @@ contract JettonVault with Deployable {
                 onKeyDown={handleKeyDown}
                 placeholder={
                   isListening
-                    ? `Listening in ${SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || 'your language'}... Speak now`
+                    ? 'Listening... Speak clearly into your microphone'
                     : 'Ask for a tool, script, or Bitcoin / Solana calculations...'
                 }
                 rows={1}
@@ -3794,56 +3744,7 @@ contract JettonVault with Deployable {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2 relative">
-                  {/* Language Selector for Voice & AI */}
-                  <div className="relative">
-                    <button
-                      type="button"
-                      onClick={() => setShowSpeechLangMenu((prev) => !prev)}
-                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-medium bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer"
-                      title="Select Voice & Recognition Language"
-                      aria-label="Select voice language"
-                    >
-                      <Languages className="w-3 h-3 text-cyan-400" />
-                      <span className="text-[11px]">
-                        {SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.short || '🇲🇦 Darija'}
-                      </span>
-                      <ChevronDown className="w-3 h-3 opacity-60" />
-                    </button>
-
-                    {showSpeechLangMenu && (
-                      <div className="absolute right-0 bottom-full mb-2 w-56 bg-[#0f121d] border border-slate-700 rounded-xl shadow-2xl shadow-black/90 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
-                        <div className="px-2 py-1 text-[10px] font-mono uppercase text-slate-400 border-b border-slate-800/80 mb-1 flex items-center justify-between">
-                          <span>Voice Language</span>
-                          <span className="text-cyan-400">Web Speech</span>
-                        </div>
-                        <div className="space-y-0.5">
-                          {SPEECH_LANGUAGES.map((lang) => (
-                            <button
-                              key={lang.code}
-                              type="button"
-                              onClick={() => handleSelectSpeechLang(lang.code)}
-                              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer ${
-                                speechLang === lang.code
-                                  ? 'bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/40'
-                                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2">
-                                <span>{lang.flag}</span>
-                                <div>
-                                  <div className="leading-none text-xs">{lang.label}</div>
-                                  <div className="text-[9px] text-slate-400 leading-tight">{lang.region}</div>
-                                </div>
-                              </div>
-                              {speechLang === lang.code && <Check className="w-3 h-3 text-cyan-400" />}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
+                <div className="flex items-center gap-2">
                   {/* Microphone Voice-to-Text Button */}
                   <button
                     type="button"
@@ -3853,11 +3754,7 @@ contract JettonVault with Deployable {
                         ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-lg shadow-rose-500/30 border border-rose-400 animate-pulse'
                         : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-slate-700'
                     }`}
-                    title={
-                      isListening
-                        ? 'Stop voice recording'
-                        : `Voice-to-text in ${SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || 'selected language'}`
-                    }
+                    title={isListening ? 'Stop voice recording' : 'Voice-to-text (Speech Recognition)'}
                     aria-label={isListening ? 'Stop voice recording' : 'Start voice-to-text recording'}
                   >
                     {isListening ? (
