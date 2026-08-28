@@ -47,6 +47,8 @@ import {
   Image as ImageIcon,
   Maximize2,
   X,
+  Languages,
+  ChevronDown,
 } from 'lucide-react';
 import {
   generateTelegramMiniAppZIP,
@@ -112,8 +114,18 @@ export interface ChatSession {
   messages: ChatMessage[];
 }
 
+export const SPEECH_LANGUAGES = [
+  { code: 'ar-MA', label: 'الدارجة المغربية', region: 'Morocco (Darija)', flag: '🇲🇦', short: '🇲🇦 Darija' },
+  { code: 'en-US', label: 'English (US)', region: 'United States', flag: '🇺🇸', short: '🇺🇸 English' },
+  { code: 'fr-FR', label: 'Français (French)', region: 'France / Global', flag: '🇫🇷', short: '🇫🇷 Français' },
+  { code: 'ar-SA', label: 'العربية الفصحى', region: 'Standard Arabic', flag: '🇸🇦', short: '🇸🇦 العربية' },
+  { code: 'es-ES', label: 'Español (Spanish)', region: 'Spain / Global', flag: '🇪🇸', short: '🇪🇸 Español' },
+  { code: 'de-DE', label: 'Deutsch (German)', region: 'Germany', flag: '🇩🇪', short: '🇩🇪 Deutsch' },
+];
+
 const STORAGE_KEY_SESSIONS = 'solpump_chat_sessions_v1';
 const STORAGE_KEY_ACTIVE_ID = 'solpump_active_chat_id_v1';
+const STORAGE_KEY_SPEECH_LANG = 'solpump_speech_lang_v1';
 
 export const MainChatApp: React.FC = () => {
   // Chat sessions state
@@ -144,6 +156,25 @@ export const MainChatApp: React.FC = () => {
     }
     return false;
   });
+
+  const [speechLang, setSpeechLang] = useState<string>(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const saved = localStorage.getItem(STORAGE_KEY_SPEECH_LANG);
+        if (saved) return saved;
+        // Default to Moroccan Darija ar-MA, or browser language if matches
+        const navLang = navigator.language;
+        if (navLang?.startsWith('ar')) return 'ar-MA';
+        if (navLang?.startsWith('fr')) return 'fr-FR';
+        if (navLang?.startsWith('es')) return 'es-ES';
+        if (navLang?.startsWith('de')) return 'de-DE';
+      }
+    } catch {
+      // ignore
+    }
+    return 'ar-MA';
+  });
+  const [showSpeechLangMenu, setShowSpeechLangMenu] = useState(false);
 
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -419,16 +450,95 @@ export const MainChatApp: React.FC = () => {
   } => {
     const q = query.toLowerCase().trim();
 
-    // === 1. CASUAL CONVERSATION & GREETINGS ===
+    // === 1. CASUAL CONVERSATION, MULTILINGUAL & MOROCCAN DARIJA GREETINGS ===
+
+    // Moroccan Darija & Arabic Greetings (Arabic & Latin Arabizi)
+    const isDarijaGreeting =
+      /^(salam|salam\s+khoya|salamo\s+3alaykom|salam\s+alikom|ssalam|labas|ki\s+dayr|kidayr|fin\s+a\s+khoya|fin\s+khoya|ahlan|marhaba|السلام\s+عليكم|سلام|مرحبا|فين\s+أ\s+خويا|كيداير|لاباس|صباح\s+الخير|مساء\s+الخير)[\s!.,?]*$/i.test(q) ||
+      q.startsWith('salam khoya') || q.startsWith('salam alaykom') || q.startsWith('السلام عليكم');
+
+    if (isDarijaGreeting) {
+      return {
+        content: `وعليكم السلام ورحمة الله وبركاته خويا العزيز! 👋 مرحباً بيك فـ **SolPump AI Studio** على sol-pump.store.
+
+أنا المساعد الذكي ديالك، واجد نعاونك فـ أي حاجة بغيتيها:
+- 🎮 **تطوير الألعاب والمنطق البرمجي**: سكريبتات Unity C#, Godot 4 GDScript, وتيليغرام ميني آب 60FPS.
+- ⚡ **الويب 3 والبلوكشين**: حساب فيات سولانا (Priority Fees)، البيتكويين، والعقود الذكية فـ Solana و TON.
+- 🛠️ **أدوات المطورين**: Mock JSON, SQL Queries, Regex, وتوليد الصور الذكية.
+- 💬 **محادثة عامة**: تقدر تسولني فـ أي موضوع ونهضرو بالدارجة المغربية، العربية، الفرنسية، أو الإنجليزية!
+
+شنو باغي نخدمو عليه ولا نوجدو اليوم؟ كول ليا وأنا معاك!`,
+      };
+    }
+
+    // Moroccan Darija Status / "Ki dayr" / "كيداير"
+    if (q.includes('ki dayr') || q.includes('kidayr') || q.includes('labas 3lik') || q.includes('hanya') || q.includes('كيداير') || q.includes('لاباس عليك') || q.includes('كيف الحال') || q.includes('كيف داير')) {
+      return {
+        content: `الحمد لله أ خويا، كلشي بخير وعلى خير الله يحفظك! 😊
+
+أنا هنا واجد وفـ الخدمة. إلا محتاج شي كود، سكريبت، حسابات ف البلوكشين، ولا غير بغيتي تسول ف شي فكرة، مرحبا بيك.
+
+شنو كاين ف البال دابا؟`,
+      };
+    }
+
+    // Moroccan Darija Identity / "Chkoun nta" / "شكون نتا"
+    if (q.includes('chkoun nta') || q.includes('chnou t9der dir') || q.includes('chnou kaddir') || q.includes('شكون نتا') || q.includes('شنو كادير') || q.includes('شنو تقدر دير') || q.includes('شنو هو هاد السيت')) {
+      return {
+        content: `أنا **SolPump AI**، المساعد الذكي المغربي والعالمي فـ **sol-pump.store**! 🚀
+
+ها شنو كنقدم ليك بالدارجة وباللغات كاملين:
+- 🇲🇦 **فهم كامل للدارجة المغربية**: كنفهم كلامك سواء كتبتيه بالعربية ولا بالعرنسية (Arabizi)، وكنجاوبك بطريقة طبيعية وذكية.
+- 🎮 **مولد سكريبتات الألعاب**: كنعطيك سكريبتات جاهزة للتحميل د Unity (PlayerController.cs)، Godot 4، و Telegram Canvas Engine.
+- ⚡ **محرك الويب 3**: حسابات دقيقة لـ Priority Fees فـ Solana و Bitcoin vBytes وسواب Jupiter v6.
+- 📊 **أدوات برمجية احترافية**: توليد داتا Mock JSON، كتابة واستعلامات SQL متقدمة، وتحليل JWT و Hashes.
+- 🎙️ **دعم صوتي مباشر**: تقدر تهضر معايا بالميكروفون بالدارجة، العربية، الفرنسية، أو الإنجليزية!
+
+سولني فـ أي حاجة بغيتي ولا كوليا شنو خاصك!`,
+      };
+    }
+
+    // Moroccan Darija Gratitude / "Chokran" / "شكرا"
+    if (q.includes('chokran') || q.includes('choukran') || q.includes('lah yhfdek') || q.includes('lah ykhellik') || q.includes('merci bzaf') || q.includes('شكرا') || q.includes('الله يحفظك') || q.includes('الله يخليك') || q.includes('الله يعطيك الصحة') || q.includes('ناضي') || q.includes('تبارك الله')) {
+      return {
+        content: `العفو خويا العزيز! على الراس والعين. 😊 الله يحفظك ويبارك فيك!
+
+إلا حتاجيتي أي كود آخر، سكريبت، ولا استفسار فـ أي وقت، أنا ديما هنا رهن إشارتك! 🚀✨`,
+      };
+    }
+
+    // French Greetings & Identity
+    if (q === 'bonjour' || q === 'salut' || q.startsWith('bonjour') || q.startsWith('salut') || q.includes('comment ca va') || q.includes('comment vas-tu')) {
+      return {
+        content: `Bonjour et bienvenue sur **sol-pump.store** ! 👋
+
+Je suis votre assistant IA universel, prêt à discuter, résoudre vos problématiques techniques ou générer des scripts et outils Web3 / Game Dev.
+
+Comment puis-je vous aider aujourd'hui ?`,
+      };
+    }
+
+    // Spanish Greetings
+    if (q === 'hola' || q.startsWith('hola') || q.includes('como estas') || q.includes('buenos dias')) {
+      return {
+        content: `¡Hola y bienvenido a **sol-pump.store**! 👋
+
+Soy tu asistente de IA, listo para ayudarte con desarrollo de juegos, contratos Web3, herramientas de desarrollo o cualquier conversación.
+
+¿En qué puedo ayudarte hoy?`,
+      };
+    }
+
+    // Standard English Greetings
     const isGreeting =
-      /^(hi|hello|hey|gm|gn|good\s+morning|good\s+afternoon|good\s+evening|howdy|sup|what'?s\s+up|yo|salut|hola|aloha)[\s!.,?]*$/i.test(q) ||
+      /^(hi|hello|hey|gm|gn|good\s+morning|good\s+afternoon|good\s+evening|howdy|sup|what'?s\s+up|yo|aloha)[\s!.,?]*$/i.test(q) ||
       q === 'hi' || q === 'hello' || q === 'hey' || q === 'gm';
 
     if (isGreeting) {
       return {
         content: `Hello there! 👋 Welcome to **sol-pump.store**.
 
-I'm your AI assistant, ready to chat casually, answer general knowledge questions, explore ideas, or help you with engineering tools and Web3 utilities whenever you'd like.
+I'm your versatile AI assistant, ready to chat casually in any language (including Moroccan Darija, Arabic, French, and English), explore ideas, or generate production Game Dev & Web3 engineering tools whenever you'd like.
 
 How can I help you today?`,
       };
@@ -451,7 +561,9 @@ What's on your mind today?`,
         content: `I am **SolPump AI**, the versatile assistant powering **sol-pump.store**! 🚀
 
 Here is what I can do for you:
-- 💬 **Friendly Conversation**: Chat with me about general topics, ask life or tech questions, or brainstorm ideas.
+- 💬 **Universal Multi-Language Chat**: Fluent in Moroccan Darija (الدارجة المغربية), Arabic, French, English, Spanish, and more.
+- 🎙️ **Voice Speech-to-Text**: Real-time microphone dictation across multiple languages and dialects.
+- 🎮 **Game Dev & Logic Scripts**: Downloadable Unity C#, Godot 4.x GDScript, and 60FPS Telegram Canvas loops.
 - ⚡ **Web3 & Blockchain Engineering**: Calculate Solana priority fees, explore Bitcoin vByte transactions, and examine smart contracts for Solana and TON.
 - 📊 **Developer Tools**: Generate realistic mock datasets (JSON), construct production SQL CTE queries, test regex patterns, and inspect JWT/hashes.
 - 📦 **Open Source Automation Vault**: Provide free downloadable templates for Telegram Mini-Apps, WhatsApp auto-responders, and Solana sniper bots.
@@ -1530,7 +1642,7 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
       const SpeechRecognition =
         (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
-      recognition.lang = 'en-US';
+      recognition.lang = speechLang || 'ar-MA';
       recognition.continuous = true;
       recognition.interimResults = true;
       recognition.maxAlternatives = 1;
@@ -1584,6 +1696,25 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
       setSpeechError('Could not access microphone. Please check browser permissions.');
       setIsListening(false);
       setTimeout(() => setSpeechError(null), 5000);
+    }
+  };
+
+  const handleSelectSpeechLang = (code: string) => {
+    setSpeechLang(code);
+    try {
+      localStorage.setItem(STORAGE_KEY_SPEECH_LANG, code);
+    } catch {
+      // ignore
+    }
+    setShowSpeechLangMenu(false);
+    // If currently listening, restart recognition with new language
+    if (isListening && recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {
+        // ignore
+      }
+      setIsListening(false);
     }
   };
 
@@ -3628,7 +3759,9 @@ contract JettonVault with Deployable {
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
                     </span>
                     <span className="font-bold tracking-wide">Listening...</span>
-                    <span className="text-[11px] text-rose-400/80 hidden sm:inline">(Transcribing voice in real-time)</span>
+                    <span className="text-[11px] text-rose-400/90 hidden sm:inline">
+                      ({SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || speechLang} • Speak naturally)
+                    </span>
                   </div>
                   <button
                     type="button"
@@ -3647,7 +3780,7 @@ contract JettonVault with Deployable {
                 onKeyDown={handleKeyDown}
                 placeholder={
                   isListening
-                    ? 'Listening... Speak clearly into your microphone'
+                    ? `Listening in ${SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || 'your language'}... Speak now`
                     : 'Ask for a tool, script, or Bitcoin / Solana calculations...'
                 }
                 rows={1}
@@ -3655,11 +3788,62 @@ contract JettonVault with Deployable {
               />
 
               <div className="flex items-center justify-between px-3.5 py-2 border-t border-slate-800/60 bg-slate-950/40 text-xs">
-                <span className="text-[11px] font-mono text-slate-400">
-                  Press Enter to send
-                </span>
-
                 <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-mono text-slate-400 hidden xs:inline">
+                    Press Enter to send
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 relative">
+                  {/* Language Selector for Voice & AI */}
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowSpeechLangMenu((prev) => !prev)}
+                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-mono font-medium bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer"
+                      title="Select Voice & Recognition Language"
+                      aria-label="Select voice language"
+                    >
+                      <Languages className="w-3 h-3 text-cyan-400" />
+                      <span className="text-[11px]">
+                        {SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.short || '🇲🇦 Darija'}
+                      </span>
+                      <ChevronDown className="w-3 h-3 opacity-60" />
+                    </button>
+
+                    {showSpeechLangMenu && (
+                      <div className="absolute right-0 bottom-full mb-2 w-56 bg-[#0f121d] border border-slate-700 rounded-xl shadow-2xl shadow-black/90 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-100">
+                        <div className="px-2 py-1 text-[10px] font-mono uppercase text-slate-400 border-b border-slate-800/80 mb-1 flex items-center justify-between">
+                          <span>Voice Language</span>
+                          <span className="text-cyan-400">Web Speech</span>
+                        </div>
+                        <div className="space-y-0.5">
+                          {SPEECH_LANGUAGES.map((lang) => (
+                            <button
+                              key={lang.code}
+                              type="button"
+                              onClick={() => handleSelectSpeechLang(lang.code)}
+                              className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs transition-colors text-left cursor-pointer ${
+                                speechLang === lang.code
+                                  ? 'bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/40'
+                                  : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <span>{lang.flag}</span>
+                                <div>
+                                  <div className="leading-none text-xs">{lang.label}</div>
+                                  <div className="text-[9px] text-slate-400 leading-tight">{lang.region}</div>
+                                </div>
+                              </div>
+                              {speechLang === lang.code && <Check className="w-3 h-3 text-cyan-400" />}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Microphone Voice-to-Text Button */}
                   <button
                     type="button"
@@ -3669,7 +3853,11 @@ contract JettonVault with Deployable {
                         ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-lg shadow-rose-500/30 border border-rose-400 animate-pulse'
                         : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-slate-700'
                     }`}
-                    title={isListening ? 'Stop voice recording' : 'Voice-to-text (Speech Recognition)'}
+                    title={
+                      isListening
+                        ? 'Stop voice recording'
+                        : `Voice-to-text in ${SPEECH_LANGUAGES.find((l) => l.code === speechLang)?.label || 'selected language'}`
+                    }
                     aria-label={isListening ? 'Stop voice recording' : 'Start voice-to-text recording'}
                   >
                     {isListening ? (
