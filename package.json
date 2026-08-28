@@ -10,7 +10,6 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@google/genai": "^2.19.0",
     "@solana/web3.js": "^1.98.4",
     "clsx": "^2.1.1",
     "express": "^4.21.2",
