@@ -28,6 +28,9 @@ import {
   ExternalLink,
   ChevronRight,
   Clock,
+  Mic,
+  MicOff,
+  AlertCircle,
 } from 'lucide-react';
 import {
   generateTelegramMiniAppZIP,
@@ -98,6 +101,8 @@ export const MainChatApp: React.FC = () => {
 
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [speechError, setSpeechError] = useState<string | null>(null);
   const [copiedCodeId, setCopiedCodeId] = useState<string | null>(null);
   const [downloadingZip, setDownloadingZip] = useState<string | null>(null);
 
@@ -120,6 +125,20 @@ export const MainChatApp: React.FC = () => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const fallbackTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Cleanup speech recognition on unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {
+          // ignore
+        }
+      }
+    };
+  }, []);
 
   // Save sessions to localStorage whenever they change
   useEffect(() => {
@@ -393,7 +412,101 @@ Ask a technical question or type what you need!`,
     setIsLoading(false);
   };
 
+  const toggleSpeechRecognition = () => {
+    const isSpeechSupported =
+      typeof window !== 'undefined' &&
+      ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+
+    if (!isSpeechSupported) {
+      setSpeechError('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+      setTimeout(() => setSpeechError(null), 5000);
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {
+          // ignore
+        }
+      }
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const SpeechRecognition =
+        (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+
+      const baseText = inputValue;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setSpeechError(null);
+      };
+
+      recognition.onresult = (event: any) => {
+        let transcript = '';
+        for (let i = 0; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+
+        if (transcript) {
+          const updated = baseText ? `${baseText.trim()} ${transcript.trim()}` : transcript;
+          setInputValue(updated);
+          if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 180)}px`;
+          }
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('Speech recognition error event:', event.error);
+        if (event.error === 'not-allowed') {
+          setSpeechError('Microphone permission was denied. Please allow microphone access in your browser settings.');
+        } else if (event.error === 'no-speech') {
+          // No speech detected, keep listening or gracefully let user know
+        } else if (event.error === 'audio-capture') {
+          setSpeechError('No microphone detected or audio capture failed.');
+        } else {
+          setSpeechError(`Voice input error: ${event.error}`);
+        }
+        setIsListening(false);
+        setTimeout(() => setSpeechError(null), 5000);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err: any) {
+      console.error('Failed to initialize speech recognition:', err);
+      setSpeechError('Could not access microphone. Please check browser permissions.');
+      setIsListening(false);
+      setTimeout(() => setSpeechError(null), 5000);
+    }
+  };
+
   const handleSendMessage = async (customPrompt?: string) => {
+    // If voice recognition is active, stop it when sending
+    if (isListening && recognitionRef.current) {
+      try {
+        recognitionRef.current.stop();
+      } catch {
+        // ignore
+      }
+      setIsListening(false);
+    }
+
     const text = (customPrompt || inputValue).trim();
     if (!text || isLoading) return;
 
@@ -1152,19 +1265,65 @@ ${dynamicMeta.content}
 
           {/* Fixed / Sticky ChatGPT Input Dock */}
           <div className="w-full sticky bottom-0 pt-3 pb-2 bg-gradient-to-t from-[#0a0b10] via-[#0a0b10]/95 to-transparent">
+            {/* Speech recognition error notice banner */}
+            {speechError && (
+              <div className="mb-2 p-2.5 rounded-xl bg-rose-950/90 border border-rose-800 text-rose-300 text-xs flex items-center justify-between gap-2 shadow-lg backdrop-blur-xs animate-in fade-in slide-in-from-bottom-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
+                  <span className="truncate">{speechError}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setSpeechError(null)}
+                  className="text-rose-400 hover:text-white text-[11px] font-mono px-2 py-0.5 rounded bg-rose-900/50 hover:bg-rose-900 cursor-pointer transition-colors shrink-0"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex flex-col bg-[#0f121d] border border-slate-800 focus-within:border-cyan-500/70 rounded-2xl shadow-2xl shadow-black/80 transition-all overflow-hidden"
+              className={`relative flex flex-col bg-[#0f121d] border ${
+                isListening
+                  ? 'border-rose-500/70 ring-1 ring-rose-500/30'
+                  : 'border-slate-800 focus-within:border-cyan-500/70'
+              } rounded-2xl shadow-2xl shadow-black/80 transition-all overflow-hidden`}
             >
+              {/* Active Speech Recognition Indicator Bar */}
+              {isListening && (
+                <div className="px-3.5 py-1.5 bg-rose-500/10 border-b border-rose-500/20 flex items-center justify-between text-xs text-rose-300 font-mono">
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-500"></span>
+                    </span>
+                    <span className="font-bold tracking-wide">Listening...</span>
+                    <span className="text-[11px] text-rose-400/80 hidden sm:inline">(Transcribing voice in real-time)</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={toggleSpeechRecognition}
+                    className="text-[11px] text-rose-400 hover:text-rose-200 underline font-semibold cursor-pointer"
+                  >
+                    Done speaking
+                  </button>
+                </div>
+              )}
+
               <textarea
                 ref={textareaRef}
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask for a tool, script, or Bitcoin / Solana calculations..."
+                placeholder={
+                  isListening
+                    ? 'Listening... Speak clearly into your microphone'
+                    : 'Ask for a tool, script, or Bitcoin / Solana calculations...'
+                }
                 rows={1}
                 className="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none resize-none min-h-[52px] max-h-[160px] py-4 px-4 font-sans leading-relaxed"
               />
@@ -1174,32 +1333,60 @@ ${dynamicMeta.content}
                   Press Enter to send
                 </span>
 
-                {isLoading ? (
+                <div className="flex items-center gap-2">
+                  {/* Microphone Voice-to-Text Button */}
                   <button
                     type="button"
-                    onClick={handleStopGenerating}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-mono bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/50 shadow-lg shadow-rose-500/10 transition-all cursor-pointer group"
-                    aria-label="Stop generating response"
-                    title="Stop generating"
-                  >
-                    <Square className="w-3.5 h-3.5 fill-current text-rose-400 group-hover:scale-95 transition-transform" />
-                    <span>Stop generating</span>
-                  </button>
-                ) : (
-                  <button
-                    type="submit"
-                    disabled={!inputValue.trim() || isLoading}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer ${
-                      inputValue.trim() && !isLoading
-                        ? 'bg-cyan-500 hover:bg-cyan-400 text-[#080b12] shadow-lg shadow-cyan-500/20'
-                        : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-slate-800'
+                    onClick={toggleSpeechRecognition}
+                    className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono font-semibold transition-all cursor-pointer ${
+                      isListening
+                        ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-lg shadow-rose-500/30 border border-rose-400 animate-pulse'
+                        : 'bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-slate-700'
                     }`}
-                    aria-label="Send message"
+                    title={isListening ? 'Stop voice recording' : 'Voice-to-text (Speech Recognition)'}
+                    aria-label={isListening ? 'Stop voice recording' : 'Start voice-to-text recording'}
                   >
-                    <span>Send</span>
-                    <Send className="w-3.5 h-3.5" />
+                    {isListening ? (
+                      <>
+                        <MicOff className="w-3.5 h-3.5 text-white" />
+                        <span className="text-[11px]">Recording</span>
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="w-3.5 h-3.5 text-cyan-400" />
+                        <span className="hidden sm:inline text-[11px]">Voice</span>
+                      </>
+                    )}
                   </button>
-                )}
+
+                  {/* Send or Stop generating button */}
+                  {isLoading ? (
+                    <button
+                      type="button"
+                      onClick={handleStopGenerating}
+                      className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold font-mono bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/50 shadow-lg shadow-rose-500/10 transition-all cursor-pointer group"
+                      aria-label="Stop generating response"
+                      title="Stop generating"
+                    >
+                      <Square className="w-3.5 h-3.5 fill-current text-rose-400 group-hover:scale-95 transition-transform" />
+                      <span>Stop generating</span>
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={!inputValue.trim() || isLoading}
+                      className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer ${
+                        inputValue.trim() && !isLoading
+                          ? 'bg-cyan-500 hover:bg-cyan-400 text-[#080b12] shadow-lg shadow-cyan-500/20'
+                          : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-slate-800'
+                      }`}
+                      aria-label="Send message"
+                    >
+                      <span>Send</span>
+                      <Send className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
               </div>
             </form>
 
