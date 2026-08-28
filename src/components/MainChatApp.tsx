@@ -44,6 +44,9 @@ import {
   FileText,
   Binary,
   Boxes,
+  Image as ImageIcon,
+  Maximize2,
+  X,
 } from 'lucide-react';
 import {
   generateTelegramMiniAppZIP,
@@ -53,6 +56,24 @@ import {
   generateN8nWorkflowsZIP,
   generatePromptVaultMarkdown,
 } from '../utils/assetGenerators';
+
+export interface ChatFileAttachment {
+  filename: string;
+  fileType: string;
+  sizeLabel?: string;
+  content?: string;
+  mimeType?: string;
+  isZip?: boolean;
+  zipType?: 'miniapp' | 'whatsapp' | 'sniper' | 'bulksender' | 'n8n' | 'vault';
+}
+
+export interface ChatGeneratedImage {
+  url: string;
+  prompt: string;
+  alt?: string;
+  aspectRatio?: string;
+  modelUsed?: string;
+}
 
 export interface ChatMessage {
   id: string;
@@ -64,6 +85,8 @@ export interface ChatMessage {
     code: string;
     title?: string;
   };
+  fileAttachment?: ChatFileAttachment;
+  generatedImage?: ChatGeneratedImage;
   interactiveWidget?:
     | 'solana-fee'
     | 'bitcoin-calc'
@@ -165,6 +188,97 @@ export const MainChatApp: React.FC = () => {
   const [hashInput, setHashInput] = useState('sol-pump.store-free-open-source-2026');
   const [hashAlgo, setHashAlgo] = useState<'SHA-256' | 'SHA-512'>('SHA-256');
   const [calculatedHash, setCalculatedHash] = useState<string>('');
+  const [selectedImageModal, setSelectedImageModal] = useState<ChatGeneratedImage | null>(null);
+
+  // File and Image download helpers
+  const triggerFileDownload = (filename: string, content: string, mimeType = 'text/plain') => {
+    try {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.error('File download failed:', e);
+    }
+  };
+
+  const triggerImageDownload = (dataUrl: string, filename = 'solpump_visual_asset') => {
+    try {
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      const ext = dataUrl.includes('image/svg+xml') ? 'svg' : 'png';
+      a.download = `${filename}_${Date.now()}.${ext}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (e) {
+      console.error('Image download failed:', e);
+    }
+  };
+
+  const getFileExtension = (lang: string): string => {
+    switch (lang.toLowerCase()) {
+      case 'csharp':
+      case 'cs':
+      case 'unity':
+        return 'cs';
+      case 'gdscript':
+      case 'gd':
+      case 'godot':
+        return 'gd';
+      case 'cpp':
+      case 'c++':
+      case 'unreal':
+      case 'cxx':
+      case 'hpp':
+      case 'h':
+        return 'cpp';
+      case 'c':
+        return 'c';
+      case 'lua':
+      case 'roblox':
+        return 'lua';
+      case 'shader':
+      case 'glsl':
+      case 'hlsl':
+        return 'glsl';
+      case 'python':
+      case 'py':
+        return 'py';
+      case 'typescript':
+      case 'ts':
+        return 'ts';
+      case 'javascript':
+      case 'js':
+        return 'js';
+      case 'json':
+        return 'json';
+      case 'sql':
+        return 'sql';
+      case 'rust':
+      case 'rs':
+        return 'rs';
+      case 'tact':
+        return 'tact';
+      case 'func':
+        return 'fc';
+      case 'markdown':
+      case 'md':
+        return 'md';
+      case 'html':
+      case 'htm':
+        return 'html';
+      case 'css':
+        return 'css';
+      default:
+        return 'txt';
+    }
+  };
 
   // Live hash calculator effect
   useEffect(() => {
@@ -299,6 +413,7 @@ export const MainChatApp: React.FC = () => {
   const resolveDynamicWeb3Response = (query: string): {
     content: string;
     codeSnippet?: { language: string; code: string; title?: string };
+    fileAttachment?: ChatFileAttachment;
     interactiveWidget?: ChatMessage['interactiveWidget'];
     quickAction?: ChatMessage['quickAction'];
   } => {
@@ -385,6 +500,595 @@ Would you like to explore how smart contracts work, or discuss a specific use ca
     }
 
     // === 2. TECHNICAL TOOLS & ENGINE MODULES ===
+
+    // G1. Unity C# Character Controller & Physics Engine
+    if (q.includes('unity') || q.includes('c# character') || q.includes('playercontroller') || (q.includes('c#') && (q.includes('movement') || q.includes('player') || q.includes('controller') || q.includes('game')))) {
+      const unityCode = `using UnityEngine;
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerController : MonoBehaviour
+{
+    [Header("Movement Settings")]
+    [SerializeField] private float walkSpeed = 6.0f;
+    [SerializeField] private float sprintSpeed = 10.5f;
+    [SerializeField] private float jumpHeight = 1.85f;
+    [SerializeField] private float gravity = -19.62f;
+    [SerializeField] private float rotationSmoothTime = 0.08f;
+
+    [Header("Ground Check & Coyote Time")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundDistance = 0.35f;
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float coyoteTime = 0.15f;
+
+    private CharacterController controller;
+    private Transform cameraTransform;
+    private Vector3 velocity;
+    private float rotationVelocity;
+    private float coyoteCounter;
+    private bool isGrounded;
+
+    void Awake()
+    {
+        controller = GetComponent<CharacterController>();
+        if (Camera.main != null) cameraTransform = Camera.main.transform;
+    }
+
+    void Update()
+    {
+        // 1. Ground & Coyote Time Check
+        isGrounded = Physics.CheckSphere(groundCheck ? groundCheck.position : transform.position - Vector3.up * 0.9f, groundDistance, groundMask);
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2.0f; // Small downward snap force
+            coyoteCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteCounter -= Time.deltaTime;
+        }
+
+        // 2. Input Reading
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float vertical = Input.GetAxisRaw("Vertical");
+        Vector3 inputDir = new Vector3(horizontal, 0f, vertical).normalized;
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        float targetSpeed = isSprinting ? sprintSpeed : walkSpeed;
+
+        // 3. Camera-Relative Direction & Smooth Rotation
+        if (inputDir.magnitude >= 0.1f)
+        {
+            float targetAngle = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg + (cameraTransform ? cameraTransform.eulerAngles.y : 0f);
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationVelocity, rotationSmoothTime);
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
+            controller.Move(moveDir.normalized * (targetSpeed * Time.deltaTime));
+        }
+
+        // 4. Jump with Coyote Buffer
+        if (Input.GetButtonDown("Jump") && coyoteCounter > 0f)
+        {
+            velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
+            coyoteCounter = 0f;
+        }
+
+        // 5. Apply Gravity
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+    }
+}`;
+
+      return {
+        content: `### 🎮 Unity 3D C# Character Controller & Physics Script
+
+Here is an optimized, production-grade **PlayerController.cs** script for Unity 2022+ / 6 LTS.
+
+#### Key Mechanics Included:
+- **Camera-Aligned Movement**: Seamlessly moves in the direction the main camera is facing.
+- **Smooth Rotation Interpolation**: Prevents snapping using \`Mathf.SmoothDampAngle\`.
+- **Coyote Time Buffer**: Generous jump buffer (\`0.15s\`) for responsive platforming feel.
+- **Ground Snap Force**: Avoids micro-bouncing down slopes.
+
+You can copy the code snippet below or click **Download** to save \`PlayerController.cs\` directly.`,
+        codeSnippet: {
+          language: 'csharp',
+          title: 'PlayerController.cs (Unity 3D Controller)',
+          code: unityCode,
+        },
+        fileAttachment: {
+          filename: 'PlayerController.cs',
+          fileType: 'csharp',
+          content: unityCode,
+          sizeLabel: `${(unityCode.length / 1024).toFixed(1)} KB • ${unityCode.split('\n').length} lines`,
+          mimeType: 'text/x-csharp',
+        },
+      };
+    }
+
+    // G2. Godot 4.x GDScript Movement & Physics
+    if (q.includes('godot') || q.includes('gdscript') || q.includes('characterbody') || (q.includes('movement') && (q.includes('2d') || q.includes('3d')) && !q.includes('unity'))) {
+      const godotCode = `extends CharacterBody3D
+
+@export_group("Movement Settings")
+@export var walk_speed: float = 5.0
+@export var sprint_speed: float = 8.5
+@export var jump_velocity: float = 5.2
+@export var acceleration: float = 12.0
+@export var friction: float = 10.0
+@export var mouse_sensitivity: float = 0.003
+
+@export_group("Camera Rig")
+@export var camera_pivot: Node3D
+@export var camera_3d: Camera3D
+
+# Physics gravity from project settings
+var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var coyote_timer: float = 0.0
+const COYOTE_TIME: float = 0.15
+
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		rotate_y(-event.relative.x * mouse_sensitivity)
+		if camera_pivot:
+			camera_pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+			camera_pivot.rotation.x = clamp(camera_pivot.rotation.x, deg_to_rad(-80), deg_to_rad(85))
+
+func _physics_process(delta: float) -> void:
+	# 1. Apply Gravity & Coyote Time
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+		coyote_timer -= delta
+	else:
+		coyote_timer = COYOTE_TIME
+
+	# 2. Jump Handling
+	if Input.is_action_just_pressed("jump") and coyote_timer > 0.0:
+		velocity.y = jump_velocity
+		coyote_timer = 0.0
+
+	# 3. Input Direction Vector
+	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
+	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	var is_sprinting := Input.is_action_pressed("sprint")
+	var target_speed := sprint_speed if is_sprinting else walk_speed
+
+	if direction:
+		velocity.x = lerp(velocity.x, direction.x * target_speed, acceleration * delta)
+		velocity.z = lerp(velocity.z, direction.z * target_speed, acceleration * delta)
+	else:
+		velocity.x = lerp(velocity.x, 0.0, friction * delta)
+		velocity.z = lerp(velocity.z, 0.0, friction * delta)
+
+	move_and_slide()`;
+
+      return {
+        content: `### 🕹️ Godot 4.x CharacterBody3D Movement Script
+
+Here is an optimized **player_controller.gd** script written in **GDScript 2.0** for Godot 4+.
+
+#### Core Features:
+- **First-Person / Third-Person Camera Pitch & Yaw**: Mouse-capture with vertical angle clamping.
+- **Physics-Accurate Velocity**: Smooth acceleration & friction damping via \`lerp\`.
+- **Coyote Time**: Allows jumping for \`0.15s\` after walking off a ledge.
+- **Integrated Godot \`move_and_slide()\`**: Handles sloped surfaces and collisions cleanly.
+
+Click **Download** below to download the script as \`player_controller.gd\`.`,
+        codeSnippet: {
+          language: 'gdscript',
+          title: 'player_controller.gd (Godot 4.x Script)',
+          code: godotCode,
+        },
+        fileAttachment: {
+          filename: 'player_controller.gd',
+          fileType: 'gdscript',
+          content: godotCode,
+          sizeLabel: `${(godotCode.length / 1024).toFixed(1)} KB • ${godotCode.split('\n').length} lines`,
+          mimeType: 'text/plain',
+        },
+      };
+    }
+
+    // G3. Telegram Mini-App HTML5 Canvas 60FPS Game Loop Engine
+    if (q.includes('telegram') && (q.includes('game') || q.includes('canvas') || q.includes('loop') || q.includes('phaser') || q.includes('mini app') || q.includes('mini-app'))) {
+      const telegramGameCode = `/**
+ * Telegram Mini-App HTML5 Canvas 60FPS Game Loop Engine
+ * Features: Touch/swipe joystick, Telegram Haptics, CloudStorage highscores, & Particle VFX
+ */
+
+export class TelegramGameEngine {
+  constructor(canvasId = 'gameCanvas') {
+    this.canvas = document.getElementById(canvasId);
+    this.ctx = this.canvas.getContext('2d');
+    this.tg = window.Telegram?.WebApp || null;
+
+    // Dimensions & Retina Display Scaling
+    this.width = 0;
+    this.height = 0;
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Game State
+    this.score = 0;
+    this.highScore = 0;
+    this.gameState = 'READY'; // READY | PLAYING | GAMEOVER
+    this.lastTime = 0;
+    this.particles = [];
+
+    // Player Entity
+    this.player = {
+      x: 0,
+      y: 0,
+      radius: 22,
+      targetX: 0,
+      targetY: 0,
+      color: '#06b6d4'
+    };
+
+    this.initTelegram();
+    this.resize();
+    this.bindEvents();
+    this.loadHighScore();
+    this.start();
+  }
+
+  initTelegram() {
+    if (this.tg) {
+      this.tg.ready();
+      this.tg.expand();
+      this.tg.setHeaderColor?.('#0a0b10');
+      this.tg.setBackgroundColor?.('#0a0b10');
+    }
+  }
+
+  resize() {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.canvas.width = this.width * this.dpr;
+    this.canvas.height = this.height * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr);
+    this.player.x = this.width / 2;
+    this.player.y = this.height * 0.75;
+    this.player.targetX = this.player.x;
+    this.player.targetY = this.player.y;
+  }
+
+  bindEvents() {
+    window.addEventListener('resize', () => this.resize());
+    
+    // Touch & Pointer Gesture Handler
+    const handlePointer = (e) => {
+      e.preventDefault();
+      const rect = this.canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      this.player.targetX = clientX - rect.left;
+      this.player.targetY = clientY - rect.top;
+
+      if (this.gameState === 'READY' || this.gameState === 'GAMEOVER') {
+        this.startGame();
+      }
+    };
+
+    this.canvas.addEventListener('touchstart', handlePointer, { passive: false });
+    this.canvas.addEventListener('touchmove', handlePointer, { passive: false });
+    this.canvas.addEventListener('pointerdown', handlePointer);
+  }
+
+  startGame() {
+    this.score = 0;
+    this.gameState = 'PLAYING';
+    this.spawnBurst(this.player.x, this.player.y, '#10b981');
+    this.triggerHaptic('impact', 'medium');
+  }
+
+  triggerHaptic(type = 'impact', style = 'light') {
+    try {
+      if (this.tg?.HapticFeedback) {
+        if (type === 'impact') this.tg.HapticFeedback.impactOccurred(style);
+        if (type === 'notification') this.tg.HapticFeedback.notificationOccurred(style);
+      }
+    } catch (e) {
+      console.warn('Haptics not supported in this environment');
+    }
+  }
+
+  loadHighScore() {
+    if (this.tg?.CloudStorage) {
+      this.tg.CloudStorage.getItem('tma_highscore', (err, val) => {
+        if (!err && val) this.highScore = parseInt(val, 10) || 0;
+      });
+    } else {
+      this.highScore = parseInt(localStorage.getItem('tma_highscore') || '0', 10);
+    }
+  }
+
+  saveHighScore(score) {
+    if (score > this.highScore) {
+      this.highScore = score;
+      if (this.tg?.CloudStorage) {
+        this.tg.CloudStorage.setItem('tma_highscore', String(score));
+      } else {
+        localStorage.setItem('tma_highscore', String(score));
+      }
+    }
+  }
+
+  spawnBurst(x, y, color = '#06b6d4') {
+    for (let i = 0; i < 16; i++) {
+      const angle = (Math.PI * 2 * i) / 16;
+      const speed = 2 + Math.random() * 3;
+      this.particles.push({
+        x,
+        y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 0.6,
+        maxLife: 0.6,
+        color
+      });
+    }
+  }
+
+  update(dt) {
+    if (this.gameState !== 'PLAYING') return;
+
+    // Smooth player interpolation
+    this.player.x += (this.player.targetX - this.player.x) * 0.18;
+    this.player.y += (this.player.targetY - this.player.y) * 0.18;
+
+    // Score accumulation
+    this.score += Math.floor(dt * 60);
+
+    // Particle update
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= dt;
+      if (p.life <= 0) this.particles.splice(i, 1);
+    }
+  }
+
+  render() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    // Canvas Background
+    const grad = this.ctx.createLinearGradient(0, 0, 0, this.height);
+    grad.addColorStop(0, '#0a0d16');
+    grad.addColorStop(1, '#040508');
+    this.ctx.fillStyle = grad;
+    this.ctx.fillRect(0, 0, this.width, this.height);
+
+    // Render Particles
+    for (const p of this.particles) {
+      this.ctx.save();
+      this.ctx.globalAlpha = p.life / p.maxLife;
+      this.ctx.fillStyle = p.color;
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+      this.ctx.fill();
+      this.ctx.restore();
+    }
+
+    // Render Player
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.arc(this.player.x, this.player.y, this.player.radius, 0, Math.PI * 2);
+    this.ctx.fillStyle = this.player.color;
+    this.ctx.shadowColor = this.player.color;
+    this.ctx.shadowBlur = 16;
+    this.ctx.fill();
+    this.ctx.restore();
+
+    // HUD / Score
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.font = 'bold 18px monospace';
+    this.ctx.fillText(\`SCORE: \${this.score}\`, 20, 36);
+    this.ctx.fillStyle = '#94a3b8';
+    this.ctx.font = '13px monospace';
+    this.ctx.fillText(\`HIGH: \${this.highScore}\`, 20, 58);
+  }
+
+  start() {
+    const loop = (timestamp) => {
+      const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
+      this.lastTime = timestamp;
+      this.update(dt);
+      this.render();
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame((t) => {
+      this.lastTime = t;
+      loop(t);
+    });
+  }
+}`;
+
+      return {
+        content: `### 📱 Telegram Mini-App HTML5 Canvas 60FPS Game Engine
+
+Here is a lightweight, responsive **telegram_game_engine.js** game loop designed specifically for Telegram Mini Apps (TMA).
+
+#### Key Integrations:
+- **Telegram WebApp SDK**: Automatically calls \`ready()\`, \`expand()\`, and applies obsidian viewport themes.
+- **Haptic Feedback**: Triggers real device vibration pulses (\`impactOccurred\`) during gameplay events.
+- **Telegram CloudStorage**: Backs up high scores to user cloud data seamlessly.
+- **Mobile Touch Controls**: Responsive touch and swipe tracking with delta time step.
+
+Download the script below to plug it straight into your Telegram bot or HTML5 frontend.`,
+        codeSnippet: {
+          language: 'javascript',
+          title: 'telegram_game_engine.js (Telegram Game Loop)',
+          code: telegramGameCode,
+        },
+        fileAttachment: {
+          filename: 'telegram_game_engine.js',
+          fileType: 'javascript',
+          content: telegramGameCode,
+          sizeLabel: `${(telegramGameCode.length / 1024).toFixed(1)} KB • ${telegramGameCode.split('\n').length} lines`,
+          mimeType: 'text/javascript',
+        },
+      };
+    }
+
+    // G4. NPC, Dialogue Tree, Quest Lines & Lore Builder (Structured JSON Manifest)
+    if (q.includes('npc') || q.includes('lore') || q.includes('dialogue') || q.includes('quest') || q.includes('backstory')) {
+      const loreJson = `{
+  "$schema": "https://sol-pump.store/schemas/rpg-lore-dialogue-v1.json",
+  "world": {
+    "realmName": "Obsidian Cybersphere",
+    "era": "Post-Genesis Epoch 2088",
+    "theme": "Dark Sci-Fi Cyberpunk RPG",
+    "loreSummary": "In the subterranean layers of Neo-Solana, distributed consensus nodes act as divine reliquaries guarding the ancestral encryption keys."
+  },
+  "npc": {
+    "id": "npc_kaelen_oracle",
+    "name": "Kaelen the Cyber-Archivist",
+    "title": "Master of the Zero-Knowledge Vault",
+    "faction": "Order of the Validated Ledger",
+    "voiceProfile": {
+      "tone": "Stoic, calculated, resonant with subtle digital harmonics",
+      "pacing": 1.15
+    },
+    "attributes": {
+      "level": 48,
+      "reputationRequired": 250,
+      "isMerchant": true,
+      "coordinates": { "x": 128.4, "y": 42.0, "zone": "Sub-Sector 0x7F" }
+    },
+    "backstory": "Formerly the chief protocol engineer for the Citadel Consensus layer, Kaelen merged his consciousness into the hardware ledger during the Great Fork."
+  },
+  "dialogueTree": {
+    "rootNodeId": "node_greet_01",
+    "nodes": {
+      "node_greet_01": {
+        "speaker": "Kaelen",
+        "text": "Greetings, Traveler. Your cryptographic hash is unfamiliar to the enclave. Have you come seeking the Lost Genesis Block, or do you bring tribute?",
+        "options": [
+          {
+            "id": "opt_seek_block",
+            "label": "I seek the forbidden knowledge of the Lost Genesis Block.",
+            "targetNodeId": "node_lore_genesis",
+            "conditions": []
+          },
+          {
+            "id": "opt_offer_tribute",
+            "label": "I bring 50 Sol-Cores as an offering. [Trade]",
+            "targetNodeId": "node_trade_cores",
+            "conditions": [
+              {
+                "type": "has_inventory_item",
+                "itemId": "item_sol_core",
+                "count": 50
+              }
+            ]
+          },
+          {
+            "id": "opt_farewell",
+            "label": "I must depart. Keep the nodes running.",
+            "targetNodeId": null,
+            "conditions": []
+          }
+        ]
+      },
+      "node_lore_genesis": {
+        "speaker": "Kaelen",
+        "text": "The Genesis Block was partitioned during the Singularity. Only those who assemble the three Cryptographic Shards may verify the master proof.",
+        "options": [
+          {
+            "id": "opt_accept_quest",
+            "label": "I will recover the Shards for you. [Accept Main Quest]",
+            "targetNodeId": "node_quest_accepted",
+            "actions": [
+              {
+                "type": "trigger_quest_start",
+                "questId": "quest_shards_of_consensus"
+              }
+            ]
+          }
+        ]
+      },
+      "node_quest_accepted": {
+        "speaker": "Kaelen",
+        "text": "May your network latency remain low and your gas limit sufficient. Return here once the Vault is unsealed.",
+        "options": [
+          {
+            "id": "opt_exit_quest",
+            "label": "Understood. [Close Dialogue]",
+            "targetNodeId": null
+          }
+        ]
+      }
+    }
+  },
+  "quests": [
+    {
+      "id": "quest_shards_of_consensus",
+      "title": "The Shards of Consensus",
+      "category": "Main Scenario Quest",
+      "difficulty": "Master",
+      "objectives": [
+        {
+          "step": 1,
+          "description": "Locate the Forgotten Miner in Sub-Level 4",
+          "isCompleted": false
+        },
+        {
+          "step": 2,
+          "description": "Synthesize 3 Cryptographic Nonces at the Quantum Anvil",
+          "isCompleted": false
+        },
+        {
+          "step": 3,
+          "description": "Deliver the assembled Shards to Kaelen the Cyber-Archivist",
+          "isCompleted": false
+        }
+      ],
+      "rewards": {
+        "experience": 5000,
+        "gold": 1500,
+        "items": [
+          {
+            "itemId": "item_obsidian_keycard",
+            "name": "Obsidian Keycard [Tier 5]",
+            "quantity": 1
+          }
+        ]
+      }
+    }
+  ]
+}`;
+
+      return {
+        content: `### 📜 NPC Dialogue Tree, Quest Lines & Lore Manifest (JSON)
+
+Here is a structured, production-ready **game lore & dialogue schema** formatted in clean JSON.
+
+#### Schema Breakdown:
+- **World & Realm Lore**: Atmospheric lore summary and epoch metadata.
+- **NPC Identity Profile**: Complete backstory, voice profile, coordinates, and faction loyalty.
+- **Branching Dialogue Tree**: Root nodes with conditional choices (inventory checks, reputation requirements) and event triggers.
+- **Multi-Stage Quest Log**: Step-by-step objectives, difficulty tier, and rewards (EXP, items, gold).
+
+Click **Download** below to download \`npc_dialogue_quest_manifest.json\` instantly.`,
+        codeSnippet: {
+          language: 'json',
+          title: 'npc_dialogue_quest_manifest.json (RPG Dialogue & Lore Tree)',
+          code: loreJson,
+        },
+        fileAttachment: {
+          filename: 'npc_dialogue_quest_manifest.json',
+          fileType: 'json',
+          content: loreJson,
+          sizeLabel: `${(loreJson.length / 1024).toFixed(1)} KB • ${loreJson.split('\n').length} lines`,
+          mimeType: 'application/json',
+        },
+      };
+    }
 
     // 1. Solana Priority Fees
     if (q.includes('fee') || q.includes('gas') || q.includes('compute unit') || q.includes('lamport') || q.includes('priority')) {
@@ -953,6 +1657,69 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
       }
     }, 5000);
 
+    // 1. Check if user is requesting Image Generation
+    const isImageRequest =
+      /(generate|draw|design|create|make|render|paint)\s+(an?\s+)?(image|logo|icon|mockup|banner|avatar|picture|art|graphic|illustration)/i.test(text) ||
+      /(image|logo|icon|mockup|picture|illustration)\s+(of|for)/i.test(text) ||
+      text.toLowerCase().startsWith('draw ') ||
+      text.toLowerCase().startsWith('design a ') ||
+      text.toLowerCase().startsWith('generate image') ||
+      text.toLowerCase().startsWith('generate a logo');
+
+    if (isImageRequest) {
+      try {
+        const imgRes = await fetch('/api/generate-image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            prompt: text,
+            aspectRatio: '1:1',
+          }),
+        });
+        clearTimeout(timeoutId);
+        const imgData = await imgRes.json().catch(() => null);
+
+        if (imgData && imgData.success && imgData.imageUrl) {
+          const aiMsg: ChatMessage = {
+            id: `ai-${Date.now()}`,
+            role: 'assistant',
+            content: `### 🎨 AI Generated Visual Asset & Design
+Here is your requested asset generated for: **"${text}"**.
+
+- **Asset Category**: High-Resolution Vector & Concept Graphic
+- **Palette & Lighting**: Obsidian Canvas with Cyan & Violet Cyber Specular Lighting
+- **Export Options**: 1-Click High-Res PNG / Vector Download or Full-Screen Lightbox View`,
+            generatedImage: {
+              url: imgData.imageUrl,
+              prompt: text,
+              aspectRatio: '1:1',
+              modelUsed: imgData.modelUsed,
+            },
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          };
+
+          setSessions((prev) =>
+            prev.map((s) =>
+              s.id === currentSessionId
+                ? { ...s, messages: [...s.messages, aiMsg] }
+                : s
+            )
+          );
+          setIsLoading(false);
+          abortControllerRef.current = null;
+          return;
+        }
+      } catch (err: any) {
+        clearTimeout(timeoutId);
+        if (err?.name === 'AbortError' && !controller.signal.aborted) {
+          setIsLoading(false);
+          abortControllerRef.current = null;
+          return;
+        }
+      }
+    }
+
     try {
       const currentHistory = activeSession ? activeSession.messages : [];
       const res = await fetch('/api/ai-chat', {
@@ -973,11 +1740,38 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
 
       if (data && data.success && data.reply) {
         const dynamicMeta = resolveDynamicWeb3Response(text);
+
+        // Derive file attachment if code is generated
+        let fileAttachment: ChatFileAttachment | undefined = dynamicMeta.fileAttachment;
+        if (!fileAttachment && dynamicMeta.codeSnippet) {
+          const ext = getFileExtension(dynamicMeta.codeSnippet.language);
+          fileAttachment = {
+            filename: `solpump_${(dynamicMeta.codeSnippet.title || 'script').toLowerCase().replace(/[^a-z0-9]/g, '_')}.${ext}`,
+            fileType: dynamicMeta.codeSnippet.language,
+            content: dynamicMeta.codeSnippet.code,
+            sizeLabel: `${(dynamicMeta.codeSnippet.code.length / 1024).toFixed(1)} KB • ${dynamicMeta.codeSnippet.code.split('\n').length} lines`,
+          };
+        } else if (!fileAttachment) {
+          const codeMatch = /```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/.exec(data.reply);
+          if (codeMatch) {
+            const lang = codeMatch[1] || 'txt';
+            const code = codeMatch[2].trim();
+            const ext = getFileExtension(lang);
+            fileAttachment = {
+              filename: `solpump_generated_script.${ext}`,
+              fileType: lang,
+              content: code,
+              sizeLabel: `${(code.length / 1024).toFixed(1)} KB • ${code.split('\n').length} lines`,
+            };
+          }
+        }
+
         const aiMsg: ChatMessage = {
           id: `ai-${Date.now()}`,
           role: 'assistant',
           content: data.reply,
           codeSnippet: dynamicMeta.codeSnippet,
+          fileAttachment,
           interactiveWidget: dynamicMeta.interactiveWidget,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         };
@@ -1007,11 +1801,23 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
     fallbackTimerRef.current = setTimeout(() => {
       const dynamicMeta = resolveDynamicWeb3Response(text);
 
+      let fileAttachment: ChatFileAttachment | undefined = dynamicMeta.fileAttachment;
+      if (!fileAttachment && dynamicMeta.codeSnippet) {
+        const ext = getFileExtension(dynamicMeta.codeSnippet.language);
+        fileAttachment = {
+          filename: `solpump_${(dynamicMeta.codeSnippet.title || 'script').toLowerCase().replace(/[^a-z0-9]/g, '_')}.${ext}`,
+          fileType: dynamicMeta.codeSnippet.language,
+          content: dynamicMeta.codeSnippet.code,
+          sizeLabel: `${(dynamicMeta.codeSnippet.code.length / 1024).toFixed(1)} KB • ${dynamicMeta.codeSnippet.code.split('\n').length} lines`,
+        };
+      }
+
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
         role: 'assistant',
         content: dynamicMeta.content,
         codeSnippet: dynamicMeta.codeSnippet,
+        fileAttachment,
         interactiveWidget: dynamicMeta.interactiveWidget,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
@@ -1303,23 +2109,37 @@ Could you tell me a bit more about what you're working on? Or if you need a spec
                                     <FileCode2 className="w-3.5 h-3.5 text-cyan-400" />
                                     <span className="uppercase text-[10px] tracking-wider text-cyan-300 font-mono">{language}</span>
                                   </span>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleCopyCode(codeSnippet, codeId)}
-                                    className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[11px]"
-                                  >
-                                    {copiedCodeId === codeId ? (
-                                      <>
-                                        <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                        <span className="text-emerald-400 font-mono">Copied</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="w-3.5 h-3.5" />
-                                        <span className="font-mono">Copy</span>
-                                      </>
-                                    )}
-                                  </button>
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        const ext = getFileExtension(language);
+                                        triggerFileDownload(`solpump_${language}_${Date.now()}.${ext}`, codeSnippet);
+                                      }}
+                                      className="flex items-center gap-1 text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer text-[11px]"
+                                      title={`Download .${getFileExtension(language)} source file`}
+                                    >
+                                      <Download className="w-3.5 h-3.5" />
+                                      <span className="font-mono uppercase">.{getFileExtension(language)}</span>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleCopyCode(codeSnippet, codeId)}
+                                      className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer text-[11px]"
+                                    >
+                                      {copiedCodeId === codeId ? (
+                                        <>
+                                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                          <span className="text-emerald-400 font-mono">Copied</span>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Copy className="w-3.5 h-3.5" />
+                                          <span className="font-mono">Copy</span>
+                                        </>
+                                      )}
+                                    </button>
+                                  </div>
                                 </div>
                                 <pre className="text-slate-300 overflow-x-auto whitespace-pre leading-relaxed text-[11px] sm:text-xs">
                                   {codeSnippet}
@@ -2552,6 +3372,127 @@ contract JettonVault with Deployable {
                         );
                       })()}
 
+                      {/* IN-STREAM GENERATED IMAGE CARD */}
+                      {msg.generatedImage && (
+                        <div className="my-3 rounded-2xl bg-[#080a12] border border-cyan-500/30 overflow-hidden shadow-lg shadow-cyan-950/20 max-w-sm sm:max-w-md">
+                          <div
+                            className="relative group cursor-pointer overflow-hidden bg-black/50 aspect-square flex items-center justify-center"
+                            onClick={() => setSelectedImageModal(msg.generatedImage!)}
+                          >
+                            <img
+                              src={msg.generatedImage.url}
+                              alt={msg.generatedImage.prompt}
+                              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                              referrerPolicy="no-referrer"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3.5">
+                              <span className="text-[11px] font-mono text-cyan-300 flex items-center gap-1.5 bg-black/60 px-2 py-1 rounded-lg backdrop-blur-xs">
+                                <Maximize2 className="w-3.5 h-3.5" />
+                                Click to expand
+                              </span>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  triggerImageDownload(msg.generatedImage!.url, `solpump_asset_${Date.now()}`);
+                                }}
+                                className="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-[#080b12] font-bold text-xs font-mono flex items-center gap-1.5 shadow-md cursor-pointer transition-all"
+                              >
+                                <Download className="w-3.5 h-3.5" />
+                                <span>Download</span>
+                              </button>
+                            </div>
+                          </div>
+                          <div className="p-3 bg-[#0d101a] border-t border-slate-800 flex items-center justify-between text-xs gap-2">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="p-1 rounded-md bg-cyan-500/10 text-cyan-400 font-mono text-[10px] uppercase font-bold px-2 border border-cyan-500/20 shrink-0">
+                                AI Visual
+                              </span>
+                              <span className="text-slate-400 truncate text-[11px]">{msg.generatedImage.prompt}</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => triggerImageDownload(msg.generatedImage!.url, `solpump_asset_${Date.now()}`)}
+                              className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-cyan-400 hover:text-cyan-300 font-mono text-xs border border-slate-800 cursor-pointer"
+                              title="Download high-resolution file"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Save</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* IN-STREAM DYNAMIC FILE DOWNLOAD CARD */}
+                      {msg.fileAttachment && (
+                        <div className="my-3 p-3.5 rounded-2xl bg-[#090d16] border border-cyan-500/30 flex items-center justify-between gap-3 shadow-md hover:border-cyan-500/50 transition-colors">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-cyan-400 shrink-0">
+                              {msg.fileAttachment.isZip ? (
+                                <FolderArchive className="w-5 h-5 text-amber-400" />
+                              ) : (
+                                <FileCode2 className="w-5 h-5 text-cyan-400" />
+                              )}
+                            </div>
+                            <div className="min-w-0">
+                              <div className="font-mono text-xs font-bold text-white truncate flex items-center gap-2">
+                                <span>{msg.fileAttachment.filename}</span>
+                                <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-normal uppercase">
+                                  {msg.fileAttachment.fileType}
+                                </span>
+                              </div>
+                              <div className="text-[11px] text-slate-400 truncate mt-0.5">
+                                {msg.fileAttachment.sizeLabel || 'Ready for 1-click download'}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2 shrink-0">
+                            {msg.fileAttachment.content && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (msg.fileAttachment?.content) {
+                                    handleCopyCode(msg.fileAttachment.content, `file-${msg.id}`);
+                                  }
+                                }}
+                                className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-mono transition-all cursor-pointer"
+                                title="Copy file contents"
+                              >
+                                {copiedCodeId === `file-${msg.id}` ? (
+                                  <>
+                                    <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                    <span className="text-emerald-400">Copied</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Copy className="w-3.5 h-3.5" />
+                                    <span>Copy</span>
+                                  </>
+                                )}
+                              </button>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (msg.fileAttachment?.isZip && msg.fileAttachment.zipType) {
+                                  handleDownloadAsset(msg.fileAttachment.zipType);
+                                } else if (msg.fileAttachment?.content) {
+                                  triggerFileDownload(
+                                    msg.fileAttachment.filename,
+                                    msg.fileAttachment.content,
+                                    msg.fileAttachment.mimeType
+                                  );
+                                }
+                              }}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#080b12] font-bold text-xs font-mono transition-all shadow-sm cursor-pointer"
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                              <span>Download</span>
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
                       {/* IN-STREAM CODE SNIPPET BLOCK */}
                       {msg.codeSnippet && (
                         <div className="rounded-2xl bg-[#05070d] border border-slate-800 p-3 sm:p-4 font-mono text-xs text-slate-300 relative group overflow-hidden">
@@ -2561,6 +3502,21 @@ contract JettonVault with Deployable {
                               <span>{msg.codeSnippet.title || 'Code Snippet'}</span>
                             </span>
                             <div className="flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const ext = getFileExtension(msg.codeSnippet!.language);
+                                  triggerFileDownload(
+                                    `solpump_${(msg.codeSnippet!.title || 'script').toLowerCase().replace(/[^a-z0-9]/g, '_')}.${ext}`,
+                                    msg.codeSnippet!.code
+                                  );
+                                }}
+                                className="flex items-center gap-1 text-slate-400 hover:text-cyan-300 transition-colors cursor-pointer text-[11px]"
+                                title="Download source code file"
+                              >
+                                <Download className="w-3.5 h-3.5" />
+                                <span className="font-mono uppercase">.{getFileExtension(msg.codeSnippet.language)}</span>
+                              </button>
                               <span className="uppercase text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
                                 {msg.codeSnippet.language}
                               </span>
@@ -2766,6 +3722,72 @@ contract JettonVault with Deployable {
           </div>
         </main>
       </div>
+
+      {/* Image Full-Screen Lightbox Modal */}
+      {selectedImageModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+          onClick={() => setSelectedImageModal(null)}
+        >
+          <div
+            className="relative max-w-2xl w-full bg-[#080a12] border border-cyan-500/40 rounded-3xl overflow-hidden shadow-2xl shadow-cyan-950/40 p-4 sm:p-6 flex flex-col gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="p-1.5 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 shrink-0">
+                  <ImageIcon className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-white font-mono">AI Visual Preview</h3>
+                  <p className="text-[11px] text-slate-400 truncate max-w-xs sm:max-w-md">
+                    {selectedImageModal.prompt}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedImageModal(null)}
+                className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 transition-colors cursor-pointer shrink-0"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="relative aspect-square max-h-[55vh] w-full flex items-center justify-center bg-black/60 rounded-2xl overflow-hidden border border-slate-800/80">
+              <img
+                src={selectedImageModal.url}
+                alt={selectedImageModal.prompt}
+                className="w-full h-full object-contain"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+
+            <div className="flex items-center justify-between gap-3 pt-2">
+              <div className="text-[11px] font-mono text-slate-400">
+                Aspect: <span className="text-cyan-400 font-bold">{selectedImageModal.aspectRatio || '1:1'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => navigator.clipboard.writeText(selectedImageModal.prompt)}
+                  className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-mono transition-colors cursor-pointer"
+                >
+                  Copy Prompt
+                </button>
+                <button
+                  type="button"
+                  onClick={() => triggerImageDownload(selectedImageModal.url, `solpump_asset_${Date.now()}`)}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-[#080b12] font-bold text-xs font-mono transition-all shadow-lg shadow-cyan-500/20 cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download Image</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
