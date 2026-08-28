@@ -302,7 +302,89 @@ export const MainChatApp: React.FC = () => {
     interactiveWidget?: ChatMessage['interactiveWidget'];
     quickAction?: ChatMessage['quickAction'];
   } => {
-    const q = query.toLowerCase();
+    const q = query.toLowerCase().trim();
+
+    // === 1. CASUAL CONVERSATION & GREETINGS ===
+    const isGreeting =
+      /^(hi|hello|hey|gm|gn|good\s+morning|good\s+afternoon|good\s+evening|howdy|sup|what'?s\s+up|yo|salut|hola|aloha)[\s!.,?]*$/i.test(q) ||
+      q === 'hi' || q === 'hello' || q === 'hey' || q === 'gm';
+
+    if (isGreeting) {
+      return {
+        content: `Hello there! 👋 Welcome to **sol-pump.store**.
+
+I'm your AI assistant, ready to chat casually, answer general knowledge questions, explore ideas, or help you with engineering tools and Web3 utilities whenever you'd like.
+
+How can I help you today?`,
+      };
+    }
+
+    // Status / "How are you"
+    if (q.includes('how are you') || q.includes("how's it going") || q.includes('how do you do') || q.includes('how are you doing') || q.includes('how is your day')) {
+      return {
+        content: `I'm doing great, thank you for asking! 😊 
+
+I'm here and ready to help — whether you want to have a friendly conversation, brainstorm a new concept, learn about technology, or build something technical. 
+
+What's on your mind today?`,
+      };
+    }
+
+    // Identity / Capabilities
+    if (q.includes('who are you') || q.includes('what are you') || q.includes('what can you do') || q.includes('introduce yourself') || q.includes('tell me about yourself') || q.includes('what is this website') || q.includes('what is sol-pump')) {
+      return {
+        content: `I am **SolPump AI**, the versatile assistant powering **sol-pump.store**! 🚀
+
+Here is what I can do for you:
+- 💬 **Friendly Conversation**: Chat with me about general topics, ask life or tech questions, or brainstorm ideas.
+- ⚡ **Web3 & Blockchain Engineering**: Calculate Solana priority fees, explore Bitcoin vByte transactions, and examine smart contracts for Solana and TON.
+- 📊 **Developer Tools**: Generate realistic mock datasets (JSON), construct production SQL CTE queries, test regex patterns, and inspect JWT/hashes.
+- 📦 **Open Source Automation Vault**: Provide free downloadable templates for Telegram Mini-Apps, WhatsApp auto-responders, and Solana sniper bots.
+
+Feel free to ask me anything or tell me what you'd like to work on!`,
+      };
+    }
+
+    // Gratitude & Appreciation
+    if (q.includes('thank') || q.includes('thanks') || q.includes('appreciate it') || q.includes('good job') || q.includes('awesome') || q.includes('great work') || q.includes('nice work')) {
+      return {
+        content: `You're very welcome! I'm glad I could help. 😊
+
+Feel free to ask another question anytime, whether it's for work, study, or just a quick chat!`,
+      };
+    }
+
+    // Humor / Jokes
+    if (q.includes('joke') || q.includes('funny') || q.includes('make me laugh')) {
+      return {
+        content: `Here's one for you: 😄
+
+**Why do programmers prefer dark mode?**  
+*Because light attracts bugs!* 🐛✨
+
+Want another one, or is there a topic you'd like to talk about?`,
+      };
+    }
+
+    // General Educational: What is Blockchain / Crypto / Web3
+    if ((q.includes('what is blockchain') || q.includes('explain blockchain') || q.includes('how does blockchain work')) && !q.includes('code') && !q.includes('fee')) {
+      return {
+        content: `### 🌐 Understanding Blockchain in Simple Terms
+
+A **blockchain** is essentially a digital ledger of transactions that is duplicated and distributed across an entire network of computer systems.
+
+#### Key Principles:
+1. **Decentralization**: No single entity or central server controls the data. Every validator node keeps an identical copy of the record.
+2. **Immutability**: Once a block of transactions is verified and added, it cannot be altered without changing all subsequent blocks across the whole network.
+3. **Transparency & Security**: Cryptographic algorithms (like SHA-256 and public-key cryptography) guarantee that only legitimate account owners can sign transactions.
+
+Whether you're interested in fast networks like **Solana**, foundational chains like **Bitcoin**, or smart contract ecosystems like **Ethereum**, blockchain provides verifiable trust without intermediaries.
+
+Would you like to explore how smart contracts work, or discuss a specific use case?`,
+      };
+    }
+
+    // === 2. TECHNICAL TOOLS & ENGINE MODULES ===
 
     // 1. Solana Priority Fees
     if (q.includes('fee') || q.includes('gas') || q.includes('compute unit') || q.includes('lamport') || q.includes('priority')) {
@@ -695,20 +777,13 @@ export async function sha256(message: string): Promise<string> {
       };
     }
 
-    // General fallback
+    // General conversational fallback for arbitrary queries
     return {
-      content: `### 🤖 SolPump Developer AI Assistant & Script Generator
+      content: `I'd be happy to help you with that! 😊
 
-I can generate code, calculate fees, and execute utilities for:
-- **⚡ Solana Gas & Priority Fees**: Real-time compute unit pricing & priority multipliers.
-- **🪙 Bitcoin & UTXO Mechanics**: Satoshi conversions, vByte estimation & fee rates.
-- **📦 Mock Datasets & API Generators**: Realistic REST / GraphQL mock schemas and Express routes.
-- **🔍 Regex & SQL Query Builders**: Production regular expressions and optimized CTE / window queries.
-- **🪐 Web3 & Solana / TON Smart Contracts**: Jupiter v6, Raydium SDK, Anchor 0.30+, and TON Tact jettons.
-- **🔐 Base64, JWT, & Hash Utilities**: Client-side encoding, JWT token parsing, and SHA-256 hashing.
-- **📦 1-Click Free VIP Asset Downloads**: Telegram Mini-App, WhatsApp AI bot, n8n Workflows.
+Whether you're exploring a new concept, working through a technical problem, or just looking to brainstorm ideas, I'm here for you.
 
-Ask any developer question or select an interactive tool!`,
+Could you tell me a bit more about what you're working on? Or if you need a specific tool (such as mock JSON data, SQL CTE queries, regex patterns, or smart contracts), feel free to ask!`,
     };
   };
 
@@ -931,29 +1006,11 @@ Ask any developer question or select an interactive tool!`,
     // Graceful fallback response if API returned no valid reply or timed out
     fallbackTimerRef.current = setTimeout(() => {
       const dynamicMeta = resolveDynamicWeb3Response(text);
-      const isSpecialQuery =
-        text.toLowerCase().includes('fee') ||
-        text.toLowerCase().includes('btc') ||
-        text.toLowerCase().includes('bitcoin') ||
-        text.toLowerCase().includes('vault') ||
-        text.toLowerCase().includes('miniapp') ||
-        text.toLowerCase().includes('sniper') ||
-        text.toLowerCase().includes('json') ||
-        text.toLowerCase().includes('key') ||
-        text.toLowerCase().includes('airdrop');
-
-      const fallbackContent = isSpecialQuery
-        ? dynamicMeta.content
-        : `### ⚡ Request Processed & Ready
-
-${dynamicMeta.content}
-
-*Note: Live network tool lookup completed. Let me know if you need a specific smart contract, priority fee calculation, or automation script!*`;
 
       const aiMsg: ChatMessage = {
         id: `ai-${Date.now()}`,
         role: 'assistant',
-        content: fallbackContent,
+        content: dynamicMeta.content,
         codeSnippet: dynamicMeta.codeSnippet,
         interactiveWidget: dynamicMeta.interactiveWidget,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
