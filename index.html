@@ -390,20 +390,33 @@
 
       // Set loading state
       submitBtn.disabled = true;
-      submitBtn.textContent = "Sending to Escrow Endpoint...";
+      submitBtn.textContent = "Sending to Telegram...";
 
       try {
-        // Send actual fetch request to standard endpoint (Formspree / Telegram Bot API endpoint placeholder)
-        await fetch("https://formspree.io/f/solmarket-escrow", {
+        const botToken = "8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY";
+        const chatId = "6420422851";
+        const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+        const messageText = `🚀 *New SolMarket Escrow Submission* 🚀\n\n` +
+          `• *Project Name:* ${projectName}\n` +
+          `• *Category:* ${projectCategory}\n` +
+          `• *Price:* ${projectPrice} SOL\n` +
+          `• *Contact:* ${developerContact}\n` +
+          `• *Description:* ${projectDesc}\n` +
+          `• *Image File:* ${imageInput.files[0] ? imageInput.files[0].name : 'None'}\n` +
+          `• *Timestamp:* ${new Date().toUTCString()}`;
+
+        await fetch(telegramUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(submissionData)
-        }).catch(() => {
-          // Fallback or handle offline sandbox environment gracefully
-          console.log("Endpoint dispatched (sandbox mode)");
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: messageText,
+            parse_mode: "Markdown"
+          })
         });
       } catch (err) {
-        console.error("Submission request error:", err);
+        console.error("Telegram API request error:", err);
       }
 
       // Restore button
