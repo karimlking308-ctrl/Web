@@ -1,6 +1,6 @@
 {
-  "name": "SolPump Store",
-  "description": "SolPump Store (sol-pump.store) — A modern, professional platform for AI utilities, developer tools, and Web3 digital creator assets.",
+  "name": "PULSE Developer Hub",
+  "description": "PULSE — Professional developer tools, code scripts, APIs, and engineering utilities platform with instant copy workflows and editorial design.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
