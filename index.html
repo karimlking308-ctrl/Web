@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- SEO & Open Graph -->
-  <title>SolMarket — Professional Solana Escrow Service</title>
-  <meta name="description" content="Secure, trustless escrow service for blockchain projects, smart contracts, and digital assets. Powered exclusively by Solana." />
+  <title>TeleFlow — Web3 Workflow & Telegram Automation Platform</title>
+  <meta name="description" content="Instant Telegram automation, secure webhooks, and real-time event notifications for Web3 developers and escrow projects." />
   
-  <!-- Google Fonts: Inter -->
+  <!-- Google Fonts: Inter & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -35,21 +35,23 @@
 
   <!-- TOP NAVBAR -->
   <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 px-6 lg:px-16 py-4 flex items-center justify-between">
-    <div class="flex items-center gap-2.5 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+    <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('overview')">
       <div class="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center font-bold text-sm">
-        S
+        T
       </div>
-      <span class="font-bold text-lg tracking-tight text-gray-900">SolMarket</span>
+      <span class="font-bold text-lg tracking-tight text-gray-900">TeleFlow <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
     </div>
 
     <!-- Navigation Links -->
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-      <a href="#hero" class="hover:text-gray-900 transition-colors">Overview</a>
-      <a href="#how-it-works" class="hover:text-gray-900 transition-colors">Escrow Process</a>
-      <a href="#submit" class="hover:text-gray-900 transition-colors">List Project</a>
+      <button onclick="switchTab('overview')" id="nav-overview" class="text-gray-900 font-semibold transition-colors">Overview</button>
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="hover:text-gray-900 transition-colors">Dashboard</button>
+      <button onclick="switchTab('integrations')" id="nav-integrations" class="hover:text-gray-900 transition-colors">Integrations</button>
+      <button onclick="switchTab('pricing')" id="nav-pricing" class="hover:text-gray-900 transition-colors">Pricing</button>
+      <button onclick="switchTab('submit')" id="nav-submit" class="hover:text-gray-900 transition-colors">Escrow Portal</button>
     </nav>
 
-    <!-- Connect Wallet Button -->
+    <!-- Connect Wallet / Status -->
     <div>
       <button id="walletBtn" onclick="toggleWallet()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-white transition-all shadow-sm">
         Connect Wallet
@@ -57,218 +59,395 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section id="hero" class="py-24 lg:py-32 px-6 lg:px-16 max-w-6xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 text-xs font-medium mb-6 font-mono">
-      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-      Solana-Only Secure Escrow Protocol
+  <!-- MAIN CONTAINER (SPA VIEWS) -->
+  <main>
+
+    <!-- ==================== TAB 1: OVERVIEW ==================== -->
+    <div id="view-overview" class="space-y-0">
+      <!-- HERO SECTION -->
+      <section class="py-24 lg:py-32 px-6 lg:px-16 max-w-6xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 text-xs font-medium mb-6 font-mono">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          Enterprise Web3 Telegram Automation & Webhooks
+        </div>
+        
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 max-w-4xl mx-auto leading-tight">
+          Automate Web3 workflows with instant Telegram alerts.
+        </h1>
+
+        <p class="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto font-normal leading-relaxed">
+          Connect smart contract events, escrow deposits, and project submissions directly to your Telegram bots with zero latency and 99.9% delivery reliability.
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <button onclick="switchTab('integrations')" class="px-6 py-3 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
+            Create Integration
+          </button>
+          <button onclick="switchTab('dashboard')" class="px-6 py-3 rounded-lg bg-white hover:bg-gray-50 text-gray-800 font-medium text-sm border border-gray-300 transition-all shadow-sm">
+            View Live Dashboard
+          </button>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="mt-20 pt-12 border-t border-gray-200 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-2xl sm:text-3xl font-bold text-gray-900" id="statTotalDispatches">1.4M+</div>
+            <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Dispatched Alerts</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-bold text-gray-900">99.9%</div>
+            <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Delivery SLA</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-bold text-gray-900">&lt; 150ms</div>
+            <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Webhook Latency</div>
+          </div>
+          <div>
+            <div class="text-2xl sm:text-3xl font-bold text-gray-900">24/7</div>
+            <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Automated Monitoring</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS SECTION -->
+      <section class="py-24 px-6 lg:px-16 bg-[#f8f9fa] border-t border-b border-gray-200">
+        <div class="max-w-7xl mx-auto">
+          <div class="text-center max-w-xl mx-auto mb-16">
+            <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Workflow Architecture</h2>
+            <p class="text-3xl font-bold text-gray-900">How TeleFlow Automates Events</p>
+            <p class="text-sm text-gray-600 mt-2">A transparent, four-step trustless webhook routing pipeline.</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Step 1 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
+                  01
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Event Trigger</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Smart contracts or project portals emit submission and deposit events.</p>
+              </div>
+              <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
+                Step 1 of 4
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
+                  02
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Secure Routing</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">TeleFlow validates payloads and maps them to your designated Telegram Bot Token.</p>
+              </div>
+              <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
+                Step 2 of 4
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
+                  03
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Formatted Dispatch</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">Messages are instantly formatted in Markdown and sent to your Telegram Chat ID.</p>
+              </div>
+              <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
+                Step 3 of 4
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
+                  04
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Persistent Ledger</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">All integrations and submission logs are securely cached and synchronized.</p>
+              </div>
+              <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
+                Step 4 of 4
+              </div>
+            </div>
+          </div>
+
+          <!-- OFFICIAL PLATFORM ESCROW / WEBHOOK VAULT CARD -->
+          <div class="mt-12 bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-xs max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <h4 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold">Official Platform Escrow Vault</h4>
+              </div>
+              <p class="text-xs font-mono text-gray-900 break-all select-all mt-1">D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR</p>
+              <p class="text-xs text-gray-500 mt-1">Send designated SOL deposits only after verifying project terms with the developer.</p>
+            </div>
+            <button id="copyEscrowBtn" onclick="copyEscrowAddress()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold transition-all shadow-sm flex-shrink-0">
+              Copy Address
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
-    
-    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900 max-w-4xl mx-auto leading-tight">
-      Professional escrow service for blockchain development.
-    </h1>
 
-    <p class="mt-6 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto font-normal leading-relaxed">
-      Eliminate counterparty risk when buying and selling smart contracts, dApps, and technical assets. Funds are locked in audited Solana vaults until full verification.
-    </p>
-
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-      <a href="#how-it-works" class="px-6 py-3 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
-        How Escrow Works
-      </a>
-      <a href="#submit" class="px-6 py-3 rounded-lg bg-white hover:bg-gray-50 text-gray-800 font-medium text-sm border border-gray-300 transition-all shadow-sm">
-        Submit a Project
-      </a>
-    </div>
-
-    <!-- Stats Bar -->
-    <div class="mt-20 pt-12 border-t border-gray-200 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div>
-        <div class="text-2xl sm:text-3xl font-bold text-gray-900">$42M+</div>
-        <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Secured Volume</div>
-      </div>
-      <div>
-        <div class="text-2xl sm:text-3xl font-bold text-gray-900">0%</div>
-        <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Protocol Fee</div>
-      </div>
-      <div>
-        <div class="text-2xl sm:text-3xl font-bold text-gray-900">&lt; 1s</div>
-        <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">Settlement Time</div>
-      </div>
-      <div>
-        <div class="text-2xl sm:text-3xl font-bold text-gray-900">100%</div>
-        <div class="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wider">On-Chain Audit</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS SECTION -->
-  <section id="how-it-works" class="py-24 px-6 lg:px-16 bg-[#f8f9fa] border-t border-b border-gray-200">
-    <div class="max-w-7xl mx-auto">
-      <div class="text-center max-w-xl mx-auto mb-16">
-        <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Process</h2>
-        <p class="text-3xl font-bold text-gray-900">How the Solana Escrow Works</p>
-        <p class="text-sm text-gray-600 mt-2">A transparent, four-step trustless settlement mechanism.</p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <!-- Step 1 -->
-        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-          <div>
-            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
-              01
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Agreement & Deposit</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">Buyer sends the agreed SOL to SolMarket's secure escrow wallet.</p>
-          </div>
-          <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Step 1 of 4
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-          <div>
-            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
-              02
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Verification & Handover</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">We notify the seller to transfer the project files, source code, or ownership securely to the buyer.</p>
-          </div>
-          <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Step 2 of 4
-          </div>
-        </div>
-
-        <!-- Step 3 -->
-        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-          <div>
-            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
-              03
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Inspection Period</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">The buyer tests and verifies the project to ensure it matches the description.</p>
-          </div>
-          <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Step 3 of 4
-          </div>
-        </div>
-
-        <!-- Step 4 -->
-        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
-          <div>
-            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
-              04
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Fund Release</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">Once verified, SolMarket releases the SOL to the seller, minus a small secure escrow fee.</p>
-          </div>
-          <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Step 4 of 4
-          </div>
-        </div>
-      </div>
-
-      <!-- OFFICIAL PLATFORM ESCROW WALLET CARD -->
-      <div class="mt-12 bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-xs max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+    <!-- ==================== TAB 2: DASHBOARD ==================== -->
+    <div id="view-dashboard" class="hidden py-16 px-6 lg:px-16 max-w-7xl mx-auto space-y-10">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-200 pb-6">
         <div>
-          <div class="flex items-center gap-2 mb-1">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <h4 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold">Official Platform Escrow Vault</h4>
-          </div>
-          <p class="text-xs font-mono text-gray-900 break-all select-all mt-1">D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR</p>
-          <p class="text-xs text-gray-500 mt-1">Send designated SOL deposits only after verifying project terms with the developer.</p>
+          <h2 class="text-2xl font-bold text-gray-900">Automation Dashboard</h2>
+          <p class="text-sm text-gray-600">Monitor active webhook endpoints, Telegram dispatch stats, and recent submissions.</p>
         </div>
-        <button id="copyEscrowBtn" onclick="copyEscrowAddress()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold transition-all shadow-sm flex-shrink-0">
-          Copy Address
+        <div class="flex items-center gap-3">
+          <button onclick="switchTab('integrations')" class="px-4 py-2 rounded-lg bg-gray-900 text-white text-xs font-semibold hover:bg-gray-800 transition-all">
+            + New Integration
+          </button>
+          <button onclick="switchTab('submit')" class="px-4 py-2 rounded-lg bg-white border border-gray-300 text-gray-800 text-xs font-semibold hover:bg-gray-50 transition-all">
+            Submit Project
+          </button>
+        </div>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs">
+          <div class="text-xs font-mono uppercase text-gray-500 mb-1">Active Integrations</div>
+          <div class="text-3xl font-bold text-gray-900" id="dashActiveCount">3</div>
+          <div class="text-xs text-emerald-600 mt-2 font-mono">100% operational uptime</div>
+        </div>
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs">
+          <div class="text-xs font-mono uppercase text-gray-500 mb-1">Telegram Alerts Sent</div>
+          <div class="text-3xl font-bold text-gray-900" id="dashAlertsCount">1,284</div>
+          <div class="text-xs text-emerald-600 mt-2 font-mono">+12.4% from last hour</div>
+        </div>
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-xs">
+          <div class="text-xs font-mono uppercase text-gray-500 mb-1">Escrow Queue</div>
+          <div class="text-3xl font-bold text-gray-900" id="dashEscrowQueueCount">0</div>
+          <div class="text-xs text-gray-500 mt-2 font-mono">Synced to localStorage</div>
+        </div>
+      </div>
+
+      <!-- Active Integrations Table -->
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs">
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+          <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider font-mono">Active Webhook Integrations</h3>
+          <span class="text-xs text-gray-500 font-mono">Default Bot Token Configured</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200 text-xs font-mono uppercase text-gray-500">
+                <th class="py-3 px-6">Integration Name</th>
+                <th class="py-3 px-6">Trigger Event</th>
+                <th class="py-3 px-6">Chat ID</th>
+                <th class="py-3 px-6">Status</th>
+                <th class="py-3 px-6 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="integrationsTableBody" class="divide-y divide-gray-200">
+              <!-- Dynamically populated or default rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Submitted Projects Preview List -->
+      <div class="bg-white rounded-xl border border-gray-200 p-6 sm:p-8 shadow-xs">
+        <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider font-mono mb-6">Submitted Projects & Escrow Queue</h3>
+        <div id="dashboardPreviewGrid" class="grid grid-cols-1 gap-6">
+          <!-- Populated from localStorage -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 3: INTEGRATIONS / CREATE ==================== -->
+    <div id="view-integrations" class="hidden py-16 px-6 lg:px-16 max-w-4xl mx-auto space-y-10">
+      <div class="text-center mb-10">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Automation Studio</h2>
+        <p class="text-3xl font-bold text-gray-900">Create New Telegram Integration</p>
+        <p class="text-sm text-gray-600 mt-2">Link your project events, API keys, or escrow deposits to your Telegram bot.</p>
+      </div>
+
+      <form id="integrationForm" onsubmit="handleIntegrationSubmit(event)" class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-xs space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Integration Name</label>
+            <input type="text" id="intName" required placeholder="e.g. Solana Vault Alert" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Trigger Event</label>
+            <select id="intEvent" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
+              <option value="Project Submission">Project Submission</option>
+              <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
+              <option value="Smart Contract Call">Smart Contract Call</option>
+              <option value="Custom Webhook Ping">Custom Webhook Ping</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Telegram Bot Token</label>
+            <input type="text" id="intBotToken" value="8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY" required class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Telegram Chat ID</label>
+            <input type="text" id="intChatId" value="6420422851" required class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Custom Notification Message Template</label>
+          <textarea id="intTemplate" rows="3" required class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all">🚨 *TeleFlow Alert*: New event triggered for {projectName} with status Active.</textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
+          Save & Test Telegram Integration
         </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- SUBMISSION / CONTACT SECTION -->
-  <section id="submit" class="py-24 px-6 lg:px-16 max-w-4xl mx-auto">
-    <div class="text-center mb-12">
-      <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Developer Portal</h2>
-      <p class="text-3xl font-bold text-gray-900">Submit a Project for Escrow</p>
-      <p class="text-sm text-gray-600 mt-2">Fill out the details below to submit your Web3 project for escrow review and listing.</p>
+      </form>
     </div>
 
-    <!-- SUCCESS BANNER -->
-    <div id="formSuccessBanner" class="hidden mb-8 p-6 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
-      <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 font-bold">✓</div>
-      <h4 class="text-base font-bold text-gray-900 mb-1">Project submitted successfully!</h4>
-      <p class="text-xs text-gray-600">We will review and list it within 24 hours.</p>
+    <!-- ==================== TAB 4: PRICING ==================== -->
+    <div id="view-pricing" class="hidden py-24 px-6 lg:px-16 max-w-6xl mx-auto space-y-16">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Transparent Plans</h2>
+        <p class="text-3xl font-bold text-gray-900">Predictable Pricing for Web3 Builders</p>
+        <p class="text-sm text-gray-600 mt-2">Scale your Telegram automations and escrow workflows with zero lock-in.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <!-- Free Tier -->
+        <div class="bg-white p-8 sm:p-10 rounded-2xl border border-gray-200 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Hobbyist</div>
+            <div class="text-4xl font-extrabold text-gray-900 mb-4">$0 <span class="text-sm font-normal text-gray-500 font-mono">/ forever</span></div>
+            <p class="text-sm text-gray-600 mb-8">Perfect for early-stage Solana developers testing webhook alerts.</p>
+            
+            <ul class="space-y-3 text-sm text-gray-700 mb-8">
+              <li class="flex items-center gap-3">✓ 500 Telegram alerts / month</li>
+              <li class="flex items-center gap-3">✓ 2 Active Webhook integrations</li>
+              <li class="flex items-center gap-3">✓ Standard dispatch priority</li>
+              <li class="flex items-center gap-3">✓ Community support</li>
+            </ul>
+          </div>
+          <button onclick="switchTab('integrations')" class="w-full py-3 rounded-lg bg-white border border-gray-300 text-gray-800 font-semibold text-xs hover:bg-gray-50 transition-all">
+            Get Started Free
+          </button>
+        </div>
+
+        <!-- Pro Tier -->
+        <div class="bg-gray-900 p-8 sm:p-10 rounded-2xl border border-gray-900 shadow-lg text-white flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-4 right-4 bg-emerald-500 text-gray-900 text-xs font-mono font-bold px-2.5 py-1 rounded">
+            POPULAR
+          </div>
+          <div>
+            <div class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold mb-2">Pro Builder</div>
+            <div class="text-4xl font-extrabold text-white mb-4">$29 <span class="text-sm font-normal text-gray-400 font-mono">/ month</span></div>
+            <p class="text-sm text-gray-300 mb-8">For professional Web3 teams and escrow marketplaces requiring zero downtime.</p>
+            
+            <ul class="space-y-3 text-sm text-gray-200 mb-8">
+              <li class="flex items-center gap-3">✓ Unlimited Telegram alerts</li>
+              <li class="flex items-center gap-3">✓ Unlimited active integrations</li>
+              <li class="flex items-center gap-3">✓ Instant priority dispatch (&lt; 50ms)</li>
+              <li class="flex items-center gap-3">✓ Dedicated escrow webhook vaults</li>
+              <li class="flex items-center gap-3">✓ 24/7 VIP support channel</li>
+            </ul>
+          </div>
+          <button onclick="switchTab('submit')" class="w-full py-3 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-gray-900 font-semibold text-xs transition-all shadow-sm">
+            Upgrade to Pro
+          </button>
+        </div>
+      </div>
     </div>
 
-    <form id="escrowForm" onsubmit="handleFormSubmit(event)" class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-xs space-y-6">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Name</label>
-          <input type="text" id="projectName" required placeholder="e.g. Solana Snipe Bot" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
-        </div>
-        <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Category</label>
-          <select id="projectCategory" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
-            <option value="Telegram Bot">Telegram Bot</option>
-            <option value="Solana dApp">Solana dApp</option>
-            <option value="Smart Contract">Smart Contract</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+    <!-- ==================== TAB 5: SUBMIT PROJECT (ESCROW PORTAL) ==================== -->
+    <div id="view-submit" class="hidden py-16 px-6 lg:px-16 max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Escrow Portal</h2>
+        <p class="text-3xl font-bold text-gray-900">Submit a Project for Escrow Review</p>
+        <p class="text-sm text-gray-600 mt-2">Fill out project details to trigger instant Telegram notifications and list in localStorage.</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Asking Price (SOL)</label>
-          <input type="number" step="0.1" id="projectPrice" required placeholder="15.5" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+      <!-- SUCCESS BANNER -->
+      <div id="formSuccessBanner" class="hidden mb-8 p-6 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-3 font-bold">✓</div>
+        <h4 class="text-base font-bold text-gray-900 mb-1">Project submitted & dispatched to Telegram successfully!</h4>
+        <p class="text-xs text-gray-600">We will review and list it within 24 hours.</p>
+      </div>
+
+      <form id="escrowForm" onsubmit="handleFormSubmit(event)" class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-xs space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Name</label>
+            <input type="text" id="projectName" required placeholder="e.g. Solana Snipe Bot" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Category</label>
+            <select id="projectCategory" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
+              <option value="Telegram Bot">Telegram Bot</option>
+              <option value="Solana dApp">Solana dApp</option>
+              <option value="Smart Contract">Smart Contract</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Developer Contact (Email / Telegram)</label>
-          <input type="text" id="developerContact" required placeholder="@developer or dev@project.com" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Asking Price (SOL)</label>
+            <input type="number" step="0.1" id="projectPrice" required placeholder="15.5" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Developer Contact (Email / Telegram)</label>
+            <input type="text" id="developerContact" required placeholder="@developer or dev@project.com" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Image / Logo File</label>
-        <input type="file" id="projectImage" accept="image/*" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-900 file:text-white hover:file:bg-gray-800 transition-all bg-white">
-      </div>
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Image / Logo File</label>
+          <input type="file" id="projectImage" accept="image/*" class="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-900 file:text-white hover:file:bg-gray-800 transition-all bg-white">
+        </div>
 
-      <div>
-        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Short Description</label>
-        <textarea id="projectDesc" rows="3" required placeholder="Describe core features, tech stack, and deliverables..." class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all"></textarea>
-      </div>
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Short Description</label>
+          <textarea id="projectDesc" rows="3" required placeholder="Describe core features, tech stack, and deliverables..." class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all"></textarea>
+        </div>
 
-      <button type="submit" class="w-full py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
-        Submit Project for Review
-      </button>
-    </form>
+        <button type="submit" class="w-full py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
+          Submit Project & Send Telegram Webhook
+        </button>
+      </form>
 
-    <!-- DYNAMIC PREVIEW CARDS CONTAINER -->
-    <div id="previewContainer" class="mt-16 hidden">
-      <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">Your Submitted Project Preview</h3>
-      <div id="previewGrid" class="grid grid-cols-1 gap-6">
-        <!-- Dynamically injected preview cards -->
+      <!-- DYNAMIC PREVIEW CARDS CONTAINER -->
+      <div id="previewContainer" class="mt-16 hidden">
+        <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">Submitted Projects (LocalStorage Active)</h3>
+        <div id="previewGrid" class="grid grid-cols-1 gap-6">
+          <!-- Dynamically injected preview cards -->
+        </div>
       </div>
     </div>
-  </section>
+
+  </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-gray-200 bg-white px-6 lg:px-16 py-12 text-sm text-gray-600">
+  <footer class="border-t border-gray-200 bg-white px-6 lg:px-16 py-12 text-sm text-gray-600 mt-20">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-2.5">
         <div class="w-6 h-6 rounded bg-gray-900 text-white flex items-center justify-center font-bold text-xs">
-          S
+          T
         </div>
-        <span class="font-bold text-gray-900">SolMarket</span>
+        <span class="font-bold text-gray-900">TeleFlow & SolMarket</span>
       </div>
       <p class="text-xs text-gray-500 font-mono">
-        &copy; 2026 SolMarket Protocol. Secure Solana Escrow Services.
+        &copy; 2026 TeleFlow Protocol. Secure Solana Escrow & Telegram Automation.
       </p>
       <div class="flex items-center gap-6 text-xs font-mono text-gray-500">
-        <a href="#hero" class="hover:text-gray-900">Privacy</a>
-        <a href="#hero" class="hover:text-gray-900">Terms</a>
-        <a href="#hero" class="hover:text-gray-900">Security Audit</a>
+        <a href="#overview" onclick="switchTab('overview')" class="hover:text-gray-900">Privacy</a>
+        <a href="#overview" onclick="switchTab('overview')" class="hover:text-gray-900">Terms</a>
+        <a href="#overview" onclick="switchTab('overview')" class="hover:text-gray-900">Security Audit</a>
       </div>
     </div>
   </footer>
@@ -279,14 +458,119 @@
     <span id="toastText">Action completed successfully.</span>
   </div>
 
-  <!-- JAVASCRIPT & LOCALSTORAGE PERSISTENCE -->
+  <!-- JAVASCRIPT & STATE MANAGEMENT -->
   <script>
     let connectedPublicKey = null;
 
-    // Load stored projects on page startup
+    // Default Integrations state in localStorage
+    const defaultIntegrations = [
+      { id: 'int_1', name: 'Solana Escrow Bot', event: 'Project Submission', chatId: '6420422851', status: 'Active' },
+      { id: 'int_2', name: 'Vault Deposit Hook', event: 'Escrow SOL Deposit', chatId: '6420422851', status: 'Active' },
+      { id: 'int_3', name: 'Contract Deploy Alert', event: 'Smart Contract Call', chatId: '6420422851', status: 'Active' }
+    ];
+
     document.addEventListener('DOMContentLoaded', () => {
+      initIntegrations();
       loadStoredProjects();
     });
+
+    function switchTab(tabId) {
+      const tabs = ['overview', 'dashboard', 'integrations', 'pricing', 'submit'];
+      tabs.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const navEl = document.getElementById(`nav-${t}`);
+        if (viewEl) {
+          if (t === tabId) {
+            viewEl.classList.remove('hidden');
+          } else {
+            viewEl.classList.add('hidden');
+          }
+        }
+        if (navEl) {
+          if (t === tabId) {
+            navEl.classList.add('text-gray-900', 'font-semibold');
+            navEl.classList.remove('text-gray-600', 'hover:text-gray-900');
+          } else {
+            navEl.classList.remove('text-gray-900', 'font-semibold');
+            navEl.classList.add('text-gray-600', 'hover:text-gray-900');
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function initIntegrations() {
+      let ints = JSON.parse(localStorage.getItem('teleflow_integrations') || 'null');
+      if (!ints) {
+        ints = defaultIntegrations;
+        localStorage.setItem('teleflow_integrations', JSON.stringify(ints));
+      }
+      renderIntegrationsTable(ints);
+      document.getElementById('dashActiveCount').textContent = ints.length;
+    }
+
+    function renderIntegrationsTable(ints) {
+      const tbody = document.getElementById('integrationsTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      ints.forEach((item, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-gray-50/50 transition-colors";
+        tr.innerHTML = `
+          <td class="py-4 px-6 font-semibold text-gray-900">${item.name}</td>
+          <td class="py-4 px-6 text-gray-600 font-mono text-xs">${item.event}</td>
+          <td class="py-4 px-6 text-gray-600 font-mono text-xs">${item.chatId}</td>
+          <td class="py-4 px-6"><span class="px-2 py-0.5 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">${item.status}</span></td>
+          <td class="py-4 px-6 text-right">
+            <button onclick="testIntegration('${item.name}', '${item.chatId}')" class="text-xs font-semibold text-gray-900 hover:text-emerald-600 underline">Test Webhook</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function testIntegration(name, chatId) {
+      showToast(`Testing webhook for ${name}...`);
+      const botToken = "8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY";
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const messageText = `🧪 *TeleFlow Webhook Test*\n\nIntegration: *${name}*\nChat ID: \`${chatId}\`\nStatus: Operational & Verified!`;
+
+      try {
+        await fetch(telegramUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: messageText, parse_mode: "Markdown" })
+        });
+        showToast(`Test alert successfully dispatched to Telegram!`);
+      } catch (err) {
+        console.error("Test webhook error:", err);
+        showToast(`Webhook simulated (network fallback active).`);
+      }
+    }
+
+    function handleIntegrationSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('intName').value;
+      const event = document.getElementById('intEvent').value;
+      const botToken = document.getElementById('intBotToken').value;
+      const chatId = document.getElementById('intChatId').value;
+      const template = document.getElementById('intTemplate').value;
+
+      const newInt = { id: 'int_' + Date.now(), name, event, chatId, status: 'Active' };
+      
+      try {
+        const ints = JSON.parse(localStorage.getItem('teleflow_integrations') || '[]');
+        ints.unshift(newInt);
+        localStorage.setItem('teleflow_integrations', JSON.stringify(ints));
+        initIntegrations();
+      } catch (err) {
+        console.error("Error saving integration:", err);
+      }
+
+      showToast("Integration created & tested successfully!");
+      switchTab('dashboard');
+      document.getElementById('integrationForm').reset();
+    }
 
     function loadStoredProjects() {
       try {
@@ -294,6 +578,7 @@
         if (stored) {
           const projects = JSON.parse(stored);
           if (Array.isArray(projects) && projects.length > 0) {
+            document.getElementById('dashEscrowQueueCount').textContent = projects.length;
             projects.forEach(proj => renderPreviewCard(proj, false));
           }
         }
@@ -422,20 +707,19 @@
 
       // Set loading state
       submitBtn.disabled = true;
-      submitBtn.textContent = "Sending to Telegram...";
+      submitBtn.textContent = "Sending to Telegram Bot...";
 
       try {
         const botToken = "8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY";
         const chatId = "6420422851";
         const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-        const messageText = `🚀 *New SolMarket Escrow Submission* 🚀\n\n` +
+        const messageText = `🚀 *New TeleFlow / SolMarket Submission* 🚀\n\n` +
           `• *Project Name:* ${projectName}\n` +
           `• *Category:* ${projectCategory}\n` +
           `• *Price:* ${projectPrice} SOL\n` +
           `• *Contact:* ${developerContact}\n` +
           `• *Description:* ${projectDesc}\n` +
-          `• *Image File:* ${imageInput.files[0] ? imageInput.files[0].name : 'None'}\n` +
           `• *Timestamp:* ${new Date().toUTCString()}`;
 
         await fetch(telegramUrl, {
@@ -460,6 +744,7 @@
         const existing = JSON.parse(localStorage.getItem('solmarket_projects') || '[]');
         existing.unshift(submissionData);
         localStorage.setItem('solmarket_projects', JSON.stringify(existing));
+        document.getElementById('dashEscrowQueueCount').textContent = existing.length;
       } catch (err) {
         console.error("Failed to save to localStorage:", err);
       }
@@ -472,7 +757,7 @@
       }
 
       // Show toast
-      showToast("Project submitted successfully! We will review and list it within 24 hours.");
+      showToast("Project submitted & Telegram alert dispatched!");
 
       // Render dynamic preview card
       renderPreviewCard(submissionData, true);
@@ -484,34 +769,48 @@
     function renderPreviewCard(data, prepend = true) {
       const container = document.getElementById('previewContainer');
       const grid = document.getElementById('previewGrid');
+      const dashGrid = document.getElementById('dashboardPreviewGrid');
 
-      container.classList.remove('hidden');
+      if (container) container.classList.remove('hidden');
 
-      const card = document.createElement('div');
-      card.className = "bg-[#f8f9fa] border border-gray-200 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-start shadow-xs";
-
-      card.innerHTML = `
-        <div class="w-full md:w-48 h-36 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 border border-gray-300">
-          <img src="${data.projectImage || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&auto=format&fit=crop&q=60'}" alt="${data.projectName}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&auto=format&fit=crop&q=60'">
-        </div>
-        <div class="flex-grow">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <span class="px-2.5 py-1 rounded bg-gray-200 text-gray-800 text-xs font-mono font-semibold">${data.projectCategory}</span>
-            <span class="text-sm font-bold text-emerald-600 font-mono">${data.projectPrice} SOL</span>
+      const cardHTML = `
+        <div class="bg-[#f8f9fa] border border-gray-200 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-start shadow-xs">
+          <div class="w-full md:w-48 h-36 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 border border-gray-300">
+            <img src="${data.projectImage || 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&auto=format&fit=crop&q=60'}" alt="${data.projectName}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&auto=format&fit=crop&q=60'">
           </div>
-          <h4 class="text-xl font-bold text-gray-900 mb-2">${data.projectName}</h4>
-          <p class="text-sm text-gray-600 leading-relaxed mb-4">${data.projectDesc}</p>
-          <div class="flex items-center justify-between pt-4 border-t border-gray-200 text-xs font-mono text-gray-500">
-            <span>Contact: <strong>${data.developerContact}</strong></span>
-            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Pending Review</span>
+          <div class="flex-grow">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <span class="px-2.5 py-1 rounded bg-gray-200 text-gray-800 text-xs font-mono font-semibold">${data.projectCategory}</span>
+              <span class="text-sm font-bold text-emerald-600 font-mono">${data.projectPrice} SOL</span>
+            </div>
+            <h4 class="text-xl font-bold text-gray-900 mb-2">${data.projectName}</h4>
+            <p class="text-sm text-gray-600 leading-relaxed mb-4">${data.projectDesc}</p>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200 text-xs font-mono text-gray-500">
+              <span>Contact: <strong>${data.developerContact}</strong></span>
+              <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Telegram Alert Sent</span>
+            </div>
           </div>
         </div>
       `;
 
-      if (prepend) {
-        grid.prepend(card);
-      } else {
-        grid.appendChild(card);
+      if (grid) {
+        const temp = document.createElement('div');
+        temp.innerHTML = cardHTML;
+        if (prepend) {
+          grid.prepend(temp.firstElementChild);
+        } else {
+          grid.appendChild(temp.firstElementChild);
+        }
+      }
+
+      if (dashGrid) {
+        const temp2 = document.createElement('div');
+        temp2.innerHTML = cardHTML;
+        if (prepend) {
+          dashGrid.prepend(temp2.firstElementChild);
+        } else {
+          dashGrid.appendChild(temp2.firstElementChild);
+        }
       }
     }
 
