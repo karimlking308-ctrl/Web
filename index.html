@@ -229,25 +229,91 @@
     <span id="toastText">Action completed successfully.</span>
   </div>
 
-  <!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT & REAL SOLANA WALLET INTEGRATION -->
   <script>
-    let isConnected = false;
+    let connectedPublicKey = null;
 
-    function toggleWallet() {
+    async function getSolanaProvider() {
+      if ('phantom' in window && window.phantom.solana?.isPhantom) {
+        return window.phantom.solana;
+      }
+      if ('solflare' in window && window.solflare.isSolflare) {
+        return window.solflare;
+      }
+      if ('solana' in window) {
+        return window.solana;
+      }
+      return null;
+    }
+
+    async function toggleWallet() {
       const btn = document.getElementById('walletBtn');
-      if (isConnected) {
-        isConnected = false;
+
+      if (connectedPublicKey) {
+        // Disconnect
+        try {
+          const provider = await getSolanaProvider();
+          if (provider && provider.disconnect) {
+            await provider.disconnect();
+          }
+        } catch (e) {
+          console.error(e);
+        }
+        connectedPublicKey = null;
         btn.textContent = "Connect Wallet";
         btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-white transition-all shadow-sm";
         showToast("Wallet disconnected.");
-      } else {
-        showToast("Detecting Solana wallet (Phantom)...");
-        setTimeout(() => {
-          isConnected = true;
-          btn.textContent = "7xK2...4pLm";
-          btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-900 border border-gray-300 transition-all shadow-sm";
-          showToast("Connected to Phantom successfully.");
-        }, 600);
+        return;
+      }
+
+      const provider = await getSolanaProvider();
+      if (!provider) {
+        showToast("⚠️ No Solana wallet detected! Please install Phantom or Solflare.");
+        window.open("https://phantom.app/", "_blank");
+        return;
+      }
+
+      try {
+        showToast("Connecting to Solana wallet...");
+        const response = await provider.connect();
+        const pubKey = response.publicKey ? response.publicKey.toString() : provider.publicKey.toString();
+        connectedPublicKey = pubKey;
+
+        // Fetch SOL balance via JSON-RPC
+        let balanceSOL = "0.00";
+        try {
+          const rpcRes = await fetch("https://api.mainnet-beta.solana.com", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              jsonrpc: "2.0",
+              id: 1,
+              method: "getBalance",
+              params: [pubKey]
+            })
+          });
+          const rpcData = await rpcRes.json();
+          if (rpcData && rpcData.result !== undefined && rpcData.result.value !== undefined) {
+            balanceSOL = (rpcData.result.value / 1e9).toFixed(2);
+          }
+        } catch (err) {
+          console.error("Could not fetch balance:", err);
+        }
+
+        const shortAddr = pubKey.substring(0, 4) + "..." + pubKey.substring(pubKey.length - 4);
+        btn.textContent = `${shortAddr} (${balanceSOL} SOL)`;
+        btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-900 border border-gray-300 transition-all shadow-sm";
+        showToast(`Connected: ${shortAddr} | Balance: ${balanceSOL} SOL`);
+
+        // Auto-fill seller wallet input if present
+        const sellerInput = document.getElementById('sellerWallet');
+        if (sellerInput && !sellerInput.value) {
+          sellerInput.value = pubKey;
+        }
+
+      } catch (err) {
+        console.error("Wallet connection error:", err);
+        showToast("Connection request rejected or failed.");
       }
     }
 
