@@ -158,49 +158,63 @@
   </section>
 
   <!-- SUBMISSION / CONTACT SECTION -->
-  <section id="submit" class="py-24 px-6 lg:px-16 max-w-3xl mx-auto">
+  <section id="submit" class="py-24 px-6 lg:px-16 max-w-4xl mx-auto">
     <div class="text-center mb-12">
       <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Developer Portal</h2>
       <p class="text-3xl font-bold text-gray-900">Submit a Project for Escrow</p>
-      <p class="text-sm text-gray-600 mt-2">Fill out the details below to initialize a secure escrow listing for your project.</p>
+      <p class="text-sm text-gray-600 mt-2">Fill out the details below to submit your Web3 project for escrow review and listing.</p>
     </div>
 
     <form onsubmit="handleFormSubmit(event)" class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-xs space-y-6">
-      <div>
-        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Name</label>
-        <input type="text" id="projectName" required placeholder="e.g. Solana DeFi Router" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Name</label>
+          <input type="text" id="projectName" required placeholder="e.g. Solana Snipe Bot" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+        </div>
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Category</label>
+          <select id="projectCategory" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
+            <option value="Telegram Bot">Telegram Bot</option>
+            <option value="Solana dApp">Solana dApp</option>
+            <option value="Smart Contract">Smart Contract</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Asset Type</label>
-          <select id="assetType" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
-            <option value="Smart Contract">Smart Contract / Program</option>
-            <option value="dApp Frontend">dApp Frontend</option>
-            <option value="Telegram Bot">Telegram / Discord Bot</option>
-            <option value="Domain / Handle">Domain / Social Handle</option>
-          </select>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Asking Price (SOL)</label>
+          <input type="number" step="0.1" id="projectPrice" required placeholder="15.5" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
         </div>
         <div>
-          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Asking Price (SOL)</label>
-          <input type="number" step="0.1" id="projectPrice" required placeholder="25.0" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Developer Contact (Email / Telegram)</label>
+          <input type="text" id="developerContact" required placeholder="@developer or dev@project.com" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all">
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Seller Solana Wallet Address</label>
-        <input type="text" id="sellerWallet" required placeholder="7xK2vL9pLm3vL98xW14pLm..." class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 font-mono transition-all">
+        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Image / Logo URL (Direct Link)</label>
+        <input type="url" id="projectImage" required placeholder="https://images.unsplash.com/... or logo image URL" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all font-mono">
       </div>
 
       <div>
-        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Project Description & Deliverables</label>
-        <textarea id="projectDesc" rows="4" required placeholder="Provide github links, documentation, and handover details..." class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all"></textarea>
+        <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Short Description</label>
+        <textarea id="projectDesc" rows="3" required placeholder="Describe core features, tech stack, and deliverables..." class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all"></textarea>
       </div>
 
       <button type="submit" class="w-full py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm">
-        Initialize Escrow Listing
+        Submit Project for Review
       </button>
     </form>
+
+    <!-- DYNAMIC PREVIEW CARDS CONTAINER -->
+    <div id="previewContainer" class="mt-16 hidden">
+      <h3 class="text-xl font-bold text-gray-900 mb-6 border-b border-gray-200 pb-3">Your Submitted Project Preview</h3>
+      <div id="previewGrid" class="grid grid-cols-1 gap-6">
+        <!-- Dynamically injected preview cards -->
+      </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
@@ -250,7 +264,6 @@
       const btn = document.getElementById('walletBtn');
 
       if (connectedPublicKey) {
-        // Disconnect
         try {
           const provider = await getSolanaProvider();
           if (provider && provider.disconnect) {
@@ -279,7 +292,6 @@
         const pubKey = response.publicKey ? response.publicKey.toString() : provider.publicKey.toString();
         connectedPublicKey = pubKey;
 
-        // Fetch SOL balance via JSON-RPC
         let balanceSOL = "0.00";
         try {
           const rpcRes = await fetch("https://api.mainnet-beta.solana.com", {
@@ -305,12 +317,6 @@
         btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-900 border border-gray-300 transition-all shadow-sm";
         showToast(`Connected: ${shortAddr} | Balance: ${balanceSOL} SOL`);
 
-        // Auto-fill seller wallet input if present
-        const sellerInput = document.getElementById('sellerWallet');
-        if (sellerInput && !sellerInput.value) {
-          sellerInput.value = pubKey;
-        }
-
       } catch (err) {
         console.error("Wallet connection error:", err);
         showToast("Connection request rejected or failed.");
@@ -319,9 +325,65 @@
 
     function handleFormSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('projectName').value;
-      showToast(`Escrow vault initialized for "${name}"!`);
+
+      const projectName = document.getElementById('projectName').value;
+      const projectCategory = document.getElementById('projectCategory').value;
+      const projectPrice = document.getElementById('projectPrice').value;
+      const developerContact = document.getElementById('developerContact').value;
+      const projectImage = document.getElementById('projectImage').value;
+      const projectDesc = document.getElementById('projectDesc').value;
+
+      const submissionData = {
+        projectName,
+        projectCategory,
+        projectPrice,
+        developerContact,
+        projectImage,
+        projectDesc,
+        timestamp: new Date().toISOString()
+      };
+
+      // Log submission data to console
+      console.log("=== PROJECT ESCROW SUBMISSION ===", submissionData);
+
+      // Show success toast / alert
+      showToast("Project submitted successfully!");
+
+      // Render dynamic preview card
+      renderPreviewCard(submissionData);
+
+      // Clear the form
       e.target.reset();
+    }
+
+    function renderPreviewCard(data) {
+      const container = document.getElementById('previewContainer');
+      const grid = document.getElementById('previewGrid');
+
+      container.classList.remove('hidden');
+
+      const card = document.createElement('div');
+      card.className = "bg-[#f8f9fa] border border-gray-200 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row gap-6 items-start shadow-xs";
+
+      card.innerHTML = `
+        <div class="w-full md:w-48 h-36 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0 border border-gray-300">
+          <img src="${data.projectImage}" alt="${data.projectName}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&auto=format&fit=crop&q=60'">
+        </div>
+        <div class="flex-grow">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="px-2.5 py-1 rounded bg-gray-200 text-gray-800 text-xs font-mono font-semibold">${data.projectCategory}</span>
+            <span class="text-sm font-bold text-emerald-600 font-mono">${data.projectPrice} SOL</span>
+          </div>
+          <h4 class="text-xl font-bold text-gray-900 mb-2">${data.projectName}</h4>
+          <p class="text-sm text-gray-600 leading-relaxed mb-4">${data.projectDesc}</p>
+          <div class="flex items-center justify-between pt-4 border-t border-gray-200 text-xs font-mono text-gray-500">
+            <span>Contact: <strong>${data.developerContact}</strong></span>
+            <span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Pending Review</span>
+          </div>
+        </div>
+      `;
+
+      grid.prepend(card);
     }
 
     function showToast(text) {
