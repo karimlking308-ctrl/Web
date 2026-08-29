@@ -116,12 +116,27 @@
 
       <!-- Active Integrations / Workflows Table -->
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-xs">
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+        <div class="px-6 py-4 border-b border-gray-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div>
             <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wider font-mono">Configured Workflows & Integrations</h3>
             <p class="text-xs text-gray-500 mt-0.5">Persisted in browser localStorage</p>
           </div>
-          <button onclick="resetDefaultWorkflows()" class="text-xs font-mono text-gray-500 hover:text-gray-900 underline">Reset Defaults</button>
+          <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            <div class="flex items-center gap-2">
+              <label for="workflowFilterEvent" class="text-xs font-mono text-gray-500 hidden sm:inline">Event:</label>
+              <select id="workflowFilterEvent" onchange="filterWorkflows()" class="px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-800 bg-gray-50 font-mono focus:outline-none focus:border-gray-900 transition-all cursor-pointer">
+                <option value="ALL">All Event Types</option>
+                <option value="Smart Contract Event">Smart Contract Event</option>
+                <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
+                <option value="API Webhook Ping">API Webhook Ping</option>
+                <option value="Custom Event Trigger">Custom Event Trigger</option>
+              </select>
+            </div>
+            <div class="relative flex-1 sm:flex-none">
+              <input type="text" id="workflowSearchInput" oninput="filterWorkflows()" placeholder="Search workflows..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-800 bg-gray-50 font-mono focus:outline-none focus:border-gray-900 transition-all">
+            </div>
+            <button onclick="resetDefaultWorkflows()" class="text-xs font-mono text-gray-500 hover:text-gray-900 underline whitespace-nowrap">Reset Defaults</button>
+          </div>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-left border-collapse text-sm">
@@ -483,13 +498,34 @@
         workflows = defaultWorkflows;
         localStorage.setItem('teleflow_workflows', JSON.stringify(workflows));
       }
-      renderWorkflowsTable(workflows);
       document.getElementById('dashActiveWebhooks').textContent = workflows.length;
+      filterWorkflows();
+    }
+
+    function filterWorkflows() {
+      let workflows = JSON.parse(localStorage.getItem('teleflow_workflows') || '[]');
+      const selectedEvent = document.getElementById('workflowFilterEvent')?.value || 'ALL';
+      const searchQuery = (document.getElementById('workflowSearchInput')?.value || '').toLowerCase().trim();
+
+      let filtered = workflows.filter(w => {
+        const matchesEvent = selectedEvent === 'ALL' || w.event === selectedEvent;
+        const matchesSearch = !searchQuery || 
+          w.name.toLowerCase().includes(searchQuery) || 
+          w.event.toLowerCase().includes(searchQuery) || 
+          w.chatId.toLowerCase().includes(searchQuery);
+        return matchesEvent && matchesSearch;
+      });
+
+      renderWorkflowsTable(filtered);
     }
 
     function resetDefaultWorkflows() {
       localStorage.setItem('teleflow_workflows', JSON.stringify(defaultWorkflows));
       localStorage.setItem('teleflow_delivery_logs', JSON.stringify(defaultDeliveryLogs));
+      const eventSelect = document.getElementById('workflowFilterEvent');
+      if (eventSelect) eventSelect.value = 'ALL';
+      const searchInput = document.getElementById('workflowSearchInput');
+      if (searchInput) searchInput.value = '';
       initWorkflows();
       initDeliveryLogs();
       showToast("Workflows and logs reset to default.");
@@ -552,6 +588,10 @@
       const tbody = document.getElementById('integrationsTableBody');
       if (!tbody) return;
       tbody.innerHTML = '';
+      if (!workflows || workflows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 px-6 text-center text-gray-500 text-xs font-mono">No matching workflows found.</td></tr>`;
+        return;
+      }
       workflows.forEach((item) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-gray-50/50 transition-colors";
