@@ -168,6 +168,21 @@
           </div>
         </div>
       </div>
+
+      <!-- OFFICIAL PLATFORM ESCROW WALLET CARD -->
+      <div class="mt-12 bg-white border border-gray-200 rounded-xl p-6 sm:p-8 shadow-xs max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <h4 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold">Official Platform Escrow Vault</h4>
+          </div>
+          <p class="text-xs font-mono text-gray-900 break-all select-all mt-1">D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR</p>
+          <p class="text-xs text-gray-500 mt-1">Send designated SOL deposits only after verifying project terms with the developer.</p>
+        </div>
+        <button id="copyEscrowBtn" onclick="copyEscrowAddress()" class="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold transition-all shadow-sm flex-shrink-0">
+          Copy Address
+        </button>
+      </div>
     </div>
   </section>
 
@@ -413,6 +428,26 @@
       setTimeout(() => {
         toast.classList.add('translate-y-20', 'opacity-0');
       }, 3500);
+    }
+
+    function copyEscrowAddress() {
+      const address = "D8Ut9hu83VX2ZaJMvWiVAg4RUHt3581LhdoCxaT7F3SR";
+      navigator.clipboard.writeText(address).then(() => {
+        const btn = document.getElementById('copyEscrowBtn');
+        const originalText = btn.textContent;
+        btn.textContent = "Copied!";
+        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+        btn.classList.remove('bg-gray-900', 'hover:bg-gray-800');
+        showToast("Escrow wallet address copied to clipboard!");
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+          btn.classList.add('bg-gray-900', 'hover:bg-gray-800');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy text: ', err);
+        showToast("Failed to copy address.");
+      });
     }
   </script>
 </body>
