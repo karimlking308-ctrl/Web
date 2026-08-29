@@ -104,25 +104,25 @@
 
   <!-- HOW IT WORKS SECTION -->
   <section id="how-it-works" class="py-24 px-6 lg:px-16 bg-[#f8f9fa] border-t border-b border-gray-200">
-    <div class="max-w-6xl mx-auto">
+    <div class="max-w-7xl mx-auto">
       <div class="text-center max-w-xl mx-auto mb-16">
         <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Process</h2>
         <p class="text-3xl font-bold text-gray-900">How the Solana Escrow Works</p>
-        <p class="text-sm text-gray-600 mt-2">A transparent, three-step trustless settlement mechanism.</p>
+        <p class="text-sm text-gray-600 mt-2">A transparent, four-step trustless settlement mechanism.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <!-- Step 1 -->
         <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
           <div>
             <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
               01
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Deposit SOL into Vault</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">The buyer deposits the agreed amount of SOL into an audited, program-derived escrow address. Funds cannot be touched by either party unilaterally.</p>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Agreement & Deposit</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">Buyer sends the agreed SOL to SolMarket's secure escrow wallet.</p>
           </div>
           <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Smart Contract Locked
+            Step 1 of 4
           </div>
         </div>
 
@@ -132,11 +132,11 @@
             <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
               02
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Verify Code & Assets</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">The seller transfers the repository, domain, or digital assets to the buyer. The buyer inspects the deliverables during the verification window.</p>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Verification & Handover</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">We notify the seller to transfer the project files, source code, or ownership securely to the buyer.</p>
           </div>
           <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Inspection Period
+            Step 2 of 4
           </div>
         </div>
 
@@ -146,11 +146,25 @@
             <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
               03
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Release Funds</h3>
-            <p class="text-gray-600 text-sm leading-relaxed">Once verification is complete, the buyer signs the release instruction. SOL is instantly transferred to the seller's wallet with sub-second finality.</p>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Inspection Period</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">The buyer tests and verifies the project to ensure it matches the description.</p>
           </div>
           <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
-            Instant Settlement
+            Step 3 of 4
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center font-mono font-bold text-gray-900 mb-6 text-sm">
+              04
+            </div>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Fund Release</h3>
+            <p class="text-gray-600 text-sm leading-relaxed">Once verified, SolMarket releases the SOL to the seller, minus a small secure escrow fee.</p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-gray-100 text-xs font-mono text-gray-500">
+            Step 4 of 4
           </div>
         </div>
       </div>
