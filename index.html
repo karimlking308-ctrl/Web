@@ -5,41 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- SEO & Open Graph -->
-  <title>SolMarket — Solana-Only Decentralized Escrow Marketplace</title>
-  <meta name="description" content="SolMarket is the premier Solana-only decentralized escrow marketplace. Secure peer-to-peer trades, smart contract escrow protection, and instant SOL settlements." />
-  <meta name="keywords" content="Solana marketplace, escrow, smart contract escrow, SPL tokens, Phantom wallet, Web3 P2P trade" />
-  <link rel="canonical" href="https://solmarket.io" />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="SolMarket — Solana-Only Decentralized Escrow Marketplace" />
-  <meta property="og:description" content="Secure peer-to-peer escrow marketplace on Solana. Zero counterparty risk with programmable smart contract escrows." />
-
-  <!-- Google Fonts: Onest & JetBrains Mono -->
+  <title>SolMarket ⚡ — Secure Escrow Marketplace for Web3 Assets</title>
+  <meta name="description" content="Buy & Sell Telegram Bots, dApps, and Scripts securely with smart contract escrow. Payments exclusively via Solana." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS v4 Browser CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-  <!-- Lenis Smooth Scroll Importmap -->
-  <script type="importmap">
-    {
-      "imports": {
-        "lenis": "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.mjs"
-      }
-    }
-  </script>
-
   <style>
     :root {
-      --font-sans: 'Onest', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
     body {
       font-family: var(--font-sans);
-      background-color: #080b14;
-      color: #f1f5f9;
+      background-color: #0d1117;
+      color: #e6edf3;
       overflow-x: hidden;
     }
     code, pre, .font-mono {
@@ -49,25 +34,27 @@
       width: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #080b14;
+      background: #0d1117;
     }
     ::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: #30363d;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+      background: #484f58;
     }
-    .glass-card {
-      background: rgba(13, 19, 33, 0.8);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(153, 69, 255, 0.15);
+    .card-bg {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+    }
+    .card-bg:hover {
+      border-color: #8b5cf6;
     }
     .solana-gradient {
       background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
     }
     .solana-text-gradient {
-      background: linear-gradient(135deg, #b87aff 0%, #14f195 100%);
+      background: linear-gradient(135deg, #a855f7 0%, #14f195 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -75,578 +62,346 @@
 </head>
 <body class="antialiased selection:bg-purple-500/30 selection:text-purple-300">
 
-  <!-- PAGE FRAME CONTAINER -->
-  <div class="m-2 md:m-4 rounded-2xl border border-slate-800/80 bg-[#080b14] shadow-2xl overflow-hidden relative">
-
-    <!-- SOLANA NETWORK TELEMETRY BAR -->
-    <div class="bg-[#0b0f1a] border-b border-slate-800/80 px-6 py-2 text-xs font-mono text-slate-400 flex flex-wrap items-center justify-between gap-4">
-      <div class="flex items-center gap-6">
-        <span class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          Solana Mainnet-Beta
-        </span>
-        <span class="hidden sm:inline">Slot: <strong id="solSlot" class="text-white">284,912,402</strong></span>
-        <span class="hidden md:inline">TPS: <strong id="solTps" class="text-emerald-400">3,420</strong></span>
+  <!-- STICKY HEADER -->
+  <header class="sticky top-0 z-50 bg-[#0d1117]/90 backdrop-blur-md border-b border-[#30363d] px-6 lg:px-12 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <div class="w-10 h-10 rounded-xl solana-gradient flex items-center justify-center shadow-lg shadow-purple-500/20 text-[#0d1117] font-extrabold text-xl">
+        ⚡
       </div>
-      <div class="flex items-center gap-4">
-        <span>Gas: <strong class="text-white">0.000005 SOL</strong></span>
-        <span class="text-purple-400 font-semibold">🔒 Multisig Escrow v2.4</span>
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-lg tracking-tight text-white">SolMarket</span>
+        <span class="px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono font-semibold">SOL ONLY</span>
       </div>
     </div>
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-300">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <div class="w-10 h-10 rounded-xl solana-gradient flex items-center justify-center shadow-lg shadow-purple-500/25 text-[#080b14] font-extrabold text-xl">
+    <!-- Navigation -->
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+      <a href="#home" class="hover:text-purple-400 transition-colors">Home</a>
+      <a href="#projects" class="hover:text-purple-400 transition-colors">Escrow Services</a>
+      <a href="#faq" class="hover:text-purple-400 transition-colors">FAQ</a>
+    </nav>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center gap-3">
+      <button onclick="openAddProjectModal()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-[#21262d] hover:bg-[#30363d] text-slate-200 border border-[#30363d] transition-all">
+        <span>+ Add Project</span>
+      </button>
+      <button id="walletBtn" onclick="connectWallet()" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold solana-gradient text-[#0d1117] hover:brightness-110 transition-all shadow-lg shadow-purple-500/20">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        <span id="walletBtnText">Connect Wallet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="home" class="relative pt-24 pb-28 px-6 lg:px-16 overflow-hidden border-b border-[#30363d] bg-gradient-to-b from-[#0d1117] via-[#111620] to-[#0d1117]">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-5xl mx-auto text-center relative z-10 flex flex-col items-center gap-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold font-mono">
+        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+        Zero Counterparty Risk Escrow Protocol
+      </div>
+      
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08]">
+        Secure Escrow Marketplace <br/>
+        <span class="solana-text-gradient">for Web3 Assets</span>
+      </h1>
+
+      <p class="text-slate-400 text-base sm:text-lg max-w-2xl font-normal leading-relaxed">
+        Buy & Sell Telegram Bots, dApps, and Scripts. Payments exclusively via Solana with audited smart contract escrow protection.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+        <a href="#projects" class="px-7 py-3.5 rounded-xl solana-gradient text-[#0d1117] font-bold text-sm transition-all shadow-xl shadow-purple-500/25 flex items-center gap-2">
+          <span>Browse Projects</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <button onclick="openAddProjectModal()" class="px-7 py-3.5 rounded-xl bg-[#21262d] hover:bg-[#30363d] text-slate-200 font-semibold text-sm border border-[#30363d] transition-all">
+          List Your Asset
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED LISTINGS SECTION -->
+  <section id="projects" class="py-24 px-6 lg:px-16 bg-[#0d1117]">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">Verified Escrow Deals</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Featured Web3 Assets</h2>
+          <p class="text-slate-400 text-sm mt-2 max-w-xl">Funds are securely locked in Solana escrow until code transfer and verification are complete.</p>
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-semibold font-mono">
+          <button onclick="filterCategory('all')" id="cat-all" class="px-4 py-2 rounded-xl bg-purple-600 text-white transition-all whitespace-nowrap">All Assets</button>
+          <button onclick="filterCategory('Telegram Bot')" id="cat-bot" class="px-4 py-2 rounded-xl card-bg text-slate-300 hover:text-white transition-all whitespace-nowrap">Telegram Bots</button>
+          <button onclick="filterCategory('dApp')" id="cat-dapp" class="px-4 py-2 rounded-xl card-bg text-slate-300 hover:text-white transition-all whitespace-nowrap">dApps</button>
+          <button onclick="filterCategory('Script')" id="cat-script" class="px-4 py-2 rounded-xl card-bg text-slate-300 hover:text-white transition-all whitespace-nowrap">Scripts</button>
+        </div>
+      </div>
+
+      <!-- Projects Grid (6 Sample Projects) -->
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section id="faq" class="py-24 px-6 lg:px-16 border-t border-[#30363d] bg-[#111620]">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">Got Questions?</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="space-y-4">
+        <div class="card-bg rounded-2xl p-6">
+          <h3 class="text-base font-bold text-white mb-2">How does SolMarket escrow work?</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">When you buy a project, your SOL is deposited into an audited Solana smart contract escrow vault. The seller transfers the code/repository, and once you verify and confirm, funds are instantly released to the seller.</p>
+        </div>
+        <div class="card-bg rounded-2xl p-6">
+          <h3 class="text-base font-bold text-white mb-2">Why Solana only?</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">Solana provides sub-second finality and near-zero transaction fees, ensuring seamless escrow deposits, arbitration, and payouts without losing value to gas fees.</p>
+        </div>
+        <div class="card-bg rounded-2xl p-6">
+          <h3 class="text-base font-bold text-white mb-2">What happens if there is a dispute?</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">If the delivered project does not match the description, you can open a dispute. Our decentralized arbiters review cryptographic proof and code repositories to issue a fair refund or release.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#30363d] bg-[#0d1117] px-6 lg:px-16 py-12 text-slate-400 text-sm">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg solana-gradient flex items-center justify-center text-[#0d1117] font-extrabold text-sm">
           ⚡
         </div>
-        <div class="flex flex-col">
-          <span class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
-            SolMarket
-            <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono font-semibold">SOL ONLY</span>
-          </span>
-          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Decentralized Escrow Protocol</span>
-        </div>
+        <span class="font-bold text-white text-lg tracking-tight">SolMarket</span>
       </div>
-
-      <!-- Desktop Nav Links -->
-      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#marketplace" class="hover:text-purple-400 transition-colors">Marketplace</a>
-        <a href="#escrows" class="hover:text-purple-400 transition-colors">Active Escrows</a>
-        <a href="#create" class="hover:text-purple-400 transition-colors">Create Escrow</a>
-        <a href="#security" class="hover:text-purple-400 transition-colors">Smart Contract</a>
-      </nav>
-
-      <!-- Wallet & Actions -->
-      <div class="flex items-center gap-3">
-        <button onclick="openCreateEscrowModal()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all shadow-sm">
-          <span>+ New Escrow</span>
-        </button>
-        <button id="walletBtn" onclick="toggleWalletModal()" class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-bold solana-gradient text-[#080b14] hover:brightness-110 transition-all shadow-lg shadow-purple-500/25">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-          <span id="walletBtnText">Connect Wallet</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- HERO SECTION -->
-    <section class="relative pt-20 pb-28 px-6 lg:px-16 overflow-hidden border-b border-slate-800/60 bg-gradient-to-b from-[#080b14] via-[#0d1321] to-[#080b14]">
-      <!-- Background Glow Effect -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute top-1/3 right-10 w-[400px] h-[300px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-        <div class="lg:col-span-7 flex flex-col items-start gap-6">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold tracking-wide font-mono">
-            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-            100% Solana-Native P2P Escrow Protocol
-          </div>
-          
-          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08]">
-            TRUSTLESS ESCROW <br/>
-            <span class="solana-text-gradient">ON SOLANA.</span>
-          </h1>
-
-          <p class="text-slate-400 text-base sm:text-lg max-w-xl font-normal leading-relaxed">
-            Trade digital assets, domains, NFTs, and developer services with zero counterparty risk. Funds are locked in verified Solana smart contract vaults until inspection and confirmation.
-          </p>
-
-          <div class="flex flex-wrap items-center gap-4 pt-2">
-            <a href="#marketplace" class="px-6 py-3.5 rounded-xl solana-gradient text-[#080b14] font-bold text-sm transition-all shadow-xl shadow-purple-500/25 flex items-center gap-2">
-              <span>Explore Marketplace</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-            </a>
-            <button onclick="openCreateEscrowModal()" class="px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center gap-2">
-              <span>Create Escrow Vault</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            </button>
-          </div>
-
-          <!-- Key Metrics -->
-          <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-800/80 w-full max-w-lg font-mono">
-            <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-white">42,800+</div>
-              <div class="text-xs text-slate-400 mt-0.5">Secured Trades</div>
-            </div>
-            <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400">1.8M SOL</div>
-              <div class="text-xs text-slate-400 mt-0.5">Total Volume</div>
-            </div>
-            <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-purple-400">0%</div>
-              <div class="text-xs text-slate-400 mt-0.5">Platform Fee</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Live Escrow Vault Preview Card -->
-        <div class="lg:col-span-5">
-          <div class="glass-card rounded-2xl p-6 shadow-2xl relative border border-purple-500/30">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
-              <div class="flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
-                <span class="font-mono text-xs text-slate-300 font-bold">Escrow Vault #SOL-9824</span>
-              </div>
-              <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-semibold">Funds Locked</span>
-            </div>
-
-            <div class="py-6 space-y-4 font-mono text-xs">
-              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                <span class="text-slate-400">Locked Deposit:</span>
-                <span class="text-white font-bold text-sm">45.0 SOL ($8,420 USDC)</span>
-              </div>
-              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                <span class="text-slate-400">Seller:</span>
-                <span class="text-purple-300">7xKX...3vL9</span>
-              </div>
-              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
-                <span class="text-slate-400">Inspection Window:</span>
-                <span class="text-emerald-400">23h 42m Remaining</span>
-              </div>
-            </div>
-
-            <div class="pt-2 flex gap-3">
-              <button onclick="showToast('Simulating buyer inspection & release...')" class="w-full py-3 rounded-xl solana-gradient text-[#080b14] font-bold text-xs transition-all shadow-lg shadow-purple-500/20">
-                Simulate Release Funds
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MARKETPLACE SECTION -->
-    <section id="marketplace" class="py-24 px-6 lg:px-16 bg-[#080b14]">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-          <div>
-            <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">P2P Escrow Listings</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Active Solana Escrow Deals</h2>
-            <p class="text-slate-400 text-sm mt-2 max-w-xl">Browse verified assets secured by smart contract escrow. Instant settlement upon buyer confirmation.</p>
-          </div>
-
-          <!-- Filter & Search -->
-          <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
-            <div class="relative w-full sm:w-72">
-              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              </span>
-              <input type="text" id="marketSearch" oninput="filterMarketplace()" placeholder="Search listings..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-all">
-            </div>
-          </div>
-        </div>
-
-        <!-- Category Tabs -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-semibold font-mono">
-          <button onclick="setMarketCategory('all')" id="mcat-all" class="px-4 py-2 rounded-xl bg-purple-600 text-white transition-all whitespace-nowrap">All Assets</button>
-          <button onclick="setMarketCategory('domains')" id="mcat-domains" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">.sol Domains</button>
-          <button onclick="setMarketCategory('nfts')" id="mcat-nfts" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Solana NFTs</button>
-          <button onclick="setMarketCategory('services')" id="mcat-services" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Dev Services</button>
-          <button onclick="setMarketCategory('accounts')" id="mcat-accounts" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">OG Accounts</button>
-        </div>
-
-        <!-- Marketplace Grid -->
-        <div id="marketplaceGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ACTIVE ESCROWS DASHBOARD -->
-    <section id="escrows" class="py-24 px-6 lg:px-16 border-t border-slate-800/80 bg-[#0b0f1a]">
-      <div class="max-w-7xl mx-auto">
-        <div class="flex items-center justify-between mb-12">
-          <div>
-            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Live Vault Tracker</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Active Escrow Dashboard</h2>
-          </div>
-          <button onclick="openCreateEscrowModal()" class="px-4 py-2.5 rounded-xl solana-gradient text-[#080b14] font-bold text-xs shadow-lg shadow-purple-500/20">
-            + New Escrow
-          </button>
-        </div>
-
-        <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs font-mono">
-              <thead class="bg-slate-900/90 text-slate-400 border-b border-slate-800 uppercase tracking-wider">
-                <tr>
-                  <th class="p-4">Escrow ID</th>
-                  <th class="p-4">Asset / Description</th>
-                  <th class="p-4">Amount (SOL)</th>
-                  <th class="p-4">Status</th>
-                  <th class="p-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="escrowsTableBody" class="divide-y divide-slate-800 text-slate-300">
-                <!-- Populated by JS -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECURITY & ARCHITECTURE SECTION -->
-    <section id="security" class="py-24 px-6 lg:px-16 bg-[#080b14]">
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">Trustless Architecture</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Built on Solana Smart Contracts</h2>
-          <p class="text-slate-400 text-sm mt-3">Audited Rust programs guarantee that funds can only be released, refunded, or disputed according to strict programmable rules.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card rounded-2xl p-8 border border-slate-800">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6">
-              🔒
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Multisig Vault Locking</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Assets are locked directly in a PDA (Program Derived Address) vault. Neither buyer nor seller can access funds unilaterally.</p>
-          </div>
-
-          <div class="glass-card rounded-2xl p-8 border border-slate-800">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6">
-              ⚡
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Instant SOL Settlement</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Sub-second finality on Solana ensures immediate payouts to sellers upon buyer confirmation with negligible gas fees.</p>
-          </div>
-
-          <div class="glass-card rounded-2xl p-8 border border-slate-800">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-6">
-              🛡️
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Decentralized Arbitration</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">In case of a dispute, trusted community arbiters review cryptographic proof and vote to release or refund.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800 bg-[#05070c] px-6 lg:px-16 py-16 text-slate-400 text-sm">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-        <div class="flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg solana-gradient flex items-center justify-center text-[#080b14] font-extrabold text-sm">
-              ⚡
-            </div>
-            <span class="font-bold text-white text-lg tracking-tight">SolMarket</span>
-          </div>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            The premier Solana-only decentralized escrow marketplace. Secure peer-to-peer trades with zero counterparty risk.
-          </p>
-          <div class="text-xs text-slate-500 font-mono">
-            &copy; 2026 SolMarket Protocol. All rights reserved.
-          </div>
-        </div>
-
-        <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Marketplace</div>
-          <ul class="space-y-2.5 text-xs">
-            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">.sol Domains</a></li>
-            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">Solana NFTs</a></li>
-            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">Developer Services</a></li>
-            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">OG Accounts</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Protocol</div>
-          <ul class="space-y-2.5 text-xs">
-            <li><a href="#escrows" class="hover:text-purple-400 transition-colors">Active Escrows</a></li>
-            <li><a href="#security" class="hover:text-purple-400 transition-colors">Smart Contracts</a></li>
-            <li><a href="#security" class="hover:text-purple-400 transition-colors">Audits & Security</a></li>
-            <li><a href="#create" class="hover:text-purple-400 transition-colors">Create Vault</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Solana Network</div>
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2 font-mono text-xs">
-            <div class="flex justify-between">
-              <span class="text-slate-500">Cluster:</span>
-              <span class="text-emerald-400">Mainnet Beta</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-slate-500">Program ID:</span>
-              <span class="text-purple-300">Escw...991x</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-  </div>
-
-  <!-- WALLET MODAL -->
-  <div id="walletModal" class="fixed inset-0 z-50 bg-[#080b14]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-sm w-full border border-purple-500/30 shadow-2xl relative text-center">
-      <button onclick="toggleWalletModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-      <div class="w-12 h-12 rounded-2xl solana-gradient flex items-center justify-center text-[#080b14] mx-auto mb-4 font-bold text-xl">
-        Phantom
-      </div>
-      <h3 class="text-xl font-bold text-white mb-2">Connect Solana Wallet</h3>
-      <p class="text-xs text-slate-400 mb-6">Select your Solana wallet to manage escrows and place orders.</p>
-      
-      <div class="space-y-3">
-        <button onclick="connectWallet('Phantom')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-3 transition-all">
-          <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-          Connect Phantom
-        </button>
-        <button onclick="connectWallet('Solflare')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-3 transition-all">
-          <span class="w-3 h-3 rounded-full bg-orange-500"></span>
-          Connect Solflare
-        </button>
+      <p class="text-xs text-slate-500 font-mono">
+        &copy; 2026 SolMarket Protocol. All rights reserved. Payments exclusively in SOL.
+      </p>
+      <div class="flex items-center gap-6 text-xs font-mono">
+        <a href="#home" class="hover:text-purple-400">Privacy</a>
+        <a href="#home" class="hover:text-purple-400">Terms</a>
+        <a href="#home" class="hover:text-purple-400">Audit Reports</a>
       </div>
     </div>
-  </div>
+  </footer>
 
-  <!-- CREATE ESCROW MODAL -->
-  <div id="createEscrowModal" class="fixed inset-0 z-50 bg-[#080b14]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-purple-500/30 shadow-2xl relative">
-      <button onclick="closeCreateEscrowModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
+  <!-- ADD PROJECT MODAL -->
+  <div id="addModal" class="fixed inset-0 z-50 bg-[#0d1117]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="card-bg rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-[#30363d] shadow-2xl relative">
+      <button onclick="closeAddProjectModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-[#21262d] text-slate-400 hover:text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
-      <h3 class="text-xl font-bold text-white mb-2">Create New Escrow Vault</h3>
-      <p class="text-xs text-slate-400 mb-6">Lock SOL in smart contract escrow for secure peer-to-peer exchange.</p>
+      <h3 class="text-xl font-bold text-white mb-2">List Your Project</h3>
+      <p class="text-xs text-slate-400 mb-6">Create an escrow listing for your Telegram bot, dApp, or script.</p>
       
-      <form onsubmit="handleCreateEscrow(event)" class="space-y-4">
+      <form onsubmit="handleAddProject(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-mono text-slate-300 mb-1">Asset Title / Description</label>
-          <input type="text" id="escName" required placeholder="e.g. trading.sol domain transfer" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+          <label class="block text-xs font-mono text-slate-300 mb-1">Project Title</label>
+          <input type="text" id="addTitle" required placeholder="e.g. Solana Snipe Bot v3" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] text-xs text-slate-200 focus:outline-none focus:border-purple-500">
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-mono text-slate-300 mb-1">Deposit Amount (SOL)</label>
-            <input type="number" step="0.1" id="escAmount" required placeholder="12.5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+            <label class="block text-xs font-mono text-slate-300 mb-1">Category</label>
+            <select id="addCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] text-xs text-slate-200 focus:outline-none focus:border-purple-500">
+              <option value="Telegram Bot">Telegram Bot</option>
+              <option value="dApp">dApp</option>
+              <option value="Script">Script</option>
+            </select>
           </div>
           <div>
-            <label class="block text-xs font-mono text-slate-300 mb-1">Category</label>
-            <select id="escCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
-              <option value="domains">.sol Domains</option>
-              <option value="nfts">Solana NFTs</option>
-              <option value="services">Dev Services</option>
-              <option value="accounts">OG Accounts</option>
-            </select>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Price (SOL)</label>
+            <input type="number" step="0.1" id="addPrice" required placeholder="15.5" class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] text-xs text-slate-200 focus:outline-none focus:border-purple-500">
           </div>
         </div>
         <div>
-          <label class="block text-xs font-mono text-slate-300 mb-1">Counterparty Solana Wallet (Optional)</label>
-          <input type="text" id="escCounterparty" placeholder="Enter recipient wallet address..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+          <label class="block text-xs font-mono text-slate-300 mb-1">Description</label>
+          <textarea id="addDesc" rows="3" required placeholder="Describe features, tech stack, and transfer details..." class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-[#30363d] text-xs text-slate-200 focus:outline-none focus:border-purple-500"></textarea>
         </div>
-        <button type="submit" class="w-full py-3 rounded-xl solana-gradient text-[#080b14] font-bold text-xs transition-all shadow-lg shadow-purple-500/25">
-          Lock Funds in Escrow Vault
+        <button type="submit" class="w-full py-3 rounded-xl solana-gradient text-[#0d1117] font-bold text-xs transition-all shadow-lg shadow-purple-500/25">
+          List Project for Escrow
         </button>
       </form>
     </div>
   </div>
 
-  <!-- SUCCESS TOAST -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-slate-900 border border-purple-500/40 text-purple-300 text-xs font-semibold shadow-2xl transition-all duration-300 translate-y-20 opacity-0 flex items-center gap-2">
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl card-bg border border-purple-500/40 text-purple-300 text-xs font-semibold shadow-2xl transition-all duration-300 translate-y-20 opacity-0 flex items-center gap-2">
     <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-    <span id="toastText">Transaction confirmed on Solana!</span>
+    <span id="toastText">Action completed successfully!</span>
   </div>
 
-  <!-- JAVASCRIPT & LENIS SMOOTH SCROLL -->
-  <script type="module">
-    import Lenis from 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.mjs';
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true
-    });
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    window.lenis = lenis;
-  </script>
-
+  <!-- JAVASCRIPT & WEB3 SIMULATION -->
   <script>
-    // Live Slot & TPS Ticker Simulation
-    setInterval(() => {
-      const slotEl = document.getElementById('solSlot');
-      const tpsEl = document.getElementById('solTps');
-      if (slotEl) {
-        const currentSlot = parseInt(slotEl.textContent.replace(/,/g, '')) + Math.floor(Math.random() * 3) + 1;
-        slotEl.textContent = currentSlot.toLocaleString();
-      }
-      if (tpsEl) {
-        const randomTps = 3200 + Math.floor(Math.random() * 400);
-        tpsEl.textContent = randomTps.toLocaleString();
-      }
-    }, 2000);
-
-    // Marketplace Listings Data
-    const marketplaceData = [
+    // 6 Sample Projects
+    let projectsData = [
       {
         id: 1,
-        title: "ai.sol — Premium Domain Escrow",
-        category: "domains",
-        price: 145.0,
-        seller: "9xK2...4pLm",
-        badge: "Verified Escrow",
-        description: "Direct ownership transfer of ai.sol via Bonfida Name Service with instant multisig escrow protection."
+        category: "Telegram Bot",
+        title: "Solana Volume Booster & Snipe Bot",
+        description: "Fully automated Telegram bot with Jupiter DEX integration, multi-wallet sniper, and anti-MEV protection.",
+        price: 24.5
       },
       {
         id: 2,
-        title: "Mad Lads #8942 Rare Trait",
-        category: "nfts",
-        price: 48.5,
-        seller: "3vL9...8xW1",
-        badge: "Secured Vault",
-        description: "Verified Mad Lads NFT locked in smart contract escrow. Instant verification against Tensor & Magic Eden."
+        category: "dApp",
+        title: "Solana Token Staking & Rewards dApp",
+        description: "React & Anchor smart contract frontend for SPL token staking with custom reward multipliers and lockup periods.",
+        price: 45.0
       },
       {
         id: 3,
-        title: "Full-Stack Solana Rust Anchor Audit",
-        category: "services",
-        price: 35.0,
-        seller: "SolSec...90aB",
-        badge: "Expert Dev",
-        description: "Comprehensive security review of your Anchor program instructions, PDAs, and cross-program invocations."
+        category: "Script",
+        title: "High-Performance Solana RPC Node Switcher",
+        description: "TypeScript utility that automatically pings and switches to the lowest latency RPC endpoint with zero downtime.",
+        price: 12.0
       },
       {
         id: 4,
-        title: "DeFi Protocol Twitter / X Handle (@SolanaSwap)",
-        category: "accounts",
-        price: 24.0,
-        seller: "5mN7...2qRt",
-        badge: "Instant Transfer",
-        description: "Established Web3 brand social handle with 45k organic followers. Escrow holds credentials until full handover."
+        category: "Telegram Bot",
+        title: "Pump.fun Token Launch & Alert Bot",
+        description: "Instant Telegram webhook notifier tracking new bonding curves, dev wallet sells, and graduation alerts.",
+        price: 18.0
       },
       {
         id: 5,
-        title: "dex.sol — High Volume Trading Domain",
-        category: "domains",
-        price: 95.0,
-        seller: "8pQ3...1kLm",
-        badge: "Verified Escrow",
-        description: "Prime .sol domain ideal for decentralized exchange or liquidity aggregator launch."
+        category: "dApp",
+        title: "Decentralized Escrow Marketplace Frontend",
+        description: "Production-ready Web3 marketplace template with Phantom wallet connection and multisig escrow vaults.",
+        price: 38.5
       },
       {
         id: 6,
-        title: "Tensorian #402 (Golden Crown)",
-        category: "nfts",
-        price: 62.0,
-        seller: "2wX4...7jH9",
-        badge: "Secured Vault",
-        description: "Top-tier Tensorian NFT with rare crown trait. Secured in trustless escrow vault."
+        category: "Script",
+        title: "SPL Token Bulk Airdrop CLI Tool",
+        description: "Optimized Node.js script to airdrop SOL or SPL tokens to 10,000+ wallets in a single transaction batch.",
+        price: 15.5
       }
     ];
 
-    // Active Escrows Dashboard Data
-    let escrowsData = [
-      {
-        id: "ESC-9824",
-        asset: "ai.sol Domain Transfer",
-        amount: 145.0,
-        status: "Funds Locked"
-      },
-      {
-        id: "ESC-9821",
-        asset: "Mad Lads #8942",
-        amount: 48.5,
-        status: "Inspection Window"
-      },
-      {
-        id: "ESC-9815",
-        asset: "Rust Smart Contract Audit",
-        amount: 35.0,
-        status: "Completed & Released"
-      }
-    ];
+    let currentCategory = 'all';
+    let connectedAddress = null;
 
-    let currentMarketCategory = 'all';
-    let connectedWallet = null;
-
-    function renderMarketplace(filter = '') {
-      const grid = document.getElementById('marketplaceGrid');
-      const filtered = marketplaceData.filter(item => {
-        const matchesCat = currentMarketCategory === 'all' || item.category === currentMarketCategory;
-        const matchesSearch = item.title.toLowerCase().includes(filter.toLowerCase()) || item.description.toLowerCase().includes(filter.toLowerCase());
-        return matchesCat && matchesSearch;
-      });
+    function renderProjects(filterCat = 'all') {
+      const grid = document.getElementById('projectsGrid');
+      const filtered = projectsData.filter(p => filterCat === 'all' || p.category === filterCat);
 
       if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-16 text-center text-slate-500">
-            <p class="text-base font-semibold">No listings found matching your search.</p>
+            <p class="text-sm font-semibold">No projects found in this category.</p>
           </div>
         `;
         return;
       }
 
-      grid.innerHTML = filtered.map(item => `
-        <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-purple-500/50 transition-all flex flex-col justify-between group">
+      grid.innerHTML = filtered.map(p => `
+        <div class="card-bg rounded-2xl p-6 transition-all flex flex-col justify-between group">
           <div>
             <div class="flex items-center justify-between mb-3 font-mono">
-              <span class="px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-300 text-[10px] font-semibold">${item.badge}</span>
-              <span class="text-xs text-emerald-400 font-bold">${item.price} SOL</span>
+              <span class="px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-semibold">${p.category}</span>
+              <span class="text-sm font-extrabold text-emerald-400">${p.price} SOL</span>
             </div>
-            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">${item.title}</h3>
-            <p class="text-slate-400 text-xs leading-relaxed mb-4">${item.description}</p>
+            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">${p.title}</h3>
+            <p class="text-slate-400 text-xs leading-relaxed mb-6">${p.description}</p>
           </div>
 
-          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-            <span class="text-[11px] text-slate-500 font-mono">Seller: ${item.seller}</span>
-            <button onclick="buyEscrowItem('${item.title}', ${item.price})" class="px-4 py-2 rounded-xl solana-gradient text-[#080b14] font-bold text-xs shadow-md shadow-purple-500/20 hover:brightness-110 transition-all">
-              Buy with Escrow
-            </button>
-          </div>
+          <button onclick="buyProject('${p.title}', ${p.price})" class="w-full py-3 rounded-xl solana-gradient text-[#0d1117] font-bold text-xs shadow-lg shadow-purple-500/15 hover:brightness-110 transition-all">
+            Buy Now (Via Escrow)
+          </button>
         </div>
       `).join('');
     }
 
-    function setMarketCategory(cat) {
-      currentMarketCategory = cat;
-      ['all', 'domains', 'nfts', 'services', 'accounts'].forEach(c => {
-        const btn = document.getElementById(`mcat-${c}`);
+    function filterCategory(cat) {
+      currentCategory = cat;
+      ['all', 'Telegram Bot', 'dApp', 'Script'].forEach(c => {
+        const btnId = c === 'all' ? 'cat-all' : c === 'Telegram Bot' ? 'cat-bot' : c === 'dApp' ? 'cat-dapp' : 'cat-script';
+        const btn = document.getElementById(btnId);
         if (btn) {
-          btn.className = c === cat ? "px-4 py-2 rounded-xl bg-purple-600 text-white font-bold transition-all whitespace-nowrap" : "px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap";
+          btn.className = c === cat ? "px-4 py-2 rounded-xl bg-purple-600 text-white font-bold transition-all whitespace-nowrap" : "px-4 py-2 rounded-xl card-bg text-slate-300 hover:text-white transition-all whitespace-nowrap";
         }
       });
-      const query = document.getElementById('marketSearch').value;
-      renderMarketplace(query);
+      renderProjects(cat);
     }
 
-    function filterMarketplace() {
-      const query = document.getElementById('marketSearch').value;
-      renderMarketplace(query);
+    // Web3 Wallet Connection (Simulated Phantom)
+    function connectWallet() {
+      const btn = document.getElementById('walletBtn');
+      const btnText = document.getElementById('walletBtnText');
+
+      if (connectedAddress) {
+        // Disconnect
+        connectedAddress = null;
+        btnText.textContent = "Connect Wallet";
+        btn.className = "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold solana-gradient text-[#0d1117] hover:brightness-110 transition-all shadow-lg shadow-purple-500/20";
+        showToast("Wallet disconnected.");
+        return;
+      }
+
+      // Simulate Phantom Wallet detection & connection
+      showToast("Detecting Phantom Wallet extension...");
+      setTimeout(() => {
+        const mockPubkey = "7xK2vL9pLm3vL98xW14pLm";
+        connectedAddress = mockPubkey;
+        const shortAddr = mockPubkey.substring(0, 4);
+        btnText.textContent = `Connected: ${shortAddr}...`;
+        btn.className = "inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#21262d] text-emerald-400 border border-emerald-500/40 shadow-lg";
+        showToast(`Successfully connected to Phantom (${mockPubkey.substring(0,6)}...)`);
+      }, 800);
     }
 
-    function renderEscrowsTable() {
-      const tbody = document.getElementById('escrowsTableBody');
-      tbody.innerHTML = escrowsData.map(esc => `
-        <tr class="hover:bg-slate-900/40 transition-colors">
-          <td class="p-4 font-bold text-white">${esc.id}</td>
-          <td class="p-4">${esc.asset}</td>
-          <td class="p-4 text-emerald-400 font-bold">${esc.amount} SOL</td>
-          <td class="p-4">
-            <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold ${esc.status === 'Completed & Released' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-purple-500/10 text-purple-300 border border-purple-500/20'}">
-              ${esc.status}
-            </span>
-          </td>
-          <td class="p-4 text-right">
-            ${esc.status !== 'Completed & Released' ? `
-              <button onclick="releaseEscrow('${esc.id}')" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-semibold text-xs border border-emerald-500/30 transition-all">
-                Release Funds
-              </button>
-            ` : `
-              <span class="text-slate-500 text-xs">Settled</span>
-            `}
-          </td>
-        </tr>
-      `).join('');
+    // Buy Now check wallet connection
+    function buyProject(title, price) {
+      if (!connectedAddress) {
+        showToast("⚠️ Please connect your Solana wallet first!");
+        connectWallet();
+        return;
+      }
+      showToast(`🔒 Escrow initiated for "${title}" (${price} SOL). Vault locked!`);
     }
 
+    // Add Project Modal Controls
+    function openAddProjectModal() {
+      const m = document.getElementById('addModal');
+      m.classList.remove('opacity-0', 'pointer-events-none');
+    }
+    function closeAddProjectModal() {
+      const m = document.getElementById('addModal');
+      m.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function handleAddProject(e) {
+      e.preventDefault();
+      const title = document.getElementById('addTitle').value;
+      const category = document.getElementById('addCategory').value;
+      const price = parseFloat(document.getElementById('addPrice').value);
+      const description = document.getElementById('addDesc').value;
+
+      projectsData.unshift({
+        id: projectsData.length + 1,
+        category,
+        title,
+        description,
+        price
+      });
+
+      closeAddProjectModal();
+      renderProjects(currentCategory);
+      showToast(`Successfully listed "${title}" on SolMarket!`);
+      e.target.reset();
+    }
+
+    // Toast helper
     function showToast(text) {
       const toast = document.getElementById('toast');
       const toastText = document.getElementById('toastText');
@@ -657,80 +412,9 @@
       }, 3500);
     }
 
-    function toggleWalletModal() {
-      const m = document.getElementById('walletModal');
-      if (m.classList.contains('opacity-0')) {
-        m.classList.remove('opacity-0', 'pointer-events-none');
-      } else {
-        m.classList.add('opacity-0', 'pointer-events-none');
-      }
-    }
-
-    function connectWallet(walletName) {
-      connectedWallet = walletName;
-      const btn = document.getElementById('walletBtn');
-      const btnText = document.getElementById('walletBtnText');
-      btnText.textContent = "7xK2...4pLm (142.5 SOL)";
-      btn.className = "inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30 shadow-lg";
-      toggleWalletModal();
-      showToast(`Connected to ${walletName} successfully!`);
-    }
-
-    function openCreateEscrowModal() {
-      const m = document.getElementById('createEscrowModal');
-      m.classList.remove('opacity-0', 'pointer-events-none');
-    }
-    function closeCreateEscrowModal() {
-      const m = document.getElementById('createEscrowModal');
-      m.classList.add('opacity-0', 'pointer-events-none');
-    }
-
-    function handleCreateEscrow(e) {
-      e.preventDefault();
-      const name = document.getElementById('escName').value;
-      const amount = parseFloat(document.getElementById('escAmount').value);
-      const category = document.getElementById('escCategory').value;
-
-      const newId = `ESC-${Math.floor(1000 + Math.random() * 9000)}`;
-      escrowsData.unshift({
-        id: newId,
-        asset: name,
-        amount: amount,
-        status: "Funds Locked"
-      });
-
-      closeCreateEscrowModal();
-      renderEscrowsTable();
-      showToast(`Escrow vault ${newId} created and funded with ${amount} SOL!`);
-      e.target.reset();
-    }
-
-    function buyEscrowItem(title, price) {
-      const newId = `ESC-${Math.floor(1000 + Math.random() * 9000)}`;
-      escrowsData.unshift({
-        id: newId,
-        asset: title,
-        amount: price,
-        status: "Funds Locked"
-      });
-      renderEscrowsTable();
-      showToast(`Successfully locked ${price} SOL in escrow for "${title}"!`);
-      window.location.hash = '#escrows';
-    }
-
-    function releaseEscrow(id) {
-      const item = escrowsData.find(e => e.id === id);
-      if (item) {
-        item.status = "Completed & Released";
-        renderEscrowsTable();
-        showToast(`Escrow ${id} released to seller. Funds settled on Solana!`);
-      }
-    }
-
-    // Initial load
+    // Initial render
     document.addEventListener('DOMContentLoaded', () => {
-      renderMarketplace();
-      renderEscrowsTable();
+      renderProjects('all');
     });
   </script>
 </body>

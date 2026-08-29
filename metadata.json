@@ -1,8 +1,8 @@
 {
   "name": "SolMarket",
-  "description": "SolMarket — Solana-only blockchain escrow marketplace with secure multisig escrow contracts, verified trader profiles, and instant SOL settlements.",
+  "description": "SolMarket — Secure escrow marketplace for Web3 assets on Solana. Buy and sell Telegram bots, dApps, and scripts with smart contract escrow protection.",
   "requestFramePermissions": [],
   "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_AI"
   ]
 }
