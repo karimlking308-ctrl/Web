@@ -1,6 +1,6 @@
 {
-  "name": "SolMarket",
-  "description": "SolMarket — Secure escrow marketplace for Web3 assets on Solana. Buy and sell Telegram bots, dApps, and scripts with smart contract escrow protection.",
+  "name": "TeleFlow",
+  "description": "TeleFlow — Professional SaaS platform for Web3 workflow automation and instant Telegram notifications.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_AI"
