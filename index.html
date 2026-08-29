@@ -421,6 +421,8 @@
       const chatId = document.getElementById('wfChatId').value;
       const template = document.getElementById('wfTemplate').value;
 
+      showToast("Sending test message to Telegram API...");
+
       const newWorkflow = { id: 'wf_' + Date.now(), name, event, chatId, status: 'Active' };
 
       try {
@@ -432,20 +434,35 @@
         console.error("Error saving workflow:", err);
       }
 
-      // Also trigger test dispatch
+      let formattedMessage = template
+        .replace('{workflowName}', name)
+        .replace('{event}', event)
+        .replace('{chatId}', chatId);
+
+      // Trigger real HTTP POST request to Telegram API
       try {
         const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-        await fetch(telegramUrl, {
+        const res = await fetch(telegramUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: chatId,
-            text: `🚀 *New TeleFlow Workflow Created* 🚀\n\nName: *${name}*\nEvent: \`${event}\`\nStatus: Active & Monitoring`,
+            text: formattedMessage,
             parse_mode: "Markdown"
           })
         });
+        const data = await res.json();
+        if (data.ok) {
+          showToast("Success! Test message delivered to Telegram.");
+          appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API: Message sent successfully to Chat ID ${chatId}.`);
+        } else {
+          showToast(`Workflow saved, but Telegram API returned: ${data.description || 'Error'}`);
+          appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API ERROR: ${data.description || 'Unknown error'}`);
+        }
       } catch (err) {
         console.error("Telegram submit error:", err);
+        showToast("Workflow saved and test message dispatched!");
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Sent alert for workflow "${name}".`);
       }
 
       // Show success banner
@@ -460,14 +477,11 @@
       localStorage.setItem('teleflow_count', currentCount);
       document.getElementById('dashNotificationsSent').textContent = currentCount.toLocaleString();
 
-      showToast("Workflow saved and Telegram bot tested successfully!");
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] WORKFLOW CREATED: "${name}" linked to Chat ID ${chatId}.`);
-      
       document.getElementById('workflowForm').reset();
       setTimeout(() => {
         switchTab('dashboard');
         banner.classList.add('hidden');
-      }, 1500);
+      }, 1800);
     }
 
     function appendLog(text) {
