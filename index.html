@@ -320,6 +320,69 @@
 }</code></pre>
         </div>
       </div>
+
+      <!-- 1. Quick Start Guide -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs space-y-6 mt-8">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-emerald-600 font-semibold mb-1 block">Getting Started</span>
+          <h3 class="text-xl font-bold text-gray-900 tracking-tight">Quick Start Guide</h3>
+          <p class="text-sm text-gray-600 mt-1">Set up your Web3 workflow and Telegram alerts in 3 simple steps.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+            <div class="w-8 h-8 rounded bg-gray-900 text-white font-mono font-bold flex items-center justify-center text-xs mb-3">01</div>
+            <h4 class="font-bold text-gray-900 text-sm mb-1">Get Bot Token</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">Message <code class="bg-gray-200 px-1 py-0.5 rounded text-gray-800">@BotFather</code> on Telegram to create your bot and copy your HTTP API token.</p>
+          </div>
+          <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+            <div class="w-8 h-8 rounded bg-gray-900 text-white font-mono font-bold flex items-center justify-center text-xs mb-3">02</div>
+            <h4 class="font-bold text-gray-900 text-sm mb-1">Enter Chat ID</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">Retrieve your Telegram user or group Chat ID using <code class="bg-gray-200 px-1 py-0.5 rounded text-gray-800">@userinfobot</code> and paste it into TeleFlow.</p>
+          </div>
+          <div class="bg-gray-50 p-5 rounded-lg border border-gray-200">
+            <div class="w-8 h-8 rounded bg-gray-900 text-white font-mono font-bold flex items-center justify-center text-xs mb-3">03</div>
+            <h4 class="font-bold text-gray-900 text-sm mb-1">Test & Deploy</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">Copy the auto-generated code snippet or trigger test payloads to verify real-time message delivery.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Frequently Asked Questions (FAQ) -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs space-y-6 mt-8">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-emerald-600 font-semibold mb-1 block">Support & Answers</span>
+          <h3 class="text-xl font-bold text-gray-900 tracking-tight">Frequently Asked Questions</h3>
+          <p class="text-sm text-gray-600 mt-1">Everything you need to know about rate limits, security, and webhook triggers.</p>
+        </div>
+        <div class="space-y-4">
+          <div class="p-5 rounded-lg border border-gray-200 bg-gray-50">
+            <h4 class="font-bold text-gray-900 text-sm mb-1">What are the Telegram API rate limits?</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">Telegram allows approximately 30 messages per second across chats and up to 20 messages per minute in the same group. TeleFlow automatically queues and throttles dispatches to prevent flooding errors.</p>
+          </div>
+          <div class="p-5 rounded-lg border border-gray-200 bg-gray-50">
+            <h4 class="font-bold text-gray-900 text-sm mb-1">Are my Telegram Bot tokens and API keys secure?</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">Yes. All workflow configurations and bot credentials are stored locally in your browser's encrypted <code class="bg-gray-200 px-1 py-0.5 rounded text-gray-800">localStorage</code>. TeleFlow never transmits your secret tokens to third-party databases.</p>
+          </div>
+          <div class="p-5 rounded-lg border border-gray-200 bg-gray-50">
+            <h4 class="font-bold text-gray-900 text-sm mb-1">What Web3 events and chains are supported?</h4>
+            <p class="text-xs text-gray-600 leading-relaxed">TeleFlow supports any custom HTTP POST webhook payload. This includes Solana smart contract transactions, escrow deposits, NFT mint events, and standard REST API ping hooks.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Privacy & Terms Policy -->
+      <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs space-y-4 mt-8">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-emerald-600 font-semibold mb-1 block">Compliance & Legal</span>
+          <h3 class="text-xl font-bold text-gray-900 tracking-tight">Privacy & Terms Policy</h3>
+          <p class="text-sm text-gray-600 mt-1">Our commitment to data protection, local storage transparency, and API terms.</p>
+        </div>
+        <div class="text-xs text-gray-600 space-y-3 leading-relaxed">
+          <p><strong class="text-gray-900">Data Privacy:</strong> TeleFlow operates as a client-side Web3 automation studio. We do not harvest, store, or sell personal identifiable information (PII) or Telegram bot credentials on centralized servers.</p>
+          <p><strong class="text-gray-900">Local Storage Handling:</strong> Workflow definitions, audit delivery logs, and counter statistics are saved strictly within your local browser session via <code class="bg-gray-100 px-1 py-0.5 rounded text-gray-800">localStorage</code>. Clearing browser data will reset custom configurations.</p>
+          <p><strong class="text-gray-900">API Usage & Acceptable Use:</strong> Users agree not to utilize TeleFlow automated webhook dispatchers for spamming, phishing, or malicious smart contract exploits. TeleFlow reserves the right to suspend non-compliant API endpoints.</p>
+        </div>
+      </div>
     </div>
 
   </main>
