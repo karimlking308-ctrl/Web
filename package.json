@@ -1,36 +1,15 @@
 {
-  "name": "solpump-store",
+  "name": "sol-market",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server.ts",
+    "dev": "vite --port 3000 --host 0.0.0.0",
     "build": "vite build",
-    "start": "node server.ts",
-    "lint": "tsc --noEmit"
+    "lint": "echo 'No linting required'"
   },
-  "dependencies": {
-    "@solana/web3.js": "^1.98.4",
-    "clsx": "^2.1.1",
-    "express": "^4.21.2",
-    "jszip": "^3.10.1",
-    "lucide-react": "^0.475.0",
-    "qrcode": "^1.5.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@tailwindcss/vite": "^4.0.0",
-    "@types/express": "^5.0.0",
-    "@types/jszip": "^3.4.1",
-    "@types/node": "^22.13.0",
-    "@types/qrcode": "^1.5.6",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
-    "@vitejs/plugin-react": "^4.3.4",
-    "tailwindcss": "^4.0.0",
-    "typescript": "~5.7.2",
-    "vite": "^6.1.0"
+    "vite": "^5.3.1"
   }
 }

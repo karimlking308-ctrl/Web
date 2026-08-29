@@ -5,15 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <!-- SEO & Open Graph -->
-  <title>PULSE — Professional Developer Tools, Code Scripts & Engineering Hub</title>
-  <meta name="description" content="PULSE is the high-performance platform for developer tools, code scripts, secure APIs, and engineering utilities. Build faster and deploy smarter with zero-dependency modules." />
-  <meta name="keywords" content="developer tools, code scripts, engineering utilities, API endpoints, TypeScript utilities, DevOps scripts, web development platform" />
-  <link rel="canonical" href="https://pulse-dev.io" />
+  <title>SolMarket — Solana-Only Decentralized Escrow Marketplace</title>
+  <meta name="description" content="SolMarket is the premier Solana-only decentralized escrow marketplace. Secure peer-to-peer trades, smart contract escrow protection, and instant SOL settlements." />
+  <meta name="keywords" content="Solana marketplace, escrow, smart contract escrow, SPL tokens, Phantom wallet, Web3 P2P trade" />
+  <link rel="canonical" href="https://solmarket.io" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="PULSE — Professional Developer Tools & Scripts" />
-  <meta property="og:description" content="High-performance developer toolkits, curated code scripts, and secure APIs for modern engineering teams." />
-  <meta property="og:url" content="https://pulse-dev.io" />
+  <meta property="og:title" content="SolMarket — Solana-Only Decentralized Escrow Marketplace" />
+  <meta property="og:description" content="Secure peer-to-peer escrow marketplace on Solana. Zero counterparty risk with programmable smart contract escrows." />
 
   <!-- Google Fonts: Onest & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +22,15 @@
   <!-- Tailwind CSS v4 Browser CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
+  <!-- Lenis Smooth Scroll Importmap -->
+  <script type="importmap">
+    {
+      "imports": {
+        "lenis": "https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.mjs"
+      }
+    }
+  </script>
+
   <style>
     :root {
       --font-sans: 'Onest', sans-serif;
@@ -30,19 +38,18 @@
     }
     body {
       font-family: var(--font-sans);
-      background-color: #070a13;
+      background-color: #080b14;
       color: #f1f5f9;
       overflow-x: hidden;
     }
     code, pre, .font-mono {
       font-family: var(--font-mono);
     }
-    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
     }
     ::-webkit-scrollbar-track {
-      background: #070a13;
+      background: #080b14;
     }
     ::-webkit-scrollbar-thumb {
       background: #1e293b;
@@ -51,166 +58,156 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #334155;
     }
-    /* Clip Mask Title Animation */
-    .clip-reveal {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-      transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
     .glass-card {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(13, 19, 33, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(153, 69, 255, 0.15);
+    }
+    .solana-gradient {
+      background: linear-gradient(135deg, #9945FF 0%, #14F195 100%);
+    }
+    .solana-text-gradient {
+      background: linear-gradient(135deg, #b87aff 0%, #14f195 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
-<body class="antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
+<body class="antialiased selection:bg-purple-500/30 selection:text-purple-300">
 
   <!-- PAGE FRAME CONTAINER -->
-  <div class="m-2 md:m-4 rounded-2xl border border-slate-800/80 bg-[#070a13] shadow-2xl overflow-hidden relative">
+  <div class="m-2 md:m-4 rounded-2xl border border-slate-800/80 bg-[#080b14] shadow-2xl overflow-hidden relative">
+
+    <!-- SOLANA NETWORK TELEMETRY BAR -->
+    <div class="bg-[#0b0f1a] border-b border-slate-800/80 px-6 py-2 text-xs font-mono text-slate-400 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-6">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          Solana Mainnet-Beta
+        </span>
+        <span class="hidden sm:inline">Slot: <strong id="solSlot" class="text-white">284,912,402</strong></span>
+        <span class="hidden md:inline">TPS: <strong id="solTps" class="text-emerald-400">3,420</strong></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Gas: <strong class="text-white">0.000005 SOL</strong></span>
+        <span class="text-purple-400 font-semibold">🔒 Multisig Escrow v2.4</span>
+      </div>
+    </div>
 
     <!-- HEADER / NAVIGATION -->
     <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-300">
       <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-[#070a13] font-extrabold text-lg">
-          P
+        <div class="w-10 h-10 rounded-xl solana-gradient flex items-center justify-center shadow-lg shadow-purple-500/25 text-[#080b14] font-extrabold text-xl">
+          ⚡
         </div>
         <div class="flex flex-col">
           <span class="font-bold text-lg tracking-tight text-white flex items-center gap-2">
-            PULSE
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            SolMarket
+            <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono font-semibold">SOL ONLY</span>
           </span>
-          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Developer Hub</span>
+          <span class="text-[10px] text-slate-400 uppercase tracking-widest font-mono">Decentralized Escrow Protocol</span>
         </div>
       </div>
 
       <!-- Desktop Nav Links -->
       <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-        <a href="#tools" class="hover:text-emerald-400 transition-colors">Tools</a>
-        <a href="#scripts" class="hover:text-emerald-400 transition-colors">Scripts</a>
-        <a href="#api" class="hover:text-emerald-400 transition-colors">API Endpoints</a>
-        <a href="#features" class="hover:text-emerald-400 transition-colors">Architecture</a>
-        <a href="#testimonials" class="hover:text-emerald-400 transition-colors">Community</a>
+        <a href="#marketplace" class="hover:text-purple-400 transition-colors">Marketplace</a>
+        <a href="#escrows" class="hover:text-purple-400 transition-colors">Active Escrows</a>
+        <a href="#create" class="hover:text-purple-400 transition-colors">Create Escrow</a>
+        <a href="#security" class="hover:text-purple-400 transition-colors">Smart Contract</a>
       </nav>
 
-      <!-- CTA Buttons -->
+      <!-- Wallet & Actions -->
       <div class="flex items-center gap-3">
-        <button onclick="openSubmitModal()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all shadow-sm">
-          <span>Submit Tool</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        <button onclick="openCreateEscrowModal()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all shadow-sm">
+          <span>+ New Escrow</span>
         </button>
-        <button onclick="openGetStartedModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-gradient-to-r from-emerald-400 to-cyan-400 text-[#070a13] hover:brightness-110 transition-all shadow-lg shadow-emerald-500/25 font-bold">
-          <span>Get API Key</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </button>
-        <!-- Mobile Menu Hamburger -->
-        <button onclick="toggleMobileMenu()" aria-label="Toggle Menu" class="md:hidden p-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <button id="walletBtn" onclick="toggleWalletModal()" class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-bold solana-gradient text-[#080b14] hover:brightness-110 transition-all shadow-lg shadow-purple-500/25">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+          <span id="walletBtnText">Connect Wallet</span>
         </button>
       </div>
     </header>
 
-    <!-- MOBILE MENU OVERLAY -->
-    <div id="mobileMenu" class="fixed inset-0 z-50 bg-[#070a13]/95 backdrop-blur-2xl flex flex-col justify-center px-8 transition-all duration-300 opacity-0 pointer-events-none translate-y-4">
-      <button onclick="toggleMobileMenu()" class="absolute top-6 right-6 p-3 rounded-xl bg-slate-800 text-slate-300 hover:text-white">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-      <div class="flex flex-col gap-6 text-2xl font-bold tracking-tight">
-        <a href="#tools" onclick="toggleMobileMenu()" class="text-slate-200 hover:text-emerald-400 transition-colors">Tools & Utilities</a>
-        <a href="#scripts" onclick="toggleMobileMenu()" class="text-slate-200 hover:text-emerald-400 transition-colors">Code Scripts</a>
-        <a href="#api" onclick="toggleMobileMenu()" class="text-slate-200 hover:text-emerald-400 transition-colors">API Endpoints</a>
-        <a href="#features" onclick="toggleMobileMenu()" class="text-slate-200 hover:text-emerald-400 transition-colors">Architecture</a>
-        <a href="#testimonials" onclick="toggleMobileMenu()" class="text-slate-200 hover:text-emerald-400 transition-colors">Testimonials</a>
-      </div>
-      <div class="mt-10 flex flex-col gap-4">
-        <button onclick="toggleMobileMenu(); openSubmitModal();" class="w-full py-3 rounded-xl bg-slate-800 text-slate-200 font-semibold border border-slate-700">Submit Tool</button>
-        <button onclick="toggleMobileMenu(); openGetStartedModal();" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-[#070a13] font-bold">Get API Key</button>
-      </div>
-    </div>
-
     <!-- HERO SECTION -->
-    <section class="relative pt-20 pb-28 px-6 lg:px-16 overflow-hidden border-b border-slate-800/60 bg-gradient-to-b from-[#070a13] via-[#090e1a] to-[#070a13]">
+    <section class="relative pt-20 pb-28 px-6 lg:px-16 overflow-hidden border-b border-slate-800/60 bg-gradient-to-b from-[#080b14] via-[#0d1321] to-[#080b14]">
+      <!-- Background Glow Effect -->
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute top-1/3 right-10 w-[400px] h-[300px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
       <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
         <div class="lg:col-span-7 flex flex-col items-start gap-6">
-          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold tracking-wide">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            v3.8 Production Release Now Live
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold tracking-wide font-mono">
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+            100% Solana-Native P2P Escrow Protocol
           </div>
           
           <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08]">
-            BUILD FASTER. <br/>
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">DEPLOY SMARTER.</span>
+            TRUSTLESS ESCROW <br/>
+            <span class="solana-text-gradient">ON SOLANA.</span>
           </h1>
 
           <p class="text-slate-400 text-base sm:text-lg max-w-xl font-normal leading-relaxed">
-            The high-performance platform for professional developers. Access zero-dependency code scripts, robust API endpoints, automated CI/CD pipelines, and lightning-fast developer utilities.
+            Trade digital assets, domains, NFTs, and developer services with zero counterparty risk. Funds are locked in verified Solana smart contract vaults until inspection and confirmation.
           </p>
 
           <div class="flex flex-wrap items-center gap-4 pt-2">
-            <a href="#tools" class="px-6 py-3.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#070a13] font-bold text-sm transition-all shadow-xl shadow-emerald-500/25 flex items-center gap-2">
-              <span>Explore 120+ Tools</span>
+            <a href="#marketplace" class="px-6 py-3.5 rounded-xl solana-gradient text-[#080b14] font-bold text-sm transition-all shadow-xl shadow-purple-500/25 flex items-center gap-2">
+              <span>Explore Marketplace</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
             </a>
-            <a href="#tools" class="px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center gap-2">
-              <span>View Code Scripts</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-            </a>
+            <button onclick="openCreateEscrowModal()" class="px-6 py-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-semibold text-sm border border-slate-700 transition-all flex items-center gap-2">
+              <span>Create Escrow Vault</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            </button>
           </div>
 
-          <!-- Quick Stats Row -->
-          <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-800/80 w-full max-w-lg">
+          <!-- Key Metrics -->
+          <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-800/80 w-full max-w-lg font-mono">
             <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-white">1,420+</div>
-              <div class="text-xs text-slate-400 font-medium mt-0.5">Curated Scripts</div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-white">42,800+</div>
+              <div class="text-xs text-slate-400 mt-0.5">Secured Trades</div>
             </div>
             <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400">48.9M</div>
-              <div class="text-xs text-slate-400 font-medium mt-0.5">API Calls / Mo</div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400">1.8M SOL</div>
+              <div class="text-xs text-slate-400 mt-0.5">Total Volume</div>
             </div>
             <div>
-              <div class="text-2xl sm:text-3xl font-extrabold text-white">99.99%</div>
-              <div class="text-xs text-slate-400 font-medium mt-0.5">Uptime SLA</div>
+              <div class="text-2xl sm:text-3xl font-extrabold text-purple-400">0%</div>
+              <div class="text-xs text-slate-400 mt-0.5">Platform Fee</div>
             </div>
           </div>
         </div>
 
-        <!-- Hero Featured Card Slider / Interactive Preview -->
+        <!-- Live Escrow Vault Preview Card -->
         <div class="lg:col-span-5">
-          <div class="glass-card rounded-2xl p-6 shadow-2xl relative border border-slate-700/60">
+          <div class="glass-card rounded-2xl p-6 shadow-2xl relative border border-purple-500/30">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800">
               <div class="flex items-center gap-2">
-                <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
-                <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
-                <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-                <span class="ml-2 font-mono text-xs text-slate-400">pulse-runtime.ts</span>
+                <div class="w-3 h-3 rounded-full bg-purple-500"></div>
+                <span class="font-mono text-xs text-slate-300 font-bold">Escrow Vault #SOL-9824</span>
               </div>
-              <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-semibold">Active Sandbox</span>
+              <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-semibold">Funds Locked</span>
             </div>
 
-            <!-- Code Preview Box -->
-            <div class="py-4 font-mono text-xs text-slate-300 leading-relaxed overflow-x-auto">
-              <pre><span class="text-purple-400">import</span> { PulseEngine } <span class="text-purple-400">from</span> <span class="text-emerald-300">'@pulse/core'</span>;
-
-<span class="text-blue-400">const</span> engine = <span class="text-purple-400">new</span> PulseEngine({
-  region: <span class="text-emerald-300">'us-east-1'</span>,
-  cacheTTL: <span class="text-amber-400">3600</span>,
-  telemetry: <span class="text-purple-400">true</span>
-});
-
-<span class="text-slate-500">// Initialize instant execution stream</span>
-<span class="text-blue-400">await</span> engine.bootstrap({
-  scripts: [<span class="text-emerald-300">'jwt-validator'</span>, <span class="text-emerald-300">'rate-limiter'</span>],
-  fallback: <span class="text-amber-400">0.05</span>
-});</pre>
+            <div class="py-6 space-y-4 font-mono text-xs">
+              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <span class="text-slate-400">Locked Deposit:</span>
+                <span class="text-white font-bold text-sm">45.0 SOL ($8,420 USDC)</span>
+              </div>
+              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <span class="text-slate-400">Seller:</span>
+                <span class="text-purple-300">7xKX...3vL9</span>
+              </div>
+              <div class="flex justify-between items-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                <span class="text-slate-400">Inspection Window:</span>
+                <span class="text-emerald-400">23h 42m Remaining</span>
+              </div>
             </div>
 
-            <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
-              <span class="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
-                <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                Execution Time: 0.14ms
-              </span>
-              <button onclick="copyHeroSnippet(this)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-                <span>Copy Snippet</span>
+            <div class="pt-2 flex gap-3">
+              <button onclick="showToast('Simulating buyer inspection & release...')" class="w-full py-3 rounded-xl solana-gradient text-[#080b14] font-bold text-xs transition-all shadow-lg shadow-purple-500/20">
+                Simulate Release Funds
               </button>
             </div>
           </div>
@@ -218,274 +215,245 @@
       </div>
     </section>
 
-    <!-- STATS BAND -->
-    <section class="py-12 px-6 lg:px-16 border-b border-slate-800/80 bg-[#090e18]">
-      <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-          <div class="text-3xl font-extrabold text-white">1,420+</div>
-          <div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Verified Scripts</div>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-          <div class="text-3xl font-extrabold text-emerald-400">48.9M</div>
-          <div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Monthly API Calls</div>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-          <div class="text-3xl font-extrabold text-cyan-400">84,500+</div>
-          <div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Active Developers</div>
-        </div>
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-          <div class="text-3xl font-extrabold text-amber-400">&lt; 0.5ms</div>
-          <div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Average Latency</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TOOLS & SCRIPTS SHOWCASE SECTION -->
-    <section id="tools" class="py-24 px-6 lg:px-16 bg-[#070a13]">
+    <!-- MARKETPLACE SECTION -->
+    <section id="marketplace" class="py-24 px-6 lg:px-16 bg-[#080b14]">
       <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Catalog & Utilities</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Developer Tools & Scripts Showcase</h2>
-            <p class="text-slate-400 text-sm mt-2 max-w-xl">Browse production-ready scripts, secure API wrappers, and developer utilities with instant copy & test workflows.</p>
+            <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">P2P Escrow Listings</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Active Solana Escrow Deals</h2>
+            <p class="text-slate-400 text-sm mt-2 max-w-xl">Browse verified assets secured by smart contract escrow. Instant settlement upon buyer confirmation.</p>
           </div>
 
-          <!-- Search & Filter Controls -->
+          <!-- Filter & Search -->
           <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
             <div class="relative w-full sm:w-72">
               <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
               </span>
-              <input type="text" id="scriptSearch" oninput="filterScripts()" placeholder="Search scripts or tools..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all">
+              <input type="text" id="marketSearch" oninput="filterMarketplace()" placeholder="Search listings..." class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-all">
             </div>
           </div>
         </div>
 
         <!-- Category Tabs -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-semibold">
-          <button onclick="setCategory('all')" id="cat-all" class="px-4 py-2 rounded-xl bg-emerald-400 text-[#070a13] transition-all whitespace-nowrap">All Items</button>
-          <button onclick="setCategory('security')" id="cat-security" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Security & Auth</button>
-          <button onclick="setCategory('devops')" id="cat-devops" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">DevOps & CI/CD</button>
-          <button onclick="setCategory('ai')" id="cat-ai" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">AI Utilities</button>
-          <button onclick="setCategory('performance')" id="cat-performance" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Performance</button>
-          <button onclick="setCategory('database')" id="cat-database" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Database & Cache</button>
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8 text-xs font-semibold font-mono">
+          <button onclick="setMarketCategory('all')" id="mcat-all" class="px-4 py-2 rounded-xl bg-purple-600 text-white transition-all whitespace-nowrap">All Assets</button>
+          <button onclick="setMarketCategory('domains')" id="mcat-domains" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">.sol Domains</button>
+          <button onclick="setMarketCategory('nfts')" id="mcat-nfts" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Solana NFTs</button>
+          <button onclick="setMarketCategory('services')" id="mcat-services" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">Dev Services</button>
+          <button onclick="setMarketCategory('accounts')" id="mcat-accounts" class="px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap">OG Accounts</button>
         </div>
 
-        <!-- Grid Cards -->
-        <div id="scriptsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Dynamically populated via JavaScript -->
+        <!-- Marketplace Grid -->
+        <div id="marketplaceGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Populated by JS -->
         </div>
       </div>
     </section>
 
-    <!-- ARCHITECTURE & FEATURES SECTION -->
-    <section id="features" class="py-24 px-6 lg:px-16 border-t border-slate-800/80 bg-[#090e18]">
+    <!-- ACTIVE ESCROWS DASHBOARD -->
+    <section id="escrows" class="py-24 px-6 lg:px-16 border-t border-slate-800/80 bg-[#0b0f1a]">
       <div class="max-w-7xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Engineered For Scale</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Built for Modern Tech Teams</h2>
-          <p class="text-slate-400 text-sm mt-3">Every tool and script in our registry undergoes rigorous automated testing, security audits, and latency profiling.</p>
+        <div class="flex items-center justify-between mb-12">
+          <div>
+            <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Live Vault Tracker</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Active Escrow Dashboard</h2>
+          </div>
+          <button onclick="openCreateEscrowModal()" class="px-4 py-2.5 rounded-xl solana-gradient text-[#080b14] font-bold text-xs shadow-lg shadow-purple-500/20">
+            + New Escrow
+          </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 hover:border-emerald-500/50 transition-all group">
-            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Sub-Millisecond Endpoints</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Edge-optimized script resolution across 48 global data centers ensuring lightning-fast execution times for production apps.</p>
-          </div>
-
-          <!-- Feature 2 -->
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 hover:border-emerald-500/50 transition-all group">
-            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">SOC2 Type II Security</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Cryptographically verified dependencies with automated vulnerability scanning and real-time dependency tree integrity checks.</p>
-          </div>
-
-          <!-- Feature 3 -->
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 hover:border-emerald-500/50 transition-all group">
-            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6 group-hover:scale-110 transition-transform">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">Zero-Dependency Modules</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Lightweight vanilla TypeScript and JavaScript utilities designed to drop straight into your codebase without heavy npm bloat.</p>
+        <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="bg-slate-900/90 text-slate-400 border-b border-slate-800 uppercase tracking-wider">
+                <tr>
+                  <th class="p-4">Escrow ID</th>
+                  <th class="p-4">Asset / Description</th>
+                  <th class="p-4">Amount (SOL)</th>
+                  <th class="p-4">Status</th>
+                  <th class="p-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="escrowsTableBody" class="divide-y divide-slate-800 text-slate-300">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TESTIMONIALS SECTION -->
-    <section id="testimonials" class="py-24 px-6 lg:px-16 bg-[#070a13]">
+    <!-- SECURITY & ARCHITECTURE SECTION -->
+    <section id="security" class="py-24 px-6 lg:px-16 bg-[#080b14]">
       <div class="max-w-7xl mx-auto">
         <div class="text-center max-w-2xl mx-auto mb-16">
-          <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 font-semibold">Engineering Reviews</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Trusted by Leading Tech Teams</h2>
-          <p class="text-slate-400 text-sm mt-3">See how senior engineers and infrastructure architects use PULSE to accelerate delivery.</p>
+          <span class="text-xs font-mono uppercase tracking-widest text-purple-400 font-semibold">Trustless Architecture</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2 tracking-tight">Built on Solana Smart Contracts</h2>
+          <p class="text-slate-400 text-sm mt-3">Audited Rust programs guarantee that funds can only be released, refunded, or disputed according to strict programmable rules.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 flex flex-col justify-between">
-            <p class="text-slate-300 text-sm leading-relaxed mb-6">"PULSE has reduced our team's boilerplate setup time by over 70%. The TypeScript utilities and JWT validation scripts are exceptionally well-written."</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-500 flex items-center justify-center font-bold text-[#070a13]">
-                AR
-              </div>
-              <div>
-                <div class="text-sm font-bold text-white">Alex Rivers</div>
-                <div class="text-xs text-slate-400">Principal Architect, CloudScale</div>
-              </div>
+          <div class="glass-card rounded-2xl p-8 border border-slate-800">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-6">
+              🔒
             </div>
+            <h3 class="text-xl font-bold text-white mb-2">Multisig Vault Locking</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Assets are locked directly in a PDA (Program Derived Address) vault. Neither buyer nor seller can access funds unilaterally.</p>
           </div>
 
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 flex flex-col justify-between">
-            <p class="text-slate-300 text-sm leading-relaxed mb-6">"The sub-millisecond API endpoints and zero-dependency scripts are a game-changer for our microservices architecture. Unmatched reliability."</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-cyan-400 to-blue-500 flex items-center justify-center font-bold text-[#070a13]">
-                SK
-              </div>
-              <div>
-                <div class="text-sm font-bold text-white">Sarah Kowalski</div>
-                <div class="text-xs text-slate-400">Head of DevOps, NexusLabs</div>
-              </div>
+          <div class="glass-card rounded-2xl p-8 border border-slate-800">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-6">
+              ⚡
             </div>
+            <h3 class="text-xl font-bold text-white mb-2">Instant SOL Settlement</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Sub-second finality on Solana ensures immediate payouts to sellers upon buyer confirmation with negligible gas fees.</p>
           </div>
 
-          <div class="glass-card rounded-2xl p-8 border border-slate-800/80 flex flex-col justify-between">
-            <p class="text-slate-300 text-sm leading-relaxed mb-6">"Clean code, intuitive search, and instant copy workflows. PULSE is now the default developer homepage for our entire engineering org."</p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-400 to-pink-500 flex items-center justify-center font-bold text-[#070a13]">
-                DM
-              </div>
-              <div>
-                <div class="text-sm font-bold text-white">David Miller</div>
-                <div class="text-xs text-slate-400">Staff Engineer, HyperData</div>
-              </div>
+          <div class="glass-card rounded-2xl p-8 border border-slate-800">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-6">
+              🛡️
             </div>
+            <h3 class="text-xl font-bold text-white mb-2">Decentralized Arbitration</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">In case of a dispute, trusted community arbiters review cryptographic proof and vote to release or refund.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="border-t border-slate-800 bg-[#060911] px-6 lg:px-16 py-16 text-slate-400 text-sm">
+    <footer class="border-t border-slate-800 bg-[#05070c] px-6 lg:px-16 py-16 text-slate-400 text-sm">
       <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         <div class="flex flex-col gap-4">
           <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-[#070a13] font-extrabold text-sm">
-              P
+            <div class="w-8 h-8 rounded-lg solana-gradient flex items-center justify-center text-[#080b14] font-extrabold text-sm">
+              ⚡
             </div>
-            <span class="font-bold text-white text-lg tracking-tight">PULSE</span>
+            <span class="font-bold text-white text-lg tracking-tight">SolMarket</span>
           </div>
           <p class="text-xs text-slate-400 leading-relaxed">
-            The high-performance platform for professional developers, code scripts, and secure engineering utilities.
+            The premier Solana-only decentralized escrow marketplace. Secure peer-to-peer trades with zero counterparty risk.
           </p>
           <div class="text-xs text-slate-500 font-mono">
-            &copy; 2026 PULSE Developer Hub. All rights reserved.
+            &copy; 2026 SolMarket Protocol. All rights reserved.
           </div>
         </div>
 
         <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Platform</div>
+          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Marketplace</div>
           <ul class="space-y-2.5 text-xs">
-            <li><a href="#tools" class="hover:text-emerald-400 transition-colors">Tools Registry</a></li>
-            <li><a href="#tools" class="hover:text-emerald-400 transition-colors">Code Scripts</a></li>
-            <li><a href="#tools" class="hover:text-emerald-400 transition-colors">API Endpoints</a></li>
-            <li><a href="#features" class="hover:text-emerald-400 transition-colors">Architecture</a></li>
+            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">.sol Domains</a></li>
+            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">Solana NFTs</a></li>
+            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">Developer Services</a></li>
+            <li><a href="#marketplace" class="hover:text-purple-400 transition-colors">OG Accounts</a></li>
           </ul>
         </div>
 
         <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Resources</div>
+          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Protocol</div>
           <ul class="space-y-2.5 text-xs">
-            <li><a href="#" onclick="openGetStartedModal(); return false;" class="hover:text-emerald-400 transition-colors">Documentation</a></li>
-            <li><a href="#" onclick="openGetStartedModal(); return false;" class="hover:text-emerald-400 transition-colors">SDK Reference</a></li>
-            <li><a href="#" onclick="openGetStartedModal(); return false;" class="hover:text-emerald-400 transition-colors">Security Audits</a></li>
-            <li><a href="#" onclick="openGetStartedModal(); return false;" class="hover:text-emerald-400 transition-colors">System Status</a></li>
+            <li><a href="#escrows" class="hover:text-purple-400 transition-colors">Active Escrows</a></li>
+            <li><a href="#security" class="hover:text-purple-400 transition-colors">Smart Contracts</a></li>
+            <li><a href="#security" class="hover:text-purple-400 transition-colors">Audits & Security</a></li>
+            <li><a href="#create" class="hover:text-purple-400 transition-colors">Create Vault</a></li>
           </ul>
         </div>
 
         <div>
-          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Newsletter</div>
-          <p class="text-xs text-slate-400 mb-3">Get weekly curated developer tools and high-performance scripts directly to your inbox.</p>
-          <form onsubmit="handleNewsletter(event)" class="flex flex-col gap-2">
-            <input type="email" id="newsletterEmail" required placeholder="engineer@company.com" class="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
-            <button type="submit" class="px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#070a13] font-bold text-xs transition-all">Subscribe</button>
-          </form>
-          <div id="newsletterMsg" class="text-[11px] text-emerald-400 mt-1 hidden">Successfully subscribed!</div>
+          <div class="text-white font-bold mb-4 text-xs uppercase tracking-wider font-mono">Solana Network</div>
+          <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2 font-mono text-xs">
+            <div class="flex justify-between">
+              <span class="text-slate-500">Cluster:</span>
+              <span class="text-emerald-400">Mainnet Beta</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">Program ID:</span>
+              <span class="text-purple-300">Escw...991x</span>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
 
   </div>
 
-  <!-- SUBMIT TOOL MODAL -->
-  <div id="submitModal" class="fixed inset-0 z-50 bg-[#070a13]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-slate-700 shadow-2xl relative">
-      <button onclick="closeSubmitModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
+  <!-- WALLET MODAL -->
+  <div id="walletModal" class="fixed inset-0 z-50 bg-[#080b14]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-sm w-full border border-purple-500/30 shadow-2xl relative text-center">
+      <button onclick="toggleWalletModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
-      <h3 class="text-xl font-bold text-white mb-2">Submit a Developer Tool</h3>
-      <p class="text-xs text-slate-400 mb-6">Contribute your open-source script or utility to the PULSE registry.</p>
+      <div class="w-12 h-12 rounded-2xl solana-gradient flex items-center justify-center text-[#080b14] mx-auto mb-4 font-bold text-xl">
+        Phantom
+      </div>
+      <h3 class="text-xl font-bold text-white mb-2">Connect Solana Wallet</h3>
+      <p class="text-xs text-slate-400 mb-6">Select your Solana wallet to manage escrows and place orders.</p>
       
-      <form onsubmit="handleToolSubmit(event)" class="space-y-4">
+      <div class="space-y-3">
+        <button onclick="connectWallet('Phantom')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-3 transition-all">
+          <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+          Connect Phantom
+        </button>
+        <button onclick="connectWallet('Solflare')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-semibold text-xs flex items-center justify-center gap-3 transition-all">
+          <span class="w-3 h-3 rounded-full bg-orange-500"></span>
+          Connect Solflare
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE ESCROW MODAL -->
+  <div id="createEscrowModal" class="fixed inset-0 z-50 bg-[#080b14]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-lg w-full border border-purple-500/30 shadow-2xl relative">
+      <button onclick="closeCreateEscrowModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <h3 class="text-xl font-bold text-white mb-2">Create New Escrow Vault</h3>
+      <p class="text-xs text-slate-400 mb-6">Lock SOL in smart contract escrow for secure peer-to-peer exchange.</p>
+      
+      <form onsubmit="handleCreateEscrow(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-mono text-slate-300 mb-1">Tool / Script Name</label>
-          <input type="text" id="subName" required placeholder="e.g. JWT Fast Validator" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+          <label class="block text-xs font-mono text-slate-300 mb-1">Asset Title / Description</label>
+          <input type="text" id="escName" required placeholder="e.g. trading.sol domain transfer" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Deposit Amount (SOL)</label>
+            <input type="number" step="0.1" id="escAmount" required placeholder="12.5" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
+          </div>
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1">Category</label>
+            <select id="escCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-purple-500">
+              <option value="domains">.sol Domains</option>
+              <option value="nfts">Solana NFTs</option>
+              <option value="services">Dev Services</option>
+              <option value="accounts">OG Accounts</option>
+            </select>
+          </div>
         </div>
         <div>
-          <label class="block text-xs font-mono text-slate-300 mb-1">Category</label>
-          <select id="subCategory" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-            <option value="security">Security & Auth</option>
-            <option value="devops">DevOps & CI/CD</option>
-            <option value="ai">AI Utilities</option>
-            <option value="performance">Performance</option>
-            <option value="database">Database & Cache</option>
-          </select>
+          <label class="block text-xs font-mono text-slate-300 mb-1">Counterparty Solana Wallet (Optional)</label>
+          <input type="text" id="escCounterparty" placeholder="Enter recipient wallet address..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-purple-500">
         </div>
-        <div>
-          <label class="block text-xs font-mono text-slate-300 mb-1">Code Snippet / Repository URL</label>
-          <textarea id="subCode" rows="4" required placeholder="Paste code or GitHub URL..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"></textarea>
-        </div>
-        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-[#070a13] font-bold text-xs transition-all shadow-lg shadow-emerald-500/25">Submit for Review</button>
+        <button type="submit" class="w-full py-3 rounded-xl solana-gradient text-[#080b14] font-bold text-xs transition-all shadow-lg shadow-purple-500/25">
+          Lock Funds in Escrow Vault
+        </button>
       </form>
     </div>
   </div>
 
-  <!-- GET STARTED / API KEY MODAL -->
-  <div id="getStartedModal" class="fixed inset-0 z-50 bg-[#070a13]/80 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
-    <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-md w-full border border-slate-700 shadow-2xl relative text-center">
-      <button onclick="closeGetStartedModal()" class="absolute top-4 right-4 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-      <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mx-auto mb-4">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
-      </div>
-      <h3 class="text-xl font-bold text-white mb-2">Generate API Key</h3>
-      <p class="text-xs text-slate-400 mb-6">Instant access to PULSE high-performance developer scripts and edge endpoints.</p>
-      
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 mb-6 font-mono text-xs text-emerald-400 flex items-center justify-between">
-        <span id="generatedKey">pulse_live_99f82xbc8401a7e2</span>
-        <button onclick="copyApiKey(this)" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px]">Copy</button>
-      </div>
-      <button onclick="closeGetStartedModal()" class="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-[#070a13] font-bold text-xs transition-all">Done</button>
-    </div>
-  </div>
-
   <!-- SUCCESS TOAST -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-slate-900 border border-emerald-500/40 text-emerald-400 text-xs font-semibold shadow-2xl transition-all duration-300 translate-y-20 opacity-0 flex items-center gap-2">
-    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-    <span id="toastText">Action completed successfully!</span>
+  <div id="toast" class="fixed bottom-6 right-6 z-50 px-4 py-3 rounded-xl bg-slate-900 border border-purple-500/40 text-purple-300 text-xs font-semibold shadow-2xl transition-all duration-300 translate-y-20 opacity-0 flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+    <span id="toastText">Transaction confirmed on Solana!</span>
   </div>
 
   <!-- JAVASCRIPT & LENIS SMOOTH SCROLL -->
   <script type="module">
     import Lenis from 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.mjs';
 
-    // Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -502,135 +470,181 @@
   </script>
 
   <script>
-    // Developer Tools & Scripts Dataset
-    const toolsData = [
+    // Live Slot & TPS Ticker Simulation
+    setInterval(() => {
+      const slotEl = document.getElementById('solSlot');
+      const tpsEl = document.getElementById('solTps');
+      if (slotEl) {
+        const currentSlot = parseInt(slotEl.textContent.replace(/,/g, '')) + Math.floor(Math.random() * 3) + 1;
+        slotEl.textContent = currentSlot.toLocaleString();
+      }
+      if (tpsEl) {
+        const randomTps = 3200 + Math.floor(Math.random() * 400);
+        tpsEl.textContent = randomTps.toLocaleString();
+      }
+    }, 2000);
+
+    // Marketplace Listings Data
+    const marketplaceData = [
       {
         id: 1,
-        name: "JWT Fast Validator & Verifier",
-        category: "security",
-        version: "v2.4.1",
-        badge: "Popular",
-        description: "Zero-dependency cryptographic JSON Web Token verifier optimized for edge runtimes with RS256 & HS256 support.",
-        code: "import { verifyJWT } from '@pulse/security';\nconst isValid = await verifyJWT(token, SECRET_KEY);"
+        title: "ai.sol — Premium Domain Escrow",
+        category: "domains",
+        price: 145.0,
+        seller: "9xK2...4pLm",
+        badge: "Verified Escrow",
+        description: "Direct ownership transfer of ai.sol via Bonfida Name Service with instant multisig escrow protection."
       },
       {
         id: 2,
-        name: "Redis Adaptive Rate Limiter",
-        category: "database",
-        version: "v1.8.0",
-        badge: "High Performance",
-        description: "Sliding window rate limiter script for Redis & Memcached with automatic IP reputation scoring.",
-        code: "import { RateLimiter } from '@pulse/cache';\nconst limiter = new RateLimiter({ windowMs: 60000, max: 100 });"
+        title: "Mad Lads #8942 Rare Trait",
+        category: "nfts",
+        price: 48.5,
+        seller: "3vL9...8xW1",
+        badge: "Secured Vault",
+        description: "Verified Mad Lads NFT locked in smart contract escrow. Instant verification against Tensor & Magic Eden."
       },
       {
         id: 3,
-        name: "AI Prompt Token Counter & Cost Estimator",
-        category: "ai",
-        version: "v3.1.0",
-        badge: "New",
-        description: "Precise tokenizer utility supporting Claude 3.5, GPT-4o, and Gemini 1.5 Pro with real-time cost estimation.",
-        code: "import { countTokens } from '@pulse/ai-utils';\nconst stats = countTokens(promptText, 'gpt-4o');"
+        title: "Full-Stack Solana Rust Anchor Audit",
+        category: "services",
+        price: 35.0,
+        seller: "SolSec...90aB",
+        badge: "Expert Dev",
+        description: "Comprehensive security review of your Anchor program instructions, PDAs, and cross-program invocations."
       },
       {
         id: 4,
-        name: "Docker Zero-Downtime Deploy Script",
-        category: "devops",
-        version: "v4.0.2",
-        badge: "Verified",
-        description: "Bash automation script for rolling container deployments with health check polling and automated rollback.",
-        code: "# Run via bash\ncurl -sSL https://pulse-dev.io/scripts/deploy.sh | bash -s -- prod"
+        title: "DeFi Protocol Twitter / X Handle (@SolanaSwap)",
+        category: "accounts",
+        price: 24.0,
+        seller: "5mN7...2qRt",
+        badge: "Instant Transfer",
+        description: "Established Web3 brand social handle with 45k organic followers. Escrow holds credentials until full handover."
       },
       {
         id: 5,
-        name: "PostgreSQL Connection Pooler Manager",
-        category: "database",
-        version: "v2.2.4",
-        badge: "Optimized",
-        description: "Lightweight connection pool manager with automatic retry backoff and prepared statement caching.",
-        code: "import { createPool } from '@pulse/db';\nconst pool = createPool({ maxConnections: 50, idleTimeout: 30000 });"
+        title: "dex.sol — High Volume Trading Domain",
+        category: "domains",
+        price: 95.0,
+        seller: "8pQ3...1kLm",
+        badge: "Verified Escrow",
+        description: "Prime .sol domain ideal for decentralized exchange or liquidity aggregator launch."
       },
       {
         id: 6,
-        name: "Async Request Batcher & Deduplicator",
-        category: "performance",
-        version: "v1.5.2",
-        badge: "Fast",
-        description: "High-throughput batching utility that groups concurrent API requests into single bulk queries.",
-        code: "import { RequestBatcher } from '@pulse/perf';\nconst batcher = new RequestBatcher(async (keys) => fetchBatch(keys), { delay: 10 });"
+        title: "Tensorian #402 (Golden Crown)",
+        category: "nfts",
+        price: 62.0,
+        seller: "2wX4...7jH9",
+        badge: "Secured Vault",
+        description: "Top-tier Tensorian NFT with rare crown trait. Secured in trustless escrow vault."
       }
     ];
 
-    let currentCategory = 'all';
+    // Active Escrows Dashboard Data
+    let escrowsData = [
+      {
+        id: "ESC-9824",
+        asset: "ai.sol Domain Transfer",
+        amount: 145.0,
+        status: "Funds Locked"
+      },
+      {
+        id: "ESC-9821",
+        asset: "Mad Lads #8942",
+        amount: 48.5,
+        status: "Inspection Window"
+      },
+      {
+        id: "ESC-9815",
+        asset: "Rust Smart Contract Audit",
+        amount: 35.0,
+        status: "Completed & Released"
+      }
+    ];
 
-    function renderTools(filter = '') {
-      const grid = document.getElementById('scriptsGrid');
-      const filtered = toolsData.filter(item => {
-        const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
-        const matchesSearch = item.name.toLowerCase().includes(filter.toLowerCase()) || item.description.toLowerCase().includes(filter.toLowerCase());
-        return matchesCategory && matchesSearch;
+    let currentMarketCategory = 'all';
+    let connectedWallet = null;
+
+    function renderMarketplace(filter = '') {
+      const grid = document.getElementById('marketplaceGrid');
+      const filtered = marketplaceData.filter(item => {
+        const matchesCat = currentMarketCategory === 'all' || item.category === currentMarketCategory;
+        const matchesSearch = item.title.toLowerCase().includes(filter.toLowerCase()) || item.description.toLowerCase().includes(filter.toLowerCase());
+        return matchesCat && matchesSearch;
       });
 
       if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="col-span-full py-16 text-center text-slate-500">
-            <p class="text-base font-semibold">No tools or scripts found matching your search.</p>
-            <p class="text-xs mt-1">Try searching for security, AI, or database utilities.</p>
+            <p class="text-base font-semibold">No listings found matching your search.</p>
           </div>
         `;
         return;
       }
 
       grid.innerHTML = filtered.map(item => `
-        <div class="glass-card rounded-2xl p-6 border border-slate-800/80 hover:border-emerald-500/40 transition-all flex flex-col justify-between group">
+        <div class="glass-card rounded-2xl p-6 border border-slate-800 hover:border-purple-500/50 transition-all flex flex-col justify-between group">
           <div>
-            <div class="flex items-center justify-between mb-3">
-              <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-mono font-semibold">${item.version}</span>
-              <span class="text-[10px] font-mono text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">${item.badge}</span>
+            <div class="flex items-center justify-between mb-3 font-mono">
+              <span class="px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-300 text-[10px] font-semibold">${item.badge}</span>
+              <span class="text-xs text-emerald-400 font-bold">${item.price} SOL</span>
             </div>
-            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">${item.name}</h3>
+            <h3 class="text-lg font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">${item.title}</h3>
             <p class="text-slate-400 text-xs leading-relaxed mb-4">${item.description}</p>
           </div>
 
-          <div>
-            <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 font-mono text-[11px] text-slate-300 mb-4 overflow-x-auto max-h-24">
-              <code>${escapeHtml(item.code)}</code>
-            </div>
-            <div class="flex items-center justify-between pt-2 border-t border-slate-800/80">
-              <span class="text-[11px] text-slate-500 font-mono capitalize">${item.category}</span>
-              <button onclick="copySnippet(this, \`${escapeJs(item.code)}\`)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-all flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
-                <span>Copy Code</span>
-              </button>
-            </div>
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <span class="text-[11px] text-slate-500 font-mono">Seller: ${item.seller}</span>
+            <button onclick="buyEscrowItem('${item.title}', ${item.price})" class="px-4 py-2 rounded-xl solana-gradient text-[#080b14] font-bold text-xs shadow-md shadow-purple-500/20 hover:brightness-110 transition-all">
+              Buy with Escrow
+            </button>
           </div>
         </div>
       `).join('');
     }
 
-    function setCategory(cat) {
-      currentCategory = cat;
-      document.querySelectorAll('[id^="cat-"]').forEach(btn => {
-        btn.className = "px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap";
+    function setMarketCategory(cat) {
+      currentMarketCategory = cat;
+      ['all', 'domains', 'nfts', 'services', 'accounts'].forEach(c => {
+        const btn = document.getElementById(`mcat-${c}`);
+        if (btn) {
+          btn.className = c === cat ? "px-4 py-2 rounded-xl bg-purple-600 text-white font-bold transition-all whitespace-nowrap" : "px-4 py-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white border border-slate-800 transition-all whitespace-nowrap";
+        }
       });
-      const activeBtn = document.getElementById(`cat-${cat}`);
-      if (activeBtn) {
-        activeBtn.className = "px-4 py-2 rounded-xl bg-emerald-400 text-[#070a13] font-bold transition-all whitespace-nowrap";
-      }
-      const query = document.getElementById('scriptSearch').value;
-      renderTools(query);
+      const query = document.getElementById('marketSearch').value;
+      renderMarketplace(query);
     }
 
-    function filterScripts() {
-      const query = document.getElementById('scriptSearch').value;
-      renderTools(query);
+    function filterMarketplace() {
+      const query = document.getElementById('marketSearch').value;
+      renderMarketplace(query);
     }
 
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-    }
-
-    function escapeJs(str) {
-      return str.replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
+    function renderEscrowsTable() {
+      const tbody = document.getElementById('escrowsTableBody');
+      tbody.innerHTML = escrowsData.map(esc => `
+        <tr class="hover:bg-slate-900/40 transition-colors">
+          <td class="p-4 font-bold text-white">${esc.id}</td>
+          <td class="p-4">${esc.asset}</td>
+          <td class="p-4 text-emerald-400 font-bold">${esc.amount} SOL</td>
+          <td class="p-4">
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-semibold ${esc.status === 'Completed & Released' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-purple-500/10 text-purple-300 border border-purple-500/20'}">
+              ${esc.status}
+            </span>
+          </td>
+          <td class="p-4 text-right">
+            ${esc.status !== 'Completed & Released' ? `
+              <button onclick="releaseEscrow('${esc.id}')" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 font-semibold text-xs border border-emerald-500/30 transition-all">
+                Release Funds
+              </button>
+            ` : `
+              <span class="text-slate-500 text-xs">Settled</span>
+            `}
+          </td>
+        </tr>
+      `).join('');
     }
 
     function showToast(text) {
@@ -640,94 +654,83 @@
       toast.classList.remove('translate-y-20', 'opacity-0');
       setTimeout(() => {
         toast.classList.add('translate-y-20', 'opacity-0');
-      }, 3000);
+      }, 3500);
     }
 
-    function copySnippet(btn, code) {
-      navigator.clipboard.writeText(code).then(() => {
-        showToast('Code snippet copied to clipboard!');
-      });
-    }
-
-    function copyHeroSnippet(btn) {
-      const snippet = `import { PulseEngine } from '@pulse/core';\nconst engine = new PulseEngine({ region: 'us-east-1', cacheTTL: 3600 });\nawait engine.bootstrap({ scripts: ['jwt-validator', 'rate-limiter'] });`;
-      navigator.clipboard.writeText(snippet).then(() => {
-        showToast('Hero code snippet copied successfully!');
-      });
-    }
-
-    function copyApiKey(btn) {
-      const key = document.getElementById('generatedKey').textContent;
-      navigator.clipboard.writeText(key).then(() => {
-        showToast('API Key copied to clipboard!');
-      });
-    }
-
-    // Modal Controls
-    function openSubmitModal() {
-      const m = document.getElementById('submitModal');
-      m.classList.remove('opacity-0', 'pointer-events-none');
-    }
-    function closeSubmitModal() {
-      const m = document.getElementById('submitModal');
-      m.classList.add('opacity-0', 'pointer-events-none');
-    }
-
-    function openGetStartedModal() {
-      const m = document.getElementById('getStartedModal');
-      m.classList.remove('opacity-0', 'pointer-events-none');
-    }
-    function closeGetStartedModal() {
-      const m = document.getElementById('getStartedModal');
-      m.classList.add('opacity-0', 'pointer-events-none');
-    }
-
-    function toggleMobileMenu() {
-      const menu = document.getElementById('mobileMenu');
-      if (menu.classList.contains('opacity-0')) {
-        menu.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+    function toggleWalletModal() {
+      const m = document.getElementById('walletModal');
+      if (m.classList.contains('opacity-0')) {
+        m.classList.remove('opacity-0', 'pointer-events-none');
       } else {
-        menu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        m.classList.add('opacity-0', 'pointer-events-none');
       }
     }
 
-    function handleToolSubmit(e) {
-      e.preventDefault();
-      const name = document.getElementById('subName').value;
-      const category = document.getElementById('subCategory').value;
-      const code = document.getElementById('subCode').value;
+    function connectWallet(walletName) {
+      connectedWallet = walletName;
+      const btn = document.getElementById('walletBtn');
+      const btnText = document.getElementById('walletBtnText');
+      btnText.textContent = "7xK2...4pLm (142.5 SOL)";
+      btn.className = "inline-flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-800 text-emerald-400 border border-emerald-500/30 shadow-lg";
+      toggleWalletModal();
+      showToast(`Connected to ${walletName} successfully!`);
+    }
 
-      toolsData.unshift({
-        id: toolsData.length + 1,
-        name: name,
-        category: category,
-        version: "v1.0.0",
-        badge: "Community",
-        description: "Community submitted developer utility script.",
-        code: code
+    function openCreateEscrowModal() {
+      const m = document.getElementById('createEscrowModal');
+      m.classList.remove('opacity-0', 'pointer-events-none');
+    }
+    function closeCreateEscrowModal() {
+      const m = document.getElementById('createEscrowModal');
+      m.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function handleCreateEscrow(e) {
+      e.preventDefault();
+      const name = document.getElementById('escName').value;
+      const amount = parseFloat(document.getElementById('escAmount').value);
+      const category = document.getElementById('escCategory').value;
+
+      const newId = `ESC-${Math.floor(1000 + Math.random() * 9000)}`;
+      escrowsData.unshift({
+        id: newId,
+        asset: name,
+        amount: amount,
+        status: "Funds Locked"
       });
 
-      closeSubmitModal();
-      renderTools();
-      showToast('Tool successfully submitted for review!');
+      closeCreateEscrowModal();
+      renderEscrowsTable();
+      showToast(`Escrow vault ${newId} created and funded with ${amount} SOL!`);
       e.target.reset();
     }
 
-    function handleNewsletter(e) {
-      e.preventDefault();
-      const email = document.getElementById('newsletterEmail').value;
-      const msg = document.getElementById('newsletterMsg');
-      msg.classList.remove('hidden');
-      showToast('Successfully subscribed to PULSE newsletter!');
-      e.target.reset();
-      setTimeout(() => {
-        msg.classList.add('hidden');
-      }, 5000);
+    function buyEscrowItem(title, price) {
+      const newId = `ESC-${Math.floor(1000 + Math.random() * 9000)}`;
+      escrowsData.unshift({
+        id: newId,
+        asset: title,
+        amount: price,
+        status: "Funds Locked"
+      });
+      renderEscrowsTable();
+      showToast(`Successfully locked ${price} SOL in escrow for "${title}"!`);
+      window.location.hash = '#escrows';
     }
 
-    // Initial render
+    function releaseEscrow(id) {
+      const item = escrowsData.find(e => e.id === id);
+      if (item) {
+        item.status = "Completed & Released";
+        renderEscrowsTable();
+        showToast(`Escrow ${id} released to seller. Funds settled on Solana!`);
+      }
+    }
+
+    // Initial load
     document.addEventListener('DOMContentLoaded', () => {
-      renderTools();
+      renderMarketplace();
+      renderEscrowsTable();
     });
   </script>
 </body>

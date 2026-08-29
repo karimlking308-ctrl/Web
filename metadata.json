@@ -1,6 +1,6 @@
 {
-  "name": "PULSE Developer Hub",
-  "description": "PULSE — Professional developer tools, code scripts, APIs, and engineering utilities platform with instant copy workflows and editorial design.",
+  "name": "SolMarket",
+  "description": "SolMarket — Solana-only blockchain escrow marketplace with secure multisig escrow contracts, verified trader profiles, and instant SOL settlements.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
