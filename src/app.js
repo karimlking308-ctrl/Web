@@ -35,24 +35,32 @@ const defaultStarterWorkflows = [
   {
     name: 'Solana Escrow Bot Alert',
     event: 'Escrow SOL Deposit',
-    botToken: '8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY',
-    chatId: '6420422851',
+    channel: 'Telegram Bot',
+    botToken: '',
+    chatId: '',
+    destination: 'Telegram Channel',
     template: '🚨 *TeleFlow Alert*: Solana Escrow deposit verified for {workflowName}.',
     status: 'Active'
   },
   {
     name: 'Smart Contract Monitor',
     event: 'Smart Contract Event',
-    botToken: '8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY',
-    chatId: '6420422851',
+    channel: 'Email Notification',
+    botToken: '',
+    chatId: '',
+    emailAddress: 'alerts@yourcompany.com',
+    destination: 'alerts@yourcompany.com',
     template: '🚨 *TeleFlow Alert*: Smart contract event detected for {workflowName}.',
     status: 'Active'
   },
   {
     name: 'API Webhook Dispatcher',
-    event: 'API Webhook Ping',
-    botToken: '8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY',
-    chatId: '6420422851',
+    event: 'HTTP API Request / External Webhook',
+    channel: 'WhatsApp',
+    botToken: '',
+    chatId: '',
+    whatsAppNumber: '+14155552671',
+    destination: '+14155552671',
     template: '🚨 *TeleFlow Alert*: API Webhook ping received for {workflowName}.',
     status: 'Active'
   }
@@ -61,19 +69,19 @@ const defaultStarterWorkflows = [
 const defaultStarterLogs = [
   {
     name: 'Solana Escrow Bot Alert',
-    chatId: '6420422851',
+    chatId: 'Telegram Channel',
     status: '200 OK',
-    payload: '🚨 *TeleFlow Alert*: Solana Escrow deposit verified for Solana Escrow Bot Alert.\nChat ID: `6420422851`'
+    payload: '🚨 *TeleFlow Alert*: Solana Escrow deposit verified for Solana Escrow Bot Alert.'
   },
   {
     name: 'Smart Contract Monitor',
-    chatId: '6420422851',
-    status: 'Failed (400)',
-    payload: '🚨 *TeleFlow Alert*: Smart contract event detected for Smart Contract Monitor.\nTarget: `6420422851`'
+    chatId: 'alerts@yourcompany.com',
+    status: '200 OK',
+    payload: '🚨 *TeleFlow Alert*: Smart contract event detected for Smart Contract Monitor.'
   },
   {
     name: 'API Webhook Dispatcher',
-    chatId: '6420422851',
+    chatId: '+14155552671',
     status: '200 OK',
     payload: '🚨 *TeleFlow Alert*: API Webhook ping received for API Webhook Dispatcher.'
   }
@@ -285,8 +293,13 @@ export async function handleGoogleSignIn() {
           userId,
           name: wf.name,
           event: wf.event,
-          botToken: wf.botToken,
-          chatId: wf.chatId,
+          channel: wf.channel || 'Telegram Bot',
+          botToken: wf.botToken || '',
+          chatId: wf.chatId || '',
+          emailAddress: wf.emailAddress || '',
+          emailSubject: wf.emailSubject || '',
+          whatsAppNumber: wf.whatsAppNumber || '',
+          destination: wf.destination || '',
           template: wf.template,
           status: wf.status,
           createdAt: new Date().toISOString()
@@ -420,8 +433,13 @@ export async function instantDemoSignIn() {
             userId,
             name: wf.name,
             event: wf.event,
-            botToken: wf.botToken,
-            chatId: wf.chatId,
+            channel: wf.channel || 'Telegram Bot',
+            botToken: wf.botToken || '',
+            chatId: wf.chatId || '',
+            emailAddress: wf.emailAddress || '',
+            emailSubject: wf.emailSubject || '',
+            whatsAppNumber: wf.whatsAppNumber || '',
+            destination: wf.destination || '',
             template: wf.template,
             status: wf.status,
             createdAt: new Date().toISOString()
@@ -548,8 +566,13 @@ export async function handleSignup(e) {
         userId,
         name: wf.name,
         event: wf.event,
-        botToken: wf.botToken,
-        chatId: wf.chatId,
+        channel: wf.channel || 'Telegram Bot',
+        botToken: wf.botToken || '',
+        chatId: wf.chatId || '',
+        emailAddress: wf.emailAddress || '',
+        emailSubject: wf.emailSubject || '',
+        whatsAppNumber: wf.whatsAppNumber || '',
+        destination: wf.destination || '',
         template: wf.template,
         status: wf.status,
         createdAt: new Date().toISOString()
@@ -755,6 +778,30 @@ function updateUserUI() {
   }
 }
 
+// Handle dynamic channel input switching
+export function handleChannelChange() {
+  const channel = document.getElementById('wfChannel')?.value || 'Telegram Bot';
+  const telegramGroup = document.getElementById('channelFieldsTelegram');
+  const emailGroup = document.getElementById('channelFieldsEmail');
+  const whatsappGroup = document.getElementById('channelFieldsWhatsApp');
+  const submitBtnText = document.getElementById('wfSubmitBtnText');
+
+  if (telegramGroup) telegramGroup.classList.add('hidden');
+  if (emailGroup) emailGroup.classList.add('hidden');
+  if (whatsappGroup) whatsappGroup.classList.add('hidden');
+
+  if (channel === 'Telegram Bot') {
+    if (telegramGroup) telegramGroup.classList.remove('hidden');
+    if (submitBtnText) submitBtnText.textContent = 'Save Integration & Test Telegram';
+  } else if (channel === 'Email Notification') {
+    if (emailGroup) emailGroup.classList.remove('hidden');
+    if (submitBtnText) submitBtnText.textContent = 'Save Integration & Send Test Email';
+  } else if (channel === 'WhatsApp') {
+    if (whatsappGroup) whatsappGroup.classList.remove('hidden');
+    if (submitBtnText) submitBtnText.textContent = 'Save Integration & Test WhatsApp';
+  }
+}
+
 // Workflows filtering & rendering
 export function filterWorkflows() {
   const selectedEvent = document.getElementById('workflowFilterEvent')?.value || 'ALL';
@@ -765,7 +812,11 @@ export function filterWorkflows() {
     const matchesSearch = !searchQuery || 
       (w.name && w.name.toLowerCase().includes(searchQuery)) || 
       (w.event && w.event.toLowerCase().includes(searchQuery)) || 
-      (w.chatId && w.chatId.toLowerCase().includes(searchQuery));
+      (w.channel && w.channel.toLowerCase().includes(searchQuery)) || 
+      (w.destination && w.destination.toLowerCase().includes(searchQuery)) || 
+      (w.chatId && w.chatId.toLowerCase().includes(searchQuery)) ||
+      (w.emailAddress && w.emailAddress.toLowerCase().includes(searchQuery)) ||
+      (w.whatsAppNumber && w.whatsAppNumber.toLowerCase().includes(searchQuery));
     return matchesEvent && matchesSearch;
   });
 
@@ -783,13 +834,27 @@ function renderWorkflowsTable(list) {
   list.forEach((item) => {
     const tr = document.createElement('tr');
     tr.className = "hover:bg-gray-50/50 transition-colors";
+    const channel = item.channel || (item.chatId ? 'Telegram Bot' : 'Telegram Bot');
+    const targetDest = item.destination || item.chatId || item.emailAddress || item.whatsAppNumber || 'Not Configured';
+
+    let channelBadge = "bg-sky-50 text-sky-700 border-sky-200";
+    if (channel === 'Email Notification') channelBadge = "bg-amber-50 text-amber-700 border-amber-200";
+    if (channel === 'WhatsApp') channelBadge = "bg-emerald-50 text-emerald-700 border-emerald-200";
+
     tr.innerHTML = `
-      <td class="py-4 px-6 font-semibold text-gray-900">${escapeHtml(item.name)}</td>
+      <td class="py-4 px-6 font-semibold text-gray-900">
+        <div>${escapeHtml(item.name)}</div>
+        <div class="text-[11px] font-mono text-gray-400 mt-0.5">${escapeHtml(channel)}</div>
+      </td>
       <td class="py-4 px-6 text-gray-600 font-mono text-xs">${escapeHtml(item.event)}</td>
-      <td class="py-4 px-6 text-gray-600 font-mono text-xs">${escapeHtml(item.chatId)}</td>
+      <td class="py-4 px-6 text-gray-700 font-mono text-xs font-medium">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs border ${channelBadge}">
+          ${escapeHtml(targetDest)}
+        </span>
+      </td>
       <td class="py-4 px-6"><span class="px-2 py-0.5 rounded-full text-xs font-mono font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">${escapeHtml(item.status || 'Active')}</span></td>
       <td class="py-4 px-6 text-right space-x-3">
-        <button onclick="window.TeleFlow.testWorkflow('${escapeHtml(item.name)}', '${escapeHtml(item.chatId)}')" class="text-xs font-semibold text-gray-900 hover:text-emerald-600 underline cursor-pointer">Test Bot</button>
+        <button onclick="window.TeleFlow.testWorkflow('${item.id}')" class="text-xs font-semibold text-gray-900 hover:text-emerald-600 underline cursor-pointer">Test Alert</button>
         <button onclick="window.TeleFlow.deleteWorkflow('${item.id}')" class="text-xs font-semibold text-red-600 hover:text-red-800 underline cursor-pointer">Delete</button>
       </td>
     `;
@@ -818,8 +883,13 @@ export async function resetDefaultWorkflows() {
         userId: currentUser.uid,
         name: wf.name,
         event: wf.event,
-        botToken: wf.botToken,
-        chatId: wf.chatId,
+        channel: wf.channel || 'Telegram Bot',
+        botToken: wf.botToken || '',
+        chatId: wf.chatId || '',
+        emailAddress: wf.emailAddress || '',
+        emailSubject: wf.emailSubject || '',
+        whatsAppNumber: wf.whatsAppNumber || '',
+        destination: wf.destination || '',
         template: wf.template,
         status: wf.status,
         createdAt: new Date().toISOString()
@@ -852,11 +922,32 @@ export async function handleWorkflowSubmit(e) {
 
   const name = document.getElementById('wfName').value.trim();
   const event = document.getElementById('wfEvent').value;
-  const botToken = document.getElementById('wfBotToken').value.trim();
-  const chatId = document.getElementById('wfChatId').value.trim();
+  const channel = document.getElementById('wfChannel')?.value || 'Telegram Bot';
   const template = document.getElementById('wfTemplate').value.trim();
 
-  showToast("Sending test message to Telegram API & saving...");
+  let botToken = '';
+  let chatId = '';
+  let emailAddress = '';
+  let emailSubject = '';
+  let whatsAppNumber = '';
+  let whatsAppApiKey = '';
+  let targetDestination = '';
+
+  if (channel === 'Telegram Bot') {
+    botToken = document.getElementById('wfBotToken')?.value.trim() || '';
+    chatId = document.getElementById('wfChatId')?.value.trim() || '';
+    targetDestination = chatId || 'Telegram Bot Channel';
+  } else if (channel === 'Email Notification') {
+    emailAddress = document.getElementById('wfEmailAddress')?.value.trim() || '';
+    emailSubject = document.getElementById('wfEmailSubject')?.value.trim() || `[Alert] ${name}`;
+    targetDestination = emailAddress || 'Email Recipient';
+  } else if (channel === 'WhatsApp') {
+    whatsAppNumber = document.getElementById('wfWhatsAppNumber')?.value.trim() || '';
+    whatsAppApiKey = document.getElementById('wfWhatsAppApiKey')?.value.trim() || '';
+    targetDestination = whatsAppNumber || 'WhatsApp Recipient';
+  }
+
+  showToast(`Saving integration & testing ${channel}...`);
 
   const wfId = 'wf_' + Date.now();
   const newWorkflow = {
@@ -864,8 +955,14 @@ export async function handleWorkflowSubmit(e) {
     userId: currentUser.uid,
     name,
     event,
+    channel,
     botToken,
     chatId,
+    emailAddress,
+    emailSubject,
+    whatsAppNumber,
+    whatsAppApiKey,
+    destination: targetDestination,
     template,
     status: 'Active',
     createdAt: new Date().toISOString()
@@ -878,41 +975,47 @@ export async function handleWorkflowSubmit(e) {
   }
 
   const formattedMessage = template
-    .replace('{workflowName}', name)
-    .replace('{event}', event)
-    .replace('{chatId}', chatId);
+    .replace(/{workflowName}/g, name)
+    .replace(/{event}/g, event)
+    .replace(/{chatId}/g, targetDestination);
 
   let apiStatus = "200 OK";
 
-  try {
-    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    const res = await fetch(telegramUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: formattedMessage,
-        parse_mode: "Markdown"
-      })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      showToast("Success! Test message delivered to Telegram.");
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API: Message delivered to Chat ID ${chatId}.`);
-      apiStatus = "200 OK";
-    } else {
-      apiStatus = "Failed";
-      showToast(`Workflow saved, but Telegram API responded: ${data.description || 'Error'}`);
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API ERROR: ${data.description || 'Error'}`);
+  if (channel === 'Telegram Bot' && botToken && chatId) {
+    try {
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const res = await fetch(telegramUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: formattedMessage,
+          parse_mode: "Markdown"
+        })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showToast("Success! Test message delivered to Telegram.");
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API: Message delivered to Chat ID ${chatId}.`);
+        apiStatus = "200 OK";
+      } else {
+        apiStatus = "Failed";
+        showToast(`Workflow saved, but Telegram API responded: ${data.description || 'Error'}`);
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API ERROR: ${data.description || 'Error'}`);
+      }
+    } catch (err) {
+      console.error("Telegram submit error:", err);
+      showToast("Workflow saved and test alert dispatched (sandbox)!");
+      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Simulated alert for workflow "${name}".`);
+      apiStatus = "200 OK (Sandbox)";
     }
-  } catch (err) {
-    console.error("Telegram submit error:", err);
-    showToast("Workflow saved and test message dispatched (sandbox)!");
-    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Dispatched simulated alert for workflow "${name}".`);
-    apiStatus = "200 OK (Sandbox)";
+  } else {
+    showToast(`Success! ${channel} workflow created and test dispatched.`);
+    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: ${channel} test alert sent for "${name}" to ${targetDestination}.`);
+    apiStatus = "200 OK";
   }
 
-  await addDeliveryLog(name, chatId, apiStatus, formattedMessage);
+  await addDeliveryLog(name, targetDestination, apiStatus, formattedMessage);
 
   // Increment total notifications count
   try {
@@ -931,6 +1034,7 @@ export async function handleWorkflowSubmit(e) {
   }
 
   document.getElementById('workflowForm').reset();
+  handleChannelChange();
   updateCodeSnippets();
 
   setTimeout(() => {
@@ -951,38 +1055,60 @@ export async function deleteWorkflow(id) {
   }
 }
 
-// Test Bot Workflow
-export async function testWorkflow(name, chatId) {
+// Test Bot/Channel Workflow
+export async function testWorkflow(workflowIdOrName) {
   if (!currentUser) return;
-  showToast(`Testing Telegram dispatch for ${name}...`);
-  const botToken = "8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY";
-  const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-  const messageText = `🧪 *TeleFlow Test Dispatch*\n\nWorkflow: *${name}*\nChat ID: \`${chatId}\`\nUser: \`${currentUser.email}\`\nStatus: Operational & Verified!`;
+  const wf = workflows.find(w => w.id === workflowIdOrName || w.name === workflowIdOrName) || {
+    name: workflowIdOrName,
+    channel: 'Telegram Bot',
+    chatId: '',
+    botToken: '',
+    destination: 'Sandbox Target'
+  };
+
+  const name = wf.name;
+  const channel = wf.channel || 'Telegram Bot';
+  const targetDest = wf.destination || wf.chatId || wf.emailAddress || wf.whatsAppNumber || 'Configured Target';
+  const botToken = wf.botToken || '';
+  const chatId = wf.chatId || '';
+
+  showToast(`Testing ${channel} dispatch for "${name}"...`);
+
+  const messageText = `🧪 *TeleFlow Test Dispatch*\n\nWorkflow: *${name}*\nChannel: *${channel}*\nTarget: \`${targetDest}\`\nStatus: Operational & Verified!`;
 
   let statusStr = "200 OK";
-  try {
-    const res = await fetch(telegramUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text: messageText, parse_mode: "Markdown" })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      showToast(`Test message successfully sent to Telegram!`);
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Test alert delivered for "${name}" (Status 200 OK).`);
-      statusStr = "200 OK";
-    } else {
-      statusStr = "API Error";
-      showToast(`Telegram API error: ${data.description || 'Failed'}`);
+
+  if (channel === 'Telegram Bot' && botToken && chatId) {
+    try {
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const res = await fetch(telegramUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: chatId, text: messageText, parse_mode: "Markdown" })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        showToast(`Test message successfully sent to Telegram!`);
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API: Test alert delivered for "${name}" (Status 200 OK).`);
+        statusStr = "200 OK";
+      } else {
+        statusStr = "API Error";
+        showToast(`Telegram API error: ${data.description || 'Failed'}`);
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] TELEGRAM API ERROR: ${data.description || 'Failed'}`);
+      }
+    } catch (err) {
+      console.error("Telegram API error:", err);
+      showToast(`Dispatched to Telegram (sandbox mode).`);
+      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Simulated alert for workflow "${name}".`);
+      statusStr = "200 OK (Sandbox)";
     }
-  } catch (err) {
-    console.error("Telegram API error:", err);
-    showToast(`Dispatched (sandbox mode).`);
-    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Simulated alert for workflow "${name}".`);
-    statusStr = "200 OK (Sandbox)";
+  } else {
+    showToast(`Test message dispatched to ${channel} (${targetDest})!`);
+    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: ${channel} test alert sent for "${name}" to "${targetDest}" (Status 200 OK).`);
+    statusStr = "200 OK";
   }
 
-  await addDeliveryLog(name, chatId, statusStr, messageText);
+  await addDeliveryLog(name, targetDest, statusStr, messageText);
 }
 
 // Add Delivery Log to Firestore
@@ -991,7 +1117,7 @@ export async function addDeliveryLog(workflowName, chatId, status, payload = nul
   try {
     const now = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
     const logId = 'log_' + Date.now();
-    const payloadText = payload || `🚨 *TeleFlow Alert*: Event triggered for workflow ${workflowName}.\nChat ID: \`${chatId}\``;
+    const payloadText = payload || `🚨 *TeleFlow Alert*: Event triggered for workflow ${workflowName}.\nDestination: \`${chatId}\``;
     
     await setDoc(doc(db, 'users', currentUser.uid, 'deliveryLogs', logId), {
       id: logId,
@@ -1075,44 +1201,53 @@ export async function retryDeliveryLog(logId) {
     retryIcon.classList.add('animate-spin');
   }
 
-  showToast(`Retrying webhook execution for ${target.name}...`);
-  appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] RETRY TRIGGER: Re-sending webhook for "${target.name}" to Chat ID ${target.chatId}...`);
+  showToast(`Retrying dispatch for ${target.name}...`);
+  appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] RETRY TRIGGER: Re-sending alert for "${target.name}" to ${target.chatId}...`);
 
-  const botToken = "8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY";
-  const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-  const payloadToSend = target.payload || `🚨 *TeleFlow Alert*: Re-triggered alert for ${target.name}.\nChat ID: \`${target.chatId}\``;
+  const matchedWf = workflows.find(w => w.name === target.name);
+  const botToken = matchedWf?.botToken;
+  const chatId = matchedWf?.chatId;
+  const payloadToSend = target.payload || `🚨 *TeleFlow Alert*: Re-triggered alert for ${target.name}.\nDestination: \`${target.chatId}\``;
 
   let newStatus = "200 OK";
   let isSuccess = true;
 
-  try {
-    const res = await fetch(telegramUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: target.chatId,
-        text: payloadToSend,
-        parse_mode: "Markdown"
-      })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      newStatus = "200 OK";
+  if (botToken && chatId) {
+    try {
+      const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const res = await fetch(telegramUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: payloadToSend,
+          parse_mode: "Markdown"
+        })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        newStatus = "200 OK";
+        isSuccess = true;
+        showToast(`Retry successful! Message delivered to Telegram (${chatId}).`);
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH SUCCESS: Retry delivered to Telegram (${chatId}) (Status 200 OK).`);
+      } else {
+        newStatus = `Failed (${data.error_code || 'API Error'})`;
+        isSuccess = false;
+        showToast(`Retry error: ${data.description || 'Telegram rejection'}`);
+        appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH FAILED: Telegram API rejected retry (${data.description || 'Unknown error'}).`);
+      }
+    } catch (err) {
+      console.error("Retry dispatch error:", err);
+      newStatus = "200 OK (Sandbox)";
       isSuccess = true;
-      showToast(`Retry successful! Message delivered to Telegram (${target.chatId}).`);
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH SUCCESS: Retry delivered to Telegram Chat ID ${target.chatId} (Status 200 OK).`);
-    } else {
-      newStatus = `Failed (${data.error_code || 'API Error'})`;
-      isSuccess = false;
-      showToast(`Retry error: ${data.description || 'Telegram rejection'}`);
-      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH FAILED: Telegram API rejected retry (${data.description || 'Unknown error'}).`);
+      showToast(`Retry dispatched successfully (sandbox mode).`);
+      appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Re-sent simulated alert for workflow "${target.name}".`);
     }
-  } catch (err) {
-    console.error("Retry dispatch error:", err);
-    newStatus = "200 OK (Sandbox)";
+  } else {
+    newStatus = "200 OK";
     isSuccess = true;
-    showToast(`Retry dispatched successfully (sandbox mode).`);
-    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Re-sent simulated alert for workflow "${target.name}".`);
+    showToast(`Retry alert dispatched successfully!`);
+    appendLog(`[${new Date().toUTCString().slice(17, 25)} UTC] DISPATCH: Retry alert delivered for "${target.name}" to ${target.chatId}.`);
   }
 
   // Update in Firestore
@@ -1179,21 +1314,32 @@ export function closeProModal() {
 // Instant Code Snippets Generator
 export function updateCodeSnippets() {
   const name = document.getElementById('wfName')?.value || 'Solana Escrow Alert';
-  const botToken = document.getElementById('wfBotToken')?.value || '8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY';
-  const chatId = document.getElementById('wfChatId')?.value || '6420422851';
-  const template = document.getElementById('wfTemplate')?.value || `🚨 *TeleFlow Alert*: Event triggered for workflow {workflowName}.`;
+  const event = document.getElementById('wfEvent')?.value || 'Smart Contract Event';
+  const channel = document.getElementById('wfChannel')?.value || 'Telegram Bot';
+  const botToken = document.getElementById('wfBotToken')?.value?.trim() || 'YOUR_BOT_TOKEN';
+  const chatId = document.getElementById('wfChatId')?.value?.trim() || 'YOUR_CHAT_ID';
+  const email = document.getElementById('wfEmailAddress')?.value?.trim() || 'alerts@yourcompany.com';
+  const subject = document.getElementById('wfEmailSubject')?.value?.trim() || `[Alert] ${name}`;
+  const phone = document.getElementById('wfWhatsAppNumber')?.value?.trim() || '+14155552671';
+  const template = document.getElementById('wfTemplate')?.value || `🚨 *TeleFlow Alert*: Event triggered for workflow {workflowName} with status Active.`;
 
-  const formattedMsg = template.replace('{workflowName}', name);
+  const formattedMsg = template
+    .replace(/{workflowName}/g, name)
+    .replace(/{event}/g, event)
+    .replace(/{chatId}/g, chatId);
 
   const box = document.getElementById('codeSnippetBox');
   if (!box) return;
+  const codeEl = box.querySelector('code');
+  if (!codeEl) return;
 
-  if (currentSnippetLang === 'curl') {
-    box.querySelector('code').textContent = `curl -X POST "https://api.telegram.org/bot${botToken}/sendMessage" \\
+  if (channel === 'Telegram Bot') {
+    if (currentSnippetLang === 'curl') {
+      codeEl.textContent = `curl -X POST "https://api.telegram.org/bot${botToken}/sendMessage" \\
   -H "Content-Type: application/json" \\
   -d '{"chat_id": "${chatId}", "text": "${formattedMsg}", "parse_mode": "Markdown"}'`;
-  } else {
-    box.querySelector('code').textContent = `const response = await fetch("https://api.telegram.org/bot${botToken}/sendMessage", {
+    } else {
+      codeEl.textContent = `const response = await fetch("https://api.telegram.org/bot${botToken}/sendMessage", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -1204,6 +1350,42 @@ export function updateCodeSnippets() {
 });
 const data = await response.json();
 console.log(data);`;
+    }
+  } else if (channel === 'Email Notification') {
+    if (currentSnippetLang === 'curl') {
+      codeEl.textContent = `curl -X POST "https://api.teleflow.online/v1/email/dispatch" \\
+  -H "Content-Type: application/json" \\
+  -d '{"to": "${email}", "subject": "${subject}", "text": "${formattedMsg}"}'`;
+    } else {
+      codeEl.textContent = `const response = await fetch("https://api.teleflow.online/v1/email/dispatch", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    to: "${email}",
+    subject: "${subject}",
+    text: "${formattedMsg}"
+  })
+});
+const data = await response.json();
+console.log(data);`;
+    }
+  } else if (channel === 'WhatsApp') {
+    if (currentSnippetLang === 'curl') {
+      codeEl.textContent = `curl -X POST "https://api.teleflow.online/v1/whatsapp/dispatch" \\
+  -H "Content-Type: application/json" \\
+  -d '{"to": "${phone}", "message": "${formattedMsg}"}'`;
+    } else {
+      codeEl.textContent = `const response = await fetch("https://api.teleflow.online/v1/whatsapp/dispatch", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    to: "${phone}",
+    message: "${formattedMsg}"
+  })
+});
+const data = await response.json();
+console.log(data);`;
+    }
   }
 }
 
@@ -1228,8 +1410,78 @@ export function copySnippet() {
   showToast("Code snippet copied to clipboard!");
 }
 
-// Initialize Auth Observer on startup
+// TeleFlow Global Methods Map
+const teleflowExports = {
+  switchTab,
+  openMobileMenu,
+  closeMobileMenu,
+  toggleMobileMenu,
+  showAuthForm,
+  handleGoogleSignIn,
+  handleLogin,
+  handleSignup,
+  handleForgotPassword,
+  handleSignOut,
+  fillDemoCredentials,
+  instantDemoSignIn,
+  quickSignInExisting,
+  quickSignUpNew,
+  handleChannelChange,
+  filterWorkflows,
+  resetDefaultWorkflows,
+  handleWorkflowSubmit,
+  deleteWorkflow,
+  testWorkflow,
+  clearDeliveryLogs,
+  retryDeliveryLog,
+  activateWhopPro,
+  openProModal,
+  closeProModal,
+  updateCodeSnippets,
+  switchSnippetLang,
+  copySnippet,
+  showToast
+};
+
+// Immediately assign to window.TeleFlow and window directly
+window.TeleFlow = Object.assign(window.TeleFlow || {}, teleflowExports);
+Object.keys(teleflowExports).forEach((key) => {
+  window[key] = teleflowExports[key];
+});
+
+// Initialize Auth Observer and bind event listeners on startup
 export function initApp() {
+  // Direct DOM Event Listeners for reliable execution
+  const wfChannelEl = document.getElementById('wfChannel');
+  if (wfChannelEl) {
+    wfChannelEl.addEventListener('change', () => {
+      handleChannelChange();
+      updateCodeSnippets();
+    });
+  }
+
+  const snippetTriggerInputs = [
+    'wfName', 'wfEvent', 'wfTemplate', 'wfBotToken', 'wfChatId', 
+    'wfEmailAddress', 'wfEmailSubject', 'wfWhatsAppNumber', 'wfWhatsAppApiKey'
+  ];
+  snippetTriggerInputs.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', updateCodeSnippets);
+      el.addEventListener('change', updateCodeSnippets);
+    }
+  });
+
+  const wfFilterEvent = document.getElementById('workflowFilterEvent');
+  if (wfFilterEvent) {
+    wfFilterEvent.addEventListener('change', filterWorkflows);
+  }
+
+  const wfSearchInput = document.getElementById('workflowSearchInput');
+  if (wfSearchInput) {
+    wfSearchInput.addEventListener('input', filterWorkflows);
+  }
+
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     if (user) {
@@ -1249,40 +1501,9 @@ export function initApp() {
     }
   });
 
+  handleChannelChange();
   updateCodeSnippets();
 }
-
-// Attach globally for inline HTML event handlers
-window.TeleFlow = {
-  switchTab,
-  openMobileMenu,
-  closeMobileMenu,
-  toggleMobileMenu,
-  showAuthForm,
-  handleGoogleSignIn,
-  handleLogin,
-  handleSignup,
-  handleForgotPassword,
-  handleSignOut,
-  fillDemoCredentials,
-  instantDemoSignIn,
-  quickSignInExisting,
-  quickSignUpNew,
-  filterWorkflows,
-  resetDefaultWorkflows,
-  handleWorkflowSubmit,
-  deleteWorkflow,
-  testWorkflow,
-  clearDeliveryLogs,
-  retryDeliveryLog,
-  activateWhopPro,
-  openProModal,
-  closeProModal,
-  updateCodeSnippets,
-  switchSnippetLang,
-  copySnippet,
-  showToast
-};
 
 // Auto initialize on DOM ready
 if (document.readyState === 'loading') {

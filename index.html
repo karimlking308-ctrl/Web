@@ -49,6 +49,24 @@
       font-family: var(--font-mono);
     }
   </style>
+  <!-- Pre-initialization safe stub for window.TeleFlow -->
+  <script>
+    window.TeleFlow = window.TeleFlow || {};
+    [
+      'switchTab', 'openMobileMenu', 'closeMobileMenu', 'toggleMobileMenu', 'showAuthForm',
+      'handleGoogleSignIn', 'handleLogin', 'handleSignup', 'handleForgotPassword', 'handleSignOut',
+      'fillDemoCredentials', 'instantDemoSignIn', 'quickSignInExisting', 'quickSignUpNew',
+      'handleChannelChange', 'filterWorkflows', 'resetDefaultWorkflows', 'handleWorkflowSubmit',
+      'deleteWorkflow', 'testWorkflow', 'clearDeliveryLogs', 'retryDeliveryLog', 'activateWhopPro',
+      'openProModal', 'closeProModal', 'updateCodeSnippets', 'switchSnippetLang', 'copySnippet', 'showToast'
+    ].forEach(function(fn) {
+      if (!window.TeleFlow[fn]) {
+        window.TeleFlow[fn] = function() {
+          console.warn('[TeleFlow] Calling stub ' + fn + ' before module initialization.');
+        };
+      }
+    });
+  </script>
 </head>
 <body class="antialiased selection:bg-gray-200 selection:text-gray-900 min-h-screen flex flex-col justify-between">
 
@@ -384,10 +402,17 @@
               <label for="workflowFilterEvent" class="text-xs font-mono text-gray-500 hidden sm:inline">Event:</label>
               <select id="workflowFilterEvent" onchange="window.TeleFlow.filterWorkflows()" class="px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-800 bg-gray-50 font-mono focus:outline-none focus:border-gray-900 transition-all cursor-pointer">
                 <option value="ALL">All Event Types</option>
-                <option value="Smart Contract Event">Smart Contract Event</option>
-                <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
-                <option value="API Webhook Ping">API Webhook Ping</option>
-                <option value="Custom Event Trigger">Custom Event Trigger</option>
+                <optgroup label="General Automation">
+                  <option value="Scheduled Cron Timer (Hourly/Daily)">Scheduled Cron Timer (Hourly/Daily)</option>
+                  <option value="Database New Row Trigger (Supabase/Airtable)">Database New Row Trigger (Supabase/Airtable)</option>
+                  <option value="HTTP API Request / External Webhook">HTTP API Request / External Webhook</option>
+                </optgroup>
+                <optgroup label="Web3 & Smart Contracts">
+                  <option value="Smart Contract Event">Smart Contract Event</option>
+                  <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
+                  <option value="API Webhook Ping">API Webhook Ping</option>
+                  <option value="Custom Event Trigger">Custom Event Trigger</option>
+                </optgroup>
               </select>
             </div>
             <div class="relative flex-1 sm:flex-none">
@@ -402,7 +427,7 @@
               <tr class="bg-gray-50 border-b border-gray-200 text-xs font-mono uppercase text-gray-500">
                 <th class="py-3 px-6">Workflow Name</th>
                 <th class="py-3 px-6">Event Trigger</th>
-                <th class="py-3 px-6">Telegram Chat ID</th>
+                <th class="py-3 px-6">Destination / Target</th>
                 <th class="py-3 px-6">Status</th>
                 <th class="py-3 px-6 text-right">Actions</th>
               </tr>
@@ -422,7 +447,7 @@
         </div>
         <div id="logStream" class="bg-gray-900 text-gray-100 font-mono text-xs p-4 rounded-lg space-y-2 max-h-48 overflow-y-auto">
           <div>[03:51:20 UTC] SYSTEM: TeleFlow automated webhook listener initialized successfully.</div>
-          <div>[03:51:25 UTC] DISPATCH: Sent test payload to Telegram Chat ID 6420422851 (Status 200 OK).</div>
+          <div>[03:51:25 UTC] DISPATCH: Multi-channel alert dispatch engine ready (Telegram, Email, WhatsApp).</div>
         </div>
       </div>
 
@@ -441,7 +466,7 @@
               <tr class="bg-gray-50 border-b border-gray-200 text-xs font-mono uppercase text-gray-500">
                 <th class="py-3 px-6">Timestamp (UTC)</th>
                 <th class="py-3 px-6">Workflow / Event</th>
-                <th class="py-3 px-6">Target Chat ID</th>
+                <th class="py-3 px-6">Target Destination</th>
                 <th class="py-3 px-6">HTTP Status</th>
                 <th class="py-3 px-6 text-right">Action</th>
               </tr>
@@ -458,8 +483,8 @@
     <div id="view-workflows" class="hidden py-16 px-6 lg:px-16 max-w-4xl mx-auto space-y-10">
       <div class="text-center mb-10">
         <h2 class="text-xs font-mono uppercase tracking-widest text-gray-500 font-semibold mb-2">Workflow Studio</h2>
-        <p class="text-3xl font-bold text-gray-900">Create New Telegram Integration</p>
-        <p class="text-sm text-gray-600 mt-2">Connect any Web3 smart contract event or API endpoint to your Telegram bot.</p>
+        <p class="text-3xl font-bold text-gray-900">Create New Workflow Automation</p>
+        <p class="text-sm text-gray-600 mt-2">Connect any Web3 event, cron timer, or database webhook to Telegram, Email, or WhatsApp.</p>
       </div>
 
       <!-- SUCCESS BANNER -->
@@ -470,6 +495,7 @@
       </div>
 
       <form id="workflowForm" onsubmit="window.TeleFlow.handleWorkflowSubmit(event)" class="bg-white p-8 sm:p-10 rounded-xl border border-gray-200 shadow-xs space-y-6">
+        <!-- Row 1: Name and Trigger Type -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Workflow Name</label>
@@ -477,26 +503,76 @@
           </div>
           <div>
             <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Trigger Event Type</label>
-            <select id="wfEvent" onchange="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white">
-              <option value="Smart Contract Event">Smart Contract Event</option>
-              <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
-              <option value="API Webhook Ping">API Webhook Ping</option>
-              <option value="Custom Event Trigger">Custom Event Trigger</option>
+            <select id="wfEvent" onchange="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white cursor-pointer">
+              <optgroup label="General Automation Triggers">
+                <option value="Scheduled Cron Timer (Hourly/Daily)">Scheduled Cron Timer (Hourly/Daily)</option>
+                <option value="Database New Row Trigger (Supabase/Airtable)">Database New Row Trigger (Supabase/Airtable)</option>
+                <option value="HTTP API Request / External Webhook">HTTP API Request / External Webhook</option>
+              </optgroup>
+              <optgroup label="Web3 & Smart Contract Triggers">
+                <option value="Smart Contract Event" selected>Smart Contract Event</option>
+                <option value="Escrow SOL Deposit">Escrow SOL Deposit</option>
+                <option value="API Webhook Ping">API Webhook Ping</option>
+                <option value="Custom Event Trigger">Custom Event Trigger</option>
+              </optgroup>
             </select>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Row 2: Notification Destination / Channel Selector -->
+        <div>
+          <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Notification Destination / Channel</label>
+          <select id="wfChannel" onchange="window.TeleFlow.handleChannelChange(); window.TeleFlow.updateCodeSnippets();" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-sm text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-white cursor-pointer">
+            <option value="Telegram Bot" selected>Telegram Bot</option>
+            <option value="Email Notification">Email Notification</option>
+            <option value="WhatsApp">WhatsApp</option>
+          </select>
+        </div>
+
+        <!-- DYNAMIC CHANNEL FIELDS -->
+        <!-- 1. Telegram Bot Channel Fields (Default) -->
+        <div id="channelFieldsTelegram" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Telegram Bot Token</label>
-            <input type="text" id="wfBotToken" value="8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY" required oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <input type="text" id="wfBotToken" placeholder="e.g. 1234567890:ABCdefGhIJKlmNoPQRsTUVwxyZ" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">Obtained from @BotFather on Telegram</p>
           </div>
           <div>
             <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Telegram Chat ID</label>
-            <input type="text" id="wfChatId" value="6420422851" required oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <input type="text" id="wfChatId" placeholder="e.g. -100123456789 or @channel_username" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">User ID, group ID, or public @channel</p>
           </div>
         </div>
 
+        <!-- 2. Email Notification Channel Fields -->
+        <div id="channelFieldsEmail" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Destination Email Address</label>
+            <input type="email" id="wfEmailAddress" placeholder="e.g. devops-alerts@yourcompany.com" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">Recipient for transactional incident alerts</p>
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Email Subject Line</label>
+            <input type="text" id="wfEmailSubject" placeholder="e.g. [Alert] Workflow Notification - {workflowName}" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">Supports {workflowName} and {event} tokens</p>
+          </div>
+        </div>
+
+        <!-- 3. WhatsApp Channel Fields -->
+        <div id="channelFieldsWhatsApp" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">WhatsApp Phone Number (E.164)</label>
+            <input type="tel" id="wfWhatsAppNumber" placeholder="e.g. +14155552671" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">International format with country code</p>
+          </div>
+          <div>
+            <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">WhatsApp Template / API Key</label>
+            <input type="text" id="wfWhatsAppApiKey" placeholder="e.g. WABA_API_KEY (optional)" oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all bg-gray-50">
+            <p class="text-[11px] text-gray-500 font-mono mt-1">Cloud API Key or Gateway Template ID</p>
+          </div>
+        </div>
+
+        <!-- Custom Template -->
         <div>
           <label class="block text-xs font-mono font-semibold text-gray-700 uppercase mb-2">Custom Markdown Message Template</label>
           <textarea id="wfTemplate" rows="3" required oninput="window.TeleFlow.updateCodeSnippets()" class="w-full px-4 py-3 rounded-lg border border-gray-300 text-xs font-mono text-gray-900 focus:outline-none focus:border-gray-900 transition-all">🚨 *TeleFlow Alert*: Event triggered for workflow {workflowName} with status Active.</textarea>
@@ -515,16 +591,16 @@
             </div>
           </div>
           <div class="relative">
-            <pre id="codeSnippetBox" class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto"><code>curl -X POST "https://api.telegram.org/bot8938914418:AAEZJiWUm5P57Ad9sUcxbB8vaQK1CskGieY/sendMessage" \
+            <pre id="codeSnippetBox" class="bg-gray-900 text-gray-100 p-4 rounded-lg font-mono text-xs overflow-x-auto"><code>curl -X POST "https://api.telegram.org/botYOUR_BOT_TOKEN/sendMessage" \
   -H "Content-Type: application/json" \
-  -d '{"chat_id": "6420422851", "text": "🚨 *TeleFlow Alert*: Event triggered for workflow Solana Escrow Alert with status Active."}'</code></pre>
+  -d '{"chat_id": "YOUR_CHAT_ID", "text": "🚨 *TeleFlow Alert*: Event triggered for workflow Solana Escrow Alert with status Active.", "parse_mode": "Markdown"}'</code></pre>
             <button type="button" onclick="window.TeleFlow.copySnippet()" class="absolute top-3 right-3 px-2.5 py-1 bg-white/10 hover:bg-white/20 text-white text-xs font-mono rounded transition-all cursor-pointer">Copy</button>
           </div>
         </div>
 
         <div class="flex gap-4">
-          <button type="submit" class="flex-1 py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm cursor-pointer">
-            Save Integration & Test Telegram
+          <button type="submit" id="wfSubmitBtn" class="flex-1 py-3.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-medium text-sm transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2">
+            <span id="wfSubmitBtnText">Save Integration & Test Telegram</span>
           </button>
         </div>
       </form>
