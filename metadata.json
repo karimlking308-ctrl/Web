@@ -1,6 +1,6 @@
 {
   "name": "TeleFlow",
-  "description": "TeleFlow — Professional SaaS platform for Web3 workflow automation and instant Telegram notifications.",
+  "description": "TeleFlow — Build powerful multi-channel automations. Connect Web3 events, databases, or APIs to Email, WhatsApp, and Telegram.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
