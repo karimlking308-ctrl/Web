@@ -61,13 +61,27 @@
       <span class="font-bold text-lg tracking-tight text-gray-900">TeleFlow <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
     </div>
 
-    <!-- Navigation Links -->
+    <!-- Navigation Links (Desktop) -->
     <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
       <button onclick="switchTab('dashboard')" id="nav-dashboard" class="text-gray-900 font-semibold transition-colors">Dashboard</button>
       <button onclick="switchTab('workflows')" id="nav-workflows" class="hover:text-gray-900 transition-colors">Create Workflow</button>
       <button onclick="switchTab('pricing')" id="nav-pricing" class="hover:text-gray-900 transition-colors">Pricing</button>
       <button onclick="switchTab('docs')" id="nav-docs" class="hover:text-gray-900 transition-colors">API Docs</button>
     </nav>
+
+    <!-- Mobile Hamburger Menu Button (visible on mobile only) -->
+    <div class="flex items-center md:hidden">
+      <button 
+        id="mobileMenuToggleBtn" 
+        onclick="toggleMobileMenu()" 
+        aria-label="Toggle Navigation Menu" 
+        class="p-2 rounded-lg text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-colors cursor-pointer"
+      >
+        <svg id="hamburgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
 
     <!-- Connect Wallet / Status (Temporarily commented out) -->
     <!--
@@ -78,6 +92,57 @@
     </div>
     -->
   </header>
+
+  <!-- MOBILE NAVIGATION DRAWER & BACKDROP (md:hidden) -->
+  <div id="mobileDrawerBackdrop" onclick="closeMobileMenu()" class="fixed inset-0 bg-gray-900/60 backdrop-blur-xs z-50 transition-opacity duration-300 opacity-0 pointer-events-none md:hidden"></div>
+
+  <aside id="mobileDrawer" class="fixed top-0 right-0 bottom-0 w-4/5 max-w-xs bg-white z-50 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out md:hidden border-l border-gray-200">
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-gray-200 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 cursor-pointer" onclick="switchTab('dashboard'); closeMobileMenu();">
+        <div class="w-7 h-7 rounded-lg bg-gray-900 text-white flex items-center justify-center font-bold text-xs">
+          T
+        </div>
+        <span class="font-bold text-base tracking-tight text-gray-900">TeleFlow <span class="text-xs font-mono px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
+      </div>
+      <button onclick="closeMobileMenu()" aria-label="Close navigation menu" class="p-1.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Drawer Navigation Links -->
+    <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+      <button onclick="switchTab('dashboard'); closeMobileMenu();" id="nav-mobile-dashboard" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-gray-900 bg-gray-100 transition-all text-left cursor-pointer">
+        <svg class="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <span>Dashboard</span>
+      </button>
+      <button onclick="switchTab('workflows'); closeMobileMenu();" id="nav-mobile-workflows" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all text-left cursor-pointer">
+        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+        <span>Create Workflow</span>
+      </button>
+      <button onclick="switchTab('pricing'); closeMobileMenu();" id="nav-mobile-pricing" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all text-left cursor-pointer">
+        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Pricing</span>
+      </button>
+      <button onclick="switchTab('docs'); closeMobileMenu();" id="nav-mobile-docs" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-all text-left cursor-pointer">
+        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>API Docs</span>
+      </button>
+    </nav>
+
+    <!-- Drawer Footer -->
+    <div class="p-4 border-t border-gray-200 bg-gray-50/70 space-y-3">
+      <div class="flex items-center gap-2 text-xs text-gray-600 font-mono">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Node: US-East-1 (Active)</span>
+      </div>
+      <button onclick="switchTab('workflows'); closeMobileMenu();" class="w-full py-2.5 px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-xs font-semibold font-mono text-center shadow-xs transition-colors cursor-pointer">
+        + Create Workflow
+      </button>
+    </div>
+  </aside>
 
   <!-- MAIN CONTAINER (SPA VIEWS) -->
   <main>
@@ -488,6 +553,7 @@
       tabs.forEach(t => {
         const viewEl = document.getElementById(`view-${t}`);
         const navEl = document.getElementById(`nav-${t}`);
+        const navMobileEl = document.getElementById(`nav-mobile-${t}`);
         if (viewEl) {
           if (t === tabId) {
             viewEl.classList.remove('hidden');
@@ -504,9 +570,57 @@
             navEl.classList.add('text-gray-600', 'hover:text-gray-900');
           }
         }
+        if (navMobileEl) {
+          if (t === tabId) {
+            navMobileEl.classList.add('text-gray-900', 'bg-gray-100', 'font-semibold');
+            navMobileEl.classList.remove('text-gray-600', 'hover:text-gray-900', 'hover:bg-gray-50', 'font-medium');
+          } else {
+            navMobileEl.classList.remove('text-gray-900', 'bg-gray-100', 'font-semibold');
+            navMobileEl.classList.add('text-gray-600', 'hover:text-gray-900', 'hover:bg-gray-50', 'font-medium');
+          }
+        }
       });
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    function openMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      if (drawer && backdrop) {
+        backdrop.classList.remove('opacity-0', 'pointer-events-none');
+        backdrop.classList.add('opacity-100');
+        drawer.classList.remove('translate-x-full');
+        drawer.classList.add('translate-x-0');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      const backdrop = document.getElementById('mobileDrawerBackdrop');
+      if (drawer && backdrop) {
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('translate-x-full');
+        document.body.style.overflow = '';
+      }
+    }
+
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobileDrawer');
+      if (drawer && drawer.classList.contains('translate-x-0')) {
+        closeMobileMenu();
+      } else {
+        openMobileMenu();
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMobileMenu();
+      }
+    });
 
     function initWorkflows() {
       let workflows = JSON.parse(localStorage.getItem('teleflow_workflows') || 'null');
