@@ -69,12 +69,14 @@
       <button onclick="switchTab('docs')" id="nav-docs" class="hover:text-gray-900 transition-colors">API Docs</button>
     </nav>
 
-    <!-- Connect Wallet / Status -->
+    <!-- Connect Wallet / Status (Temporarily commented out) -->
+    <!--
     <div>
       <button id="walletBtn" onclick="toggleWallet()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-white transition-all shadow-sm">
         Connect Wallet
       </button>
     </div>
+    -->
   </header>
 
   <!-- MAIN CONTAINER (SPA VIEWS) -->
@@ -820,8 +822,10 @@ console.log(data);`;
           console.error(e);
         }
         connectedPublicKey = null;
-        btn.textContent = "Connect Wallet";
-        btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-white transition-all shadow-sm";
+        if (btn) {
+          btn.textContent = "Connect Wallet";
+          btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-900 hover:bg-gray-800 text-white transition-all shadow-sm";
+        }
         showToast("Wallet disconnected.");
         return;
       }
@@ -860,8 +864,10 @@ console.log(data);`;
         }
 
         const shortAddr = pubKey.substring(0, 4) + "..." + pubKey.substring(pubKey.length - 4);
-        btn.textContent = `${shortAddr} (${balanceSOL} SOL)`;
-        btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-900 border border-gray-300 transition-all shadow-sm";
+        if (btn) {
+          btn.textContent = `${shortAddr} (${balanceSOL} SOL)`;
+          btn.className = "px-4 py-2 rounded-lg text-xs font-semibold bg-gray-100 text-gray-900 border border-gray-300 transition-all shadow-sm";
+        }
         showToast(`Connected: ${shortAddr} | Balance: ${balanceSOL} SOL`);
 
       } catch (err) {
