@@ -1,6 +1,8 @@
 import {
   auth,
   db,
+  googleProvider,
+  signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -197,6 +199,8 @@ export function showAuthForm(mode) {
   const tabLogin = document.getElementById('tabBtnLogin');
   const tabSignup = document.getElementById('tabBtnSignup');
   const authError = document.getElementById('authErrorMessage');
+  const googleSection = document.getElementById('googleAuthSection');
+  const googleBtnLabel = document.getElementById('googleAuthBtnLabel');
   
   if (authError) authError.classList.add('hidden');
 
@@ -204,6 +208,8 @@ export function showAuthForm(mode) {
     if (loginForm) loginForm.classList.remove('hidden');
     if (signupForm) signupForm.classList.add('hidden');
     if (forgotForm) forgotForm.classList.add('hidden');
+    if (googleSection) googleSection.classList.remove('hidden');
+    if (googleBtnLabel) googleBtnLabel.textContent = 'Sign In with Google';
     if (tabLogin) {
       tabLogin.className = "flex-1 py-2.5 text-xs font-semibold rounded-lg bg-gray-900 text-white shadow-xs transition-all";
     }
@@ -214,6 +220,8 @@ export function showAuthForm(mode) {
     if (loginForm) loginForm.classList.add('hidden');
     if (signupForm) signupForm.classList.remove('hidden');
     if (forgotForm) forgotForm.classList.add('hidden');
+    if (googleSection) googleSection.classList.remove('hidden');
+    if (googleBtnLabel) googleBtnLabel.textContent = 'Sign Up with Google';
     if (tabSignup) {
       tabSignup.className = "flex-1 py-2.5 text-xs font-semibold rounded-lg bg-gray-900 text-white shadow-xs transition-all";
     }
@@ -224,6 +232,103 @@ export function showAuthForm(mode) {
     if (loginForm) loginForm.classList.add('hidden');
     if (signupForm) signupForm.classList.add('hidden');
     if (forgotForm) forgotForm.classList.remove('hidden');
+    if (googleSection) googleSection.classList.add('hidden');
+  }
+}
+
+// Handle Google Sign In (Primary Auth Method)
+export async function handleGoogleSignIn() {
+  const googleBtn = document.getElementById('googleAuthPrimaryBtn');
+  const googleBtnLabel = document.getElementById('googleAuthBtnLabel');
+  const authError = document.getElementById('authErrorMessage');
+  if (authError) authError.classList.add('hidden');
+
+  const origLabel = googleBtnLabel ? googleBtnLabel.textContent : 'Continue with Google';
+
+  try {
+    if (googleBtn) {
+      googleBtn.disabled = true;
+      if (googleBtnLabel) {
+        googleBtnLabel.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg> Connecting with Google...
+        `;
+      }
+    }
+
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    const userId = user.uid;
+
+    // Check if user workspace doc exists; provision if first time
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+    if (!userSnap.exists()) {
+      await setDoc(userRef, {
+        userId,
+        email: user.email,
+        displayName: user.displayName || '',
+        photoURL: user.photoURL || '',
+        tier: 'free',
+        whopSubscriptionActive: false,
+        totalNotificationsSent: 12,
+        createdAt: new Date().toISOString()
+      });
+
+      // Provision starter workflows
+      for (const wf of defaultStarterWorkflows) {
+        const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
+        await setDoc(doc(db, 'users', userId, 'workflows', wfId), {
+          id: wfId,
+          userId,
+          name: wf.name,
+          event: wf.event,
+          botToken: wf.botToken,
+          chatId: wf.chatId,
+          template: wf.template,
+          status: wf.status,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      // Provision starter audit logs
+      for (const log of defaultStarterLogs) {
+        const logId = 'log_' + Math.random().toString(36).substring(2, 9);
+        await setDoc(doc(db, 'users', userId, 'deliveryLogs', logId), {
+          id: logId,
+          userId,
+          name: log.name,
+          chatId: log.chatId,
+          status: log.status,
+          payload: log.payload,
+          timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'
+        });
+      }
+    }
+
+    showToast(`Signed in as ${user.displayName || user.email}! Welcome to TeleFlow.`);
+  } catch (err) {
+    console.error('Google Sign-In Error:', err);
+    if (err.code === 'auth/popup-closed-by-user') {
+      showToast('Google sign-in popup was closed.');
+    } else if (err.code === 'auth/cancelled-popup-request') {
+      // Ignored
+    } else if (err.code === 'auth/popup-blocked') {
+      displayAuthError('Popup blocked by browser. Please allow popups or use Email/Password sign in.');
+    } else if (err.code === 'auth/account-exists-with-different-credential') {
+      displayAuthError('An account already exists with this email using a different sign-in method. Please sign in with Email & Password.');
+    } else {
+      displayAuthError(err.message || 'Failed to authenticate with Google. Please try again.');
+    }
+  } finally {
+    if (googleBtn) {
+      googleBtn.disabled = false;
+      if (googleBtnLabel) {
+        googleBtnLabel.textContent = origLabel;
+      }
+    }
   }
 }
 
@@ -580,18 +685,39 @@ function updateUserUI() {
   // Header user display
   const userEmailDisplay = document.getElementById('headerUserEmail');
   const userTierBadge = document.getElementById('headerTierBadge');
+  const userAvatar = document.getElementById('headerUserAvatar');
   const headerAuthSection = document.getElementById('headerAuthSection');
   const headerAnonSection = document.getElementById('headerAnonSection');
   
   // Mobile drawer user display
   const mobileUserEmail = document.getElementById('mobileUserEmail');
   const mobileTierBadge = document.getElementById('mobileTierBadge');
+  const mobileUserAvatar = document.getElementById('mobileUserAvatar');
   const mobileAuthSection = document.getElementById('mobileAuthSection');
   const mobileAnonSection = document.getElementById('mobileAnonSection');
 
   if (currentUser) {
-    if (userEmailDisplay) userEmailDisplay.textContent = currentUser.email;
-    if (mobileUserEmail) mobileUserEmail.textContent = currentUser.email;
+    const displayNameOrEmail = currentUser.displayName || currentUser.email || 'Builder';
+    if (userEmailDisplay) userEmailDisplay.textContent = displayNameOrEmail;
+    if (mobileUserEmail) mobileUserEmail.textContent = displayNameOrEmail;
+
+    if (userAvatar) {
+      if (currentUser.photoURL) {
+        userAvatar.src = currentUser.photoURL;
+        userAvatar.classList.remove('hidden');
+      } else {
+        userAvatar.classList.add('hidden');
+      }
+    }
+
+    if (mobileUserAvatar) {
+      if (currentUser.photoURL) {
+        mobileUserAvatar.src = currentUser.photoURL;
+        mobileUserAvatar.classList.remove('hidden');
+      } else {
+        mobileUserAvatar.classList.add('hidden');
+      }
+    }
 
     const badgeContent = isPro 
       ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-500 text-gray-950">PRO BUILDER</span>' 
@@ -1133,6 +1259,7 @@ window.TeleFlow = {
   closeMobileMenu,
   toggleMobileMenu,
   showAuthForm,
+  handleGoogleSignIn,
   handleLogin,
   handleSignup,
   handleForgotPassword,

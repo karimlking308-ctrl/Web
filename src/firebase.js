@@ -6,7 +6,9 @@ import {
   signOut, 
   onAuthStateChanged,
   sendPasswordResetEmail,
-  updateProfile
+  updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup
 } from 'firebase/auth';
 import { 
   getFirestore, 
@@ -31,6 +33,8 @@ export const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Auth
 export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({ prompt: 'select_account' });
 
 // Initialize Cloud Firestore (support custom databaseId if configured)
 export const db = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)')
@@ -44,6 +48,7 @@ export {
   onAuthStateChanged,
   sendPasswordResetEmail,
   updateProfile,
+  signInWithPopup,
   collection,
   doc,
   getDoc,
@@ -57,3 +62,4 @@ export {
   orderBy,
   onSnapshot
 };
+
