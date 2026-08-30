@@ -1,0 +1,62 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User account profile and subscription tier",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "tier": { "type": "string", "enum": ["free", "pro"] },
+        "createdAt": { "type": "string" },
+        "totalNotificationsSent": { "type": "number" },
+        "whopSubscriptionActive": { "type": "boolean" }
+      },
+      "required": ["userId", "email", "tier", "createdAt"]
+    },
+    "Workflow": {
+      "title": "Workflow",
+      "description": "User created automated webhook workflow",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "name": { "type": "string" },
+        "chatId": { "type": "string" },
+        "source": { "type": "string" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "name", "chatId", "source", "status", "createdAt"]
+    },
+    "DeliveryLog": {
+      "title": "DeliveryLog",
+      "description": "Log of webhook execution and Telegram delivery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "name": { "type": "string" },
+        "chatId": { "type": "string" },
+        "status": { "type": "string" },
+        "payload": { "type": "string" }
+      },
+      "required": ["id", "userId", "timestamp", "name", "chatId", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Isolated user profile document"
+    },
+    "/users/{userId}/workflows/{workflowId}": {
+      "schema": "Workflow",
+      "description": "User isolated workflows collection"
+    },
+    "/users/{userId}/deliveryLogs/{logId}": {
+      "schema": "DeliveryLog",
+      "description": "User isolated webhook delivery logs"
+    }
+  }
+}

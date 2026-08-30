@@ -3,6 +3,6 @@
   "description": "TeleFlow — Professional SaaS platform for Web3 workflow automation and instant Telegram notifications.",
   "requestFramePermissions": [],
   "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_AI"
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]
 }

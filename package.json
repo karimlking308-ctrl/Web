@@ -8,7 +8,9 @@
     "build": "vite build",
     "lint": "echo 'No linting required'"
   },
-  "dependencies": {},
+  "dependencies": {
+    "firebase": "^12.18.0"
+  },
   "devDependencies": {
     "vite": "^5.3.1"
   }
