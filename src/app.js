@@ -1233,6 +1233,17 @@ export function closeProModal() {
   if (modal) modal.classList.add('hidden');
 }
 
+// Terms of Service Modal Controls
+export function openTermsModal() {
+  const modal = document.getElementById('termsModal');
+  if (modal) modal.classList.remove('hidden');
+}
+
+export function closeTermsModal() {
+  const modal = document.getElementById('termsModal');
+  if (modal) modal.classList.add('hidden');
+}
+
 // Instant Code Snippets Generator
 export function updateCodeSnippets() {
   const name = document.getElementById('wfName')?.value || 'My Automation Workflow';
@@ -1359,6 +1370,8 @@ const teleflowExports = {
   activateWhopPro,
   openProModal,
   closeProModal,
+  openTermsModal,
+  closeTermsModal,
   updateCodeSnippets,
   switchSnippetLang,
   copySnippet,

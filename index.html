@@ -76,7 +76,7 @@
       <div class="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center font-bold text-sm shadow-xs">
         T
       </div>
-      <span class="font-bold text-lg tracking-tight text-gray-900">TeleFlow <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
+      <span class="font-bold text-lg tracking-tight text-gray-900">TeleFlow™ <span class="text-xs font-mono px-2 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
     </div>
 
     <!-- Navigation Links (Desktop) -->
@@ -142,7 +142,7 @@
         <div class="w-7 h-7 rounded-lg bg-gray-900 text-white flex items-center justify-center font-bold text-xs">
           T
         </div>
-        <span class="font-bold text-base tracking-tight text-gray-900">TeleFlow <span class="text-xs font-mono px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
+        <span class="font-bold text-base tracking-tight text-gray-900">TeleFlow™ <span class="text-xs font-mono px-1.5 py-0.5 bg-gray-100 rounded text-gray-600 border border-gray-200">SaaS</span></span>
       </div>
       <button onclick="window.TeleFlow.closeMobileMenu()" aria-label="Close navigation menu" class="p-1.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -750,16 +750,17 @@
       </div>
 
       <!-- Privacy & Terms Policy -->
-      <div class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs space-y-4 mt-8">
+      <div id="terms-section" class="bg-white p-8 rounded-xl border border-gray-200 shadow-xs space-y-4 mt-8">
         <div>
           <span class="text-xs font-mono uppercase tracking-widest text-emerald-600 font-semibold mb-1 block">Compliance & Legal</span>
           <h3 class="text-xl font-bold text-gray-900 tracking-tight">Privacy & Terms Policy</h3>
-          <p class="text-sm text-gray-600 mt-1">Our commitment to data protection, cloud database isolation, and API terms.</p>
+          <p class="text-sm text-gray-600 mt-1">Our commitment to data protection, intellectual property rights, and API terms.</p>
         </div>
         <div class="text-xs text-gray-600 space-y-3 leading-relaxed">
-          <p><strong class="text-gray-900">Data Privacy:</strong> TeleFlow stores user configurations in isolated Firestore collections with strict row-level security. We do not harvest, store, or sell personal identifiable information (PII) to third parties.</p>
+          <p><strong class="text-gray-900">Intellectual Property Rights:</strong> All code, software architecture, design systems, visual assets, documentation, and trademarks associated with TeleFlow™ are the exclusive intellectual property of TeleFlow™. Unauthorized copying, reproduction, distribution, reverse engineering, or modification of TeleFlow™ code and assets is strictly prohibited.</p>
+          <p><strong class="text-gray-900">Data Privacy:</strong> TeleFlow™ stores user configurations in isolated Firestore collections with strict row-level security. We do not harvest, store, or sell personal identifiable information (PII) to third parties.</p>
           <p><strong class="text-gray-900">Security & Access Control:</strong> Each workspace is isolated to the authenticated user ID (`request.auth.uid`), guaranteeing multi-tenant confidentiality.</p>
-          <p><strong class="text-gray-900">API Usage & Acceptable Use:</strong> Users agree not to utilize TeleFlow automated webhook dispatchers for spamming, phishing, or malicious smart contract exploits.</p>
+          <p><strong class="text-gray-900">API Usage & Acceptable Use:</strong> Users agree not to utilize TeleFlow™ automated webhook dispatchers for spamming, phishing, or malicious smart contract exploits.</p>
         </div>
       </div>
     </div>
@@ -806,6 +807,62 @@
     </div>
   </div>
 
+  <!-- TERMS OF SERVICE & IP RIGHTS MODAL -->
+  <div id="termsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-xs">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-2xl max-w-lg w-full p-6 sm:p-8 space-y-6 relative max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-gray-200 pb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-gray-900 text-white flex items-center justify-center font-bold text-sm">
+            T
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-gray-900">Terms of Service</h3>
+            <p class="text-xs text-gray-500 font-mono">TeleFlow™ Legal & Usage Terms</p>
+          </div>
+        </div>
+        <button onclick="window.TeleFlow.closeTermsModal()" class="text-gray-400 hover:text-gray-700 p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs text-gray-600 leading-relaxed">
+        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 space-y-1.5">
+          <h4 class="font-bold text-sm text-amber-950 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457-.39-2.823-1.07-4"></path></svg>
+            Intellectual Property Rights Notice
+          </h4>
+          <p class="text-amber-900 leading-normal">
+            All source code, design systems, application architecture, proprietary algorithms, visual assets, software documentation, and registered or unregistered trademarks (including <strong>TeleFlow™</strong>) are the exclusive intellectual property of TeleFlow™.
+          </p>
+          <p class="text-amber-900 font-semibold leading-normal">
+            Unauthorized copying, reproduction, distribution, reverse engineering, decompilation, scraping, or creation of derivative works of TeleFlow's code and assets in any form is strictly prohibited without prior written permission.
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="font-bold text-gray-900 text-sm">1. Acceptance of Terms</h5>
+          <p>By accessing or using TeleFlow™, you agree to be bound by these Terms of Service and all applicable intellectual property protection standards.</p>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="font-bold text-gray-900 text-sm">2. Proprietary Assets & Code Security</h5>
+          <p>All TeleFlow™ technology, codebases, user interfaces, and automated notification routines are strictly protected. Rights not expressly granted herein are fully reserved by TeleFlow™.</p>
+        </div>
+
+        <div class="space-y-2">
+          <h5 class="font-bold text-gray-900 text-sm">3. Acceptable Use Policy</h5>
+          <p>Users agree not to utilize TeleFlow™ automated webhook dispatchers or API services for spamming, phishing, automated abuse, or illegal activities.</p>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-gray-200">
+        <button onclick="window.TeleFlow.closeTermsModal()" class="w-full py-2.5 rounded-lg bg-gray-900 hover:bg-gray-800 text-white font-semibold text-xs font-mono transition-all cursor-pointer">
+          I Understand & Accept
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
   <footer class="border-t border-gray-200 bg-white px-6 lg:px-16 py-12 text-sm text-gray-600 mt-20">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
@@ -813,15 +870,15 @@
         <div class="w-6 h-6 rounded bg-gray-900 text-white flex items-center justify-center font-bold text-xs">
           T
         </div>
-        <span class="font-bold text-gray-900">TeleFlow SaaS</span>
+        <span class="font-bold text-gray-900">TeleFlow™</span>
       </div>
       <p class="text-xs text-gray-500 font-mono">
-        &copy; 2026 TeleFlow Protocol. Web3 Workflow & Telegram Automation. Powered by Firebase & Whop.
+        &copy; 2026 TeleFlow™. All rights reserved.
       </p>
       <div class="flex items-center gap-6 text-xs font-mono text-gray-500">
-        <a href="#dashboard" onclick="window.TeleFlow.switchTab('dashboard')" class="hover:text-gray-900">Privacy</a>
-        <a href="#dashboard" onclick="window.TeleFlow.switchTab('dashboard')" class="hover:text-gray-900">Terms</a>
-        <a href="#dashboard" onclick="window.TeleFlow.switchTab('dashboard')" class="hover:text-gray-900">Security Audit</a>
+        <a href="javascript:void(0)" onclick="window.TeleFlow.openTermsModal()" class="hover:text-gray-900 cursor-pointer">Terms of Service</a>
+        <a href="#terms-section" onclick="window.TeleFlow.switchTab('docs')" class="hover:text-gray-900 cursor-pointer">Privacy Policy</a>
+        <a href="#terms-section" onclick="window.TeleFlow.switchTab('docs')" class="hover:text-gray-900 cursor-pointer">Security Audit</a>
       </div>
     </div>
   </footer>
