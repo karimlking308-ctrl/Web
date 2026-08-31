@@ -418,7 +418,7 @@
             <div class="relative flex-1 sm:flex-none">
               <input type="text" id="workflowSearchInput" oninput="window.TeleFlow.filterWorkflows()" placeholder="Search workflows..." class="w-full sm:w-48 px-3 py-1.5 rounded-lg border border-gray-300 text-xs text-gray-800 bg-gray-50 font-mono focus:outline-none focus:border-gray-900 transition-all">
             </div>
-            <button onclick="window.TeleFlow.resetDefaultWorkflows()" class="text-xs font-mono text-gray-500 hover:text-gray-900 underline whitespace-nowrap cursor-pointer">Reset Starters</button>
+            <button onclick="window.TeleFlow.resetDefaultWorkflows()" class="text-xs font-mono text-gray-500 hover:text-gray-900 underline whitespace-nowrap cursor-pointer">Refresh</button>
           </div>
         </div>
         <div class="overflow-x-auto">
@@ -446,8 +446,7 @@
           <span class="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Listening for Webhooks</span>
         </div>
         <div id="logStream" class="bg-gray-900 text-gray-100 font-mono text-xs p-4 rounded-lg space-y-2 max-h-48 overflow-y-auto">
-          <div>[03:51:20 UTC] SYSTEM: TeleFlow automated webhook listener initialized successfully.</div>
-          <div>[03:51:25 UTC] DISPATCH: Multi-channel alert dispatch engine ready (Telegram, Email, WhatsApp).</div>
+          <div class="text-gray-400 italic">[SYSTEM] Webhook listener connected. Waiting for automated events...</div>
         </div>
       </div>
 

@@ -34,62 +34,6 @@ let unsubWorkflows = null;
 let unsubLogs = null;
 let currentSnippetLang = 'curl';
 
-const defaultStarterWorkflows = [
-  {
-    name: 'Solana Escrow Bot Alert',
-    event: 'Escrow SOL Deposit',
-    channel: 'Telegram Bot',
-    botToken: '',
-    chatId: '',
-    destination: 'Telegram Channel',
-    template: '🚨 *TeleFlow Alert*: Solana Escrow deposit verified for {workflowName}.',
-    status: 'Active'
-  },
-  {
-    name: 'Smart Contract Monitor',
-    event: 'Smart Contract Event',
-    channel: 'Email Notification',
-    botToken: '',
-    chatId: '',
-    emailAddress: 'alerts@yourcompany.com',
-    destination: 'alerts@yourcompany.com',
-    template: '🚨 *TeleFlow Alert*: Smart contract event detected for {workflowName}.',
-    status: 'Active'
-  },
-  {
-    name: 'API Webhook Dispatcher',
-    event: 'HTTP API Request / External Webhook',
-    channel: 'WhatsApp',
-    botToken: '',
-    chatId: '',
-    whatsAppNumber: '+14155552671',
-    destination: '+14155552671',
-    template: '🚨 *TeleFlow Alert*: API Webhook ping received for {workflowName}.',
-    status: 'Active'
-  }
-];
-
-const defaultStarterLogs = [
-  {
-    name: 'Solana Escrow Bot Alert',
-    chatId: 'Telegram Channel',
-    status: '200 OK',
-    payload: '🚨 *TeleFlow Alert*: Solana Escrow deposit verified for Solana Escrow Bot Alert.'
-  },
-  {
-    name: 'Smart Contract Monitor',
-    chatId: 'alerts@yourcompany.com',
-    status: '200 OK',
-    payload: '🚨 *TeleFlow Alert*: Smart contract event detected for Smart Contract Monitor.'
-  },
-  {
-    name: 'API Webhook Dispatcher',
-    chatId: '+14155552671',
-    status: '200 OK',
-    payload: '🚨 *TeleFlow Alert*: API Webhook ping received for API Webhook Dispatcher.'
-  }
-];
-
 // Helper: Escape HTML to avoid XSS
 function escapeHtml(str) {
   if (!str) return '';
@@ -326,45 +270,10 @@ export async function syncUserProfile(user) {
     if (!userSnapshot.exists()) {
       userData.tier = 'free';
       userData.whopSubscriptionActive = false;
-      userData.totalNotificationsSent = 12;
+      userData.totalNotificationsSent = 0;
       userData.createdAt = serverTimestamp();
 
       await setDoc(userRef, userData, { merge: true });
-
-      // Provision starter workflows
-      for (const wf of defaultStarterWorkflows) {
-        const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
-        await setDoc(doc(db, 'users', user.uid, 'workflows', wfId), {
-          id: wfId,
-          userId: user.uid,
-          name: wf.name,
-          event: wf.event,
-          channel: wf.channel || 'Telegram Bot',
-          botToken: wf.botToken || '',
-          chatId: wf.chatId || '',
-          emailAddress: wf.emailAddress || '',
-          emailSubject: wf.emailSubject || '',
-          whatsAppNumber: wf.whatsAppNumber || '',
-          destination: wf.destination || '',
-          template: wf.template,
-          status: wf.status,
-          createdAt: new Date().toISOString()
-        });
-      }
-
-      // Provision starter delivery audit logs
-      for (const log of defaultStarterLogs) {
-        const logId = 'log_' + Math.random().toString(36).substring(2, 9);
-        await setDoc(doc(db, 'users', user.uid, 'deliveryLogs', logId), {
-          id: logId,
-          userId: user.uid,
-          name: log.name,
-          chatId: log.chatId,
-          status: log.status,
-          payload: log.payload,
-          timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'
-        });
-      }
     } else {
       await setDoc(userRef, userData, { merge: true });
     }
@@ -493,40 +402,9 @@ export async function instantDemoSignIn() {
           email: demoEmail,
           tier: 'free',
           whopSubscriptionActive: false,
-          totalNotificationsSent: 12,
+          totalNotificationsSent: 0,
           createdAt: new Date().toISOString()
         });
-        for (const wf of defaultStarterWorkflows) {
-          const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
-          await setDoc(doc(db, 'users', userId, 'workflows', wfId), {
-            id: wfId,
-            userId,
-            name: wf.name,
-            event: wf.event,
-            channel: wf.channel || 'Telegram Bot',
-            botToken: wf.botToken || '',
-            chatId: wf.chatId || '',
-            emailAddress: wf.emailAddress || '',
-            emailSubject: wf.emailSubject || '',
-            whatsAppNumber: wf.whatsAppNumber || '',
-            destination: wf.destination || '',
-            template: wf.template,
-            status: wf.status,
-            createdAt: new Date().toISOString()
-          });
-        }
-        for (const log of defaultStarterLogs) {
-          const logId = 'log_' + Math.random().toString(36).substring(2, 9);
-          await setDoc(doc(db, 'users', userId, 'deliveryLogs', logId), {
-            id: logId,
-            userId,
-            name: log.name,
-            chatId: log.chatId,
-            status: log.status,
-            payload: log.payload,
-            timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'
-          });
-        }
         showToast('Demo workspace provisioned & signed in!');
       } catch (createErr) {
         if (createErr.code === 'auth/email-already-in-use') {
@@ -624,44 +502,9 @@ export async function handleSignup(e) {
       email,
       tier: 'free',
       whopSubscriptionActive: false,
-      totalNotificationsSent: 12,
+      totalNotificationsSent: 0,
       createdAt: new Date().toISOString()
     });
-
-    // Initialize default workflows for this new tenant
-    for (const wf of defaultStarterWorkflows) {
-      const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
-      await setDoc(doc(db, 'users', userId, 'workflows', wfId), {
-        id: wfId,
-        userId,
-        name: wf.name,
-        event: wf.event,
-        channel: wf.channel || 'Telegram Bot',
-        botToken: wf.botToken || '',
-        chatId: wf.chatId || '',
-        emailAddress: wf.emailAddress || '',
-        emailSubject: wf.emailSubject || '',
-        whatsAppNumber: wf.whatsAppNumber || '',
-        destination: wf.destination || '',
-        template: wf.template,
-        status: wf.status,
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    // Initialize starter delivery audit logs
-    for (const log of defaultStarterLogs) {
-      const logId = 'log_' + Math.random().toString(36).substring(2, 9);
-      await setDoc(doc(db, 'users', userId, 'deliveryLogs', logId), {
-        id: logId,
-        userId,
-        name: log.name,
-        chatId: log.chatId,
-        status: log.status,
-        payload: log.payload,
-        timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'
-      });
-    }
 
     showToast('Account created! Welcome to TeleFlow.');
   } catch (err) {
@@ -898,7 +741,36 @@ function renderWorkflowsTable(list) {
   if (!tbody) return;
   tbody.innerHTML = '';
   if (!list || list.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="py-8 px-6 text-center text-gray-500 text-xs font-mono">No matching workflows configured in your isolated workspace.</td></tr>`;
+    if (workflows.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-12 px-6 text-center">
+            <div class="max-w-sm mx-auto flex flex-col items-center justify-center text-center space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-sm font-bold text-gray-900">No workflows found</h4>
+                <p class="text-xs text-gray-500 leading-relaxed">You have no active workflows yet. Create your first workflow to begin automating notifications in real-time.</p>
+              </div>
+              <button onclick="window.TeleFlow.switchTab('workflows')" class="mt-1 px-4 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold font-mono transition-all shadow-xs cursor-pointer">
+                + Create Workflow
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    } else {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="py-10 px-6 text-center text-gray-500 text-xs font-mono">
+            No workflows match your search query or filter.
+          </td>
+        </tr>
+      `;
+    }
     return;
   }
   list.forEach((item) => {
@@ -932,45 +804,11 @@ function renderWorkflowsTable(list) {
   });
 }
 
-// Reset Default Workflows for current tenant
+// Refresh Workflows for current tenant
 export async function resetDefaultWorkflows() {
   if (!currentUser) return;
-  showToast("Resetting workflows to defaults...");
-
-  try {
-    // Delete existing workflows
-    const workflowsCol = collection(db, 'users', currentUser.uid, 'workflows');
-    const snap = await getDocs(workflowsCol);
-    for (const d of snap.docs) {
-      await deleteDoc(d.ref);
-    }
-
-    // Add starter workflows
-    for (const wf of defaultStarterWorkflows) {
-      const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
-      await setDoc(doc(db, 'users', currentUser.uid, 'workflows', wfId), {
-        id: wfId,
-        userId: currentUser.uid,
-        name: wf.name,
-        event: wf.event,
-        channel: wf.channel || 'Telegram Bot',
-        botToken: wf.botToken || '',
-        chatId: wf.chatId || '',
-        emailAddress: wf.emailAddress || '',
-        emailSubject: wf.emailSubject || '',
-        whatsAppNumber: wf.whatsAppNumber || '',
-        destination: wf.destination || '',
-        template: wf.template,
-        status: wf.status,
-        createdAt: new Date().toISOString()
-      });
-    }
-
-    showToast("Workflows reset to defaults successfully.");
-  } catch (err) {
-    console.error("Reset error:", err);
-    showToast("Error resetting workflows.");
-  }
+  filterWorkflows();
+  showToast("Workflows refreshed from Firestore.");
 }
 
 // Save Workflow
@@ -1225,7 +1063,21 @@ function renderDeliveryLogsTable(logs) {
   if (!tbody) return;
   tbody.innerHTML = '';
   if (!logs || logs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" class="py-6 px-6 text-center text-gray-500 text-xs font-mono">No delivery logs recorded yet.</td></tr>`;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" class="py-10 px-6 text-center">
+          <div class="max-w-sm mx-auto flex flex-col items-center justify-center text-center space-y-2">
+            <div class="w-10 h-10 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+            </div>
+            <span class="text-xs font-semibold text-gray-800">No delivery logs recorded</span>
+            <p class="text-xs text-gray-500 font-mono">Real-time webhook and notification audit events will appear here once triggered.</p>
+          </div>
+        </td>
+      </tr>
+    `;
     return;
   }
   logs.forEach((item) => {
