@@ -753,7 +753,7 @@ function renderWorkflowsTable(list) {
               </div>
               <div class="space-y-1">
                 <h4 class="text-sm font-bold text-gray-900">No workflows found</h4>
-                <p class="text-xs text-gray-500 leading-relaxed">You have no active workflows yet. Create your first workflow to begin automating notifications in real-time.</p>
+                <p class="text-xs text-gray-500 leading-relaxed">No workflows found. Create your first workflow above to begin automating notifications in real-time.</p>
               </div>
               <button onclick="window.TeleFlow.switchTab('workflows')" class="mt-1 px-4 py-2 rounded-lg bg-gray-900 hover:bg-gray-800 text-white text-xs font-semibold font-mono transition-all shadow-xs cursor-pointer">
                 + Create Workflow
@@ -1235,8 +1235,8 @@ export function closeProModal() {
 
 // Instant Code Snippets Generator
 export function updateCodeSnippets() {
-  const name = document.getElementById('wfName')?.value || 'Solana Escrow Alert';
-  const event = document.getElementById('wfEvent')?.value || 'Smart Contract Event';
+  const name = document.getElementById('wfName')?.value || 'My Automation Workflow';
+  const event = document.getElementById('wfEvent')?.value || 'Webhook Event';
   const channel = document.getElementById('wfChannel')?.value || 'Telegram Bot';
   const botToken = document.getElementById('wfBotToken')?.value?.trim() || 'YOUR_BOT_TOKEN';
   const chatId = document.getElementById('wfChatId')?.value?.trim() || 'YOUR_CHAT_ID';
