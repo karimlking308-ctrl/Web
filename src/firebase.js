@@ -31,15 +31,16 @@ import {
 
 import importedConfig from '../firebase-applet-config.json';
 
-// Easy-to-update Firebase Configuration Object
+// Primary Firebase Configuration Object
 export const firebaseConfig = {
-  apiKey: importedConfig.apiKey || "YOUR_API_KEY",
-  authDomain: importedConfig.authDomain || "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: importedConfig.projectId || "YOUR_PROJECT_ID",
-  storageBucket: importedConfig.storageBucket || "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: importedConfig.messagingSenderId || "YOUR_MESSAGING_SENDER_ID",
-  appId: importedConfig.appId || "YOUR_APP_ID",
-  firestoreDatabaseId: importedConfig.firestoreDatabaseId || ""
+  apiKey: "AIzaSyDgFxoXi9cG78IEwpCSl63Gdg0vy5RJGZM",
+  authDomain: "teleflow-8fb45.firebaseapp.com",
+  projectId: "teleflow-8fb45",
+  storageBucket: "teleflow-8fb45.firebasestorage.app",
+  messagingSenderId: "808960027782",
+  appId: "1:808960027782:web:54f365f20b186c16043507",
+  measurementId: "G-ZSN0XC5PJ5",
+  firestoreDatabaseId: importedConfig.firestoreDatabaseId || "(default)"
 };
 
 // Initialize Firebase App
