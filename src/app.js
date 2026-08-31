@@ -3,8 +3,6 @@ import {
   db,
   googleProvider,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -374,27 +372,14 @@ export async function syncUserProfile(user) {
   }
 }
 
-// Process authentication redirect results upon returning to the site
-export async function processRedirectResult() {
-  try {
-    const result = await getRedirectResult(auth);
-    if (result && result.user) {
-      console.log('🎉 Successfully authenticated via redirect:', result.user.email);
-      await syncUserProfile(result.user);
-      showToast(`Signed in as ${result.user.displayName || result.user.email}! Welcome to TeleFlow.`);
-      switchTab('dashboard');
-    }
-  } catch (error) {
-    handleAuthError(error, 'getRedirectResult');
-  }
-}
-
-// Handle Google Sign In via signInWithRedirect
+// Handle Google Sign In via signInWithPopup
 export async function handleGoogleSignIn() {
   const googleBtn = document.getElementById('googleAuthPrimaryBtn');
   const googleBtnLabel = document.getElementById('googleAuthBtnLabel');
   const authError = document.getElementById('authErrorMessage');
   if (authError) authError.classList.add('hidden');
+
+  const origLabel = googleBtnLabel ? googleBtnLabel.textContent : 'Sign In with Google';
 
   try {
     if (googleBtn) {
@@ -404,19 +389,25 @@ export async function handleGoogleSignIn() {
           <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg> Redirecting to Google...
+          </svg> Connecting with Google...
         `;
       }
     }
 
-    console.log('Initiating Google Sign-In redirect...');
-    await signInWithRedirect(auth, googleProvider);
+    console.log('Initiating Google Sign-In popup...');
+    const result = await signInWithPopup(auth, googleProvider);
+    if (result && result.user) {
+      console.log('🎉 Successfully authenticated via popup:', result.user.email);
+      await syncUserProfile(result.user);
+      showToast(`Signed in as ${result.user.displayName || result.user.email}! Welcome to TeleFlow.`);
+    }
   } catch (err) {
-    handleAuthError(err, 'signInWithRedirect');
+    handleAuthError(err, 'signInWithPopup');
+  } finally {
     if (googleBtn) {
       googleBtn.disabled = false;
       if (googleBtnLabel) {
-        googleBtnLabel.textContent = 'Sign In with Google';
+        googleBtnLabel.textContent = origLabel;
       }
     }
   }
@@ -1520,8 +1511,7 @@ const teleflowExports = {
   showToast,
   initAuth,
   syncUserProfile,
-  handleAuthError,
-  processRedirectResult
+  handleAuthError
 };
 
 // Immediately assign to window.TeleFlow and window directly
@@ -1530,11 +1520,8 @@ Object.keys(teleflowExports).forEach((key) => {
   window[key] = teleflowExports[key];
 });
 
-// Initialize Auth Observer and process redirect result
+// Initialize Auth Observer using onAuthStateChanged to maintain persistent sessions
 export function initAuth(onUserChanged) {
-  // Process redirect result on page load
-  processRedirectResult();
-
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
