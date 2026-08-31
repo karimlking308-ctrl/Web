@@ -3,6 +3,8 @@ import {
   db,
   googleProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -18,7 +20,8 @@ import {
   deleteDoc,
   query,
   orderBy,
-  onSnapshot
+  onSnapshot,
+  serverTimestamp
 } from './firebase.js';
 
 // Application State
@@ -244,53 +247,96 @@ export function showAuthForm(mode) {
   }
 }
 
-// Handle Google Sign In (Primary Auth Method)
-export async function handleGoogleSignIn() {
-  const googleBtn = document.getElementById('googleAuthPrimaryBtn');
-  const googleBtnLabel = document.getElementById('googleAuthBtnLabel');
-  const authError = document.getElementById('authErrorMessage');
-  if (authError) authError.classList.add('hidden');
+// Comprehensive Firebase Auth Error Logger
+export function handleAuthError(error, context = 'Authentication') {
+  const code = error?.code || 'unknown-code';
+  const message = error?.message || String(error);
 
-  const origLabel = googleBtnLabel ? googleBtnLabel.textContent : 'Continue with Google';
+  console.error(`❌ [Firebase Auth Error - ${context}] Code: ${code}`);
+  console.error(`Details: ${message}`);
+
+  switch (code) {
+    case 'auth/unauthorized-domain':
+      console.error(
+        '👉 Solution: Go to Firebase Console -> Authentication -> Settings -> Authorized Domains and add your current app hostname.'
+      );
+      displayAuthError('Unauthorized domain. Please add this hostname to Authorized Domains in the Firebase Console.');
+      break;
+
+    case 'auth/operation-not-allowed':
+      console.error(
+        '👉 Solution: Enable Google Sign-In in Firebase Console under Authentication -> Sign-in method.'
+      );
+      displayAuthError('Google Sign-In is not enabled in Firebase Console.');
+      break;
+
+    case 'auth/popup-blocked':
+      console.warn(
+        "👉 Note: Pop-up window was blocked by browser policies. 'signInWithRedirect' bypasses this limitation."
+      );
+      displayAuthError('Pop-up blocked by browser policies. Using redirect authentication.');
+      break;
+
+    case 'auth/redirect-cancelled-by-user':
+    case 'auth/popup-closed-by-user':
+      console.info('👉 Notice: User closed or cancelled the authentication flow before completion.');
+      showToast('Authentication cancelled.');
+      break;
+
+    case 'auth/user-disabled':
+      console.error('👉 Solution: This user account has been disabled in the Firebase Console.');
+      displayAuthError('This user account has been disabled.');
+      break;
+
+    case 'auth/network-request-failed':
+      console.error('👉 Solution: Check internet connection or CORS settings.');
+      displayAuthError('Network request failed. Please check your internet connection.');
+      break;
+
+    case 'auth/internal-error':
+      console.error('👉 Solution: Firebase internal auth failure. Verify your firebaseConfig credentials.');
+      displayAuthError('Firebase internal error. Verify your firebaseConfig credentials.');
+      break;
+
+    default:
+      console.error('👉 Additional Debug Information:', error);
+      displayAuthError(error.message || 'Authentication failed. Please try again.');
+      break;
+  }
+}
+
+// Automatically store/update the authenticated user's profile in Firestore `users` collection
+export async function syncUserProfile(user) {
+  if (!user || !user.uid) return;
+
+  const userRef = doc(db, 'users', user.uid);
 
   try {
-    if (googleBtn) {
-      googleBtn.disabled = true;
-      if (googleBtnLabel) {
-        googleBtnLabel.innerHTML = `
-          <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-          </svg> Connecting with Google...
-        `;
-      }
-    }
+    const userSnapshot = await getDoc(userRef);
 
-    const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    const userId = user.uid;
+    const userData = {
+      uid: user.uid,
+      userId: user.uid,
+      displayName: user.displayName || '',
+      email: user.email || '',
+      photoURL: user.photoURL || '',
+      lastLoginAt: serverTimestamp()
+    };
 
-    // Check if user workspace doc exists; provision if first time
-    const userRef = doc(db, 'users', userId);
-    const userSnap = await getDoc(userRef);
-    if (!userSnap.exists()) {
-      await setDoc(userRef, {
-        userId,
-        email: user.email,
-        displayName: user.displayName || '',
-        photoURL: user.photoURL || '',
-        tier: 'free',
-        whopSubscriptionActive: false,
-        totalNotificationsSent: 12,
-        createdAt: new Date().toISOString()
-      });
+    if (!userSnapshot.exists()) {
+      userData.tier = 'free';
+      userData.whopSubscriptionActive = false;
+      userData.totalNotificationsSent = 12;
+      userData.createdAt = serverTimestamp();
+
+      await setDoc(userRef, userData, { merge: true });
 
       // Provision starter workflows
       for (const wf of defaultStarterWorkflows) {
         const wfId = 'wf_' + Math.random().toString(36).substring(2, 9);
-        await setDoc(doc(db, 'users', userId, 'workflows', wfId), {
+        await setDoc(doc(db, 'users', user.uid, 'workflows', wfId), {
           id: wfId,
-          userId,
+          userId: user.uid,
           name: wf.name,
           event: wf.event,
           channel: wf.channel || 'Telegram Bot',
@@ -306,12 +352,12 @@ export async function handleGoogleSignIn() {
         });
       }
 
-      // Provision starter audit logs
+      // Provision starter delivery audit logs
       for (const log of defaultStarterLogs) {
         const logId = 'log_' + Math.random().toString(36).substring(2, 9);
-        await setDoc(doc(db, 'users', userId, 'deliveryLogs', logId), {
+        await setDoc(doc(db, 'users', user.uid, 'deliveryLogs', logId), {
           id: logId,
-          userId,
+          userId: user.uid,
           name: log.name,
           chatId: log.chatId,
           status: log.status,
@@ -319,27 +365,58 @@ export async function handleGoogleSignIn() {
           timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC'
         });
       }
+    } else {
+      await setDoc(userRef, userData, { merge: true });
+    }
+    console.log(`✅ User profile updated in Firestore: /users/${user.uid}`);
+  } catch (error) {
+    console.error(`⚠️ Failed to sync user profile to Firestore (/users/${user.uid}):`, error);
+  }
+}
+
+// Process authentication redirect results upon returning to the site
+export async function processRedirectResult() {
+  try {
+    const result = await getRedirectResult(auth);
+    if (result && result.user) {
+      console.log('🎉 Successfully authenticated via redirect:', result.user.email);
+      await syncUserProfile(result.user);
+      showToast(`Signed in as ${result.user.displayName || result.user.email}! Welcome to TeleFlow.`);
+      switchTab('dashboard');
+    }
+  } catch (error) {
+    handleAuthError(error, 'getRedirectResult');
+  }
+}
+
+// Handle Google Sign In via signInWithRedirect
+export async function handleGoogleSignIn() {
+  const googleBtn = document.getElementById('googleAuthPrimaryBtn');
+  const googleBtnLabel = document.getElementById('googleAuthBtnLabel');
+  const authError = document.getElementById('authErrorMessage');
+  if (authError) authError.classList.add('hidden');
+
+  try {
+    if (googleBtn) {
+      googleBtn.disabled = true;
+      if (googleBtnLabel) {
+        googleBtnLabel.innerHTML = `
+          <svg class="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white inline-block" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg> Redirecting to Google...
+        `;
+      }
     }
 
-    showToast(`Signed in as ${user.displayName || user.email}! Welcome to TeleFlow.`);
+    console.log('Initiating Google Sign-In redirect...');
+    await signInWithRedirect(auth, googleProvider);
   } catch (err) {
-    console.error('Google Sign-In Error:', err);
-    if (err.code === 'auth/popup-closed-by-user') {
-      showToast('Google sign-in popup was closed.');
-    } else if (err.code === 'auth/cancelled-popup-request') {
-      // Ignored
-    } else if (err.code === 'auth/popup-blocked') {
-      displayAuthError('Popup blocked by browser. Please allow popups or use Email/Password sign in.');
-    } else if (err.code === 'auth/account-exists-with-different-credential') {
-      displayAuthError('An account already exists with this email using a different sign-in method. Please sign in with Email & Password.');
-    } else {
-      displayAuthError(err.message || 'Failed to authenticate with Google. Please try again.');
-    }
-  } finally {
+    handleAuthError(err, 'signInWithRedirect');
     if (googleBtn) {
       googleBtn.disabled = false;
       if (googleBtnLabel) {
-        googleBtnLabel.textContent = origLabel;
+        googleBtnLabel.textContent = 'Sign In with Google';
       }
     }
   }
@@ -1440,7 +1517,11 @@ const teleflowExports = {
   updateCodeSnippets,
   switchSnippetLang,
   copySnippet,
-  showToast
+  showToast,
+  initAuth,
+  syncUserProfile,
+  handleAuthError,
+  processRedirectResult
 };
 
 // Immediately assign to window.TeleFlow and window directly
@@ -1449,9 +1530,47 @@ Object.keys(teleflowExports).forEach((key) => {
   window[key] = teleflowExports[key];
 });
 
+// Initialize Auth Observer and process redirect result
+export function initAuth(onUserChanged) {
+  // Process redirect result on page load
+  processRedirectResult();
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      console.log('👤 Active Session:', user.email);
+      await syncUserProfile(user);
+      subscribeUserData(user.uid);
+      updateUserUI();
+      const authView = document.getElementById('view-auth');
+      if (authView && !authView.classList.contains('hidden')) {
+        switchTab('dashboard');
+      }
+      if (typeof onUserChanged === 'function') {
+        onUserChanged(user);
+      }
+    } else {
+      console.log('🔒 No active user session.');
+      userProfile = null;
+      workflows = [];
+      deliveryLogs = [];
+      updateUserUI();
+      switchTab('auth');
+      if (typeof onUserChanged === 'function') {
+        onUserChanged(null);
+      }
+    }
+  });
+}
+
 // Initialize Auth Observer and bind event listeners on startup
 export function initApp() {
   // Direct DOM Event Listeners for reliable execution
+  const googleBtn = document.getElementById('googleAuthPrimaryBtn');
+  if (googleBtn) {
+    googleBtn.addEventListener('click', handleGoogleSignIn);
+  }
+
   const wfChannelEl = document.getElementById('wfChannel');
   if (wfChannelEl) {
     wfChannelEl.addEventListener('change', () => {
@@ -1482,24 +1601,8 @@ export function initApp() {
     wfSearchInput.addEventListener('input', filterWorkflows);
   }
 
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    if (user) {
-      subscribeUserData(user.uid);
-      // If currently on auth page, switch to dashboard
-      const authView = document.getElementById('view-auth');
-      if (authView && !authView.classList.contains('hidden')) {
-        switchTab('dashboard');
-      }
-    } else {
-      userProfile = null;
-      workflows = [];
-      deliveryLogs = [];
-      updateUserUI();
-      // Show auth or pricing or docs
-      switchTab('auth');
-    }
-  });
+  // Run Auth initialization & redirect check
+  initAuth();
 
   handleChannelChange();
   updateCodeSnippets();
