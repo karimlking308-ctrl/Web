@@ -1,6 +1,8 @@
 import { initializeApp } from 'firebase/app';
 import { 
   getAuth, 
+  setPersistence,
+  browserLocalPersistence,
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
   signOut, 
@@ -48,6 +50,12 @@ export const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Auth
 export const auth = getAuth(app);
+
+// Force local browser persistence so user sessions persist across page reloads
+setPersistence(auth, browserLocalPersistence).catch((err) => {
+  console.warn('⚠️ [Firebase Auth] Local persistence warning:', err);
+});
+
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.addScope('profile');
 googleProvider.addScope('email');
@@ -59,6 +67,8 @@ export const db = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestor
   : getFirestore(app);
 
 export {
+  setPersistence,
+  browserLocalPersistence,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,

@@ -1,6 +1,8 @@
 import {
   auth,
   db,
+  setPersistence,
+  browserLocalPersistence,
   googleProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
@@ -1520,8 +1522,15 @@ Object.keys(teleflowExports).forEach((key) => {
   window[key] = teleflowExports[key];
 });
 
-// Initialize Auth Observer using onAuthStateChanged to maintain persistent sessions
-export function initAuth(onUserChanged) {
+// Initialize Auth Observer using onAuthStateChanged with local persistence
+export async function initAuth(onUserChanged) {
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+    console.log('✅ [Firebase Auth] Local persistence enforced (browserLocalPersistence).');
+  } catch (err) {
+    console.warn('⚠️ [Firebase Auth] Error enforcing browserLocalPersistence:', err);
+  }
+
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
     if (user) {
