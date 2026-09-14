@@ -1,20 +1,1563 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>مشروع جديد</title>
+  <title>TinDry — Wear Your Standard</title>
+  <meta name="description" content="TinDry is an international luxury streetwear house. Heavyweight 320 GSM organic textiles, architectural draping, and the signature unboxing experience. Wear Your Standard." />
+  <meta name="keywords" content="TinDry, luxury streetwear, high fashion, heavy cotton t-shirt, designer hoodie, unboxing, Wear Your Standard" />
+  <meta name="author" content="TinDry Apparel" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="TinDry — Wear Your Standard" />
+  <meta property="og:description" content="Global luxury streetwear. Ultra-heavyweight organic textiles, minimalist silhouettes, and collector unboxing." />
+  <meta property="og:image" content="/images/lifestyle-tshirt.jpg" />
+
+  <!-- Typography: Inter & Montserrat for high-end luxury editorial fashion -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              black: '#0a0a0a',
+              card: '#111111',
+              elevated: '#171717',
+              border: '#232323',
+              offwhite: '#f5f5f7',
+              muted: '#8e8e93',
+              gold: '#d4af37',
+              goldLight: '#e6c86e'
+            }
+          },
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            display: ['"Montserrat"', '"Inter"', 'sans-serif']
+          },
+          letterSpacing: {
+            luxury: '0.28em',
+            ultra: '0.35em'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Sleek high-end custom styling */
+    ::selection {
+      background: #f5f5f7;
+      color: #0a0a0a;
+    }
+    .text-balance {
+      text-wrap: balance;
+    }
+    .gold-accent {
+      color: #d4af37;
+    }
+    .border-subtle {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    .border-gold-soft {
+      border-color: rgba(212, 175, 55, 0.35);
+    }
+    /* Hide scrollbar for clean UI drawers */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Smooth luxury marquee ticker */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-slate-50 flex items-center justify-center p-6 font-sans">
-  <div class="max-w-md w-full text-center bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-    <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-      +
+
+<body class="bg-[#0a0a0a] text-[#f5f5f7] font-sans antialiased overflow-x-hidden">
+
+  <!-- 1. TOP ANNOUNCEMENT BAR (Sleek Ticker / Marquee) -->
+  <div id="topAnnouncementBar" class="bg-[#0c0c0c] border-b border-white/10 py-2.5 overflow-hidden text-xs font-mono tracking-luxury uppercase">
+    <div class="animate-marquee flex items-center whitespace-nowrap gap-10 text-[#a1a1aa]">
+      <div class="flex items-center gap-6">
+        <span class="inline-flex items-center gap-2 text-[#d4af37]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+          <span>Engineered for Excellence: 16+ Years of Textile Mastery</span>
+        </span>
+        <span class="text-white/20">|</span>
+        <span class="text-white">Free Express Global Shipping on Orders Over <span id="announcementThreshold" data-base-price="50">$50</span></span>
+        <span class="text-white/20">|</span>
+        <span class="text-[#e4e4e7]">Wear Your Standard — Pure Industrial Heritage</span>
+        <span class="text-white/20">|</span>
+        <span class="text-[#d4af37]">Rigid Armor Unboxing Box Included With Every Order</span>
+      </div>
+      <div class="flex items-center gap-6" aria-hidden="true">
+        <span class="inline-flex items-center gap-2 text-[#d4af37]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+          <span>Engineered for Excellence: 16+ Years of Textile Mastery</span>
+        </span>
+        <span class="text-white/20">|</span>
+        <span class="text-white">Free Express Global Shipping on Orders Over $50</span>
+        <span class="text-white/20">|</span>
+        <span class="text-[#e4e4e7]">Wear Your Standard — Pure Industrial Heritage</span>
+        <span class="text-white/20">|</span>
+        <span class="text-[#d4af37]">Rigid Armor Unboxing Box Included With Every Order</span>
+      </div>
     </div>
-    <h1 class="text-xl font-bold text-slate-900 mb-2">المشروع جاهز للبناء</h1>
-    <p class="text-sm text-slate-500 leading-relaxed">
-      تم مسح ملفات المشروع السابق بنجاح، والمساحة جاهزة الآن لبدء مشروعك الجديد تماماً. أخبرني بما تود بناءه!
-    </p>
   </div>
+
+  <!-- 2. MINIMALIST NAVIGATION BAR -->
+  <header id="siteHeader" class="sticky top-0 z-40 bg-[#0a0a0a]/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" id="brandLogo" class="flex items-center gap-3 group">
+        <span class="font-display text-xl sm:text-2xl font-bold tracking-[0.24em] uppercase text-white group-hover:text-[#d4af37] transition-colors">
+          TinDry
+        </span>
+        <span class="hidden sm:inline-block h-3.5 w-px bg-white/20"></span>
+        <span class="hidden sm:inline-block text-[10px] tracking-luxury uppercase text-[#8e8e93] font-medium">
+          Wear Your Standard
+        </span>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav id="desktopNavigation" class="hidden md:flex items-center gap-9 text-xs font-medium tracking-luxury uppercase text-[#a1a1aa]">
+        <a href="#products" class="hover:text-white transition-colors duration-200">Collection</a>
+        <a href="#heritage" class="hover:text-white transition-colors duration-200">Heritage</a>
+        <a href="#packaging" class="hover:text-white transition-colors duration-200">Packaging</a>
+        <a href="#standards" class="hover:text-white transition-colors duration-200">Standards</a>
+        <a href="#faq" class="hover:text-white transition-colors duration-200">FAQ</a>
+      </nav>
+
+      <!-- Utility Actions: Currency, Search & Cart -->
+      <div class="flex items-center gap-4 sm:gap-6">
+        <!-- Desktop Currency Dropdown -->
+        <div class="relative hidden sm:inline-flex items-center" id="desktopCurrencyContainer">
+          <label for="headerCurrencySelect" class="sr-only">Select Currency</label>
+          <div class="relative flex items-center">
+            <select 
+              id="headerCurrencySelect" 
+              onchange="changeCurrency(this.value)" 
+              class="appearance-none bg-[#141414] hover:bg-[#1a1a1a] text-[#f5f5f7] border border-white/15 hover:border-white/30 text-[11px] font-mono tracking-widest uppercase pl-2.5 pr-6 py-1.5 rounded-none cursor-pointer focus:outline-none focus:border-[#d4af37] transition-colors"
+            >
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+            </select>
+            <div class="pointer-events-none absolute right-2 flex items-center text-[#8e8e93]">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cart Trigger -->
+        <button 
+          id="cartOpenButton" 
+          onclick="toggleCartModal()" 
+          class="relative p-2 text-white hover:text-[#d4af37] transition-colors flex items-center gap-2 group cursor-pointer"
+          aria-label="Shopping Cart"
+        >
+          <span class="hidden sm:inline text-xs font-medium tracking-widest uppercase text-[#a1a1aa] group-hover:text-white">Bag</span>
+          <svg class="w-5 h-5 text-white group-hover:text-[#d4af37] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+          <span id="navCartCount" class="w-4 h-4 rounded-full bg-white text-[#0a0a0a] text-[10px] font-bold flex items-center justify-center group-hover:bg-[#d4af37]">
+            0
+          </span>
+        </button>
+
+        <!-- Mobile Menu Trigger -->
+        <button 
+          id="mobileMenuTrigger" 
+          onclick="toggleMobileMenu()" 
+          class="md:hidden p-2 text-white focus:outline-none"
+          aria-label="Toggle Navigation"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-[#0e0e0e] border-b border-white/10 px-6 py-6 space-y-4">
+      <div class="pb-3 border-b border-white/10 flex items-center justify-between">
+        <span class="text-xs font-mono uppercase text-[#71717a]">Currency</span>
+        <select 
+          id="mobileCurrencySelect" 
+          onchange="changeCurrency(this.value)" 
+          class="bg-[#181818] text-[#f5f5f7] border border-white/20 text-xs font-mono px-3 py-1 focus:outline-none focus:border-[#d4af37]"
+        >
+          <option value="USD">USD ($)</option>
+          <option value="EUR">EUR (€)</option>
+          <option value="GBP">GBP (£)</option>
+        </select>
+      </div>
+      <a href="#products" onclick="toggleMobileMenu()" class="block text-xs font-medium tracking-luxury uppercase text-[#d1d1d6] hover:text-white">Collection</a>
+      <a href="#heritage" onclick="toggleMobileMenu()" class="block text-xs font-medium tracking-luxury uppercase text-[#d1d1d6] hover:text-white">Heritage</a>
+      <a href="#packaging" onclick="toggleMobileMenu()" class="block text-xs font-medium tracking-luxury uppercase text-[#d1d1d6] hover:text-white">Packaging</a>
+      <a href="#standards" onclick="toggleMobileMenu()" class="block text-xs font-medium tracking-luxury uppercase text-[#d1d1d6] hover:text-white">Standards</a>
+      <a href="#faq" onclick="toggleMobileMenu()" class="block text-xs font-medium tracking-luxury uppercase text-[#d1d1d6] hover:text-white">FAQ</a>
+    </div>
+  </header>
+
+  <!-- 3. IMMERSIVE HERO SECTION -->
+  <section id="hero" class="relative min-h-[92vh] flex items-center justify-center overflow-hidden border-b border-white/5">
+    <!-- Full-Width Background Lifestyle Image with Dark Gradient Vignette -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="/images/lifestyle-tshirt.jpg" 
+        alt="TinDry Luxury Streetwear Model" 
+        class="w-full h-full object-cover object-[center_35%] filter brightness-[0.42] contrast-[1.08] scale-[1.02] transform transition-transform duration-1000 ease-out" 
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-[#0a0a0a]/80"></div>
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#0a0a0a_85%)]"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 text-center py-20 flex flex-col items-center">
+      
+      <!-- Brand Sub-Eyebrow -->
+      <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+        <span class="text-[10px] sm:text-[11px] font-mono tracking-ultra uppercase text-[#e4e4e7]">
+          Autumn / Winter 2026 Edition
+        </span>
+      </div>
+
+      <!-- Main Slogan -->
+      <h1 class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white uppercase leading-[1.04] mb-6 text-balance">
+        Wear Your <br />
+        <span class="font-light tracking-[0.08em] text-[#d4af37]">Standard.</span>
+      </h1>
+
+      <!-- Refined Subtitle -->
+      <p class="text-sm sm:text-base text-[#a1a1aa] max-w-2xl font-light leading-relaxed mb-10 text-balance">
+        Precision architectural cuts, uncompromising 320 GSM heavyweight combed cotton, and pure dark minimalism. No loud logos. Just ruthless fabric integrity.
+      </p>
+
+      <!-- CTAs & Trust Mini-Ribbon -->
+      <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+        <a 
+          href="#products" 
+          id="heroExploreBtn"
+          class="w-full sm:w-auto px-10 py-4 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] font-display text-xs font-semibold tracking-luxury uppercase transition-all duration-300 shadow-xl hover:shadow-[#d4af37]/20"
+        >
+          Explore Collection
+        </a>
+        <a 
+          href="#packaging" 
+          class="w-full sm:w-auto px-10 py-4 bg-transparent hover:bg-white/5 text-white border border-white/20 hover:border-white/40 font-display text-xs font-medium tracking-luxury uppercase transition-all duration-300"
+        >
+          The Unboxing
+        </a>
+      </div>
+
+      <!-- Quick Specifications Strip -->
+      <div class="grid grid-cols-3 gap-6 sm:gap-12 mt-16 pt-8 border-t border-white/10 w-full max-w-2xl text-center">
+        <div>
+          <span class="block text-xs sm:text-sm font-semibold text-white tracking-widest uppercase">320 GSM</span>
+          <span class="text-[10px] tracking-wider text-[#71717a] uppercase">Dense Organic Cotton</span>
+        </div>
+        <div>
+          <span class="block text-xs sm:text-sm font-semibold text-white tracking-widest uppercase">Obsidian Pigment</span>
+          <span class="text-[10px] tracking-wider text-[#71717a] uppercase">Deep Anti-Fade Dye</span>
+        </div>
+        <div>
+          <span class="block text-xs sm:text-sm font-semibold text-white tracking-widest uppercase">Rigid Box</span>
+          <span class="text-[10px] tracking-wider text-[#71717a] uppercase">Complimentary Suite</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. CURATED PRODUCT GRID -->
+  <section id="products" class="py-24 sm:py-32 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto border-b border-white/5">
+    
+    <!-- Section Header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/10 gap-6">
+      <div>
+        <span class="text-[11px] font-mono tracking-luxury text-[#d4af37] uppercase block mb-2">Curated Wardrobe</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white uppercase">
+          Standard Offerings
+        </h2>
+      </div>
+      <p class="text-xs sm:text-sm text-[#8e8e93] max-w-md font-light">
+        Engineered for longevity, tailored boxy drape, and zero synthetic shortcuts. All pieces include collector unboxing packaging.
+      </p>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+
+      <!-- Product 1: Lifestyle T-Shirt -->
+      <div class="group flex flex-col bg-[#111111] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-all duration-300">
+        <div class="relative aspect-[3/4] overflow-hidden bg-[#161616]">
+          <img 
+            src="/images/lifestyle-tshirt.jpg" 
+            alt="Standard Obsidian Heavyweight T-Shirt" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+          />
+          <div class="absolute top-4 left-4">
+            <span class="px-2.5 py-1 bg-[#0a0a0a]/80 backdrop-blur-xs text-[10px] font-mono tracking-widest uppercase text-white border border-white/10">
+              Heavyweight Core
+            </span>
+          </div>
+          <!-- Quick View Hover Button -->
+          <div class="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+            <button 
+              onclick="openQuickView('Standard Obsidian Heavyweight Tee', 29.99, '/images/lifestyle-tshirt.jpg', '320 GSM combed organic cotton. Reinforced rib neck collar that never loses shape. Signature tailored boxy streetwear cut with subtle drop shoulders.', 'Obsidian Black', ['S', 'M', 'L', 'XL'])" 
+              class="flex-1 py-3 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[11px] font-display font-medium tracking-luxury uppercase border border-white/20 hover:border-white/40 transition-colors"
+            >
+              Quick View
+            </button>
+            <button 
+              onclick="addToCart('Standard Obsidian Heavyweight Tee', 29.99, '/images/lifestyle-tshirt.jpg', 'L')" 
+              class="px-4 py-3 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-[11px] font-display font-semibold tracking-luxury uppercase transition-colors"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <h3 class="font-display text-sm font-semibold tracking-wide text-white uppercase">
+                Standard Obsidian Tee
+              </h3>
+              <span class="font-mono text-sm text-[#f5f5f7] font-semibold price-display" data-base-price="29.99">$29.99</span>
+            </div>
+            <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+              320 GSM combed organic cotton. Imposing architectural drape.
+            </p>
+          </div>
+
+          <!-- Color Swatches & Quick Add -->
+          <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5" title="Available Colors">
+              <span class="w-3 h-3 rounded-full bg-[#0d0d0d] border border-white/40 ring-1 ring-white/10"></span>
+              <span class="w-3 h-3 rounded-full bg-[#242426] border border-white/20"></span>
+              <span class="w-3 h-3 rounded-full bg-[#d6cab7] border border-white/20"></span>
+            </div>
+            <button 
+              onclick="addToCart('Standard Obsidian Heavyweight Tee', 29.99, '/images/lifestyle-tshirt.jpg', 'L')" 
+              class="text-xs font-display tracking-luxury uppercase text-[#d4af37] hover:text-white transition-colors"
+            >
+              Add To Bag +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2: Lifestyle Hoodie -->
+      <div class="group flex flex-col bg-[#111111] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-all duration-300">
+        <div class="relative aspect-[3/4] overflow-hidden bg-[#161616]">
+          <img 
+            src="/images/lifestyle-hoodie.jpg" 
+            alt="Standard Urban Heavyweight Hoodie" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+          />
+          <div class="absolute top-4 left-4">
+            <span class="px-2.5 py-1 bg-[#0a0a0a]/80 backdrop-blur-xs text-[10px] font-mono tracking-widest uppercase text-[#d4af37] border border-[#d4af37]/30">
+              Limited Run
+            </span>
+          </div>
+          <!-- Quick View Hover Button -->
+          <div class="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+            <button 
+              onclick="openQuickView('Standard Urban Heavyweight Hoodie', 89.00, '/images/lifestyle-hoodie.jpg', '480 GSM French Terry brushed fleece. Double-layered crossover hood without drawstrings for an uncompromising aesthetic silhouette.', 'Deep Charcoal', ['M', 'L', 'XL'])" 
+              class="flex-1 py-3 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[11px] font-display font-medium tracking-luxury uppercase border border-white/20 hover:border-white/40 transition-colors"
+            >
+              Quick View
+            </button>
+            <button 
+              onclick="addToCart('Standard Urban Heavyweight Hoodie', 89.00, '/images/lifestyle-hoodie.jpg', 'L')" 
+              class="px-4 py-3 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-[11px] font-display font-semibold tracking-luxury uppercase transition-colors"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <h3 class="font-display text-sm font-semibold tracking-wide text-white uppercase">
+                Standard Urban Hoodie
+              </h3>
+              <span class="font-mono text-sm text-[#f5f5f7] font-semibold price-display" data-base-price="89.00">$89.00</span>
+            </div>
+            <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+              480 GSM French Terry. Double-layered minimalist hood.
+            </p>
+          </div>
+
+          <!-- Color Swatches & Quick Add -->
+          <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5" title="Available Colors">
+              <span class="w-3 h-3 rounded-full bg-[#1c1c1e] border border-white/40 ring-1 ring-white/10"></span>
+              <span class="w-3 h-3 rounded-full bg-[#0d0d0d] border border-white/20"></span>
+            </div>
+            <button 
+              onclick="addToCart('Standard Urban Heavyweight Hoodie', 89.00, '/images/lifestyle-hoodie.jpg', 'L')" 
+              class="text-xs font-display tracking-luxury uppercase text-[#d4af37] hover:text-white transition-colors"
+            >
+              Add To Bag +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3: Capsule Set / Collection -->
+      <div class="group flex flex-col bg-[#111111] border border-white/5 rounded-none overflow-hidden hover:border-white/20 transition-all duration-300 md:col-span-2 lg:col-span-1">
+        <div class="relative aspect-[3/4] overflow-hidden bg-[#161616]">
+          <img 
+            src="/images/collection-group.jpg" 
+            alt="TinDry Complete Capsule Wardrobe 01" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out" 
+          />
+          <div class="absolute top-4 left-4">
+            <span class="px-2.5 py-1 bg-[#0a0a0a]/80 backdrop-blur-xs text-[10px] font-mono tracking-widest uppercase text-white border border-white/10">
+              Capsule Suite
+            </span>
+          </div>
+          <!-- Quick View Hover Button -->
+          <div class="absolute inset-x-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+            <button 
+              onclick="openQuickView('TinDry Capsule Suite 01', 149.00, '/images/collection-group.jpg', 'The complete foundational wardrobe: Includes 1x Urban Hoodie, 2x Heavyweight T-Shirts (Obsidian and Pale Stone), and 1x Crown Structured Twill Cap with luxury presentation box.', 'Complete Set', ['Set Standard'])" 
+              class="flex-1 py-3 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[11px] font-display font-medium tracking-luxury uppercase border border-white/20 hover:border-white/40 transition-colors"
+            >
+              Quick View
+            </button>
+            <button 
+              onclick="addToCart('TinDry Capsule Suite 01', 149.00, '/images/collection-group.jpg', 'Set')" 
+              class="px-4 py-3 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-[11px] font-display font-semibold tracking-luxury uppercase transition-colors"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 flex flex-col flex-1 justify-between gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <h3 class="font-display text-sm font-semibold tracking-wide text-white uppercase">
+                Capsule Suite 01
+              </h3>
+              <div class="flex items-center gap-2">
+                <span class="font-mono text-xs text-[#71717a] line-through price-display" data-base-price="175.00">$175.00</span>
+                <span class="font-mono text-sm text-[#f5f5f7] font-semibold price-display" data-base-price="149.00">$149.00</span>
+              </div>
+            </div>
+            <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+              Hoodie + 2x Heavyweight Tees + Structured Crown Cap.
+            </p>
+          </div>
+
+          <!-- Color Swatches & Quick Add -->
+          <div class="pt-4 border-t border-white/5 flex items-center justify-between">
+            <div class="flex items-center gap-1.5" title="Curated Palette">
+              <span class="w-3 h-3 rounded-full bg-[#0d0d0d] border border-white/40"></span>
+              <span class="w-3 h-3 rounded-full bg-[#d6cab7] border border-white/20"></span>
+              <span class="w-3 h-3 rounded-full bg-[#3a3a3c] border border-white/20"></span>
+            </div>
+            <button 
+              onclick="addToCart('TinDry Capsule Suite 01', 149.00, '/images/collection-group.jpg', 'Set')" 
+              class="text-xs font-display tracking-luxury uppercase text-[#d4af37] hover:text-white transition-colors"
+            >
+              Add To Bag +
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- 5. THE INDUSTRIAL HERITAGE / BRAND STORY SECTION (CRUCIAL) -->
+  <section id="heritage" class="py-24 sm:py-32 px-6 sm:px-8 lg:px-12 bg-[#0d0d0d] border-b border-white/5 relative overflow-hidden">
+    <!-- Subtle architectural blueprint background grid -->
+    <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+
+    <div class="max-w-6xl mx-auto space-y-20 relative z-10">
+      
+      <!-- Top Narrative Header -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+        <div class="lg:col-span-5 space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#d4af37]/10 border border-[#d4af37]/30 text-[#d4af37] text-[10px] font-mono tracking-ultra uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+            <span>Industrial Heritage & Mastery</span>
+          </div>
+          <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase leading-[1.08]">
+            16+ Years of <br />
+            <span class="text-[#d4af37] font-light">Textile Mastery.</span>
+          </h2>
+          <p class="text-xs font-mono uppercase tracking-widest text-[#71717a]">
+            Inspired by elite precision engineering benchmarks
+          </p>
+          <div class="w-16 h-0.5 bg-[#d4af37]"></div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-6 text-sm sm:text-base text-[#a1a1aa] font-light leading-relaxed">
+          <p>
+            For over sixteen years, our technical textile engineers have operated at the pinnacle of international apparel manufacturing. Long before launching TinDry, our mills perfected the proprietary weave tensions, dense fiber combed counts, and seam load tolerances relied upon by the world's most exacting industrial standards (benchmarked alongside heritage engineering icons like Triumph).
+          </p>
+          <p>
+            Modern fast fashion commodified clothing by substituting lightweight synthetics and fragile stitching with loud promotional logos. <strong class="text-white font-medium">TinDry is the decisive counter-revolution.</strong>
+          </p>
+          <p class="text-xs sm:text-sm text-[#d1d1d6] font-normal leading-relaxed border-l-2 border-[#d4af37] pl-4 italic">
+            "Wear Your Standard is not an arbitrary marketing slogan. It is a binding engineering guarantee that every thread, collar binding, and gram of fabric meets an uncompromising standard of perfection."
+          </p>
+        </div>
+      </div>
+
+      <!-- Industrial Benchmarks Grid (The 3 Pillars of Mastery) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6 border-t border-white/10">
+        
+        <!-- Pillar 1 -->
+        <div class="bg-[#121212] border border-white/10 p-8 space-y-4 hover:border-[#d4af37]/40 transition-colors">
+          <div class="flex items-center justify-between text-[#71717a] font-mono text-xs">
+            <span>PILLAR 01</span>
+            <span class="text-[#d4af37] font-bold text-sm">320-480 GSM</span>
+          </div>
+          <h3 class="font-display text-base font-bold text-white uppercase tracking-wider">
+            High-Density Architecture
+          </h3>
+          <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+            Ultra-heavyweight combed organic cotton spun with tight-gauge ring rotors. Drapes with sculpted architectural weight without clinging or collapsing.
+          </p>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="bg-[#121212] border border-white/10 p-8 space-y-4 hover:border-[#d4af37]/40 transition-colors">
+          <div class="flex items-center justify-between text-[#71717a] font-mono text-xs">
+            <span>PILLAR 02</span>
+            <span class="text-[#d4af37] font-bold text-sm">2-Step Sanforized</span>
+          </div>
+          <h3 class="font-display text-base font-bold text-white uppercase tracking-wider">
+            Anti-Deform Collar Seams
+          </h3>
+          <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+            Engineered twin-needle ribbing and reinforced shoulder tapings that permanently withstand 100+ high-temp wash cycles without warping or stretching.
+          </p>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="bg-[#121212] border border-white/10 p-8 space-y-4 hover:border-[#d4af37]/40 transition-colors">
+          <div class="flex items-center justify-between text-[#71717a] font-mono text-xs">
+            <span>PILLAR 03</span>
+            <span class="text-[#d4af37] font-bold text-sm">16+ Yrs Legacy</span>
+          </div>
+          <h3 class="font-display text-base font-bold text-white uppercase tracking-wider">
+            Exacting Industrial QC
+          </h3>
+          <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+            Every production batch undergoes individual caliper thickness evaluation, yarn tensile stress testing, and pigment permanence certification before boxing.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- Quick Engineering Metric Banner -->
+      <div class="p-6 bg-[#161616] border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 rounded-none bg-white/5 border border-[#d4af37]/50 flex items-center justify-center text-[#d4af37]">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <div>
+            <h4 class="font-display text-xs sm:text-sm font-semibold text-white uppercase tracking-wider">
+              Zero Synthetic Adulteration Guarantee
+            </h4>
+            <p class="text-xs text-[#71717a] font-light">
+              100% long-staple organic plant fibers. Free of synthetic microplastics and chemical stiffeners.
+            </p>
+          </div>
+        </div>
+
+        <a 
+          href="#products" 
+          class="shrink-0 px-6 py-3 bg-white/5 hover:bg-[#d4af37] text-white hover:text-black border border-white/20 text-xs font-display font-semibold tracking-luxury uppercase transition-all"
+        >
+          View The Specifications
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. THE UNBOXING EXPERIENCE SECTION -->
+  <section id="packaging" class="py-24 sm:py-32 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto border-b border-white/5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      
+      <!-- Visual Packaging Showcase -->
+      <div class="lg:col-span-7 order-2 lg:order-1 relative group">
+        <div class="relative overflow-hidden bg-[#111111] border border-white/10 shadow-2xl">
+          <img 
+            src="/images/packaging-box.jpg" 
+            alt="TinDry Luxury Packaging Box and Unboxing Presentation" 
+            class="w-full h-[400px] sm:h-[500px] object-cover object-center group-hover:scale-103 transition-transform duration-700 ease-out" 
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/80 via-transparent to-transparent"></div>
+          
+          <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between border-t border-white/10 pt-4">
+            <span class="text-[11px] font-mono tracking-luxury text-[#f5f5f7] uppercase">
+              Collector Packaging Included
+            </span>
+            <span class="text-[10px] font-mono text-[#d4af37] tracking-widest uppercase">
+              $0.00 Surcharge
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience Narrative -->
+      <div class="lg:col-span-5 order-1 lg:order-2 space-y-8">
+        <div class="space-y-3">
+          <span class="text-[11px] font-mono tracking-luxury text-[#d4af37] uppercase block">
+            Tactile First Impression
+          </span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold tracking-tight text-white uppercase leading-tight">
+            The Unboxing <br />Experience.
+          </h2>
+          <p class="text-xs sm:text-sm text-[#8e8e93] leading-relaxed font-light">
+            Luxury begins the moment the package arrives at your door. We treat packaging not as an afterthought, but as an architectural vessel for your garments.
+          </p>
+        </div>
+
+        <!-- Trust & Value Bullets -->
+        <div class="space-y-4 pt-2">
+          <div class="flex items-start gap-3.5">
+            <span class="w-5 h-5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[10px] text-[#d4af37] shrink-0 mt-0.5">
+              ✓
+            </span>
+            <div>
+              <h4 class="text-xs font-display font-semibold uppercase tracking-wider text-white">Matte Black Armor Rigid Box</h4>
+              <p class="text-xs text-[#71717a] font-light mt-0.5">Dense, crush-resistant construction with metallic gold foil TinDry insignia.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3.5">
+            <span class="w-5 h-5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[10px] text-[#d4af37] shrink-0 mt-0.5">
+              ✓
+            </span>
+            <div>
+              <h4 class="text-xs font-display font-semibold uppercase tracking-wider text-white">Acid-Free Silk Tissue & Wax Seal</h4>
+              <p class="text-xs text-[#71717a] font-light mt-0.5">Keeps garments protected from humidity and static during worldwide transit.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3.5">
+            <span class="w-5 h-5 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-[10px] text-[#d4af37] shrink-0 mt-0.5">
+              ✓
+            </span>
+            <div>
+              <h4 class="text-xs font-display font-semibold uppercase tracking-wider text-white">Heavyweight Cotton Hangtags & Serial</h4>
+              <p class="text-xs text-[#71717a] font-light mt-0.5">600 GSM debossed inspection card authenticating piece batch and craftsmanship.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <a 
+            href="#products" 
+            class="inline-flex items-center gap-2 text-xs font-display tracking-luxury uppercase text-[#f5f5f7] hover:text-[#d4af37] transition-colors"
+          >
+            <span>Order With Signature Box</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. TRUST BADGES & GUARANTEE STRIP -->
+  <section id="standards" class="py-16 px-6 sm:px-8 lg:px-12 bg-[#0c0c0c] border-b border-white/5">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center sm:text-left">
+      
+      <div class="space-y-2">
+        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#d4af37] mb-3 mx-auto sm:mx-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h4 class="text-xs font-display font-semibold uppercase tracking-luxury text-white">100% Secure Checkout</h4>
+        <p class="text-[11px] text-[#71717a] font-light">Bank-grade 256-bit SSL encrypted transactions.</p>
+      </div>
+
+      <div class="space-y-2">
+        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#d4af37] mb-3 mx-auto sm:mx-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+          </svg>
+        </div>
+        <h4 class="text-xs font-display font-semibold uppercase tracking-luxury text-white">Free Global Express</h4>
+        <p class="text-[11px] text-[#71717a] font-light">Tracked courier dispatch on all orders over <span id="badgeThreshold" data-base-price="50">$50</span>.</p>
+      </div>
+
+      <div class="space-y-2">
+        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#d4af37] mb-3 mx-auto sm:mx-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h4 class="text-xs font-display font-semibold uppercase tracking-luxury text-white">16+ Years Quality Standard</h4>
+        <p class="text-[11px] text-[#71717a] font-light">Guaranteed collar & seam integrity for lifetime wear.</p>
+      </div>
+
+      <div class="space-y-2">
+        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[#d4af37] mb-3 mx-auto sm:mx-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </div>
+        <h4 class="text-xs font-display font-semibold uppercase tracking-luxury text-white">30-Day Easy Exchange</h4>
+        <p class="text-[11px] text-[#71717a] font-light">Complimentary returns on unworn items with original box.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 8. FREQUENTLY ASKED QUESTIONS (ACCORDION SECTION) -->
+  <section id="faq" class="py-24 sm:py-32 px-6 sm:px-8 lg:px-12 bg-[#090909] border-b border-white/5 relative">
+    <div class="max-w-4xl mx-auto space-y-12">
+      
+      <!-- Section Header -->
+      <div class="text-center space-y-3">
+        <span class="text-[11px] font-mono tracking-ultra text-[#d4af37] uppercase block">
+          Client Advisory & Clarity
+        </span>
+        <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white uppercase leading-tight">
+          Frequently Asked Questions
+        </h2>
+        <p class="text-xs sm:text-sm text-[#8e8e93] font-light max-w-xl mx-auto leading-relaxed">
+          Comprehensive answers on our heavy-gauge fabric GSM, care and washing methodologies, signature packaging, and expedited global dispatch.
+        </p>
+      </div>
+
+      <!-- Accordion Container -->
+      <div class="space-y-4 pt-4" id="faqAccordion">
+
+        <!-- FAQ Item 1: GSM & Textile Weight -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(1)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-1"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">01</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                What does 320 to 480 GSM mean, and how does it feel?
+              </span>
+            </div>
+            <span id="faq-icon-1" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-1" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              GSM stands for <strong class="text-white font-medium">Grams per Square Meter</strong> and denotes the physical density of the knit. While conventional commercial t-shirts average a flimsy 140–180 GSM, TinDry garments are engineered at an ultra-heavyweight <strong class="text-white font-medium">320 GSM (T-Shirts)</strong> and <strong class="text-white font-medium">480 GSM (Hoodies)</strong>.
+            </p>
+            <p class="mt-3">
+              This provides a structured, architectural drape that falls straight over the torso rather than clinging. It provides substantial substance, total opacity (zero sheer transparency), and extreme durability that gets softer with every wash while retaining its original shape.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 2: Washing & Care Instructions -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(2)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-2"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">02</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                How should I wash and care for TinDry heavyweight garments?
+              </span>
+            </div>
+            <span id="faq-icon-2" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-2" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              All our cotton is pre-treated with proprietary 2-step sanforization, making shrinkage negligible under proper care:
+            </p>
+            <ul class="mt-2.5 space-y-1.5 list-disc list-inside text-xs text-[#8e8e93]">
+              <li><strong class="text-[#f5f5f7]">Machine Wash Cold:</strong> 30°C (85°F) on a gentle cycle inside-out to preserve the deep obsidian pigment.</li>
+              <li><strong class="text-[#f5f5f7]">Line Dry Flat:</strong> Always hang dry or flat dry in the shade. Heavyweight cotton absorbs more moisture, and tumble drying on high heat may stress natural cotton fibers.</li>
+              <li><strong class="text-[#f5f5f7]">Zero Bleach / Neutral Detergent:</strong> Avoid harsh optical brighteners or synthetic fabric softeners.</li>
+              <li><strong class="text-[#f5f5f7]">Collar Care:</strong> Our twin-needle collar ribbing is engineered with integrated elastic thread memory — it will never buckle or "bacon" over time.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- FAQ Item 3: Worldwide Shipping & Delivery Times -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(3)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-3"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">03</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                What are your global shipping rates, thresholds, and transit times?
+              </span>
+            </div>
+            <span id="faq-icon-3" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-3" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              We provide express worldwide courier fulfillment via our global logistics partners (DHL Express & FedEx International):
+            </p>
+            <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="p-3 bg-[#171717] border border-white/5">
+                <span class="text-[#d4af37] font-mono font-semibold block uppercase">Free Global Shipping</span>
+                <span class="text-[#a1a1aa]">Automatically applied to all orders above $50.00 USD (or converted currency equivalent).</span>
+              </div>
+              <div class="p-3 bg-[#171717] border border-white/5">
+                <span class="text-white font-mono font-semibold block uppercase">Standard Express Flat Rate</span>
+                <span class="text-[#a1a1aa]">$8.00 flat rate for orders below threshold with end-to-end tracked courier delivery.</span>
+              </div>
+            </div>
+            <p class="mt-3 text-xs text-[#8e8e93]">
+              • <strong>Transit Windows:</strong> North America & Europe: 2–4 business days. Rest of World: 3–6 business days. Tracking details are emailed immediately upon courier pickup.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 4: Packaging Box Inclusion -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(4)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-4"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">04</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                Is the luxury armor packaging box included with single-item orders?
+              </span>
+            </div>
+            <span id="faq-icon-4" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-4" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              <strong class="text-white font-medium">Yes, with zero surcharge.</strong> Every single order—whether it is an individual Standard Obsidian Tee ($29.99) or our complete Capsule Suite ($149.00)—is packed inside the signature rigid matte black armor presentation box, wrapped in acid-free silk tissue paper, sealed with embossed insignia wax, and accompanied by a debossed 600 GSM inspection certificate.
+            </p>
+            <p class="mt-2 text-xs text-[#8e8e93]">
+              To protect this presentation during transit, the rigid box is placed inside a heavy-duty, tamper-evident courier carton.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 5: Sizing & Fit Guidelines -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(5)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-5"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">05</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                How does TinDry sizing compare to standard streetwear sizing?
+              </span>
+            </div>
+            <span id="faq-icon-5" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-5" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              TinDry silhouettes are cut with a <strong class="text-white font-medium">tailored architectural boxy profile</strong> featuring drop shoulders and a relaxed chest circumference.
+            </p>
+            <p class="mt-2">
+              If you desire our intended high-fashion editorial drape, select your <strong class="text-[#d4af37]">standard true size</strong>. If you prefer a trimmer, conventional slim fit, order <strong class="text-[#d4af37]">one size down</strong>. You can inspect exact chest, length, and sleeve measurements at any time by clicking the <button onclick="openSizeGuideModal()" class="text-[#d4af37] underline hover:text-white">Interactive Size Guide</button>.
+            </p>
+          </div>
+        </div>
+
+        <!-- FAQ Item 6: Return Policy & Quality Warranty -->
+        <div class="bg-[#111111] border border-white/10 transition-colors duration-200 group">
+          <button 
+            type="button"
+            onclick="toggleFaq(6)" 
+            class="w-full py-5 px-6 sm:px-8 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+            aria-expanded="false"
+            id="faq-btn-6"
+          >
+            <div class="flex items-center gap-4">
+              <span class="text-xs font-mono text-[#d4af37] font-semibold">06</span>
+              <span class="font-display text-sm sm:text-base font-semibold text-white uppercase tracking-wider group-hover:text-[#d4af37] transition-colors">
+                What is your 30-day exchange and lifetime quality standard?
+              </span>
+            </div>
+            <span id="faq-icon-6" class="text-lg font-mono text-[#71717a] group-hover:text-white transition-transform duration-300 ml-4 shrink-0">
+              +
+            </span>
+          </button>
+          <div id="faq-content-6" class="hidden px-6 sm:px-8 pb-6 pt-1 text-xs sm:text-sm text-[#a1a1aa] font-light leading-relaxed border-t border-white/5">
+            <p>
+              We stand unreservedly behind our 16+ years of textile engineering heritage. We offer an unconditional <strong class="text-white font-medium">30-Day Exchange or Return Policy</strong> on all unworn items returned in their original packaging.
+            </p>
+            <p class="mt-2">
+              Furthermore, every garment carries our <strong class="text-white font-medium">Lifetime Seam & Collar Integrity Promise</strong>: if any collar seam loses its shape or stitch failure occurs under normal washing, our concierge team will promptly exchange the piece.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Concierge Prompt -->
+      <div class="text-center pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono">
+        <span class="text-[#71717a]">Have a specific query not covered above?</span>
+        <button 
+          onclick="openInfoModal('Client Concierge Advisory', 'Our senior textile advisory and sizing concierge is at your service. For custom queries, corporate orders, or bespoke gift notes, please email concierge@tindry.com. Dedicated advisors reply in under 4 business hours.')" 
+          class="text-[#d4af37] hover:text-white uppercase tracking-wider underline cursor-pointer"
+        >
+          Speak With Client Concierge &rarr;
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 9. FOOTER -->
+  <footer class="bg-[#070707] text-[#8e8e93] py-16 px-6 sm:px-8 lg:px-12 border-t border-white/5">
+    <div class="max-w-7xl mx-auto space-y-12">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+        
+        <!-- Brand identity -->
+        <div class="md:col-span-5 space-y-4">
+          <span class="font-display text-2xl font-bold tracking-[0.24em] text-white uppercase block">
+            TinDry
+          </span>
+          <p class="text-xs text-[#71717a] max-w-sm font-light leading-relaxed">
+            "Wear Your Standard." An elite luxury streetwear house backed by 16+ years of technical textile mastery. We build architectural, heavyweight garments engineered for lifetime durability.
+          </p>
+          <div class="text-[11px] font-mono tracking-widest text-[#d4af37] uppercase">
+            16+ Years Industrial Textile Expertise
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="md:col-span-2 space-y-3">
+          <span class="text-xs font-display font-semibold uppercase tracking-luxury text-white block">Navigation</span>
+          <ul class="space-y-2 text-xs font-light">
+            <li><a href="#products" class="hover:text-white transition-colors">Collection</a></li>
+            <li><a href="#heritage" class="hover:text-white transition-colors">Industrial Heritage</a></li>
+            <li><a href="#packaging" class="hover:text-white transition-colors">Armor Packaging</a></li>
+            <li><a href="#standards" class="hover:text-white transition-colors">Quality Standards</a></li>
+            <li><a href="#faq" class="hover:text-white transition-colors">Frequently Asked Questions</a></li>
+          </ul>
+        </div>
+
+        <div class="md:col-span-2 space-y-3">
+          <span class="text-xs font-display font-semibold uppercase tracking-luxury text-white block">Service</span>
+          <ul class="space-y-2 text-xs font-light">
+            <li><button onclick="openInfoModal('Global Delivery', 'All orders are dispatched in discrete outer cartons with the rigid armor presentation box nestled inside. We partner with DHL Express and FedEx Courier with guaranteed 2–4 business day worldwide delivery. Tracking links are transmitted automatically upon courier scan.')" class="hover:text-white transition-colors text-left">Global Delivery</button></li>
+            <li><button onclick="openInfoModal('Client Concierge', 'Our dedicated technical concierge team is available to assist with sizing advisories, custom gift packaging requests, and private suite orders. Reach our specialists at concierge@tindry.com (average response under 4 hours).')" class="hover:text-white transition-colors text-left">Concierge</button></li>
+            <li><button onclick="openInfoModal('Returns & Exchanges', 'Every TinDry garment comes with a 30-day return or exchange window. Items must be unworn, unwashed, and returned in their original rigid box packaging with hangtags intact. Complimentary return shipping labels are generated upon request.')" class="hover:text-white transition-colors text-left">Returns & Exchanges</button></li>
+            <li><button onclick="openInfoModal('Textile Care Guide', 'To preserve the 320–480 GSM dense tension and rich anti-fade obsidian pigment: Machine wash cold (30°C) inside-out with neutral detergent. Reshape gently while damp and line dry flat in shade. Do not tumble dry.')" class="hover:text-white transition-colors text-left">Care Instructions</button></li>
+          </ul>
+        </div>
+
+        <!-- Payment Icons / Trust -->
+        <div class="md:col-span-3 space-y-3">
+          <span class="text-xs font-display font-semibold uppercase tracking-luxury text-white block">Payment Security</span>
+          <p class="text-xs text-[#71717a] font-light">
+            Bank-grade 256-bit encrypted transactions.
+          </p>
+          <div class="flex flex-wrap gap-2 pt-1">
+            <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-white">Apple Pay</span>
+            <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-white">Visa</span>
+            <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-white">Mastercard</span>
+            <span class="px-2 py-1 bg-white/5 border border-white/10 rounded text-[10px] font-mono text-white">Amex</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#52525b]">
+        <div>
+          &copy; 2026 TinDry Apparel. 16+ Years Textile Heritage. Wear Your Standard.
+        </div>
+        <div class="flex items-center gap-6">
+          <span>Privacy Policy</span>
+          <span>Terms of Standard</span>
+          <a href="#hero" class="text-[#a1a1aa] hover:text-white transition-colors">Top &uarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- 9. SHOPPING BAG MODAL (Slide-Over) -->
+  <div id="cartModal" class="fixed inset-0 z-50 hidden" aria-labelledby="cartModalTitle" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div onclick="toggleCartModal()" class="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Slide Panel -->
+    <div class="absolute inset-y-0 right-0 max-w-md w-full bg-[#0e0e0e] border-l border-white/10 shadow-2xl flex flex-col justify-between p-6 sm:p-8 z-10">
+      
+      <!-- Cart Header -->
+      <div>
+        <div class="flex items-center justify-between pb-6 border-b border-white/10">
+          <div class="flex items-center gap-3">
+            <span id="cartModalTitle" class="font-display text-lg font-bold tracking-luxury text-white uppercase">Your Bag</span>
+            <span id="cartCountPill" class="text-[10px] font-mono text-[#d4af37] px-2 py-0.5 bg-white/5 border border-white/10 rounded">
+              0 Items
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- Cart Currency Dropdown -->
+            <div class="relative flex items-center">
+              <label for="cartCurrencySelect" class="sr-only">Cart Currency</label>
+              <select 
+                id="cartCurrencySelect" 
+                onchange="changeCurrency(this.value)" 
+                class="appearance-none bg-[#141414] hover:bg-[#1a1a1a] text-[#f5f5f7] border border-white/15 hover:border-white/30 text-[10px] font-mono tracking-wider uppercase pl-2 pr-5 py-1 rounded-none cursor-pointer focus:outline-none focus:border-[#d4af37] transition-colors"
+              >
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+              </select>
+              <div class="pointer-events-none absolute right-1.5 flex items-center text-[#8e8e93]">
+                <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+            <button onclick="toggleCartModal()" class="text-[#71717a] hover:text-white p-1 transition-colors">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Cart Items Container -->
+        <div id="cartItemsList" class="py-6 space-y-4 max-h-[50vh] overflow-y-auto no-scrollbar">
+          <!-- Populated by JS -->
+          <div id="emptyCartNotice" class="text-center py-16 text-[#71717a] text-xs font-light">
+            Your shopping bag is currently empty.
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Calculations & Checkout -->
+      <div class="pt-6 border-t border-white/10 space-y-4">
+        <div class="space-y-1.5 text-xs text-[#a1a1aa] font-light">
+          <div class="flex justify-between">
+            <span>Signature Luxury Packaging</span>
+            <span class="text-[#d4af37] font-mono">Complimentary</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Global Express Shipping</span>
+            <span id="shippingSummaryText" class="text-white font-mono">Calculated</span>
+          </div>
+          <div class="flex justify-between text-base font-display text-white font-semibold pt-2 border-t border-white/10">
+            <span>Total</span>
+            <span id="cartTotalSum" class="font-mono text-[#d4af37]">$0.00</span>
+          </div>
+        </div>
+
+        <div id="cartEmptyAlert" class="hidden py-2.5 px-3 bg-red-950/40 border border-red-500/30 text-red-200 text-[11px] font-mono tracking-wide text-center">
+          Your bag is currently empty. Select an item to proceed.
+        </div>
+
+        <button 
+          id="checkoutTriggerBtn"
+          onclick="proceedCheckout()" 
+          class="w-full py-4 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] font-display text-xs font-semibold tracking-luxury uppercase transition-all duration-200 cursor-pointer"
+        >
+          Checkout Standard
+        </button>
+
+        <p class="text-[10px] text-center text-[#52525b] font-mono uppercase tracking-wider">
+          Secured with 256-Bit SSL • Free 30-Day Returns
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 10. QUICK VIEW MODAL -->
+  <div id="quickViewModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
+    <div onclick="closeQuickView()" class="absolute inset-0 bg-black/85 backdrop-blur-sm"></div>
+
+    <div class="relative z-10 bg-[#121212] border border-white/15 max-w-2xl w-full grid grid-cols-1 sm:grid-cols-2 overflow-hidden shadow-2xl">
+      <button onclick="closeQuickView()" class="absolute top-3 right-3 text-white/70 hover:text-white p-2 z-20">
+        ✕
+      </button>
+
+      <!-- Image Column -->
+      <div class="aspect-square sm:aspect-auto bg-[#181818] relative">
+        <img id="qvImage" src="" alt="Product" class="w-full h-full object-cover" />
+      </div>
+
+      <!-- Details Column -->
+      <div class="p-6 sm:p-8 flex flex-col justify-between space-y-6">
+        <div class="space-y-3">
+          <span class="text-[10px] font-mono tracking-luxury text-[#d4af37] uppercase block">TinDry Standard</span>
+          <h3 id="qvTitle" class="font-display text-lg font-bold text-white uppercase">Product Name</h3>
+          <div id="qvPrice" class="font-mono text-base text-[#f5f5f7] font-semibold">$0.00</div>
+          <p id="qvDescription" class="text-xs text-[#8e8e93] font-light leading-relaxed">
+            Product details description.
+          </p>
+          <div class="pt-2">
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-mono uppercase text-[#71717a] block">Select Size</span>
+              <button 
+                type="button"
+                id="sizeGuideTrigger"
+                onclick="openSizeGuideModal()" 
+                class="inline-flex items-center gap-1 text-[10px] font-mono tracking-wider uppercase text-[#d4af37] hover:text-white transition-colors cursor-pointer group"
+              >
+                <svg class="w-3.5 h-3.5 text-[#d4af37] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M3 18h18M7 6v3M11 6v3M15 6v3M19 6v3M7 12v3M11 12v3M15 12v3M19 12v3" />
+                </svg>
+                <span class="underline underline-offset-2">Size Guide (Heavyweight Fit)</span>
+              </button>
+            </div>
+            <div id="qvSizes" class="flex gap-2">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <button 
+          id="qvAddToCartBtn"
+          onclick="addQuickViewToCart()" 
+          class="w-full py-3.5 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-xs font-display font-semibold tracking-luxury uppercase transition-colors"
+        >
+          Add To Bag
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10.5 SIZE GUIDE MODAL (Heavyweight Fit Measurements) -->
+  <div id="sizeGuideModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true">
+    <!-- Backdrop -->
+    <div onclick="closeSizeGuideModal()" class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
+
+    <div class="relative z-10 bg-[#121212] border border-white/15 max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-6">
+      <!-- Header -->
+      <div class="flex items-start justify-between border-b border-white/10 pb-4">
+        <div>
+          <span class="text-[10px] font-mono tracking-luxury text-[#d4af37] uppercase block mb-1">Architectural Precision</span>
+          <h3 class="font-display text-lg font-bold text-white uppercase tracking-wide">Heavyweight Fit & Size Guide</h3>
+          <p class="text-xs text-[#8e8e93] font-light mt-0.5">Engineered with a boxy, dropped-shoulder silhouette in 320–480 GSM dense cotton.</p>
+        </div>
+        <button onclick="closeSizeGuideModal()" class="text-[#71717a] hover:text-white p-1 text-base">
+          ✕
+        </button>
+      </div>
+
+      <!-- Measurement Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs font-mono">
+          <thead>
+            <tr class="border-b border-white/10 text-[#71717a] uppercase text-[10px]">
+              <th class="py-2.5 pr-4 font-semibold">Size</th>
+              <th class="py-2.5 px-3 font-semibold">Chest (in / cm)</th>
+              <th class="py-2.5 px-3 font-semibold">Length (in / cm)</th>
+              <th class="py-2.5 px-3 font-semibold">Shoulder Drop</th>
+              <th class="py-2.5 pl-3 font-semibold">Recommended Fit</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-[#d1d1d6]">
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="py-3 pr-4 font-bold text-white">S</td>
+              <td class="py-3 px-3">42" / 106 cm</td>
+              <td class="py-3 px-3">28.0" / 71 cm</td>
+              <td class="py-3 px-3">21.0" / 53 cm</td>
+              <td class="py-3 pl-3 text-[#d4af37]">Tailored Relaxed</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition-colors bg-white/[0.02]">
+              <td class="py-3 pr-4 font-bold text-white">M</td>
+              <td class="py-3 px-3">44" / 112 cm</td>
+              <td class="py-3 px-3">29.0" / 74 cm</td>
+              <td class="py-3 px-3">22.0" / 56 cm</td>
+              <td class="py-3 pl-3 text-[#d4af37]">True Boxy Fit</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition-colors">
+              <td class="py-3 pr-4 font-bold text-white">L</td>
+              <td class="py-3 px-3">46" / 117 cm</td>
+              <td class="py-3 px-3">30.0" / 76 cm</td>
+              <td class="py-3 px-3">23.0" / 58 cm</td>
+              <td class="py-3 pl-3 text-[#d4af37]">Standard Editorial Drape</td>
+            </tr>
+            <tr class="hover:bg-white/5 transition-colors bg-white/[0.02]">
+              <td class="py-3 pr-4 font-bold text-white">XL</td>
+              <td class="py-3 px-3">48" / 122 cm</td>
+              <td class="py-3 px-3">31.0" / 79 cm</td>
+              <td class="py-3 px-3">24.0" / 61 cm</td>
+              <td class="py-3 pl-3 text-[#d4af37]">Oversized Architectural</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Fit Advice & Model Reference -->
+      <div class="p-4 bg-[#181818] border border-white/5 space-y-2 text-xs text-[#a1a1aa] font-light">
+        <div class="flex items-center gap-2 text-white font-display text-[11px] uppercase tracking-wider">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+          <span>Tailoring & Fit Advisory</span>
+        </div>
+        <p class="leading-relaxed">
+          • <strong>Model Reference:</strong> Model in the lifestyle lookbook is 6'1" (185 cm), 175 lbs (79 kg) wearing size <strong>L</strong>.
+        </p>
+        <p class="leading-relaxed">
+          • <strong>Pre-Shrunk:</strong> Treated with proprietary sanforization — zero shrinkage when cold-washed and line-dried. If you prefer a fitted look, order one size down; for the intended architectural drape, stay true to size.
+        </p>
+      </div>
+
+      <!-- Footer action -->
+      <button 
+        onclick="closeSizeGuideModal()" 
+        class="w-full py-3 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-xs font-display font-semibold tracking-luxury uppercase transition-colors"
+      >
+        Got It, Return To Selection
+      </button>
+    </div>
+  </div>
+
+  <!-- 11. CHECKOUT CONFIRMATION MODAL -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+    <div class="bg-[#121212] border border-white/15 p-8 max-w-sm w-full text-center space-y-4">
+      <div class="w-12 h-12 rounded-full bg-white/5 border border-[#d4af37] text-[#d4af37] flex items-center justify-center mx-auto text-xl font-bold">
+        ✓
+      </div>
+      <h3 class="font-display text-xl font-bold text-white uppercase tracking-wider">Order Reserved</h3>
+      <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+        Thank you for choosing TinDry. Your bespoke garments are being inspected, hand-packed in our signature armor presentation box, and prepared for courier dispatch.
+      </p>
+      <button onclick="closeOrderModal()" class="w-full py-3 bg-[#f5f5f7] text-[#0a0a0a] text-xs font-display font-semibold uppercase tracking-luxury hover:bg-[#d4af37]">
+        Continue Browsing
+      </button>
+    </div>
+  </div>
+
+  <!-- 12. CLIENT SERVICE INFO MODAL -->
+  <div id="serviceInfoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-md" role="dialog" aria-modal="true">
+    <div class="bg-[#121212] border border-white/15 p-6 sm:p-8 max-w-md w-full relative space-y-4 shadow-2xl">
+      <button onclick="closeInfoModal()" class="absolute top-4 right-4 text-[#71717a] hover:text-white p-2">
+        ✕
+      </button>
+      <div class="inline-flex items-center gap-2 text-[10px] font-mono tracking-ultra uppercase text-[#d4af37]">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+        <span>TinDry Concierge Advisory</span>
+      </div>
+      <h3 id="infoModalTitle" class="font-display text-lg font-bold text-white uppercase tracking-wider">Service Detail</h3>
+      <p id="infoModalBody" class="text-xs text-[#a1a1aa] font-light leading-relaxed">
+        Details content goes here.
+      </p>
+      <button onclick="closeInfoModal()" class="w-full py-3 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-xs font-display font-semibold uppercase tracking-luxury transition-colors">
+        Acknowledge
+      </button>
+    </div>
+  </div>
+
+  <!-- CLIENT-SIDE E-COMMERCE SCRIPT -->
+  <script>
+    let cart = [];
+    let currentQvItem = null;
+    let selectedSize = 'L';
+
+    // Currency configuration with conversion rates relative to USD (1.00)
+    const CURRENCIES = {
+      USD: { symbol: '$', rate: 1.0, label: 'USD ($)', code: 'USD' },
+      EUR: { symbol: '€', rate: 0.92, label: 'EUR (€)', code: 'EUR' },
+      GBP: { symbol: '£', rate: 0.79, label: 'GBP (£)', code: 'GBP' }
+    };
+    let currentCurrency = 'USD';
+
+    function formatPrice(amountInUSD) {
+      const config = CURRENCIES[currentCurrency] || CURRENCIES.USD;
+      const converted = amountInUSD * config.rate;
+      return `${config.symbol}${converted.toFixed(2)}`;
+    }
+
+    function changeCurrency(currencyCode) {
+      if (!CURRENCIES[currencyCode]) return;
+      currentCurrency = currencyCode;
+
+      // Sync both dropdowns (header, mobile, and cart)
+      const headerSelect = document.getElementById('headerCurrencySelect');
+      const mobileSelect = document.getElementById('mobileCurrencySelect');
+      const cartSelect = document.getElementById('cartCurrencySelect');
+
+      if (headerSelect) headerSelect.value = currencyCode;
+      if (mobileSelect) mobileSelect.value = currencyCode;
+      if (cartSelect) cartSelect.value = currencyCode;
+
+      // Update static page prices (tagged with .price-display and data-base-price)
+      document.querySelectorAll('.price-display').forEach(el => {
+        const base = parseFloat(el.getAttribute('data-base-price'));
+        if (!isNaN(base)) {
+          el.innerText = formatPrice(base);
+        }
+      });
+
+      // Update announcement bar & trust badge thresholds
+      const announcementThreshold = document.getElementById('announcementThreshold');
+      if (announcementThreshold) {
+        const base = parseFloat(announcementThreshold.getAttribute('data-base-price') || 50);
+        const config = CURRENCIES[currentCurrency];
+        announcementThreshold.innerText = `${config.symbol}${Math.round(base * config.rate)}`;
+      }
+
+      const badgeThreshold = document.getElementById('badgeThreshold');
+      if (badgeThreshold) {
+        const base = parseFloat(badgeThreshold.getAttribute('data-base-price') || 50);
+        const config = CURRENCIES[currentCurrency];
+        badgeThreshold.innerText = `${config.symbol}${Math.round(base * config.rate)}`;
+      }
+
+      // Update Quick View modal price if currently open
+      if (currentQvItem) {
+        const qvPriceEl = document.getElementById('qvPrice');
+        if (qvPriceEl) {
+          qvPriceEl.innerText = formatPrice(currentQvItem.price);
+        }
+      }
+
+      // Update cart drawer display with new currency
+      updateCartDisplay();
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    function toggleCartModal() {
+      const modal = document.getElementById('cartModal');
+      modal.classList.toggle('hidden');
+    }
+
+    function addToCart(title, price, image, size = 'L') {
+      const itemKey = `${title}_${size}`;
+      const existing = cart.find(i => i.key === itemKey);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ key: itemKey, title, price, image, size, quantity: 1 });
+      }
+      updateCartDisplay();
+      toggleCartModal();
+    }
+
+    function removeCartItem(key) {
+      cart = cart.filter(i => i.key !== key);
+      updateCartDisplay();
+    }
+
+    function updateCartDisplay() {
+      const badge = document.getElementById('navCartCount');
+      const pill = document.getElementById('cartCountPill');
+      const container = document.getElementById('cartItemsList');
+      const totalEl = document.getElementById('cartTotalSum');
+      const shippingEl = document.getElementById('shippingSummaryText');
+
+      const count = cart.reduce((acc, i) => acc + i.quantity, 0);
+      const subtotalUSD = cart.reduce((acc, i) => acc + (i.price * i.quantity), 0);
+
+      badge.innerText = count;
+      pill.innerText = `${count} ${count === 1 ? 'Item' : 'Items'}`;
+      totalEl.innerText = formatPrice(subtotalUSD);
+
+      if (subtotalUSD >= 50 || subtotalUSD === 0) {
+        shippingEl.innerText = 'FREE';
+        shippingEl.className = 'text-[#d4af37] font-mono';
+      } else {
+        shippingEl.innerText = formatPrice(9.95);
+        shippingEl.className = 'text-white font-mono';
+      }
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div id="emptyCartNotice" class="text-center py-16 text-[#71717a] text-xs font-light">
+            Your shopping bag is currently empty.
+          </div>
+        `;
+      } else {
+        container.innerHTML = cart.map(item => `
+          <div class="flex items-center gap-4 bg-[#141414] p-3 border border-white/5">
+            <img src="${item.image}" alt="${item.title}" class="w-14 h-16 object-cover bg-[#222]" />
+            <div class="flex-1 min-w-0">
+              <h4 class="font-display text-xs font-medium text-white truncate uppercase">${item.title}</h4>
+              <div class="text-[11px] text-[#71717a] font-mono mt-0.5">Size: ${item.size} • Qty: ${item.quantity}</div>
+              <div class="text-xs font-mono text-[#d4af37] font-semibold mt-1">${formatPrice(item.price * item.quantity)}</div>
+            </div>
+            <button onclick="removeCartItem('${item.key}')" class="text-xs text-[#71717a] hover:text-white p-2">✕</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function openQuickView(title, price, image, description, color, sizes) {
+      currentQvItem = { title, price, image };
+      selectedSize = sizes[0] || 'M';
+
+      document.getElementById('qvTitle').innerText = title;
+      document.getElementById('qvPrice').innerText = formatPrice(price);
+      document.getElementById('qvImage').src = image;
+      document.getElementById('qvDescription').innerText = description;
+
+      const sizeContainer = document.getElementById('qvSizes');
+      sizeContainer.innerHTML = sizes.map((sz, index) => `
+        <button 
+          onclick="selectSize('${sz}', this)" 
+          class="size-btn px-3 py-1.5 text-xs font-mono border ${index === 0 ? 'border-white text-white bg-white/10' : 'border-white/20 text-[#8e8e93]'} hover:border-white hover:text-white transition-colors"
+        >
+          ${sz}
+        </button>
+      `).join('');
+
+      document.getElementById('quickViewModal').classList.remove('hidden');
+    }
+
+    function selectSize(sz, btn) {
+      selectedSize = sz;
+      document.querySelectorAll('.size-btn').forEach(b => {
+        b.className = 'size-btn px-3 py-1.5 text-xs font-mono border border-white/20 text-[#8e8e93] hover:border-white hover:text-white transition-colors';
+      });
+      btn.className = 'size-btn px-3 py-1.5 text-xs font-mono border border-white text-white bg-white/10 transition-colors';
+    }
+
+    function closeQuickView() {
+      document.getElementById('quickViewModal').classList.add('hidden');
+      currentQvItem = null;
+    }
+
+    function addQuickViewToCart() {
+      if (!currentQvItem) return;
+      addToCart(currentQvItem.title, currentQvItem.price, currentQvItem.image, selectedSize);
+      closeQuickView();
+    }
+
+    function proceedCheckout() {
+      const emptyAlert = document.getElementById('cartEmptyAlert');
+      if (cart.length === 0) {
+        if (emptyAlert) {
+          emptyAlert.classList.remove('hidden');
+          setTimeout(() => {
+            emptyAlert.classList.add('hidden');
+          }, 3500);
+        }
+        return;
+      }
+      if (emptyAlert) emptyAlert.classList.add('hidden');
+      toggleCartModal();
+      document.getElementById('orderSuccessModal').classList.remove('hidden');
+      cart = [];
+      updateCartDisplay();
+    }
+
+    function closeOrderModal() {
+      document.getElementById('orderSuccessModal').classList.add('hidden');
+    }
+
+    function openSizeGuideModal() {
+      document.getElementById('sizeGuideModal').classList.remove('hidden');
+    }
+
+    function closeSizeGuideModal() {
+      document.getElementById('sizeGuideModal').classList.add('hidden');
+    }
+
+    function openInfoModal(title, text) {
+      document.getElementById('infoModalTitle').innerText = title;
+      document.getElementById('infoModalBody').innerText = text;
+      document.getElementById('serviceInfoModal').classList.remove('hidden');
+    }
+
+    function closeInfoModal() {
+      document.getElementById('serviceInfoModal').classList.add('hidden');
+    }
+
+    // Interactive Accordion Controller for FAQ Section
+    function toggleFaq(index) {
+      const content = document.getElementById(`faq-content-${index}`);
+      const icon = document.getElementById(`faq-icon-${index}`);
+      const btn = document.getElementById(`faq-btn-${index}`);
+      if (!content || !icon || !btn) return;
+
+      const isCurrentlyOpen = !content.classList.contains('hidden');
+
+      // Close all other items for a clean single-open accordion feel
+      for (let i = 1; i <= 6; i++) {
+        const otherContent = document.getElementById(`faq-content-${i}`);
+        const otherIcon = document.getElementById(`faq-icon-${i}`);
+        const otherBtn = document.getElementById(`faq-btn-${i}`);
+        if (otherContent && otherIcon && otherBtn) {
+          otherContent.classList.add('hidden');
+          otherIcon.innerText = '+';
+          otherIcon.classList.remove('rotate-45', 'text-[#d4af37]');
+          otherBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      // If it was previously closed, expand it
+      if (!isCurrentlyOpen) {
+        content.classList.remove('hidden');
+        icon.innerText = '−';
+        icon.classList.add('text-[#d4af37]');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+  </script>
 </body>
 </html>

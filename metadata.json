@@ -1,6 +1,6 @@
 {
-  "name": "New App",
-  "description": "A clean starter application ready for new development.",
+  "name": "TinDry",
+  "description": "TinDry — Luxury clothing brand featuring premium heavyweight essentials. Wear Your Standard.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
