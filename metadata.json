@@ -1,6 +1,6 @@
 {
-  "name": "TeleFlow",
-  "description": "TeleFlow — Build powerful multi-channel automations. Connect Web3 events, databases, or APIs to Email, WhatsApp, and Telegram.",
+  "name": "New App",
+  "description": "A clean starter application ready for new development.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
