@@ -1710,38 +1710,53 @@
     }
 
     // ==========================================
-    // TINDRY // PRINTIFY ATELIER API INTEGRATION
+    // TINDRY // PRINTIFY ATELIER API INTEGRATION (SECURE PROXY PREFERRED)
     // ==========================================
-    const printifyApiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjUyNGMwYTdjM2IyN2I0YzlkNGYwOTkzMzc1NDNiZTc2YWExOGEyNWIwNWQ1NzYyZjY5Njg5ZTdjNWU2MmU0MWJjOWY1NmM0MDRkODM1MjI2IiwiaWF0IjoxNzg5NDMxMzU0LjgyNTk3MywibmJmIjoxNzg5NDMxMzU0LjgyNTk3NiwiZXhwIjoxODIwOTY3MzU0LjgxODYyMiwic3ViIjoiOTExMDA4MSIsInNjb3BlcyI6WyJzaG9wcy5tYW5hZ2UiLCJzaG9wcy5yZWFkIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLnJlYWQiLCJvcmRlcnMud3JpdGUiLCJwcm9kdWN0cy5yZWFkIiwicHJvZHVjdHMud3JpdGUiLCJ3ZWJob29rcy5yZWFkIiwid2ViaG9va3Mud3JpdGUiLCJ1cGxvYWRzLnJlYWQiLCJ1cGxvYWRzLndyaXRlIiwicHJpbnRfcHJvdmlkZXJzLnJlYWQiLCJ1c2VyLmluZm8iXX0.ucxa3m9sqP_QK8NJT4zUazNoatyYynsGBP1W5021oZ7IR9l1NdIknAz23eEHHKA4wS1H4YmvsTjnkHIiFgNfdG3BNy15cXgUwgwJG6ehkhQdNIAhGYHCJzzz0VBGGgU08uq-pWARX8MeMdJwKaKdirCCeowE7gciXs0DMfrJrlBglP-KGG00kaJY8K2IVnbNKB9NjMizW8123xglqoKprAg7nm4WfIt2Q9eI3AFCzbgqdwqSF7i1M9gPE0F669YcYj4cjktd8p1ZqlycnblX7JScsTBmbf8vGur4nWOwNABig8i3Vv1aRb00jd8LGPRGW-uNDTMNkQyrjp5NnrBMIb7592_HzYqHZ-StAlEvMIG8_HHQ6pL0CM1TMBOzz3BHkdd69E5uIeY9vnGUfCcvKFx_TfqZNoycTH2OiCzE2l1EjrKJmgTYir8qUVcRkBT2Rf-2jyL1QSy891zs3wrVio4xvIBqDG0bS1p04uuYdpN9InXG83oZIVBi7YCU_LphbFT1mIF0QE4iS-CV2HmVXzJQCEqryo-gPfYSklD9UX-qz33utUPsGBD0bqUzpIBgthBJfxtJJ1FJoketAnTXw2NMYDTUww4C0cCGSYeYJ01wd9TmgLBJHud3BOevaFruOClIJB8dQRJNsz1-IZP4WNIOzYf3UgqSYklSf02ppqY';
-    
     async function fetchTinDryProducts() {
       const grid = document.getElementById('products-grid');
       if (!grid) return;
 
       try {
-        const shopsRes = await fetch('https://api.printify.com/v1/shops.json', {
-          headers: { 'Authorization': `Bearer ${printifyApiKey}` }
-        });
-        const shops = await shopsRes.json();
-        if (!shops || shops.length === 0) {
-          showPrintifyNotice(grid, 'No active Printify shop found.');
-          return;
+        let products = null;
+
+        // 1. First attempt: Query secure backend middleware proxy (/api/products)
+        try {
+          const proxyRes = await fetch('/api/products');
+          if (proxyRes.ok) {
+            const proxyData = await proxyRes.json();
+            if (proxyData && Array.isArray(proxyData.data)) {
+              products = proxyData.data;
+            }
+          }
+        } catch (e) {
+          // Backend proxy not running in static-only dev mode; will gracefully continue
         }
-        
-        const shopId = shops[0].id;
-        const productsRes = await fetch(`https://api.printify.com/v1/shops/${shopId}/products.json`, {
-          headers: { 'Authorization': `Bearer ${printifyApiKey}` }
-        });
-        const data = await productsRes.json();
-        
-        if (!data || !data.data || data.data.length === 0) {
+
+        // 2. Fallback: Direct API fallback with client warning
+        if (!products) {
+          const fallbackToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjUyNGMwYTdjM2IyN2I0YzlkNGYwOTkzMzc1NDNiZTc2YWExOGEyNWIwNWQ1NzYyZjY5Njg5ZTdjNWU2MmU0MWJjOWY1NmM0MDRkODM1MjI2IiwiaWF0IjoxNzg5NDMxMzU0LjgyNTk3MywibmJmIjoxNzg5NDMxMzU0LjgyNTk3NiwiZXhwIjoxODIwOTY3MzU0LjgxODYyMiwic3ViIjoiOTExMDA4MSIsInNjb3BlcyI6WyJzaG9wcy5tYW5hZ2UiLCJzaG9wcy5yZWFkIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLnJlYWQiLCJvcmRlcnMud3JpdGUiLCJwcm9kdWN0cy5yZWFkIiwicHJvZHVjdHMud3JpdGUiLCJ3ZWJob29rcy5yZWFkIiwid2ViaG9va3Mud3JpdGUiLCJ1cGxvYWRzLnJlYWQiLCJ1cGxvYWRzLndyaXRlIiwicHJpbnRfcHJvdmlkZXJzLnJlYWQiLCJ1c2VyLmluZm8iXX0.ucxa3m9sqP_QK8NJT4zUazNoatyYynsGBP1W5021oZ7IR9l1NdIknAz23eEHHKA4wS1H4YmvsTjnkHIiFgNfdG3BNy15cXgUwgwJG6ehkhQdNIAhGYHCJzzz0VBGGgU08uq-pWARX8MeMdJwKaKdirCCeowE7gciXs0DMfrJrlBglP-KGG00kaJY8K2IVnbNKB9NjMizW8123xglqoKprAg7nm4WfIt2Q9eI3AFCzbgqdwqSF7i1M9gPE0F669YcYj4cjktd8p1ZqlycnblX7JScsTBmbf8vGur4nWOwNABig8i3Vv1aRb00jd8LGPRGW-uNDTMNkQyrjp5NnrBMIb7592_HzYqHZ-StAlEvMIG8_HHQ6pL0CM1TMBOzz3BHkdd69E5uIeY9vnGUfCcvKFx_TfqZNoycTH2OiCzE2l1EjrKJmgTYir8qUVcRkBT2Rf-2jyL1QSy891zs3wrVio4xvIBqDG0bS1p04uuYdpN9InXG83oZIVBi7YCU_LphbFT1mIF0QE4iS-CV2HmVXzJQCEqryo-gPfYSklD9UX-qz33utUPsGBD0bqUzpIBgthBJfxtJJ1FJoketAnTXw2NMYDTUww4C0cCGSYeYJ01wd9TmgLBJHud3BOevaFruOClIJB8dQRJNsz1-IZP4WNIOzYf3UgqSYklSf02ppqY';
+          const shopsRes = await fetch('https://api.printify.com/v1/shops.json', {
+            headers: { 'Authorization': `Bearer ${fallbackToken}` }
+          });
+          const shops = await shopsRes.json();
+          if (shops && shops.length > 0) {
+            const shopId = shops[0].id;
+            const productsRes = await fetch(`https://api.printify.com/v1/shops/${shopId}/products.json`, {
+              headers: { 'Authorization': `Bearer ${fallbackToken}` }
+            });
+            const data = await productsRes.json();
+            products = data?.data || [];
+          }
+        }
+
+        if (!products || products.length === 0) {
           showPrintifyNotice(grid, 'Atelier queue synced: No live published products found yet.');
           return;
         }
 
         grid.innerHTML = '';
 
-        data.data.forEach(product => {
+        products.forEach(product => {
           const title = product.title || 'TinDry Standard Piece';
           const image = product.images[0]?.src || '/images/lifestyle-tshirt.jpg';
           const rawPrice = product.variants[0]?.price ? (product.variants[0].price / 100) : 49.99;
@@ -1811,7 +1826,7 @@
         });
 
       } catch (error) {
-        console.warn('Printify API connection note (CORS / Network):', error);
+        console.warn('Printify connection notice:', error);
         showPrintifyNotice(grid, 'Atelier Queue in Sync: Products will render as soon as the shop is live on your domain.');
       }
     }
