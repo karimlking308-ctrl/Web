@@ -1291,8 +1291,14 @@
       </button>
 
       <!-- Image Column -->
-      <div class="aspect-square sm:aspect-auto bg-[#181818] relative">
-        <img id="qvImage" src="" alt="Product" class="w-full h-full object-cover" />
+      <div class="aspect-square sm:aspect-auto bg-[#181818] relative flex flex-col justify-between">
+        <div class="relative w-full h-full min-h-[300px] sm:min-h-[420px] overflow-hidden">
+          <img id="qvImage" src="" alt="Product" class="w-full h-full object-cover transition-all duration-500" />
+        </div>
+        <!-- Gallery thumbnails container in Quick View -->
+        <div id="qvThumbnails" class="flex gap-2 p-3 bg-[#0e0e0e]/95 border-t border-white/10 overflow-x-auto scrollbar-none z-10">
+          <!-- Populated dynamically via JS -->
+        </div>
       </div>
 
       <!-- Details Column -->
@@ -1597,15 +1603,43 @@
       }
     }
 
-    function openQuickView(title, price, image, description, color = 'Atelier Obsidian', sizes = ['S', 'M', 'L', 'XL']) {
-      currentQvItem = { title, price, image };
+    function openQuickView(title, price, image, description, color = 'Atelier Obsidian', sizes = ['S', 'M', 'L', 'XL'], galleryImages = []) {
+      const allImages = (Array.isArray(galleryImages) && galleryImages.length > 0) 
+        ? galleryImages 
+        : [image];
+      const initialImage = allImages[0] || image;
+
+      currentQvItem = { title, price, image: initialImage };
       const safeSizes = (Array.isArray(sizes) && sizes.length > 0) ? sizes : ['S', 'M', 'L', 'XL'];
       selectedSize = safeSizes[0] || 'M';
 
       document.getElementById('qvTitle').innerText = title;
       document.getElementById('qvPrice').innerText = formatPrice(price);
-      document.getElementById('qvImage').src = image;
+      const qvImgEl = document.getElementById('qvImage');
+      qvImgEl.src = initialImage;
+      qvImgEl.alt = title;
       document.getElementById('qvDescription').innerText = description;
+
+      // Populate Quick View Thumbnails if multiple images exist
+      const qvThumbnailsContainer = document.getElementById('qvThumbnails');
+      if (qvThumbnailsContainer) {
+        if (allImages.length > 1) {
+          qvThumbnailsContainer.classList.remove('hidden');
+          qvThumbnailsContainer.innerHTML = allImages.map((imgSrc, idx) => `
+            <button 
+              type="button"
+              onclick="setQuickViewImage('${imgSrc}', this)" 
+              class="qv-thumb-btn shrink-0 w-12 h-14 border ${idx === 0 ? 'border-[#d4af37]' : 'border-white/20 opacity-60'} hover:opacity-100 overflow-hidden bg-black/50 transition-all cursor-pointer"
+              title="View angle ${idx + 1}"
+            >
+              <img src="${imgSrc}" alt="${title} view ${idx + 1}" class="w-full h-full object-cover" loading="lazy" />
+            </button>
+          `).join('');
+        } else {
+          qvThumbnailsContainer.classList.add('hidden');
+          qvThumbnailsContainer.innerHTML = '';
+        }
+      }
 
       const sizeContainer = document.getElementById('qvSizes');
       sizeContainer.innerHTML = safeSizes.map((sz, index) => `
@@ -1618,6 +1652,24 @@
       `).join('');
 
       document.getElementById('quickViewModal').classList.remove('hidden');
+    }
+
+    function setQuickViewImage(imgSrc, btn) {
+      const qvImgEl = document.getElementById('qvImage');
+      if (qvImgEl) {
+        qvImgEl.style.opacity = '0.4';
+        qvImgEl.src = imgSrc;
+        setTimeout(() => { qvImgEl.style.opacity = '1'; }, 100);
+      }
+      if (currentQvItem) {
+        currentQvItem.image = imgSrc;
+      }
+      document.querySelectorAll('.qv-thumb-btn').forEach(b => {
+        b.className = 'qv-thumb-btn shrink-0 w-12 h-14 border border-white/20 opacity-60 hover:opacity-100 overflow-hidden bg-black/50 transition-all cursor-pointer';
+      });
+      if (btn) {
+        btn.className = 'qv-thumb-btn shrink-0 w-12 h-14 border border-[#d4af37] opacity-100 overflow-hidden bg-black/50 transition-all cursor-pointer';
+      }
     }
 
     function selectSize(sz, btn) {
@@ -1711,8 +1763,31 @@
     }
 
     // ==========================================
-    // TINDRY // SECURE VERCEL SERVERLESS PROXY
+    // TINDRY // SECURE VERCEL SERVERLESS PROXY & MULTI-IMAGE GALLERY
     // ==========================================
+    // In-memory registry to track multi-angle mockup images per product card
+    window.tinDryGalleryRegistry = {};
+
+    function switchProductCardImage(productId, imageSrc, btnEl) {
+      const mainImg = document.getElementById(`prod-img-${productId}`);
+      if (mainImg) {
+        mainImg.style.opacity = '0.4';
+        mainImg.src = imageSrc;
+        setTimeout(() => { mainImg.style.opacity = '1'; }, 100);
+      }
+
+      // Update active state of thumbnail buttons on this card
+      const cardContainer = btnEl?.closest('.group');
+      if (cardContainer) {
+        cardContainer.querySelectorAll('.gallery-thumb-btn').forEach(btn => {
+          btn.className = 'gallery-thumb-btn shrink-0 w-8 h-10 border border-white/20 opacity-50 hover:opacity-100 overflow-hidden bg-black/60 transition-all cursor-pointer';
+        });
+        if (btnEl) {
+          btnEl.className = 'gallery-thumb-btn shrink-0 w-8 h-10 border border-[#d4af37] opacity-100 overflow-hidden bg-black/60 transition-all cursor-pointer';
+        }
+      }
+    }
+
     async function fetchTinDryProducts() {
       const grid = document.getElementById('products-grid');
       if (!grid) return;
@@ -1732,30 +1807,129 @@
         }
 
         grid.innerHTML = '';
-        products.forEach(product => {
+        products.forEach((product, pIndex) => {
+          const productId = product.id || `tindry-prod-${pIndex}`;
           const title = product.title || 'TinDry Standard Piece';
-          const image = (product.images && product.images[0] && product.images[0].src) || '/images/lifestyle-tshirt.jpg';
-          const rawPrice = (product.variants && product.variants[0] && product.variants[0].price) ? (product.variants[0].price / 100) : 49.99;
-          const displayPrice = rawPrice.toFixed(2) + ' USD';
+
+          // Collect unique lifestyle and mockup images from Printify
+          const rawImages = Array.isArray(product.images) ? product.images : [];
+          const imageList = [];
+          rawImages.forEach(img => {
+            const src = typeof img === 'string' ? img : (img && img.src);
+            if (src && !imageList.includes(src)) {
+              imageList.push(src);
+            }
+          });
+
+          // Fallback image if product has no images
+          if (imageList.length === 0) {
+            imageList.push('/images/lifestyle-tshirt.jpg');
+          }
+
+          // Store for Quick View reference
+          window.tinDryGalleryRegistry[productId] = imageList;
+
+          const primaryImage = imageList[0];
+          const rawPrice = (product.variants && product.variants[0] && product.variants[0].price) 
+            ? (product.variants[0].price / 100) 
+            : 49.99;
+          const displayPrice = formatPrice(rawPrice);
           const safeTitle = title.replace(/"/g, '&quot;');
-          const safeDesc = (product.description || 'Exclusive custom garment.').replace(/"/g, '&quot;');
+          const safeDesc = (product.description || 'Exclusive custom garment crafted to the highest international textile standards with tailored drape and reinforced seams.').replace(/<[^>]*>?/gm, '').replace(/"/g, '&quot;');
+
+          // Prepare thumbnail strip if product has multiple angles/colors
+          let thumbnailsHtml = '';
+          if (imageList.length > 1) {
+            // Display up to 5 clean micro-thumbnails on the card
+            const visibleThumbnails = imageList.slice(0, 5);
+            thumbnailsHtml = `
+              <div class="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 px-0.5">
+                ${visibleThumbnails.map((thumbSrc, idx) => `
+                  <button 
+                    type="button"
+                    onclick="event.stopPropagation(); switchProductCardImage('${productId}', '${thumbSrc}', this)"
+                    class="gallery-thumb-btn shrink-0 w-8 h-10 border ${idx === 0 ? 'border-[#d4af37] opacity-100' : 'border-white/20 opacity-50'} hover:opacity-100 overflow-hidden bg-black/60 transition-all cursor-pointer"
+                    title="View angle ${idx + 1}"
+                  >
+                    <img src="${thumbSrc}" alt="${safeTitle} thumbnail ${idx + 1}" class="w-full h-full object-cover" loading="lazy" />
+                  </button>
+                `).join('')}
+                ${imageList.length > 5 ? `<span class="text-[9px] font-mono text-[#71717a] shrink-0 pl-1">+${imageList.length - 5}</span>` : ''}
+              </div>
+            `;
+          }
 
           const card = document.createElement('div');
-          card.className = 'group flex flex-col bg-[#111111] border border-white/10 hover:border-white/25 transition-all';
+          card.className = 'group flex flex-col bg-[#111111] border border-white/10 hover:border-white/25 transition-all duration-300';
           card.innerHTML = `
+            <!-- Product Media Stage -->
             <div class="relative aspect-[3/4] overflow-hidden bg-[#161616]">
-              <img src="${image}" alt="${safeTitle}" class="w-full h-full object-cover object-center filter grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700" loading="lazy">
-              <div class="absolute top-3 left-3">
-                <span class="px-2 py-0.5 bg-[#0a0a0a]/90 backdrop-blur-xs text-[9px] font-mono tracking-ultra uppercase text-[#a1a1aa] border border-white/10">Printify Direct</span>
+              <img 
+                id="prod-img-${productId}"
+                src="${primaryImage}" 
+                alt="${safeTitle}" 
+                class="w-full h-full object-cover object-center filter grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700 ease-out" 
+                loading="lazy"
+              />
+              
+              <!-- Badges -->
+              <div class="absolute top-3 left-3 flex flex-col gap-1 z-10">
+                <span class="px-2 py-0.5 bg-[#0a0a0a]/90 backdrop-blur-xs text-[9px] font-mono tracking-ultra uppercase text-[#d4af37] border border-[#d4af37]/30">
+                  Printify Direct
+                </span>
+                ${imageList.length > 1 ? `
+                  <span class="px-1.5 py-0.5 bg-[#0a0a0a]/90 backdrop-blur-xs text-[8px] font-mono tracking-wider uppercase text-[#a1a1aa] border border-white/10">
+                    ${imageList.length} Perspectives
+                  </span>
+                ` : ''}
               </div>
-              <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button onclick="openQuickView('${safeTitle}', ${rawPrice}, '${image}', '${safeDesc}')" class="w-full py-2.5 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[10px] font-mono tracking-widest uppercase border border-white/20 transition-all">Quick View</button>
+
+              <!-- Action Overlay -->
+              <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2 z-10">
+                <button 
+                  onclick="openQuickView('${safeTitle}', ${rawPrice}, document.getElementById('prod-img-${productId}').src, '${safeDesc}', 'Atelier Obsidian', ['S', 'M', 'L', 'XL'], window.tinDryGalleryRegistry['${productId}'])" 
+                  class="flex-1 py-2.5 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[10px] font-mono tracking-widest uppercase border border-white/20 transition-all cursor-pointer"
+                >
+                  Quick View
+                </button>
+                <button 
+                  onclick="addToCart('${safeTitle}', ${rawPrice}, document.getElementById('prod-img-${productId}').src, 'L')" 
+                  class="px-3.5 py-2.5 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-[10px] font-display font-semibold tracking-luxury uppercase transition-colors cursor-pointer"
+                >
+                  Add
+                </button>
               </div>
             </div>
+
+            <!-- Product Meta & Gallery Switcher -->
             <div class="p-4 flex flex-col flex-grow justify-between space-y-3">
               <div class="space-y-1">
-                <h3 class="text-xs font-mono tracking-wider text-white uppercase">${safeTitle}</h3>
-                <p class="text-xs text-[#8e8e93] font-light leading-relaxed">${displayPrice}</p>
+                <div class="flex items-start justify-between gap-2">
+                  <h3 class="text-xs font-mono tracking-wider text-white uppercase line-clamp-1">${safeTitle}</h3>
+                  <span class="text-xs font-mono text-[#d4af37] font-semibold shrink-0 price-display" data-base-price="${rawPrice}">${displayPrice}</span>
+                </div>
+                <p class="text-[11px] text-[#8e8e93] font-light line-clamp-2 leading-relaxed">${safeDesc}</p>
+              </div>
+
+              <!-- Multi-angle Mockup Thumbnail Selector -->
+              ${thumbnailsHtml ? `
+                <div class="pt-2 border-t border-white/5 space-y-1">
+                  <div class="flex items-center justify-between text-[9px] font-mono text-[#71717a] uppercase tracking-wider">
+                    <span>Atelier Perspectives</span>
+                    <span class="text-[#d4af37]">Interactive Mockups</span>
+                  </div>
+                  ${thumbnailsHtml}
+                </div>
+              ` : ''}
+
+              <div class="pt-2 border-t border-white/5 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-[#52525b] uppercase">Made To Order</span>
+                <button 
+                  onclick="addToCart('${safeTitle}', ${rawPrice}, document.getElementById('prod-img-${productId}').src, 'L')" 
+                  class="text-[11px] font-display tracking-luxury uppercase text-white hover:text-[#d4af37] transition-colors cursor-pointer"
+                >
+                  Add To Bag +
+                </button>
               </div>
             </div>`;
           grid.appendChild(card);
