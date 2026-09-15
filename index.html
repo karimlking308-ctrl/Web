@@ -528,6 +528,33 @@
 
     </div>
 
+    <!-- Live Dynamic Printify Catalog Integration (Stealth Luxury) -->
+    <div id="tindry-store" class="mt-24 pt-16 border-t border-white/10">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#d4af37]/10 border border-[#d4af37]/30 text-[#d4af37] text-[10px] font-mono tracking-ultra uppercase mb-3">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37] animate-pulse"></span>
+            <span>Live Studio Catalog // Printify Direct</span>
+          </div>
+          <h3 class="font-display text-2xl sm:text-3xl font-bold tracking-tight text-white uppercase">
+            TINDRY // LIVE COLLECTION
+          </h3>
+        </div>
+        <p class="text-xs text-[#8e8e93] font-light max-w-sm">
+          Direct atelier connection. Dynamically retrieved pieces from the TinDry manufacturing queue.
+        </p>
+      </div>
+
+      <!-- Container where Printify products are rendered dynamically -->
+      <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Loading State Skeleton -->
+        <div class="col-span-full py-16 text-center space-y-3">
+          <div class="w-8 h-8 border-2 border-white/20 border-t-[#d4af37] rounded-full animate-spin mx-auto"></div>
+          <p class="text-xs font-mono tracking-luxury text-[#71717a] uppercase">Connecting to Printify Atelier API...</p>
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- 5. THE INDUSTRIAL HERITAGE / BRAND STORY SECTION (CRUCIAL) -->
@@ -1680,6 +1707,139 @@
         icon.classList.add('text-[#d4af37]');
         btn.setAttribute('aria-expanded', 'true');
       }
+    }
+
+    // ==========================================
+    // TINDRY // PRINTIFY ATELIER API INTEGRATION
+    // ==========================================
+    const printifyApiKey = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzN2Q0YmQzMDM1ZmUxMWU5YTgwM2FiN2VlYjNjY2M5NyIsImp0aSI6IjUyNGMwYTdjM2IyN2I0YzlkNGYwOTkzMzc1NDNiZTc2YWExOGEyNWIwNWQ1NzYyZjY5Njg5ZTdjNWU2MmU0MWJjOWY1NmM0MDRkODM1MjI2IiwiaWF0IjoxNzg5NDMxMzU0LjgyNTk3MywibmJmIjoxNzg5NDMxMzU0LjgyNTk3NiwiZXhwIjoxODIwOTY3MzU0LjgxODYyMiwic3ViIjoiOTExMDA4MSIsInNjb3BlcyI6WyJzaG9wcy5tYW5hZ2UiLCJzaG9wcy5yZWFkIiwiY2F0YWxvZy5yZWFkIiwib3JkZXJzLnJlYWQiLCJvcmRlcnMud3JpdGUiLCJwcm9kdWN0cy5yZWFkIiwicHJvZHVjdHMud3JpdGUiLCJ3ZWJob29rcy5yZWFkIiwid2ViaG9va3Mud3JpdGUiLCJ1cGxvYWRzLnJlYWQiLCJ1cGxvYWRzLndyaXRlIiwicHJpbnRfcHJvdmlkZXJzLnJlYWQiLCJ1c2VyLmluZm8iXX0.ucxa3m9sqP_QK8NJT4zUazNoatyYynsGBP1W5021oZ7IR9l1NdIknAz23eEHHKA4wS1H4YmvsTjnkHIiFgNfdG3BNy15cXgUwgwJG6ehkhQdNIAhGYHCJzzz0VBGGgU08uq-pWARX8MeMdJwKaKdirCCeowE7gciXs0DMfrJrlBglP-KGG00kaJY8K2IVnbNKB9NjMizW8123xglqoKprAg7nm4WfIt2Q9eI3AFCzbgqdwqSF7i1M9gPE0F669YcYj4cjktd8p1ZqlycnblX7JScsTBmbf8vGur4nWOwNABig8i3Vv1aRb00jd8LGPRGW-uNDTMNkQyrjp5NnrBMIb7592_HzYqHZ-StAlEvMIG8_HHQ6pL0CM1TMBOzz3BHkdd69E5uIeY9vnGUfCcvKFx_TfqZNoycTH2OiCzE2l1EjrKJmgTYir8qUVcRkBT2Rf-2jyL1QSy891zs3wrVio4xvIBqDG0bS1p04uuYdpN9InXG83oZIVBi7YCU_LphbFT1mIF0QE4iS-CV2HmVXzJQCEqryo-gPfYSklD9UX-qz33utUPsGBD0bqUzpIBgthBJfxtJJ1FJoketAnTXw2NMYDTUww4C0cCGSYeYJ01wd9TmgLBJHud3BOevaFruOClIJB8dQRJNsz1-IZP4WNIOzYf3UgqSYklSf02ppqY';
+    
+    async function fetchTinDryProducts() {
+      const grid = document.getElementById('products-grid');
+      if (!grid) return;
+
+      try {
+        const shopsRes = await fetch('https://api.printify.com/v1/shops.json', {
+          headers: { 'Authorization': `Bearer ${printifyApiKey}` }
+        });
+        const shops = await shopsRes.json();
+        if (!shops || shops.length === 0) {
+          showPrintifyNotice(grid, 'No active Printify shop found.');
+          return;
+        }
+        
+        const shopId = shops[0].id;
+        const productsRes = await fetch(`https://api.printify.com/v1/shops/${shopId}/products.json`, {
+          headers: { 'Authorization': `Bearer ${printifyApiKey}` }
+        });
+        const data = await productsRes.json();
+        
+        if (!data || !data.data || data.data.length === 0) {
+          showPrintifyNotice(grid, 'Atelier queue synced: No live published products found yet.');
+          return;
+        }
+
+        grid.innerHTML = '';
+
+        data.data.forEach(product => {
+          const title = product.title || 'TinDry Standard Piece';
+          const image = product.images[0]?.src || '/images/lifestyle-tshirt.jpg';
+          const rawPrice = product.variants[0]?.price ? (product.variants[0].price / 100) : 49.99;
+          const displayPrice = formatPrice(rawPrice);
+          const safeTitle = title.replace(/'/g, "\\'");
+          const safeDesc = (product.description || 'Exclusive custom garment crafted to the highest international textile standard with tailored boxy drape and reinforced stitching.').replace(/<[^>]*>?/gm, '').replace(/'/g, "\\'");
+
+          const card = document.createElement('div');
+          card.className = "group flex flex-col bg-[#111111] border border-white/10 hover:border-white/25 transition-all duration-300 overflow-hidden";
+          
+          card.innerHTML = `
+            <div class="relative aspect-[3/4] overflow-hidden bg-[#161616]">
+              <img 
+                src="${image}" 
+                alt="${title}" 
+                class="w-full h-full object-cover object-center filter grayscale contrast-125 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out"
+                loading="lazy"
+              />
+              <div class="absolute top-3 left-3">
+                <span class="px-2 py-0.5 bg-[#0a0a0a]/90 backdrop-blur-xs text-[9px] font-mono tracking-ultra uppercase text-[#d4af37] border border-[#d4af37]/30">
+                  Printify Direct
+                </span>
+              </div>
+              <div class="absolute inset-x-3 bottom-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex gap-2">
+                <button 
+                  onclick="openQuickView('${safeTitle}', ${rawPrice}, '${image}', '${safeDesc}', 'Printify Atelier', ['S', 'M', 'L', 'XL'])" 
+                  class="flex-1 py-2.5 bg-[#0a0a0a]/90 hover:bg-[#0a0a0a] backdrop-blur-md text-white text-[10px] font-display font-medium tracking-luxury uppercase border border-white/20 transition-colors"
+                >
+                  Quick View
+                </button>
+                <button 
+                  onclick="addToCart('${safeTitle}', ${rawPrice}, '${image}', 'L')" 
+                  class="px-3 py-2.5 bg-[#f5f5f7] hover:bg-[#d4af37] text-[#0a0a0a] text-[10px] font-display font-semibold tracking-luxury uppercase transition-colors"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+
+            <div class="p-5 flex flex-col flex-1 justify-between gap-4">
+              <div>
+                <div class="flex items-start justify-between gap-2 mb-1">
+                  <h4 class="font-display text-xs font-semibold tracking-wider text-white uppercase line-clamp-1">
+                    ${title}
+                  </h4>
+                  <span class="font-mono text-xs text-[#d4af37] font-semibold shrink-0 price-display" data-base-price="${rawPrice}">
+                    ${displayPrice}
+                  </span>
+                </div>
+                <p class="text-[11px] text-[#8e8e93] font-light line-clamp-2 leading-relaxed">
+                  ${safeDesc}
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-white/5 flex items-center justify-between">
+                <span class="text-[10px] font-mono text-[#52525b] uppercase">Made To Order</span>
+                <button 
+                  onclick="addToCart('${safeTitle}', ${rawPrice}, '${image}', 'L')" 
+                  class="text-[11px] font-display tracking-luxury uppercase text-white hover:text-[#d4af37] transition-colors"
+                >
+                  Add To Bag +
+                </button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+      } catch (error) {
+        console.warn('Printify API connection note (CORS / Network):', error);
+        showPrintifyNotice(grid, 'Atelier Queue in Sync: Products will render as soon as the shop is live on your domain.');
+      }
+    }
+
+    function showPrintifyNotice(container, message) {
+      container.innerHTML = `
+        <div class="col-span-full py-12 px-6 bg-[#111111] border border-white/5 text-center max-w-xl mx-auto space-y-3">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 bg-white/5 border border-white/10 text-[#a1a1aa] text-[10px] font-mono uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#d4af37]"></span>
+            <span>Live Atelier Status</span>
+          </div>
+          <p class="text-xs text-[#8e8e93] font-light leading-relaxed">
+            ${message}
+          </p>
+          <div class="pt-2">
+            <a href="#products" class="text-xs font-display tracking-luxury uppercase text-[#d4af37] hover:underline">
+              Browse Foundation Pieces Above &uarr;
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Initialize Printify Catalog on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fetchTinDryProducts);
+    } else {
+      fetchTinDryProducts();
     }
   </script>
 </body>
