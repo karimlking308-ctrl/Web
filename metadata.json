@@ -1,6 +1,6 @@
 {
-  "name": "TinDry",
-  "description": "TinDry — Luxury clothing brand featuring premium heavyweight essentials. Wear Your Standard.",
+  "name": "Tindry",
+  "description": "Simple file tools that just work. Fast, private, client-side tools for MP4 to MP3, Merge PDF, JPG to PDF, PDF to JPG, and Image Compression.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="none" stroke="#e5e5e5" stroke-width="2"/>
+  
+  <!-- Logo & Title -->
+  <g transform="translate(100, 140)">
+    <!-- Tindry Mark -->
+    <rect x="0" y="0" width="64" height="64" rx="14" fill="#000000"/>
+    <path d="M22 20h20v6H35v22h-6V26h-7z" fill="#ffffff"/>
+    
+    <text x="84" y="46" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="800" fill="#000000" letter-spacing="-1">Tindry</text>
+  </g>
+
+  <!-- Headline -->
+  <text x="100" y="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="56" font-weight="800" fill="#000000" letter-spacing="-1.5">
+    Simple file tools that just work.
+  </text>
+
+  <!-- Subtitle -->
+  <text x="100" y="340" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="24" font-weight="400" fill="#666666">
+    Convert, merge and compress your files quickly and securely online.
+  </text>
+
+  <!-- 5 Tools Badges -->
+  <g transform="translate(100, 420)">
+    <rect x="0" y="0" width="170" height="52" rx="10" fill="#000000"/>
+    <text x="85" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#ffffff" text-anchor="middle">MP4 to MP3</text>
+
+    <rect x="186" y="0" width="160" height="52" rx="10" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+    <text x="266" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#000000" text-anchor="middle">Merge PDF</text>
+
+    <rect x="362" y="0" width="160" height="52" rx="10" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+    <text x="442" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#000000" text-anchor="middle">JPG to PDF</text>
+
+    <rect x="538" y="0" width="160" height="52" rx="10" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+    <text x="618" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#000000" text-anchor="middle">PDF to JPG</text>
+
+    <rect x="714" y="0" width="180" height="52" rx="10" fill="#ffffff" stroke="#000000" stroke-width="1.5"/>
+    <text x="804" y="32" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="600" fill="#000000" text-anchor="middle">Compress Image</text>
+  </g>
+
+  <!-- Domain -->
+  <text x="100" y="535" font-family="monospace" font-size="18" font-weight="600" fill="#888888" letter-spacing="1">
+    HTTPS://TINDRY.COM
+  </text>
+</svg>
