@@ -11,9 +11,13 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, onSelect }) => {
   const Icon = tool.icon;
 
   return (
-    <div
-      onClick={() => onSelect(tool.id)}
-      className="group relative bg-white border border-neutral-200 rounded-xl p-6 hover:border-black transition-colors cursor-pointer flex flex-col justify-between"
+    <a
+      href={`/tools/${tool.id}`}
+      onClick={(e) => {
+        e.preventDefault();
+        onSelect(tool.id);
+      }}
+      className="group relative bg-white border border-neutral-200 rounded-xl p-6 hover:border-black transition-colors cursor-pointer flex flex-col justify-between no-underline block"
     >
       <div>
         <div className="flex items-start justify-between mb-4">
@@ -38,6 +42,6 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, onSelect }) => {
         <span>Use tool</span>
         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
       </div>
-    </div>
+    </a>
   );
 };

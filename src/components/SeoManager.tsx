@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { SEO_CONFIGS, PageSeoConfig } from '../config/seo';
 
-const DOMAIN = 'https://tindry.com';
+const DOMAIN = 'https://www.tindry.com';
 
 interface SeoManagerProps {
   currentView: string;
@@ -9,7 +9,7 @@ interface SeoManagerProps {
 
 export const SeoManager: React.FC<SeoManagerProps> = ({ currentView }) => {
   const config: PageSeoConfig = SEO_CONFIGS[currentView] || SEO_CONFIGS.home;
-  const canonicalUrl = `${DOMAIN}${config.canonicalPath === '/' ? '' : config.canonicalPath}`;
+  const canonicalUrl = `${DOMAIN}${config.canonicalPath === '/' ? '/' : config.canonicalPath}`;
 
   useEffect(() => {
     // 1. Update Title
@@ -94,7 +94,7 @@ export const SeoManager: React.FC<SeoManagerProps> = ({ currentView }) => {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: 'Tindry',
-        url: DOMAIN,
+        url: `${DOMAIN}/`,
         description: config.description,
         potentialAction: {
           '@type': 'SearchAction',

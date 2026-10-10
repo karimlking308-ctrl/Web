@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "tindry.com"
+        }
+      ],
+      "destination": "https://www.tindry.com/:path*",
+      "permanent": true
+    }
+  ]
+}

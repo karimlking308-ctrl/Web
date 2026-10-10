@@ -63,10 +63,10 @@ export const Mp4ToMp3Tool: React.FC = () => {
       {/* Tool Header */}
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
-          MP4 to MP3
+          MP4 to MP3 Converter
         </h1>
         <p className="text-xs text-neutral-500 mt-1">
-          Convert your MP4 video to MP3 audio.
+          Convert MP4 videos to MP3 audio quickly with Tindry's simple online MP4 to MP3 converter.
         </p>
       </div>
 
@@ -177,6 +177,20 @@ export const Mp4ToMp3Tool: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Helpful On-Page Content & Guide */}
+      <section className="pt-6 border-t border-neutral-200 space-y-4 text-xs text-neutral-600">
+        <h2 className="text-sm font-bold text-black">How to convert MP4 to MP3 online</h2>
+        <ol className="list-decimal list-inside space-y-1.5 text-neutral-600 pl-1">
+          <li>Select or drop your MP4 video file into the converter box above.</li>
+          <li>Choose your target audio bitrate: 128 kbps (standard), 192 kbps (high quality), or 320 kbps (maximum fidelity).</li>
+          <li>Click <strong className="text-black font-semibold">Convert to MP3</strong> to process the audio stream.</li>
+          <li>Download your high-fidelity MP3 file immediately to your device.</li>
+        </ol>
+        <p className="text-[11px] text-neutral-500 leading-relaxed">
+          Tindry extracts the audio track using local browser processing. Your videos are never uploaded to remote servers, ensuring complete privacy and fast conversion speeds.
+        </p>
+      </section>
     </div>
   );
 };

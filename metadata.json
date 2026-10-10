@@ -1,6 +1,6 @@
 {
   "name": "Tindry",
-  "description": "Simple file tools that just work. Fast, private, client-side tools for MP4 to MP3, Merge PDF, JPG to PDF, PDF to JPG, and Image Compression.",
+  "description": "Convert, merge and compress files online with Tindry. Simple and fast tools for MP4 to MP3, PDF merging, JPG to PDF, PDF to JPG and image compression.",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

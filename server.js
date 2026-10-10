@@ -13,6 +13,27 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Canonical HTTPS & www.tindry.com 301 Permanent Redirect Middleware
+app.use((req, res, next) => {
+  const host = (req.headers.host || '').toLowerCase().split(':')[0];
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const proto = forwardedProto 
+    ? (Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto.split(',')[0].trim())
+    : (req.secure ? 'https' : req.protocol);
+
+  // 1. Redirect non-www tindry.com to preferred canonical https://www.tindry.com/
+  if (host === 'tindry.com') {
+    return res.redirect(301, `https://www.tindry.com${req.originalUrl}`);
+  }
+
+  // 2. Redirect http://www.tindry.com to https://www.tindry.com
+  if (host === 'www.tindry.com' && proto === 'http') {
+    return res.redirect(301, `https://www.tindry.com${req.originalUrl}`);
+  }
+
+  next();
+});
+
 // Enable CORS for client-to-server calls
 app.use(cors());
 app.use(express.json());

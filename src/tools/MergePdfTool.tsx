@@ -95,7 +95,7 @@ export const MergePdfTool: React.FC = () => {
           Merge PDF
         </h1>
         <p className="text-xs text-neutral-500 mt-1">
-          Combine multiple PDF files into one single document.
+          Merge multiple PDF files into one PDF document quickly and easily with Tindry.
         </p>
       </div>
 
@@ -184,6 +184,20 @@ export const MergePdfTool: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Helpful On-Page Content & Guide */}
+      <section className="pt-6 border-t border-neutral-200 space-y-4 text-xs text-neutral-600">
+        <h2 className="text-sm font-bold text-black">How to merge PDF documents online</h2>
+        <ol className="list-decimal list-inside space-y-1.5 text-neutral-600 pl-1">
+          <li>Upload two or more PDF files using the file dropzone.</li>
+          <li>Reorder your files using the up and down arrows to arrange documents in your desired page sequence.</li>
+          <li>Click <strong className="text-black font-semibold">Merge PDFs</strong> to combine them into a single file.</li>
+          <li>Save the newly consolidated PDF document directly to your device.</li>
+        </ol>
+        <p className="text-[11px] text-neutral-500 leading-relaxed">
+          PDF combining is performed locally in your browser using pure JavaScript. None of your confidential documents or records are sent to third-party cloud servers.
+        </p>
+      </section>
     </div>
   );
 };

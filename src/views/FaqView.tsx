@@ -49,13 +49,17 @@ export const FaqView: React.FC<FaqViewProps> = ({ onSelectTool }) => {
             Choose from MP4 to MP3, Merge PDF, JPG to PDF, PDF to JPG, or Compress Image.
           </p>
         </div>
-        <button
-          onClick={() => onSelectTool('all-tools')}
+        <a
+          href="/tools"
+          onClick={(e) => {
+            e.preventDefault();
+            onSelectTool('all-tools');
+          }}
           className="inline-flex items-center gap-1.5 py-2.5 px-4 bg-black hover:bg-neutral-800 text-white font-medium text-xs rounded-md transition-colors"
         >
           <span>Explore All Tools</span>
           <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        </a>
       </div>
     </div>
   );

@@ -29,13 +29,17 @@ export const Header: React.FC<HeaderProps> = ({
 
           {currentToolName && onBackToHome ? (
             <div className="flex items-center gap-2.5">
-              <button
-                onClick={onBackToHome}
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onBackToHome();
+                }}
                 className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 hover:text-black transition-colors py-1 px-1.5 -ml-1 rounded"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Home</span>
-              </button>
+              </a>
               <span className="text-neutral-300 text-xs select-none">/</span>
               <h2 className="text-xs font-semibold tracking-wide text-black">
                 {currentToolName}
@@ -43,25 +47,37 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           ) : (
             <div className="flex items-center gap-6">
-              <button
-                onClick={onBackToHome}
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onBackToHome?.();
+                }}
                 className="font-bold text-sm tracking-tight text-black hover:opacity-80 transition-opacity"
               >
                 Tindry
-              </button>
+              </a>
               <nav className="hidden sm:flex items-center gap-5 text-xs font-medium text-neutral-500">
-                <button
-                  onClick={onBackToHome}
+                <a
+                  href="/"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onBackToHome?.();
+                  }}
                   className="hover:text-black transition-colors"
                 >
                   Home
-                </button>
-                <button
-                  onClick={onNavigateTools}
+                </a>
+                <a
+                  href="/tools"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigateTools?.();
+                  }}
                   className="hover:text-black transition-colors"
                 >
                   Tools
-                </button>
+                </a>
               </nav>
             </div>
           )}
