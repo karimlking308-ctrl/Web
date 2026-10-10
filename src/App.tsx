@@ -16,15 +16,15 @@ import { SEO_CONFIGS } from './config/seo';
 
 function getInitialView(): string {
   if (typeof window === 'undefined') return 'home';
-  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  const path = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
   
   if (path === '/') return 'home';
   if (path === '/tools') return 'all-tools';
-  if (path === '/tools/mp4-to-mp3') return 'mp4-to-mp3';
-  if (path === '/tools/merge-pdf') return 'merge-pdf';
-  if (path === '/tools/jpg-to-pdf') return 'jpg-to-pdf';
-  if (path === '/tools/pdf-to-jpg') return 'pdf-to-jpg';
-  if (path === '/tools/compress-image') return 'compress-image';
+  if (path === '/tools/mp4-to-mp3' || path === '/mp4-to-mp3') return 'mp4-to-mp3';
+  if (path === '/tools/merge-pdf' || path === '/merge-pdf') return 'merge-pdf';
+  if (path === '/tools/jpg-to-pdf' || path === '/jpg-to-pdf') return 'jpg-to-pdf';
+  if (path === '/tools/pdf-to-jpg' || path === '/pdf-to-jpg') return 'pdf-to-jpg';
+  if (path === '/tools/compress-image' || path === '/compress-image') return 'compress-image';
   if (path === '/faq') return 'faq';
   if (path === '/contact') return 'contact';
   if (path === '/privacy') return 'privacy';
@@ -45,6 +45,19 @@ export function App() {
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Ensure canonical URL is reflected in the address bar if loaded via alias
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const config = SEO_CONFIGS[currentView];
+    if (config && config.canonicalPath) {
+      const currentPath = window.location.pathname.toLowerCase().replace(/\/+$/, '') || '/';
+      const canonicalPath = config.canonicalPath.toLowerCase().replace(/\/+$/, '') || '/';
+      if (currentPath !== canonicalPath) {
+        window.history.replaceState({}, '', config.canonicalPath + window.location.search);
+      }
+    }
+  }, [currentView]);
 
   const navigateTo = (view: string) => {
     setCurrentView(view);

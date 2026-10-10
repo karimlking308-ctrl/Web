@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 // Load environment variables from .env file if available
@@ -39,6 +40,10 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static assets (HTML, CSS, images, client scripts)
+const distPath = path.join(__dirname, 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
 app.use(express.static(__dirname));
 
 /**
@@ -141,6 +146,10 @@ app.get('/api/products', async (req, res) => {
 
 // Fallback route to serve index.html for single-page routing
 app.get('*', (req, res) => {
+  const distIndex = path.join(distPath, 'index.html');
+  if (fs.existsSync(distIndex)) {
+    return res.sendFile(distIndex);
+  }
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 

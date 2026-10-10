@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "redirects": [
     {
       "source": "/:path*",
@@ -11,6 +13,81 @@
       ],
       "destination": "https://www.tindry.com/:path*",
       "permanent": true
+    },
+    {
+      "source": "/mp4-to-mp3",
+      "destination": "/tools/mp4-to-mp3",
+      "permanent": true
+    },
+    {
+      "source": "/merge-pdf",
+      "destination": "/tools/merge-pdf",
+      "permanent": true
+    },
+    {
+      "source": "/jpg-to-pdf",
+      "destination": "/tools/jpg-to-pdf",
+      "permanent": true
+    },
+    {
+      "source": "/pdf-to-jpg",
+      "destination": "/tools/pdf-to-jpg",
+      "permanent": true
+    },
+    {
+      "source": "/compress-image",
+      "destination": "/tools/compress-image",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/tools/mp4-to-mp3",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/merge-pdf",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/jpg-to-pdf",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/pdf-to-jpg",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools/compress-image",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!api/|assets/|favicon|robots\\.txt|sitemap\\.xml|og-image\\.svg).*)",
+      "destination": "/index.html"
     }
   ]
 }
