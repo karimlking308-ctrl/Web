@@ -87,7 +87,7 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
       "Find answers to common questions about Tindry's online file conversion and compression tools.",
     canonicalPath: '/faq',
     h1: 'Frequently Asked Questions',
-    noindex: true,
+    noindex: false,
     schemaType: 'FAQPage',
     faqItems: [
       {
@@ -123,7 +123,7 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
       'Read the Tindry Privacy Policy. Learn how we prioritize user privacy with client-side, zero-upload file operations.',
     canonicalPath: '/privacy',
     h1: 'Privacy Policy',
-    noindex: true,
+    noindex: false,
     schemaType: 'WebSite',
   },
   terms: {
@@ -132,7 +132,7 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
       'Read the Terms of Service for using Tindry online file conversion and compression tools.',
     canonicalPath: '/terms',
     h1: 'Terms of Service',
-    noindex: true,
+    noindex: false,
     schemaType: 'WebSite',
   },
   contact: {
@@ -141,7 +141,7 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
       'Get in touch with the Tindry team for questions, feedback, or technical inquiries.',
     canonicalPath: '/contact',
     h1: 'Contact Tindry',
-    noindex: true,
+    noindex: false,
     schemaType: 'WebSite',
   },
 };

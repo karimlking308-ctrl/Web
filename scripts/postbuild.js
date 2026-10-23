@@ -55,25 +55,25 @@ const pageConfigs = {
     title: 'Contact Tindry',
     description: 'Get in touch with the Tindry team for questions, feedback, or technical inquiries.',
     canonical: 'https://tindry.com/contact',
-    noindex: true,
+    noindex: false,
   },
   'faq': {
     title: 'Tindry FAQ - Frequently Asked Questions',
     description: "Find answers to common questions about Tindry's online file conversion and compression tools.",
     canonical: 'https://tindry.com/faq',
-    noindex: true,
+    noindex: false,
   },
   'privacy': {
     title: 'Privacy Policy | Tindry',
     description: 'Read the Tindry Privacy Policy. Learn how we prioritize user privacy with client-side, zero-upload file operations.',
     canonical: 'https://tindry.com/privacy',
-    noindex: true,
+    noindex: false,
   },
   'terms': {
     title: 'Terms of Service | Tindry',
     description: 'Read the Terms of Service for using Tindry online file conversion and compression tools.',
     canonical: 'https://tindry.com/terms',
-    noindex: true,
+    noindex: false,
   },
 };
 
@@ -163,18 +163,11 @@ if (fs.existsSync(distDir)) {
         `<meta property="og:description" content="${config.description}" />`
       );
 
-      // Update robots tag (noindex for non-SEO pages: contact, privacy, terms, faq)
-      if (config.noindex) {
-        customizedHtml = customizedHtml.replace(
-          /<meta\s+name="robots"\s+content=".*?"\s*\/?>/i,
-          '<meta name="robots" content="noindex, follow" />'
-        );
-      } else {
-        customizedHtml = customizedHtml.replace(
-          /<meta\s+name="robots"\s+content=".*?"\s*\/?>/i,
-          '<meta name="robots" content="index, follow" />'
-        );
-      }
+      // Update robots tag: always index, follow for production build
+      customizedHtml = customizedHtml.replace(
+        /<meta\s+name="robots"\s+content=".*?"\s*\/?>/i,
+        '<meta name="robots" content="index, follow" />'
+      );
 
       fs.writeFileSync(path.join(targetDir, 'index.html'), customizedHtml);
     }

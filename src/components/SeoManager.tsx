@@ -29,11 +29,18 @@ export const SeoManager: React.FC<SeoManagerProps> = ({ currentView }) => {
     // Standard Meta
     setMeta('name', 'description', config.description);
 
-    // Robots / Noindex (e.g. for /contact, /privacy, /terms, /faq)
-    if (config.noindex) {
-      setMeta('name', 'robots', 'noindex, follow');
-    } else {
+    // Robots / Index meta tag: index, follow for production; noindex, nofollow for non-production environments
+    const isProduction =
+      import.meta.env.PROD ||
+      (typeof window !== 'undefined' &&
+        (window.location.hostname === 'tindry.com' ||
+          window.location.hostname === 'www.tindry.com' ||
+          window.location.hostname.endsWith('tindry.com')));
+
+    if (isProduction) {
       setMeta('name', 'robots', 'index, follow');
+    } else {
+      setMeta('name', 'robots', 'noindex, nofollow');
     }
 
     // Open Graph
