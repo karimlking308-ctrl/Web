@@ -254,6 +254,25 @@ export function App() {
               </div>
             </div>
           </div>
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '24px 0' }}>
+            <a
+              href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: '#000',
+                color: '#fff',
+                padding: '12px 22px',
+                borderRadius: '12px',
+                textDecoration: 'none',
+                fontWeight: 700,
+                fontFamily: 'sans-serif',
+                border: '1px solid #333',
+              }}
+            >
+              ⭐ Featured on TechBaseDirectory — Tindry
+            </a>
+          </div>
         </footer>
       </div>
     </div>
