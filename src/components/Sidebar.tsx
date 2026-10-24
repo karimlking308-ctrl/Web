@@ -49,6 +49,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'qr-generator', label: 'QR Code Generator', icon: QrCode, href: '/qr-generator' },
     { id: 'color-palette', label: 'Color Palette Extractor', icon: Palette, href: '/color-palette' },
     { id: 'word-counter', label: 'Word Counter & Case Converter', icon: FileText, href: '/word-counter' },
+    { id: 'pdf-to-word', label: 'PDF to Word - Private', icon: FileText, href: '/pdf-to-word.html' },
   ];
 
   const handleItemClick = (id: string, href?: string) => {

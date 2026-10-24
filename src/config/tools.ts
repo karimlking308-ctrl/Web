@@ -31,7 +31,8 @@ export type ToolId =
   | 'image-resizer'
   | 'qr-generator'
   | 'color-palette'
-  | 'word-counter';
+  | 'word-counter'
+  | 'pdf-to-word';
 
 export interface ToolDefinition {
   id: ToolId;
@@ -207,6 +208,17 @@ export const TOOLS: ToolDefinition[] = [
     acceptedFormats: ['text'],
     acceptedMimeTypes: ['text/plain'],
     externalUrl: '/word-counter.html',
+  },
+  {
+    id: 'pdf-to-word',
+    name: 'PDF to Word - Private',
+    slug: 'pdf-to-word.html',
+    description: 'Convert PDF documents into editable Word (.docx) files completely offline.',
+    badge: 'NEW',
+    icon: FileText,
+    acceptedFormats: ['.pdf'],
+    acceptedMimeTypes: ['application/pdf'],
+    externalUrl: '/pdf-to-word.html',
   },
 ];
 

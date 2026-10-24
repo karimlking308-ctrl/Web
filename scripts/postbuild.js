@@ -86,7 +86,8 @@ const standaloneHtmlTools = [
   'image-resizer.html',
   'qr-generator.html',
   'color-palette.html',
-  'word-counter.html'
+  'word-counter.html',
+  'pdf-to-word.html'
 ];
 
 if (fs.existsSync(distDir)) {

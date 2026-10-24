@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free PDF to Word Converter — 100% Private Client-Side | Tindry</title>
+  <meta name="description" content="Convert PDF documents to editable Microsoft Word (.docx) files for free. 100% private, client-side conversion in your browser with zero server uploads.">
+  <link rel="canonical" href="https://tindry.com/pdf-to-word">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #ffffff; color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .tr-header { border-bottom: 1px solid #e5e5e5; background: #fff; position: sticky; top: 0; z-index: 30; }
+    .tr-header-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 20px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tr-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+    .tr-brand-logo {
+      width: 24px; height: 24px; background: #000; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800;
+    }
+    .tr-nav-links { display: flex; align-items: center; gap: 20px; font-size: 13px; font-weight: 500; color: #666; }
+    .tr-nav-links a:hover { color: #000; }
+    .tr-badge { font-size: 11px; font-family: monospace; color: #888; }
+    .tr-support-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: 6px; border: 1px solid #e5e5e5; font-size: 12px; font-weight: 600;
+      background: #fff; transition: all 0.15s ease;
+    }
+    .tr-support-btn:hover { border-color: #000; background: #fafafa; }
+    .tr-main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 36px 20px 60px; }
+    .tr-heading { margin-bottom: 24px; }
+    .tr-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .tr-desc { font-size: 13px; color: #666; }
+    .tr-card {
+      background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 24px; margin-bottom: 32px;
+    }
+    .tr-dropzone {
+      border: 2px dashed #d5d5d5; border-radius: 12px; padding: 44px 20px; text-align: center;
+      cursor: pointer; background: #fafafa; transition: all 0.2s ease;
+    }
+    .tr-dropzone:hover, .tr-dropzone.dragover { border-color: #000; background: #f3f3f3; }
+    .tr-dropzone-icon {
+      width: 48px; height: 48px; margin: 0 auto 12px; border: 1px solid #e5e5e5;
+      border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .tr-dropzone-text { font-size: 15px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .tr-dropzone-sub { font-size: 12px; color: #777; margin-bottom: 14px; }
+    .tr-privacy-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+      background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 9999px;
+      font-size: 12px; font-weight: 600;
+    }
+    .tr-btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+    }
+    .tr-btn-primary:hover:not(:disabled) { background: #262626; }
+    .tr-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tr-btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; padding: 11px 20px;
+      background: #fff; color: #000; border: 1px solid #d5d5d5; border-radius: 10px;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .tr-btn-secondary:hover { border-color: #000; background: #fafafa; }
+    .tr-meta-banner {
+      display: flex; justify-content: space-between; align-items: center; width: 100%;
+      padding: 14px 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+      font-size: 13px; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+    }
+    .tr-progress-container { margin: 18px 0; }
+    .tr-progress-bar-bg {
+      width: 100%; height: 8px; background: #e5e7eb; border-radius: 9999px; overflow: hidden; margin-top: 8px;
+    }
+    .tr-progress-bar-fill {
+      width: 0%; height: 100%; background: #000; transition: width 0.2s ease;
+    }
+    .tr-status-text { font-size: 13px; font-weight: 600; color: #111; display: flex; justify-content: space-between; }
+    .tr-preview-box {
+      border: 1px solid #e5e5e5; border-radius: 10px; padding: 16px; background: #fafafa;
+      margin: 18px 0; max-height: 220px; overflow-y: auto; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px; line-height: 1.6; color: #333; white-space: pre-wrap; word-break: break-word;
+    }
+    .tr-options-row {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 16px; padding-top: 18px; border-top: 1px solid #f0f0f0;
+    }
+    .tr-trust-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 24px 0;
+      border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; margin-bottom: 40px;
+    }
+    @media (max-width: 640px) { .tr-trust-row { grid-template-columns: 1fr; } }
+    .tr-trust-item strong { display: block; font-size: 13px; color: #000; margin-bottom: 2px; }
+    .tr-trust-item p { font-size: 12px; color: #666; }
+    .tr-seo-content { margin-top: 32px; color: #333; line-height: 1.7; }
+    .tr-seo-content h2 { font-size: 18px; font-weight: 800; color: #000; margin: 24px 0 8px; }
+    .tr-seo-content p { font-size: 13px; color: #555; margin-bottom: 12px; }
+    .tr-seo-content ol, .tr-seo-content ul { font-size: 13px; color: #555; padding-left: 20px; margin-bottom: 12px; }
+    .tr-seo-content li { margin-bottom: 6px; }
+    .tr-footer { border-top: 1px solid #e5e5e5; padding: 32px 20px; background: #fff; font-size: 12px; color: #666; }
+    .tr-footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .tr-footer-links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 500; }
+    .tr-footer-links a:hover { color: #000; }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
+  <!-- PDF.js library for client-side PDF text extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- docx library for client-side Word (.docx) generation -->
+  <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+</head>
+<body>
+
+  <header class="tr-header">
+    <div class="tr-header-inner">
+      <div class="tr-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;">
+          <div class="tr-brand-logo">T</div>
+          <span>Tindry</span>
+        </a>
+      </div>
+      <nav class="tr-nav-links">
+        <a href="/">Home</a>
+        <a href="/#tools">Tools</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="tr-badge">Fast &middot; Private &middot; Free</span>
+        <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tr-support-btn">
+          <span>☕ Support Tindry</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="tr-main">
+    <div style="margin-bottom: 16px;">
+      <a href="/" style="font-size: 12px; color: #666;">&larr; Back to all tools</a>
+    </div>
+
+    <div class="tr-heading">
+      <h1 class="tr-title">PDF to Word - Private</h1>
+      <p class="tr-desc">Convert PDF documents into editable Microsoft Word (.docx) format. 100% private, client-side conversion running entirely in your browser with zero file uploads.</p>
+    </div>
+
+    <div class="tr-card">
+      <div id="dropZone" class="tr-dropzone">
+        <div class="tr-dropzone-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+        </div>
+        <div class="tr-dropzone-text">Drop your PDF file here or click to browse</div>
+        <div class="tr-dropzone-sub">Supports all text-based PDF documents &middot; Fast client-side extraction</div>
+        <div class="tr-privacy-badge">🔒 100% Private - Your file never leaves your device</div>
+        <input type="file" id="fileInput" accept="application/pdf, .pdf" style="display: none;">
+      </div>
+
+      <div id="processArea" style="display: none;">
+        <div class="tr-meta-banner">
+          <div>
+            <strong id="pdfFileName" style="color:#000;">document.pdf</strong>
+            <span id="pdfFileSize" style="color:#666; margin-left:8px;">(0 KB)</span>
+          </div>
+          <div id="pdfPageCount" style="color:#444; font-weight:600;">0 Pages</div>
+        </div>
+
+        <div class="tr-progress-container">
+          <div class="tr-status-text">
+            <span id="statusLabel">Preparing PDF engine...</span>
+            <span id="statusPercent">0%</span>
+          </div>
+          <div class="tr-progress-bar-bg">
+            <div id="progressBar" class="tr-progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:12px; font-weight:700; color:#333; margin-bottom:6px;">Extracted Text Preview:</div>
+          <div id="previewBox" class="tr-preview-box">Loading text stream...</div>
+        </div>
+
+        <div class="tr-options-row">
+          <div style="font-size:12px; color:#555;">
+            Format: <strong>Microsoft Word (.docx)</strong>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button id="downloadBtn" class="tr-btn-primary" disabled>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download Word (.docx)</span>
+            </button>
+            <button id="resetBtn" class="tr-btn-secondary">Convert Another</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Features -->
+    <div class="tr-trust-row">
+      <div class="tr-trust-item">
+        <strong>Direct in Browser</strong>
+        <p>Extracts text and generates native Word .docx packages using client-side WebAssembly.</p>
+      </div>
+      <div class="tr-trust-item">
+        <strong>Complete Privacy</strong>
+        <p>Sensitive contracts, financial statements, and resumes never leave your browser sandbox.</p>
+      </div>
+      <div class="tr-trust-item">
+        <strong>Real Outputs</strong>
+        <p>Universal DOCX files compatible with Microsoft Word, Google Docs, Apple Pages, and LibreOffice.</p>
+      </div>
+    </div>
+
+    <!-- SEO Content Section -->
+    <article class="tr-seo-content">
+      <h2>How to use?</h2>
+      <p>
+        Converting your PDF documents to editable Microsoft Word files on Tindry is smooth and straightforward. Drag and drop any PDF file into the designated upload area above, or click the box to browse documents from your Mac, Windows PC, iPhone, or Android device. Once selected, our built-in PDF parser immediately reads your file locally without transferring a single byte across the internet. You will see a live progress bar tracking each page extraction in real time. Once text extraction is finished, Tindry automatically packages the paragraphs, line formatting, and page structure into a standard .docx document. Click the black Download Word (.docx) button to save your editable document instantly.
+      </p>
+
+      <h2>What is this tool?</h2>
+      <p>
+        PDF to Word - Private is an in-browser document conversion utility engineered for speed and uncompromising confidential data protection. PDF (Portable Document Format) is ideal for preserving layout fidelity across different screens, but editing text within a compiled PDF is cumbersome and frustrating. Tindry's converter extracts text streams, structural lines, and page breaks from your PDF and dynamically reconstructs them into an OpenXML Microsoft Word document (.docx). The resulting file can be opened, styled, edited, and revised in Microsoft Word, Google Docs, Apple Pages, or LibreOffice Writer without requiring Adobe Acrobat subscriptions.
+      </p>
+
+      <h2>Why use Tindry?</h2>
+      <p>
+        Standard online PDF converters typically require you to upload confidential documents to third-party cloud servers where files may be stored, indexed, or inspected. Furthermore, many online converters impose daily conversion limits, require mandatory account signups, or charge premium subscription fees for multi-page documents. Tindry eliminates all of these drawbacks. Our tool is 100% free with no page limits, no artificial watermarks, and no registration requirements. Because the conversion pipeline runs directly on your device CPU using modern Web APIs, conversions execute with lightning speed and complete autonomy.
+      </p>
+
+      <h2>Privacy & Security</h2>
+      <p>
+        Business contracts, employee records, tax filings, financial spreadsheets, and academic dissertations contain highly confidential intellectual property and personal information. Uploading these sensitive files to remote web servers introduces grave data leak and regulatory compliance liabilities. Tindry guarantees ironclad confidentiality: every parsing and document generation routine is performed inside your local browser memory sandbox. Your original PDF files and generated Word documents never touch a remote server, external database, or third-party API. When you close the browser tab, all memory buffers are instantly purged.
+      </p>
+
+      <h2>FAQ</h2>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <strong style="color:#000;">Does this tool work on scanned PDFs?</strong>
+          <p style="margin-top:4px;color:#555;">This tool extracts live text streams directly embedded within digital PDFs. If your PDF is an image scan without an embedded text layer, consider running OCR first.</p>
+        </div>
+        <div>
+          <strong style="color:#000;">Will the converted Word document preserve page breaks?</strong>
+          <p style="margin-top:4px;color:#555;">Yes. The converter respects individual page divisions and adds standard page breaks in your generated Word document so page boundaries remain intact.</p>
+        </div>
+        <div>
+          <strong style="color:#000;">Is there a file size limit or page cap?</strong>
+          <p style="margin-top:4px;color:#555;">There are no artificial caps. Since processing happens locally on your computer or mobile device, performance depends entirely on your available device memory.</p>
+        </div>
+        <div>
+          <strong style="color:#000;">Are my documents uploaded to any server?</strong>
+          <p style="margin-top:4px;color:#555;">Never. Tindry is 100% client-side. Your documents stay strictly within your browser and never leave your phone or computer.</p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="tr-footer">
+    <div class="tr-footer-inner">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <strong style="color:#000;">Tindry</strong> &middot; Simple file tools that just work &middot; Zero uploads &middot; Complete privacy
+        </div>
+        <div class="tr-footer-links">
+          <a href="/">Home</a>
+          <a href="/#tools">Tools</a>
+          <a href="/faq">FAQ</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;">
+        <a href="https://x.com/TindryOfficial" target="_blank" rel="noopener noreferrer">Follow @TindryOfficial</a>
+        &middot;
+        <a href="https://t.me/TindryCommunity" target="_blank" rel="noopener noreferrer">Join Tindry Community</a>
+      </div>
+      <div style="display:flex;justify-content:center;margin:24px 0;">
+        <a href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed" target="_blank" rel="noopener noreferrer" style="background:#000;color:#fff;padding:12px 22px;border-radius:12px;text-decoration:none;font-weight:700;font-family:sans-serif;border:1px solid #333;">
+          ⭐ Featured on TechBaseDirectory — Tindry
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Ko-fi Popup Component -->
+  <div id="tindry-coffee-popup" aria-live="polite" style="display: none;">
+    <style>
+      #tindry-coffee-popup {
+        position: fixed; bottom: 20px; right: 20px; z-index: 999999;
+        max-width: 360px; width: calc(100% - 32px); background-color: #111111;
+        color: #ffffff; border: 1px solid #262626; border-radius: 12px;
+        padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px; line-height: 1.45; opacity: 0; transform: translateY(20px);
+        transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+      }
+      #tindry-coffee-popup.tindry-show { display: block !important; opacity: 1; transform: translateY(0); pointer-events: auto; }
+      #tindry-coffee-popup .tindry-kofi-btn { display: inline-flex; width: 100%; margin-top: 10px; background-color: #00b9fe; color: #ffffff; font-weight: 700; font-size: 13px; text-decoration: none; padding: 10px 14px; border-radius: 8px; justify-content: center; }
+      @media (max-width: 640px) { #tindry-coffee-popup { right: 16px; left: 16px; bottom: 16px; width: auto; max-width: none; } }
+    </style>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+      <div>🎉 Done! File never left your phone. Tindry is free. Tip on Ko-fi ☕ to keep it free?</div>
+      <button id="tindry-close-popup" aria-label="Close" style="background: none; border: none; color: #888; font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1;">&times;</button>
+    </div>
+    <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tindry-kofi-btn">Tip on Ko-fi ☕</a>
+  </div>
+
+  <script>
+    (function() {
+      // Configure PDF.js worker
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const processArea = document.getElementById('processArea');
+      const pdfFileName = document.getElementById('pdfFileName');
+      const pdfFileSize = document.getElementById('pdfFileSize');
+      const pdfPageCount = document.getElementById('pdfPageCount');
+      const statusLabel = document.getElementById('statusLabel');
+      const statusPercent = document.getElementById('statusPercent');
+      const progressBar = document.getElementById('progressBar');
+      const previewBox = document.getElementById('previewBox');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const resetBtn = document.getElementById('resetBtn');
+
+      let currentFile = null;
+      let generatedDocxBlob = null;
+      let originalBaseName = 'document';
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+      });
+
+      function setProgress(percent, label) {
+        const rounded = Math.min(100, Math.max(0, Math.round(percent)));
+        progressBar.style.width = rounded + '%';
+        statusPercent.textContent = rounded + '%';
+        if (label) statusLabel.textContent = label;
+      }
+
+      async function handleFile(file) {
+        if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+          alert('Please select a valid PDF file.');
+          return;
+        }
+
+        currentFile = file;
+        originalBaseName = file.name.replace(/\.[^/.]+$/, "");
+        pdfFileName.textContent = file.name;
+        pdfFileSize.textContent = '(' + (file.size / 1024 < 1024 ? (file.size / 1024).toFixed(1) + ' KB' : (file.size / (1024 * 1024)).toFixed(2) + ' MB') + ')';
+        pdfPageCount.textContent = 'Analyzing...';
+        previewBox.textContent = 'Reading PDF binary data locally...';
+
+        dropZone.style.display = 'none';
+        processArea.style.display = 'block';
+        downloadBtn.disabled = true;
+        setProgress(5, 'Reading file locally...');
+
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          setProgress(15, 'Loading PDF document...');
+
+          const loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+          const pdf = await loadingTask.promise;
+          const totalPages = pdf.numPages;
+          pdfPageCount.textContent = totalPages + (totalPages === 1 ? ' Page' : ' Pages');
+
+          const docxParagraphs = [];
+          const previewLines = [];
+
+          for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+            const pageProgress = 15 + ((pageNum / totalPages) * 70);
+            setProgress(pageProgress, 'Extracting text: page ' + pageNum + ' of ' + totalPages + '...');
+
+            const page = await pdf.getPage(pageNum);
+            const textContent = await page.getTextContent();
+
+            // Group text items by Y-coordinate line
+            const lineMap = new Map();
+            for (const item of textContent.items) {
+              if (!item.str) continue;
+              const y = Math.round(item.transform[5] / 4) * 4;
+              if (!lineMap.has(y)) lineMap.set(y, []);
+              lineMap.get(y).push(item);
+            }
+
+            const sortedY = Array.from(lineMap.keys()).sort((a, b) => b - a);
+            let isFirstLineOfPage = (pageNum > 1);
+
+            for (const y of sortedY) {
+              const items = lineMap.get(y);
+              items.sort((a, b) => a.transform[4] - b.transform[4]);
+              const lineText = items.map(it => it.str).join(' ').trim();
+
+              if (lineText.length > 0) {
+                if (previewLines.length < 40) {
+                  previewLines.push(lineText);
+                }
+
+                docxParagraphs.push(
+                  new window.docx.Paragraph({
+                    children: [new window.docx.TextRun({ text: lineText, font: 'Calibri', size: 24 })],
+                    pageBreakBefore: isFirstLineOfPage,
+                    spacing: { after: 120, line: 276 }
+                  })
+                );
+                isFirstLineOfPage = false;
+              }
+            }
+
+            if (isFirstLineOfPage && pageNum > 1) {
+              docxParagraphs.push(
+                new window.docx.Paragraph({
+                  children: [new window.docx.TextRun({ text: '' })],
+                  pageBreakBefore: true
+                })
+              );
+            }
+          }
+
+          if (previewLines.length > 0) {
+            previewBox.textContent = previewLines.join('\n') + (previewLines.length >= 40 ? '\n\n[... Remaining content included in Word document ...]' : '');
+          } else {
+            previewBox.textContent = 'No selectable text detected in the document (it may contain scanned image pages). An empty Word document will still be created.';
+          }
+
+          setProgress(90, 'Generating Microsoft Word (.docx) document...');
+
+          const doc = new window.docx.Document({
+            sections: [{
+              properties: {},
+              children: docxParagraphs.length > 0 ? docxParagraphs : [
+                new window.docx.Paragraph({
+                  children: [new window.docx.TextRun({ text: 'No text extracted from PDF.' })]
+                })
+              ]
+            }]
+          });
+
+          generatedDocxBlob = await window.docx.Packer.toBlob(doc);
+
+          setProgress(100, 'Conversion Complete!');
+          statusLabel.innerHTML = '🎉 Ready to download!';
+          downloadBtn.disabled = false;
+
+        } catch (err) {
+          console.error('PDF conversion error:', err);
+          statusLabel.textContent = 'Error converting PDF: ' + (err.message || 'Corrupt or protected PDF');
+          statusPercent.textContent = 'Failed';
+          progressBar.style.backgroundColor = '#ef4444';
+        }
+      }
+
+      downloadBtn.addEventListener('click', () => {
+        if (!generatedDocxBlob) return;
+        const url = URL.createObjectURL(generatedDocxBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = originalBaseName + '.docx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        currentFile = null;
+        generatedDocxBlob = null;
+        fileInput.value = '';
+        progressBar.style.backgroundColor = '#000';
+        dropZone.style.display = 'block';
+        processArea.style.display = 'none';
+      });
+
+      // Ko-fi popup delegate
+      const popup = document.getElementById('tindry-coffee-popup');
+      const closePopupBtn = document.getElementById('tindry-close-popup');
+      if (closePopupBtn && popup) {
+        closePopupBtn.addEventListener('click', () => {
+          popup.classList.remove('tindry-show');
+          try { localStorage.setItem('tindry_kofi_closed', '1'); } catch (e) {}
+        });
+      }
+
+      downloadBtn.addEventListener('click', () => {
+        try {
+          if (localStorage.getItem('tindry_kofi_closed')) return;
+        } catch (e) {}
+        if (popup) {
+          setTimeout(() => {
+            popup.classList.add('tindry-show');
+            setTimeout(() => {
+              popup.classList.remove('tindry-show');
+            }, 8000);
+          }, 800);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
