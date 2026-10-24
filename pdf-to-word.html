@@ -325,6 +325,12 @@
 
   <script>
     (function() {
+      // Cleaning function to sanitize null bytes (\u0000) and ASCII control characters that corrupt DOCX XML
+      function cleanText(t) {
+        if (!t) return "";
+        return t.replace(/\u0000/g, "").replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "").trim();
+      }
+
       // Configure PDF.js worker
       if (window.pdfjsLib) {
         window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
@@ -393,75 +399,66 @@
           const totalPages = pdf.numPages;
           pdfPageCount.textContent = totalPages + (totalPages === 1 ? ' Page' : ' Pages');
 
-          const docxParagraphs = [];
-          const previewLines = [];
+          const extractedPages = [];
 
           for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
             const pageProgress = 15 + ((pageNum / totalPages) * 70);
             setProgress(pageProgress, 'Extracting text: page ' + pageNum + ' of ' + totalPages + '...');
 
             const page = await pdf.getPage(pageNum);
-            const textContent = await page.getTextContent();
+            const content = await page.getTextContent();
 
-            // Group text items by Y-coordinate line
+            // Group text items by Y-coordinate line for layout fidelity
             const lineMap = new Map();
-            for (const item of textContent.items) {
-              if (!item.str) continue;
+            for (const item of content.items) {
+              if (!item.str && item.str !== ' ') continue;
               const y = Math.round(item.transform[5] / 4) * 4;
               if (!lineMap.has(y)) lineMap.set(y, []);
               lineMap.get(y).push(item);
             }
 
             const sortedY = Array.from(lineMap.keys()).sort((a, b) => b - a);
-            let isFirstLineOfPage = (pageNum > 1);
+            const pageLines = [];
 
             for (const y of sortedY) {
               const items = lineMap.get(y);
               items.sort((a, b) => a.transform[4] - b.transform[4]);
-              const lineText = items.map(it => it.str).join(' ').trim();
-
-              if (lineText.length > 0) {
-                if (previewLines.length < 40) {
-                  previewLines.push(lineText);
-                }
-
-                docxParagraphs.push(
-                  new window.docx.Paragraph({
-                    children: [new window.docx.TextRun({ text: lineText, font: 'Calibri', size: 24 })],
-                    pageBreakBefore: isFirstLineOfPage,
-                    spacing: { after: 120, line: 276 }
-                  })
-                );
-                isFirstLineOfPage = false;
+              const rawLine = items.map(it => it.str).join(' ');
+              const cleanedLine = cleanText(rawLine);
+              if (cleanedLine.length > 0) {
+                pageLines.push(cleanedLine);
               }
             }
 
-            if (isFirstLineOfPage && pageNum > 1) {
-              docxParagraphs.push(
-                new window.docx.Paragraph({
-                  children: [new window.docx.TextRun({ text: '' })],
-                  pageBreakBefore: true
-                })
-              );
+            if (pageLines.length === 0 && content.items.length > 0) {
+              const raw = content.items.map(i => i.str).join(' ');
+              const text = cleanText(raw);
+              if (text.length > 0) pageLines.push(text);
             }
+
+            extractedPages.push(pageLines.join('\n'));
           }
 
-          if (previewLines.length > 0) {
-            previewBox.textContent = previewLines.join('\n') + (previewLines.length >= 40 ? '\n\n[... Remaining content included in Word document ...]' : '');
+          const allExtractedText = cleanText(extractedPages.join('\n\n'));
+
+          // Preview text === Downloaded docx text
+          if (allExtractedText.length > 0) {
+            previewBox.textContent = allExtractedText;
           } else {
-            previewBox.textContent = 'No selectable text detected in the document (it may contain scanned image pages). An empty Word document will still be created.';
+            previewBox.textContent = 'No selectable text detected in the document (it may contain scanned image pages).';
           }
 
           setProgress(90, 'Generating Microsoft Word (.docx) document...');
 
+          const lines = allExtractedText.length > 0
+            ? allExtractedText.split('\n').map(l => cleanText(l)).filter(l => l.length > 0)
+            : ['No text extracted from PDF.'];
+
           const doc = new window.docx.Document({
             sections: [{
-              properties: {},
-              children: docxParagraphs.length > 0 ? docxParagraphs : [
-                new window.docx.Paragraph({
-                  children: [new window.docx.TextRun({ text: 'No text extracted from PDF.' })]
-                })
-              ]
+              children: lines.map(line => new window.docx.Paragraph({
+                children: [new window.docx.TextRun({ text: cleanText(line) || " " })]
+              }))
             }]
           });
 
