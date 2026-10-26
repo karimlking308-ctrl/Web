@@ -31,17 +31,110 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
-    <style>
-      @media (max-width: 900px) {
-        div[style*="display: flex"] { flex-direction: column !important; }
-        aside { width: 100% !important; min-width: 100% !important; margin-top: 20px; }
-      }
-    </style>
+
   </head>
   <body class="bg-white text-black antialiased min-h-screen selection:bg-black selection:text-white">
     <div id="root">
       <!-- Static crawlable pre-render for AdSense & SEO crawlers -->
-      <header class="border-b border-neutral-200 bg-white sticky top-0 z-20">
+      <div class="flex min-h-screen bg-white text-black font-sans antialiased selection:bg-black selection:text-white">
+        <!-- Desktop Sidebar -->
+        <aside class="hidden md:block w-56 lg:w-60 h-screen sticky top-0 flex-shrink-0 z-30">
+          <div class="flex flex-col h-full bg-white border-r border-neutral-200 select-none">
+            <!-- Brand header -->
+            <div class="px-5 py-5 sm:px-6 sm:py-6 flex items-center justify-between border-b border-neutral-200">
+              <a href="/" class="cursor-pointer">
+                <span class="font-bold text-base sm:text-lg tracking-tight text-black">Tindry</span>
+              </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 py-5 px-3 sm:px-4 space-y-6 overflow-y-auto">
+              <div class="space-y-1">
+                <a href="/" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-colors bg-black text-white">
+                  <span>Home</span>
+                </a>
+                <a href="/#tools" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-colors text-neutral-700 hover:text-black hover:bg-neutral-100">
+                  <span>All Tools</span>
+                </a>
+                <a href="/faq" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-colors text-neutral-700 hover:text-black hover:bg-neutral-100">
+                  <span>FAQ</span>
+                </a>
+              </div>
+
+              <div class="border-t border-neutral-200 pt-5 space-y-1">
+                <div class="px-3 pb-2 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                  File Tools
+                </div>
+                <a href="/mp4-to-mp3" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">MP4 to MP3</span>
+                </a>
+                <a href="/webm-to-mp4" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">WebM to MP4</span>
+                </a>
+                <a href="/merge-pdf" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Merge PDF</span>
+                </a>
+                <a href="/jpg-to-pdf" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">JPG to PDF</span>
+                </a>
+                <a href="/pdf-to-jpg" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">PDF to JPG</span>
+                </a>
+                <a href="/compress-image" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Compress Image</span>
+                </a>
+                <a href="/background-remover.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Background Remover</span>
+                </a>
+                <a href="/heic-to-jpg.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">HEIC to JPG Converter</span>
+                </a>
+                <a href="/image-upscaler.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Image Upscaler 4x HD</span>
+                </a>
+                <a href="/png-to-jpg.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">PNG to JPG Converter</span>
+                </a>
+                <a href="/webp-to-jpg.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">WEBP to JPG Converter</span>
+                </a>
+                <a href="/image-resizer.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Image Resizer for Social Media</span>
+                </a>
+                <a href="/qr-generator.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">QR Code Generator</span>
+                </a>
+                <a href="/color-palette.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Color Palette Extractor</span>
+                </a>
+                <a href="/word-counter.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">Word Counter & Case Converter</span>
+                </a>
+                <a href="/pdf-to-word.html" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-neutral-600 hover:text-black hover:bg-neutral-100">
+                  <span class="truncate">PDF to Word - Private</span>
+                </a>
+
+                <!-- PRIVATE PACK - BOTTOM OF SIDEBAR -->
+                <div style="margin: 24px 12px 12px 12px; padding: 16px; background: linear-gradient(135deg, #fffbe6, #ffef8a); border: 2px solid #FFD700; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(255,215,0,0.2);">
+                  <div style="font-weight: 900; font-size: 13px; color: #111; margin-bottom: 4px;">✨ PRIVATE PACK</div>
+                  <div style="font-size: 11px; color: #666; margin-bottom: 10px;">Premium Reference</div>
+                  <a href="https://tindry.gumroad.com/l/Private" style="background: linear-gradient(135deg, #FFD700, #FFB700); color: #000; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 900; display: block; font-size: 13px; box-shadow: 0 2px 8px rgba(255,215,0,0.3);">
+                    👑 $5 - Get Now
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Minimal Footer -->
+            <div class="p-4 sm:p-5 border-t border-neutral-200 text-[11px] text-neutral-400">
+              <p>Private &middot; Client-Side</p>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 flex flex-col min-w-0 bg-white">
+          <header class="border-b border-neutral-200 bg-white sticky top-0 z-20">
         <div class="flex items-center justify-between px-4 sm:px-8 h-14 sm:h-16 max-w-5xl mx-auto w-full">
           <div class="flex items-center gap-6">
             <a href="/" class="flex items-center gap-2 font-bold text-base tracking-tight text-black">
@@ -62,8 +155,7 @@
         </div>
       </header>
 
-      <div style="display: flex; gap: 20px; align-items: flex-start; max-width: 1200px; margin: 0 auto; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 300px;">
+
           <main class="max-w-5xl mx-auto p-5 sm:p-8 md:p-10 w-full">
         <!-- Hero Section -->
         <div class="mb-10 text-center sm:text-left">
@@ -360,15 +452,7 @@
           </div>
         </div>
       </main>
-        </div>
 
-        <!-- NEW SAFE SIDEBAR - ONLY ADDITION -->
-        <aside style="width: 280px; min-width: 280px; position: sticky; top: 20px; padding: 20px; background: #fffbe6; border: 2px solid #FFD700; border-radius: 14px; text-align: center;">
-          <p style="font-weight: 900; margin: 0 0 8px 0;">✨ PRIVATE PACK</p>
-          <p style="font-size: 13px; color: #555; margin: 0 0 12px 0;">Premium Reference</p>
-          <a href="https://tindry.gumroad.com/l/Private" style="background: #FFD700; color: #000; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 900; display: block;">👑 $5 - Get Now</a>
-        </aside>
-      </div>
 
       <footer class="mt-auto border-t border-neutral-200 py-8 px-6 text-xs text-neutral-500 bg-white">
         <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -399,6 +483,8 @@
           </a>
         </div>
       </footer>
+        </div>
+      </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>
 

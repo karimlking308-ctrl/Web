@@ -152,6 +152,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
               </a>
             );
           })}
+
+          {/* PRIVATE PACK - BOTTOM OF SIDEBAR */}
+          <div style={{ margin: '24px 12px 12px 12px', padding: '16px', background: 'linear-gradient(135deg, #fffbe6, #ffef8a)', border: '2px solid #FFD700', borderRadius: '12px', textAlign: 'center', boxShadow: '0 4px 12px rgba(255,215,0,0.2)' }}>
+            <div style={{ fontWeight: 900, fontSize: '13px', color: '#111', marginBottom: '4px' }}>✨ PRIVATE PACK</div>
+            <div style={{ fontSize: '11px', color: '#666', marginBottom: '10px' }}>Premium Reference</div>
+            <a href="https://tindry.gumroad.com/l/Private" style={{ background: 'linear-gradient(135deg, #FFD700, #FFB700)', color: '#000', padding: '10px 14px', borderRadius: '8px', textDecoration: 'none', fontWeight: 900, display: 'block', fontSize: '13px', boxShadow: '0 2px 8px rgba(255,215,0,0.3)' }}>
+              👑 $5 - Get Now
+            </a>
+          </div>
         </div>
       </div>
 
