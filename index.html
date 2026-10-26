@@ -31,6 +31,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
+    <style>
+      @media (max-width: 900px) {
+        div[style*="display: flex"] { flex-direction: column !important; }
+        aside { width: 100% !important; min-width: 100% !important; margin-top: 20px; }
+      }
+    </style>
   </head>
   <body class="bg-white text-black antialiased min-h-screen selection:bg-black selection:text-white">
     <div id="root">
@@ -56,7 +62,9 @@
         </div>
       </header>
 
-      <main class="max-w-5xl mx-auto p-5 sm:p-8 md:p-10 w-full">
+      <div style="display: flex; gap: 20px; align-items: flex-start; max-width: 1200px; margin: 0 auto; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 300px;">
+          <main class="max-w-5xl mx-auto p-5 sm:p-8 md:p-10 w-full">
         <!-- Hero Section -->
         <div class="mb-10 text-center sm:text-left">
           <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black leading-tight mb-2">
@@ -352,6 +360,15 @@
           </div>
         </div>
       </main>
+        </div>
+
+        <!-- NEW SAFE SIDEBAR - ONLY ADDITION -->
+        <aside style="width: 280px; min-width: 280px; position: sticky; top: 20px; padding: 20px; background: #fffbe6; border: 2px solid #FFD700; border-radius: 14px; text-align: center;">
+          <p style="font-weight: 900; margin: 0 0 8px 0;">✨ PRIVATE PACK</p>
+          <p style="font-size: 13px; color: #555; margin: 0 0 12px 0;">Premium Reference</p>
+          <a href="https://tindry.gumroad.com/l/Private" style="background: #FFD700; color: #000; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 900; display: block;">👑 $5 - Get Now</a>
+        </aside>
+      </div>
 
       <footer class="mt-auto border-t border-neutral-200 py-8 px-6 text-xs text-neutral-500 bg-white">
         <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
