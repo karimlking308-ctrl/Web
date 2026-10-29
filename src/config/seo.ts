@@ -4,7 +4,7 @@ export interface PageSeoConfig {
   canonicalPath: string;
   h1: string;
   noindex?: boolean;
-  schemaType?: 'WebApplication' | 'WebSite' | 'FAQPage';
+  schemaType?: 'WebApplication' | 'WebSite' | 'FAQPage' | 'Article';
   faqItems?: Array<{ question: string; answer: string }>;
 }
 
@@ -143,5 +143,41 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
     h1: 'Contact Tindry',
     noindex: false,
     schemaType: 'WebSite',
+  },
+  blog: {
+    title: 'Tindry Blog - Privacy & Offline Tools',
+    description:
+      'Learn how to work 100% offline without risking your files. Practical guides, architecture breakdowns, and data privacy advice from the founder in Salé, Morocco.',
+    canonicalPath: '/blog',
+    h1: 'Tindry Blog - Privacy & Offline Tools',
+    noindex: false,
+    schemaType: 'WebSite',
+  },
+  'blog/how-to-compress-images-without-uploading': {
+    title: 'Compress Images Without Uploading | Private Guide',
+    description:
+      'Learn how to compress images 100% offline in your browser without uploading to cloud servers. Keep your private photos secure.',
+    canonicalPath: '/blog/how-to-compress-images-without-uploading',
+    h1: 'How to Compress Images Without Uploading Them to Cloud Servers',
+    noindex: false,
+    schemaType: 'Article',
+  },
+  'blog/why-offline-pdf-tools-are-safer': {
+    title: 'Why Offline PDF Tools Are Safer | Complete Privacy',
+    description:
+      'Discover why uploading sensitive PDFs to cloud converters is a security risk and how client-side processing keeps your documents private.',
+    canonicalPath: '/blog/why-offline-pdf-tools-are-safer',
+    h1: 'Why Offline PDF Tools Are Far Safer Than Traditional Web Converters',
+    noindex: false,
+    schemaType: 'Article',
+  },
+  'blog/create-invoices-offline': {
+    title: 'Create Invoices Offline & Protect Client Data | Tindry',
+    description:
+      'Protect confidential client rates and banking details by creating and editing invoices completely offline in your browser without cloud uploads.',
+    canonicalPath: '/blog/create-invoices-offline',
+    h1: 'How to Create and Convert Invoices Offline to Protect Confidential Client Data',
+    noindex: false,
+    schemaType: 'Article',
   },
 };

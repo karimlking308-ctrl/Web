@@ -90,7 +90,33 @@ export const SeoManager: React.FC<SeoManagerProps> = ({ currentView }) => {
       },
     };
 
-    if (config.schemaType === 'FAQPage' && config.faqItems) {
+    if (config.schemaType === 'Article') {
+      structuredData = {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: config.h1 || config.title,
+        description: config.description,
+        url: canonicalUrl,
+        image: `${DOMAIN}/opengraph-image`,
+        author: {
+          '@type': 'Person',
+          name: 'Abdo',
+          jobTitle: 'Founder & Software Engineer',
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Tindry',
+          url: `${DOMAIN}/`,
+          logo: {
+            '@type': 'ImageObject',
+            url: `${DOMAIN}/favicon.svg`,
+          },
+        },
+        datePublished: '2026-10-28',
+        dateModified: '2026-10-28',
+        mainEntityOfPage: canonicalUrl,
+      };
+    } else if (config.schemaType === 'FAQPage' && config.faqItems) {
       structuredData = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',

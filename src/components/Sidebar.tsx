@@ -2,6 +2,7 @@ import React from 'react';
 import { 
   Home, 
   Layers, 
+  BookOpen,
   Music, 
   Video, 
   Files, 
@@ -112,6 +113,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <Layers className="w-4 h-4 flex-shrink-0" />
             <span>All Tools</span>
+          </a>
+
+          <a
+            href="/blog"
+            onClick={(e) => { e.preventDefault(); handleItemClick('blog'); }}
+            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-colors ${
+              currentView.startsWith('blog')
+                ? 'bg-black text-white'
+                : 'text-neutral-700 hover:text-black hover:bg-neutral-100'
+            }`}
+          >
+            <BookOpen className="w-4 h-4 flex-shrink-0" />
+            <span>Blog</span>
           </a>
 
           <a

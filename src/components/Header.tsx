@@ -6,6 +6,7 @@ interface HeaderProps {
   currentToolName?: string;
   onBackToHome?: () => void;
   onNavigateTools?: () => void;
+  onNavigateBlog?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -13,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentToolName,
   onBackToHome,
   onNavigateTools,
+  onNavigateBlog,
 }) => {
   return (
     <header className="sticky top-0 z-20 w-full bg-white/95 backdrop-blur-xs border-b border-neutral-200">
@@ -77,6 +79,16 @@ export const Header: React.FC<HeaderProps> = ({
                   className="hover:text-black transition-colors"
                 >
                   Tools
+                </a>
+                <a
+                  href="/blog"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onNavigateBlog ? onNavigateBlog() : (window.location.href = '/blog');
+                  }}
+                  className="hover:text-black transition-colors"
+                >
+                  Blog
                 </a>
               </nav>
             </div>

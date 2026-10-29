@@ -6,6 +6,9 @@ import { HomeView } from './views/HomeView';
 import { FaqView } from './views/FaqView';
 import { ContactView } from './views/ContactView';
 import { LegalView } from './views/LegalView';
+import { BlogListView } from './views/BlogListView';
+import { BlogPostView } from './views/BlogPostView';
+import { getArticleBySlug } from './data/blogArticles';
 import { Mp4ToMp3Tool } from './tools/Mp4ToMp3Tool';
 import { WebmToMp4Tool } from './tools/WebmToMp4Tool';
 import { MergePdfTool } from './tools/MergePdfTool';
@@ -61,6 +64,11 @@ function getInitialView(): string {
   if (path === '/compress-image') return 'compress-image';
 
   if (path === '/screen-record') return 'screen-record';
+  if (path === '/blog') return 'blog';
+  if (path.startsWith('/blog/')) {
+    const slug = path.replace('/blog/', '');
+    return `blog/${slug}`;
+  }
   if (path === '/faq') return 'faq';
   if (path === '/contact') return 'contact';
   if (path === '/privacy') return 'privacy';
@@ -132,7 +140,23 @@ export function App() {
         return <LegalView type="privacy" />;
       case 'terms':
         return <LegalView type="terms" />;
+      case 'blog':
+        return <BlogListView onSelectArticle={(slug) => navigateTo(`blog/${slug}`)} />;
       default:
+        if (currentView.startsWith('blog/')) {
+          const slug = currentView.replace('blog/', '');
+          const article = getArticleBySlug(slug);
+          if (article) {
+            return (
+              <BlogPostView
+                article={article}
+                onBackToBlog={() => navigateTo('blog')}
+                onNavigateHome={() => navigateTo('home')}
+              />
+            );
+          }
+          return <BlogListView onSelectArticle={(s) => navigateTo(`blog/${s}`)} />;
+        }
         return <HomeView onSelectTool={(toolId) => navigateTo(toolId)} />;
     }
   };
@@ -154,9 +178,10 @@ export function App() {
       <div className="flex-1 flex flex-col min-w-0 bg-white">
         <Header
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
-          currentToolName={activeTool ? activeTool.name : undefined}
-          onBackToHome={activeTool ? () => navigateTo('home') : undefined}
+          currentToolName={activeTool ? activeTool.name : (currentView.startsWith('blog') ? 'Blog' : undefined)}
+          onBackToHome={activeTool || currentView.startsWith('blog') ? () => navigateTo('home') : undefined}
           onNavigateTools={() => navigateTo('all-tools')}
+          onNavigateBlog={() => navigateTo('blog')}
         />
 
         <main className="flex-1 p-5 sm:p-8 md:p-10 max-w-5xl w-full mx-auto">
@@ -181,6 +206,13 @@ export function App() {
                   className="hover:text-black transition-colors"
                 >
                   Tools
+                </a>
+                <a
+                  href="/blog"
+                  onClick={(e) => { e.preventDefault(); navigateTo('blog'); }}
+                  className="hover:text-black transition-colors"
+                >
+                  Blog
                 </a>
                 <a
                   href="/faq"

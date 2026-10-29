@@ -75,6 +75,30 @@ const pageConfigs = {
     canonical: 'https://tindry.com/terms',
     noindex: false,
   },
+  'blog': {
+    title: 'Tindry Blog - Privacy & Offline Tools',
+    description: 'Learn how to work 100% offline without risking your files. Practical guides, architecture breakdowns, and data privacy advice from the founder in Salé, Morocco.',
+    canonical: 'https://tindry.com/blog',
+    noindex: false,
+  },
+  'blog/how-to-compress-images-without-uploading': {
+    title: 'Compress Images Without Uploading | Private Guide',
+    description: 'Learn how to compress images 100% offline in your browser without uploading to cloud servers. Keep your private photos secure.',
+    canonical: 'https://tindry.com/blog/how-to-compress-images-without-uploading',
+    noindex: false,
+  },
+  'blog/why-offline-pdf-tools-are-safer': {
+    title: 'Why Offline PDF Tools Are Safer | Complete Privacy',
+    description: 'Discover why uploading sensitive PDFs to cloud converters is a security risk and how client-side processing keeps your documents private.',
+    canonical: 'https://tindry.com/blog/why-offline-pdf-tools-are-safer',
+    noindex: false,
+  },
+  'blog/create-invoices-offline': {
+    title: 'Create Invoices Offline & Protect Client Data | Tindry',
+    description: 'Protect confidential client rates and banking details by creating and editing invoices completely offline in your browser without cloud uploads.',
+    canonical: 'https://tindry.com/blog/create-invoices-offline',
+    noindex: false,
+  },
 };
 
 const standaloneHtmlTools = [
