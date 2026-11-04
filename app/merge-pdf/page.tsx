@@ -2,8 +2,8 @@ import React from 'react';
 import { MergePdfTool } from '../../src/tools/MergePdfTool';
 
 export const metadata = {
-  title: "Merge PDF - Combine PDF Files Easily Free | Tindry",
-  description: "Free Merge PDF tool. Combine multiple PDF files easily. 100% private, no file upload, offline processing.",
+  title: "Free Merge PDF - Offline, No Upload, Private | Tindry",
+  description: "Free Merge PDF 100% offline in your browser. No upload, fast, private, no signup. Works instantly.",
   alternates: { canonical: "https://www.tindry.com/merge-pdf" }
 };
 

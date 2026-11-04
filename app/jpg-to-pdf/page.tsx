@@ -2,8 +2,8 @@ import React from 'react';
 import { JpgToPdfTool } from '../../src/tools/JpgToPdfTool';
 
 export const metadata = {
-  title: "JPG to PDF Converter - Free & Offline | Tindry",
-  description: "Convert JPG to PDF free. Turn images to PDF online, no upload, 100% private, offline converter.",
+  title: "Free JPG to PDF Converter - Offline, No Upload, Private | Tindry",
+  description: "Free JPG to PDF Converter 100% offline in your browser. No upload, fast, private, no signup. Works instantly.",
   alternates: { canonical: "https://www.tindry.com/jpg-to-pdf" }
 };
 

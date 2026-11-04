@@ -2,8 +2,8 @@ import React from 'react';
 import { CompressImageTool } from '../../src/tools/CompressImageTool';
 
 export const metadata = {
-  title: "Compress Image - Reduce Size No Quality Loss | Tindry",
-  description: "Compress images online free. Reduce size with no quality loss. 100% private, no uploads, files stay in browser.",
+  title: "Free Image Compressor - Offline, No Upload, Private | Tindry",
+  description: "Free Image Compressor 100% offline in your browser. No upload, fast, private, no signup. Works instantly.",
   alternates: { canonical: "https://www.tindry.com/compress-image" }
 };
 

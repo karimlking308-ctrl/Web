@@ -2,8 +2,8 @@ import React from 'react';
 import { WebmToMp4Tool } from '../../src/tools/WebmToMp4Tool';
 
 export const metadata = {
-  title: "WebM to MP4 Converter - Fast Video Conversion | Tindry",
-  description: "Convert WebM to MP4 free. Fast video conversion in browser. No uploads, 100% offline and private.",
+  title: "Free WebM to MP4 Converter - Offline, No Upload, Private | Tindry",
+  description: "Free WebM to MP4 Converter 100% offline in your browser. No upload, fast, private, no signup. Works instantly.",
   alternates: { canonical: "https://www.tindry.com/webm-to-mp4" }
 };
 

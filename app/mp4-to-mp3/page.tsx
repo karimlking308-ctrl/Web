@@ -2,8 +2,8 @@ import React from 'react';
 import { Mp4ToMp3Tool } from '../../src/tools/Mp4ToMp3Tool';
 
 export const metadata = {
-  title: "MP4 to MP3 - Extract Audio in Seconds Offline | Tindry",
-  description: "Free MP4 to MP3 converter. Extract audio in seconds. 100% private, no uploads, works offline in your browser.",
+  title: "Free MP4 to MP3 Converter - Offline, No Upload, Private | Tindry",
+  description: "Free MP4 to MP3 Converter 100% offline in your browser. No upload, fast, private, no signup. Works instantly.",
   alternates: { canonical: "https://www.tindry.com/mp4-to-mp3" }
 };
 
