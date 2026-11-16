@@ -169,42 +169,108 @@
           </header>
 
           <main class="flex-1 p-5 sm:p-8 md:p-10 max-w-5xl w-full mx-auto">
-            <div class="tindry-home-empty w-full flex flex-col items-center justify-center text-center bg-white">
-              <div class="tindry-home-hero w-full max-w-2xl mx-auto flex flex-col items-center">
-                <h1 class="tindry-hero-title">
-                  Simple file tools <span class="tindry-hero-title-accent">that just work.</span>
-                </h1>
-                <p class="tindry-hero-subtitle">
-                  No sign-up. No watermark. Fast, private &amp; free.
-                </p>
-                <div class="tindry-search-container relative w-full">
-                  <div class="tindry-search-wrap relative w-full mx-auto">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#D4AF37]">
-                      <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                      </svg>
+            <div class="tindry-home-luxury w-full">
+              <section class="tindry-luxury-hero relative w-full overflow-hidden">
+                <div class="tindry-luxury-container relative z-10 flex flex-col items-center text-center">
+                  <h1 class="tindry-hero-title">
+                    <span class="tindry-hero-line-dark">Simple file tools</span>
+                    <span class="tindry-hero-line-gold">that just work.</span>
+                  </h1>
+                  <p class="tindry-hero-subtitle">
+                    No sign-up. No watermark. Fast, private &amp; free.
+                  </p>
+                  <div class="tindry-search-container relative w-full">
+                    <div class="tindry-search-wrap relative w-full mx-auto">
+                      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#D4AF37]">
+                        <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#D4AF37]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <circle cx="11" cy="11" r="8"></circle>
+                          <path d="m21 21-4.3-4.3"></path>
+                        </svg>
+                      </div>
+                      <input
+                        id="tindry-home-search"
+                        type="text"
+                        placeholder="Search tools"
+                        class="tindry-search-input w-full min-h-[52px] pl-12 pr-12 py-3.5 bg-white border border-[#D4AF37] rounded-xl text-sm sm:text-base placeholder:text-[#0F0F0F]/50 text-[#0F0F0F] focus:outline-none focus:border-[#D4AF37] transition-colors"
+                      />
                     </div>
-                    <input
-                      id="tindry-home-search"
-                      type="text"
-                      placeholder="Search tools"
-                      class="tindry-search-input w-full min-h-[52px] pl-12 pr-12 py-3.5 bg-white border border-[#D4AF37] rounded-xl text-sm sm:text-base placeholder:text-[#0F0F0F]/50 text-[#0F0F0F] focus:outline-none focus:border-[#D4AF37] transition-colors"
-                    />
+                  </div>
+                  <button type="button" class="tindry-start-btn">Start Now</button>
+                  <div class="tindry-trust-row">
+                    <div class="tindry-trust-item"><span>100% Browser Private</span></div>
+                    <div class="tindry-trust-item"><span>Zero Cloud Uploads</span></div>
+                    <div class="tindry-trust-item"><span>Instant Local Speed</span></div>
+                    <div class="tindry-trust-item"><span>Free Forever</span></div>
                   </div>
                 </div>
-                <button type="button" class="tindry-start-btn">Start Now</button>
-                <div class="tindry-popular-row">
-                  <span class="tindry-popular-label">Popular:</span>
-                  <div class="tindry-popular-links">
-                    <a href="/jpg-to-pdf" class="tindry-popular-link">JPG to PDF</a>
-                    <span class="tindry-popular-sep" aria-hidden="true">&middot;</span>
-                    <a href="/merge-pdf" class="tindry-popular-link">Merge PDF</a>
-                    <span class="tindry-popular-sep" aria-hidden="true">&middot;</span>
-                    <a href="/mp4-to-mp3" class="tindry-popular-link">MP4 to MP3</a>
+              </section>
+
+              <section id="popular-tools" class="tindry-luxury-popular w-full bg-white">
+                <div class="tindry-luxury-container">
+                  <div class="tindry-section-header">
+                    <h2 class="tindry-section-heading">Popular Tools</h2>
+                    <div class="tindry-category-pills">
+                      <button type="button" class="tindry-category-pill tindry-category-pill-active">All Tools</button>
+                      <button type="button" class="tindry-category-pill tindry-category-pill-inactive">PDF</button>
+                      <button type="button" class="tindry-category-pill tindry-category-pill-inactive">Image</button>
+                      <button type="button" class="tindry-category-pill tindry-category-pill-inactive">Video</button>
+                    </div>
+                  </div>
+                  <div class="tindry-luxury-cards-grid">
+                    <a href="/jpg-to-pdf" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">JPG to PDF</h3>
+                      <p class="tindry-luxury-card-desc">Convert JPG images into a crisp PDF document.</p>
+                    </a>
+                    <a href="/merge-pdf" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">Merge PDF</h3>
+                      <p class="tindry-luxury-card-desc">Combine multiple PDFs into one seamless file.</p>
+                    </a>
+                    <a href="/mp4-to-mp3" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">MP4 to MP3</h3>
+                      <p class="tindry-luxury-card-desc">Extract studio-clean MP3 audio from MP4 video.</p>
+                    </a>
+                    <a href="/background-remover.html" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">Background Remover</h3>
+                      <p class="tindry-luxury-card-desc">Remove photo backgrounds to transparent PNG.</p>
+                    </a>
+                    <a href="/compress-image" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">Compress Image</h3>
+                      <p class="tindry-luxury-card-desc">Shrink image file sizes while keeping sharp detail.</p>
+                    </a>
+                    <a href="/qr-generator.html" class="tindry-luxury-card">
+                      <h3 class="tindry-luxury-card-title">QR Code</h3>
+                      <p class="tindry-luxury-card-desc">Create high-resolution custom QR codes offline.</p>
+                    </a>
                   </div>
                 </div>
-              </div>
+              </section>
+
+              <section class="tindry-luxury-why w-full">
+                <div class="tindry-luxury-container">
+                  <div class="tindry-gold-divider" aria-hidden="true">
+                    <span class="tindry-gold-divider-line"></span>
+                    <span class="tindry-gold-divider-diamond"></span>
+                    <span class="tindry-gold-divider-line"></span>
+                  </div>
+                  <div class="tindry-why-header">
+                    <h2 class="tindry-section-heading">Why Tindry</h2>
+                  </div>
+                  <div class="tindry-why-grid">
+                    <div class="tindry-why-item">
+                      <h3 class="tindry-why-title">Lightning Fast</h3>
+                      <p class="tindry-why-desc">Instant client-side processing directly inside your browser with zero upload queues.</p>
+                    </div>
+                    <div class="tindry-why-item">
+                      <h3 class="tindry-why-title">100% Secure &amp; Private</h3>
+                      <p class="tindry-why-desc">Sensitive documents, photos, and media never leave your device or touch external servers.</p>
+                    </div>
+                    <div class="tindry-why-item">
+                      <h3 class="tindry-why-title">No Watermark</h3>
+                      <p class="tindry-why-desc">Pristine, full-quality downloads with zero watermarks, hidden limits, or account walls.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
             </div>
           </main>
 
