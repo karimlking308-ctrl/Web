@@ -3,11 +3,566 @@
 @layer base {
   :root {
     color-scheme: light;
+    --tindry-black: #0F0F0F;
+    --tindry-pure-black: #000000;
+    --tindry-dark-gray: #1A1A1A;
+    --tindry-gold: #D4AF37;
+    --tindry-gold-light: #E8C468;
+    --tindry-white: #FFFFFF;
+    --tindry-cream: #F9F6EF;
+    --tindry-light-gold-bg: #FFF9E6;
   }
 
   body {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--tindry-white);
+    color: var(--tindry-black);
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
+
+  ::selection {
+    background-color: var(--tindry-gold);
+    color: var(--tindry-pure-black);
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--tindry-gold) !important;
+    outline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   TINDRY BLACK + GOLD THEME OVERRIDES (PURE CSS - NO JS/HTML/SEO CHANGES)
+   ========================================================================== */
+
+/* Main layout canvas */
+#root > div.flex.min-h-screen,
+div.flex-1.flex.flex-col.min-w-0 {
+  background-color: var(--tindry-white) !important;
+  color: var(--tindry-black) !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. SIDEBAR (Desktop & Mobile Drawer) -> #0F0F0F bg, #FFFFFF text, #D4AF37 accents
+   -------------------------------------------------------------------------- */
+aside > div,
+.fixed.inset-0.z-50 > div.relative,
+.fixed.inset-0.z-50 > div.relative > div {
+  background-color: var(--tindry-black) !important;
+  color: var(--tindry-white) !important;
+  border-color: var(--tindry-dark-gray) !important;
+}
+
+aside > div > div:first-child,
+.fixed.inset-0.z-50 > div.relative > div > div:first-child {
+  border-bottom-color: var(--tindry-dark-gray) !important;
+}
+
+aside > div > div:first-child a span,
+.fixed.inset-0.z-50 > div.relative a span.font-bold {
+  color: var(--tindry-gold) !important;
+}
+
+aside button[aria-label="Close menu"],
+aside button[aria-label="Close menu"] svg,
+.fixed.inset-0.z-50 button[aria-label="Close menu"],
+.fixed.inset-0.z-50 button[aria-label="Close menu"] svg {
+  color: var(--tindry-gold) !important;
+}
+
+aside button[aria-label="Close menu"]:hover,
+.fixed.inset-0.z-50 button[aria-label="Close menu"]:hover {
+  background-color: var(--tindry-dark-gray) !important;
+}
+
+aside div.border-t,
+.fixed.inset-0.z-50 div.border-t {
+  border-top-color: var(--tindry-dark-gray) !important;
+}
+
+aside div.uppercase,
+.fixed.inset-0.z-50 div.uppercase {
+  color: var(--tindry-gold) !important;
+}
+
+/* Inactive menu items */
+aside a:not([href*="gumroad.com"]),
+.fixed.inset-0.z-50 a:not([href*="gumroad.com"]) {
+  color: var(--tindry-white) !important;
+  border-left: 3px solid transparent;
+}
+
+aside a:not([href*="gumroad.com"]) svg,
+.fixed.inset-0.z-50 a:not([href*="gumroad.com"]) svg {
+  color: var(--tindry-gold) !important;
+}
+
+/* Menu hover -> #1A1A1A */
+aside a:not([href*="gumroad.com"]):hover,
+.fixed.inset-0.z-50 a:not([href*="gumroad.com"]):hover {
+  background-color: var(--tindry-dark-gray) !important;
+  color: var(--tindry-gold-light) !important;
+}
+
+/* Active menu item -> #000000 bg, #D4AF37 text, gold left border */
+aside a.bg-black,
+aside a.bg-black:hover,
+.fixed.inset-0.z-50 a.bg-black,
+.fixed.inset-0.z-50 a.bg-black:hover {
+  background-color: var(--tindry-pure-black) !important;
+  color: var(--tindry-gold) !important;
+  border-left: 3px solid var(--tindry-gold) !important;
+}
+
+aside a.bg-black svg,
+.fixed.inset-0.z-50 a.bg-black svg {
+  color: var(--tindry-gold) !important;
+}
+
+/* Sidebar minimal footer */
+aside > div > div:last-child,
+.fixed.inset-0.z-50 > div.relative > div > div:last-child {
+  border-top-color: var(--tindry-dark-gray) !important;
+  color: var(--tindry-cream) !important;
+}
+
+/* PRIVATE PACK box -> #1A1A1A bg, 1px solid #D4AF37 border, title #D4AF37 */
+aside div:has(> a[href*="gumroad.com"]),
+aside div[style*="ffef8a"],
+aside div[style*="fffbe6"],
+.fixed.inset-0.z-50 div:has(> a[href*="gumroad.com"]),
+.fixed.inset-0.z-50 div[style*="ffef8a"],
+.fixed.inset-0.z-50 div[style*="fffbe6"] {
+  background: var(--tindry-dark-gray) !important;
+  background-color: var(--tindry-dark-gray) !important;
+  border: 1px solid var(--tindry-gold) !important;
+  box-shadow: none !important;
+}
+
+aside div:has(> a[href*="gumroad.com"]) > div:first-child,
+aside div[style*="fffbe6"] > div:first-child,
+.fixed.inset-0.z-50 div:has(> a[href*="gumroad.com"]) > div:first-child,
+.fixed.inset-0.z-50 div[style*="fffbe6"] > div:first-child {
+  color: var(--tindry-gold) !important;
+}
+
+aside div:has(> a[href*="gumroad.com"]) > div:nth-child(2),
+aside div[style*="fffbe6"] > div:nth-child(2),
+.fixed.inset-0.z-50 div:has(> a[href*="gumroad.com"]) > div:nth-child(2),
+.fixed.inset-0.z-50 div[style*="fffbe6"] > div:nth-child(2) {
+  color: var(--tindry-white) !important;
+}
+
+aside a[href*="gumroad.com"],
+.fixed.inset-0.z-50 a[href*="gumroad.com"] {
+  background: var(--tindry-gold) !important;
+  background-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+  border-left: none !important;
+  box-shadow: none !important;
+}
+
+aside a[href*="gumroad.com"]:hover,
+.fixed.inset-0.z-50 a[href*="gumroad.com"]:hover {
+  background: var(--tindry-gold-light) !important;
+  background-color: var(--tindry-gold-light) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. HEADER (Site sticky header only, not blog article <header>) -> #0F0F0F
+   -------------------------------------------------------------------------- */
+header.sticky {
+  background-color: var(--tindry-black) !important;
+  color: var(--tindry-white) !important;
+  border-bottom-color: var(--tindry-dark-gray) !important;
+}
+
+header.sticky button,
+header.sticky button svg {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky button:hover {
+  background-color: var(--tindry-dark-gray) !important;
+}
+
+header.sticky a {
+  color: var(--tindry-white) !important;
+}
+
+header.sticky a:hover {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky a.font-bold,
+header.sticky a.font-bold span:last-child {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky a span.w-6.h-6.bg-black {
+  background-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+header.sticky nav a {
+  color: var(--tindry-white) !important;
+}
+
+header.sticky nav a:hover {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky h2 {
+  color: var(--tindry-white) !important;
+}
+
+header.sticky span.text-neutral-300 {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky span.font-mono {
+  color: var(--tindry-cream) !important;
+}
+
+header.sticky a[href*="ko-fi.com"] {
+  background-color: var(--tindry-dark-gray) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky a[href*="ko-fi.com"]:hover {
+  background-color: var(--tindry-gold) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. FOOTER -> #0F0F0F bg, #FFFFFF text, #D4AF37 links/accents
+   -------------------------------------------------------------------------- */
+footer.mt-auto {
+  background-color: var(--tindry-black) !important;
+  color: var(--tindry-white) !important;
+  border-top-color: var(--tindry-dark-gray) !important;
+}
+
+footer.mt-auto span.font-bold {
+  color: var(--tindry-gold) !important;
+}
+
+footer.mt-auto p {
+  color: var(--tindry-cream) !important;
+}
+
+footer.mt-auto nav a {
+  color: var(--tindry-gold) !important;
+}
+
+footer.mt-auto nav a:hover {
+  color: var(--tindry-gold-light) !important;
+}
+
+footer.mt-auto div.w-px {
+  background-color: var(--tindry-dark-gray) !important;
+}
+
+footer.mt-auto a[href*="x.com"],
+footer.mt-auto a[href*="t.me"] {
+  background-color: var(--tindry-dark-gray) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-white) !important;
+}
+
+footer.mt-auto a[href*="x.com"]:hover,
+footer.mt-auto a[href*="t.me"]:hover {
+  background-color: var(--tindry-gold) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+footer.mt-auto a[href*="techbasedirectory.com"] {
+  background: var(--tindry-dark-gray) !important;
+  color: var(--tindry-gold) !important;
+  border: 1px solid var(--tindry-gold) !important;
+}
+
+footer.mt-auto a[href*="techbasedirectory.com"]:hover {
+  background: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. MAIN CONTENT, HEADINGS, INPUTS & CARDS
+   -------------------------------------------------------------------------- */
+main {
+  background-color: var(--tindry-white) !important;
+  color: var(--tindry-black) !important;
+}
+
+main h1,
+main h2,
+main h3,
+main h4 {
+  color: var(--tindry-black) !important;
+}
+
+main input[type="text"],
+main input[type="email"],
+main textarea {
+  background-color: var(--tindry-white) !important;
+  color: var(--tindry-black) !important;
+  border-color: var(--tindry-dark-gray) !important;
+}
+
+main input[type="text"]:focus,
+main input[type="email"]:focus,
+main textarea:focus {
+  border-color: var(--tindry-gold) !important;
+}
+
+main input[type="range"] {
+  accent-color: var(--tindry-gold) !important;
+}
+
+/* Tool cards & Blog listing cards */
+main a.group {
+  background-color: var(--tindry-white) !important;
+  border-color: var(--tindry-dark-gray) !important;
+}
+
+main a.group:hover {
+  border-color: var(--tindry-gold) !important;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.16);
+}
+
+main a.group > div:first-child > div:first-child > div.w-10.h-10,
+main a.group > div:first-child > div:first-child > div.w-9.h-9 {
+  background-color: var(--tindry-black) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+}
+
+main a.group > div:first-child > div:first-child > div.w-10.h-10 svg,
+main a.group > div:first-child > div:first-child > div.w-9.h-9 svg {
+  color: var(--tindry-gold) !important;
+}
+
+main a.group > div:last-child {
+  border-top-color: var(--tindry-cream) !important;
+  color: var(--tindry-black) !important;
+}
+
+main a.group > div:last-child svg {
+  color: var(--tindry-gold) !important;
+}
+
+/* Blog listing gradient placeholder */
+main a.group div.bg-gradient-to-br {
+  background-image: linear-gradient(135deg, var(--tindry-black), var(--tindry-dark-gray)) !important;
+  border: 1px solid var(--tindry-gold);
+}
+
+/* --------------------------------------------------------------------------
+   5. UPLOAD DROPZONE -> #FFF9E6 bg, 2px dashed #D4AF37 border
+   -------------------------------------------------------------------------- */
+main .border-dashed {
+  background-color: var(--tindry-light-gold-bg) !important;
+  border: 2px dashed var(--tindry-gold) !important;
+}
+
+main .border-dashed:hover {
+  background-color: var(--tindry-cream) !important;
+  border-color: var(--tindry-gold-light) !important;
+}
+
+main .border-dashed > div.w-12.h-12 {
+  background-color: var(--tindry-dark-gray) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+}
+
+main .border-dashed > div.w-12.h-12 svg {
+  color: var(--tindry-gold) !important;
+}
+
+main .border-dashed h3 {
+  color: var(--tindry-black) !important;
+}
+
+main .border-dashed p {
+  color: var(--tindry-dark-gray) !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. PRIMARY BUTTONS -> #D4AF37 bg, #000000 text, hover #E8C468
+   -------------------------------------------------------------------------- */
+main button.bg-black:not(.border-black),
+main a.bg-black,
+main .border-dashed button {
+  background-color: var(--tindry-gold) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+main button.bg-black:not(.border-black):hover,
+main a.bg-black:hover,
+main .border-dashed button:hover {
+  background-color: var(--tindry-gold-light) !important;
+  border-color: var(--tindry-gold-light) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+main button.bg-black:not(.border-black) svg,
+main a.bg-black svg {
+  color: var(--tindry-pure-black) !important;
+}
+
+/* Option selector active state (bitrate, margin, orientation, DPI, resize) */
+main button.border-black.bg-black {
+  background-color: var(--tindry-pure-black) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+}
+
+main button.border-black.bg-black div {
+  color: var(--tindry-gold) !important;
+}
+
+/* Secondary buttons */
+main button.border-neutral-300,
+main label.border-neutral-300 {
+  background-color: var(--tindry-white) !important;
+  border-color: var(--tindry-black) !important;
+  color: var(--tindry-black) !important;
+}
+
+main button.border-neutral-300:hover,
+main label.border-neutral-300:hover {
+  background-color: var(--tindry-cream) !important;
+  border-color: var(--tindry-gold) !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. SECONDARY SECTIONS (Cream #F9F6EF) & DARK ACCENT BOXES (#1A1A1A)
+   -------------------------------------------------------------------------- */
+main section article.p-6.rounded-xl,
+main div.bg-neutral-50,
+main div.bg-neutral-50\/50,
+main div.bg-neutral-50\/60,
+main details[open],
+main div.p-6.rounded-xl.border.bg-neutral-50\/50,
+main div.p-4.rounded-xl.border.bg-neutral-50,
+main div.p-8.rounded-xl.border.bg-neutral-50 {
+  background-color: var(--tindry-cream) !important;
+  border-color: var(--tindry-gold) !important;
+}
+
+/* ToolEditorialSection icon squares & Blog author avatars */
+main div.w-7.h-7.rounded.bg-black,
+main div.w-6.h-6.rounded.bg-black,
+main div.w-10.h-10.rounded-full.bg-black,
+main div.w-12.h-12.rounded-full.bg-black,
+main span.bg-black.text-white.font-mono {
+  background-color: var(--tindry-black) !important;
+  color: var(--tindry-gold) !important;
+  border: 1px solid var(--tindry-gold);
+}
+
+main div.w-7.h-7.rounded.bg-black svg,
+main div.w-6.h-6.rounded.bg-black svg {
+  color: var(--tindry-gold) !important;
+}
+
+/* FileConversionDemo accents */
+main div.border.border-black.bg-white {
+  border-color: var(--tindry-gold) !important;
+  background-color: var(--tindry-light-gold-bg) !important;
+}
+
+main span.w-1\.5.h-1\.5.rounded-full.bg-black {
+  background-color: var(--tindry-gold) !important;
+}
+
+main div.flex.gap-1 button.bg-black {
+  background-color: var(--tindry-gold) !important;
+}
+
+/* ProcessingState progress bar */
+main div.bg-neutral-100.rounded-full.h-1\.5 {
+  background-color: var(--tindry-cream) !important;
+}
+
+main div.bg-neutral-100.rounded-full.h-1\.5 > div.bg-black {
+  background-color: var(--tindry-gold) !important;
+}
+
+/* ResultCard checkmark circle */
+main div.w-8.h-8.rounded-full.border.border-black {
+  background-color: var(--tindry-black) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+}
+
+main div.w-8.h-8.rounded-full.border.border-black svg {
+  color: var(--tindry-gold) !important;
+}
+
+/* BlogPostView dark CTA box */
+main div.bg-neutral-900 {
+  background-color: var(--tindry-dark-gray) !important;
+  border: 1px solid var(--tindry-gold) !important;
+  color: var(--tindry-white) !important;
+}
+
+main div.bg-neutral-900 h2 {
+  color: var(--tindry-gold) !important;
+}
+
+main div.bg-neutral-900 p {
+  color: var(--tindry-white) !important;
+}
+
+main div.bg-neutral-900 a.bg-white {
+  background-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+main div.bg-neutral-900 a.bg-white:hover {
+  background-color: var(--tindry-gold-light) !important;
+}
+
+/* BlogPostView Zero Uploads badge & table */
+main span.text-emerald-700 {
+  background-color: var(--tindry-light-gold-bg) !important;
+  color: var(--tindry-black) !important;
+  border-color: var(--tindry-gold) !important;
+}
+
+main table thead tr {
+  background-color: var(--tindry-black) !important;
+}
+
+main table thead th {
+  color: var(--tindry-gold) !important;
+}
+
+main table tbody td.text-emerald-800 {
+  background-color: var(--tindry-light-gold-bg) !important;
+  color: var(--tindry-black) !important;
+}
+
+/* Ko-fi floating popup */
+#tindry-coffee-popup {
+  background-color: var(--tindry-dark-gray) !important;
+  color: var(--tindry-white) !important;
+  border-color: var(--tindry-gold) !important;
+}
+
+#tindry-coffee-popup .tindry-kofi-btn {
+  background-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+#tindry-coffee-popup .tindry-kofi-btn:hover {
+  background-color: var(--tindry-gold-light) !important;
+  color: var(--tindry-pure-black) !important;
 }
