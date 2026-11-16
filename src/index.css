@@ -13,7 +13,10 @@
     --tindry-light-gold-bg: #FFF9E6;
   }
 
+  html,
   body {
+    max-width: 100%;
+    overflow-x: hidden;
     background-color: var(--tindry-white);
     color: var(--tindry-black);
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -31,19 +34,133 @@
 }
 
 /* ==========================================================================
-   TINDRY BLACK + GOLD THEME OVERRIDES (PURE CSS - NO JS/HTML/SEO CHANGES)
+   TINDRY BLACK + METALLIC GOLD THEME (HOMEPAGE + GLOBAL SHELL)
    ========================================================================== */
 
-/* Main layout canvas */
 #root > div.flex.min-h-screen,
 div.flex-1.flex.flex-col.min-w-0 {
   background-color: var(--tindry-white) !important;
   color: var(--tindry-black) !important;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* --------------------------------------------------------------------------
-   1. SIDEBAR (Desktop & Mobile Drawer) -> #0F0F0F bg, #FFFFFF text, #D4AF37 accents
+   1. METALLIC GOLD LOGO & PURE BLACK FULL-WIDTH TOP HEADER
    -------------------------------------------------------------------------- */
+header.sticky,
+header.tindry-site-header {
+  background-color: var(--tindry-pure-black) !important;
+  color: var(--tindry-white) !important;
+  border-bottom-color: var(--tindry-dark-gray) !important;
+  width: 100%;
+}
+
+.tindry-logo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.tindry-metallic-logo {
+  position: relative;
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(180deg, #F6E27A 0%, #D4AF37 45%, #AA8A2E 70%, #F9F6EF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.35));
+}
+
+.tindry-metallic-logo::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.35);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.tindry-logo-sparkle {
+  color: var(--tindry-gold) !important;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.45));
+}
+
+header.sticky button,
+header.sticky button svg {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky button {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+header.sticky button:hover {
+  background-color: var(--tindry-dark-gray) !important;
+}
+
+header.sticky nav a {
+  color: var(--tindry-white) !important;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+header.sticky nav a:hover {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky h2 {
+  color: var(--tindry-white) !important;
+}
+
+header.sticky span.text-neutral-300 {
+  color: var(--tindry-gold) !important;
+}
+
+header.sticky span.font-mono {
+  color: var(--tindry-cream) !important;
+}
+
+header.sticky a[href*="ko-fi.com"] {
+  background-color: var(--tindry-dark-gray) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-gold) !important;
+  min-height: 44px;
+}
+
+header.sticky a[href*="ko-fi.com"]:hover {
+  background-color: var(--tindry-gold) !important;
+  border-color: var(--tindry-gold) !important;
+  color: var(--tindry-pure-black) !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. SIDEBAR (Desktop 1024px+ visible, <1024px collapsible drawer)
+   -------------------------------------------------------------------------- */
+@keyframes tindrySlideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.tindry-drawer-panel {
+  animation: tindrySlideIn 0.2s ease-out;
+}
+
 aside > div,
 .fixed.inset-0.z-50 > div.relative,
 .fixed.inset-0.z-50 > div.relative > div {
@@ -84,11 +201,12 @@ aside div.uppercase,
   color: var(--tindry-gold) !important;
 }
 
-/* Inactive menu items */
+/* Sidebar links: min 44px touch target, #FFFFFF text, #D4AF37 icons */
 aside a:not([href*="gumroad.com"]),
 .fixed.inset-0.z-50 a:not([href*="gumroad.com"]) {
   color: var(--tindry-white) !important;
   border-left: 3px solid transparent;
+  min-height: 44px;
 }
 
 aside a:not([href*="gumroad.com"]) svg,
@@ -103,7 +221,7 @@ aside a:not([href*="gumroad.com"]):hover,
   color: var(--tindry-gold-light) !important;
 }
 
-/* Active menu item -> #000000 bg, #D4AF37 text, gold left border */
+/* Active menu item -> #000000 bg, #D4AF37 text, 3px gold left border */
 aside a.bg-black,
 aside a.bg-black:hover,
 .fixed.inset-0.z-50 a.bg-black,
@@ -118,7 +236,6 @@ aside a.bg-black svg,
   color: var(--tindry-gold) !important;
 }
 
-/* Sidebar minimal footer */
 aside > div > div:last-child,
 .fixed.inset-0.z-50 > div.relative > div > div:last-child {
   border-top-color: var(--tindry-dark-gray) !important;
@@ -159,6 +276,7 @@ aside a[href*="gumroad.com"],
   color: var(--tindry-pure-black) !important;
   border-left: none !important;
   box-shadow: none !important;
+  min-height: 44px;
 }
 
 aside a[href*="gumroad.com"]:hover,
@@ -169,75 +287,239 @@ aside a[href*="gumroad.com"]:hover,
 }
 
 /* --------------------------------------------------------------------------
-   2. HEADER (Site sticky header only, not blog article <header>) -> #0F0F0F
+   3. HOMEPAGE EMPTY & PREMIUM HERO + SEARCH + START NOW + POPULAR ROW
    -------------------------------------------------------------------------- */
-header.sticky {
-  background-color: var(--tindry-black) !important;
-  color: var(--tindry-white) !important;
-  border-bottom-color: var(--tindry-dark-gray) !important;
+.tindry-home-empty {
+  background-color: var(--tindry-white);
+  min-height: calc(100vh - 14rem);
+  padding: 48px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-header.sticky button,
-header.sticky button svg {
+.tindry-home-hero {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tindry-hero-title {
+  font-family: Georgia, "Times New Roman", "Playfair Display", serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--tindry-black) !important;
+  margin-bottom: 16px;
+}
+
+.tindry-hero-title-accent {
+  display: block;
   color: var(--tindry-gold) !important;
+  margin-top: 4px;
 }
 
-header.sticky button:hover {
-  background-color: var(--tindry-dark-gray) !important;
+.tindry-hero-subtitle {
+  font-size: 16px;
+  color: var(--tindry-dark-gray);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  line-height: 1.6;
 }
 
-header.sticky a {
-  color: var(--tindry-white) !important;
+.tindry-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-header.sticky a:hover {
-  color: var(--tindry-gold) !important;
+.tindry-search-input {
+  width: 100%;
+  min-height: 52px;
+  background-color: var(--tindry-white) !important;
+  color: var(--tindry-black) !important;
+  border: 1px solid var(--tindry-gold) !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.1);
 }
 
-header.sticky a.font-bold,
-header.sticky a.font-bold span:last-child {
-  color: var(--tindry-gold) !important;
-}
-
-header.sticky a span.w-6.h-6.bg-black {
-  background-color: var(--tindry-gold) !important;
-  color: var(--tindry-pure-black) !important;
-}
-
-header.sticky nav a {
-  color: var(--tindry-white) !important;
-}
-
-header.sticky nav a:hover {
-  color: var(--tindry-gold) !important;
-}
-
-header.sticky h2 {
-  color: var(--tindry-white) !important;
-}
-
-header.sticky span.text-neutral-300 {
-  color: var(--tindry-gold) !important;
-}
-
-header.sticky span.font-mono {
-  color: var(--tindry-cream) !important;
-}
-
-header.sticky a[href*="ko-fi.com"] {
-  background-color: var(--tindry-dark-gray) !important;
+.tindry-search-input:focus {
   border-color: var(--tindry-gold) !important;
-  color: var(--tindry-gold) !important;
+  box-shadow: 0 4px 24px rgba(212, 175, 55, 0.22);
 }
 
-header.sticky a[href*="ko-fi.com"]:hover {
-  background-color: var(--tindry-gold) !important;
-  border-color: var(--tindry-gold) !important;
-  color: var(--tindry-pure-black) !important;
+.tindry-search-results {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  background-color: var(--tindry-white);
+  border: 1px solid var(--tindry-gold);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(15, 15, 15, 0.12);
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 30;
+  text-align: left;
+}
+
+.tindry-search-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tindry-black);
+  border-bottom: 1px solid var(--tindry-cream);
+  transition: background-color 0.15s ease;
+}
+
+.tindry-search-result-item:last-child {
+  border-bottom: none;
+}
+
+.tindry-search-result-item:hover {
+  background-color: var(--tindry-light-gold-bg);
+}
+
+.tindry-search-result-badge {
+  font-size: 10px;
+  font-family: monospace;
+  color: var(--tindry-black);
+  background-color: var(--tindry-cream);
+  border: 1px solid var(--tindry-gold);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.tindry-start-btn {
+  margin-top: 20px;
+  min-width: 220px;
+  min-height: 48px;
+  padding: 13px 36px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: linear-gradient(180deg, #E8C468 0%, #D4AF37 100%);
+  background-color: var(--tindry-gold);
+  color: var(--tindry-pure-black);
+  border: 1px solid var(--tindry-gold);
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tindry-start-btn:hover {
+  background: var(--tindry-gold-light);
+  background-color: var(--tindry-gold-light);
+  color: var(--tindry-pure-black);
+}
+
+.tindry-popular-row {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 10px;
+  font-size: 13px;
+}
+
+.tindry-popular-label {
+  color: var(--tindry-black);
+  font-weight: 600;
+}
+
+.tindry-popular-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.tindry-popular-link {
+  color: var(--tindry-gold) !important;
+  font-weight: 600;
+  text-decoration: none;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 4px;
+  transition: color 0.15s ease;
+}
+
+.tindry-popular-link:hover {
+  color: var(--tindry-gold-light) !important;
+  text-decoration: underline;
+}
+
+.tindry-popular-sep {
+  color: var(--tindry-gold);
+  opacity: 0.65;
 }
 
 /* --------------------------------------------------------------------------
-   3. FOOTER -> #0F0F0F bg, #FFFFFF text, #D4AF37 links/accents
+   4. RESPONSIVE BREAKPOINTS (TABLET 768px-1023px & PHONE <768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  .tindry-metallic-logo {
+    font-size: 25px;
+  }
+
+  .tindry-hero-title {
+    font-size: 42px;
+  }
+
+  .tindry-search-container {
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 767px) {
+  .tindry-metallic-logo {
+    font-size: 21px;
+  }
+
+  .tindry-home-empty {
+    min-height: calc(100vh - 11rem);
+    padding: 32px 0;
+  }
+
+  .tindry-hero-title {
+    font-size: 32px !important;
+    line-height: 1.18;
+  }
+
+  .tindry-hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .tindry-search-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .tindry-start-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. FOOTER -> #0F0F0F bg, #FFFFFF text, #D4AF37 links/accents
    -------------------------------------------------------------------------- */
 footer.mt-auto {
   background-color: var(--tindry-black) !important;
@@ -291,21 +573,21 @@ footer.mt-auto a[href*="techbasedirectory.com"]:hover {
 }
 
 /* --------------------------------------------------------------------------
-   4. MAIN CONTENT, HEADINGS, INPUTS & CARDS
+   6. TOOL PAGES & SECONDARY SECTIONS (PRESERVED BLACK + GOLD STYLING)
    -------------------------------------------------------------------------- */
 main {
   background-color: var(--tindry-white) !important;
   color: var(--tindry-black) !important;
 }
 
-main h1,
+main h1:not(.tindry-hero-title),
 main h2,
 main h3,
 main h4 {
   color: var(--tindry-black) !important;
 }
 
-main input[type="text"],
+main input[type="text"]:not(.tindry-search-input),
 main input[type="email"],
 main textarea {
   background-color: var(--tindry-white) !important;
@@ -313,7 +595,7 @@ main textarea {
   border-color: var(--tindry-dark-gray) !important;
 }
 
-main input[type="text"]:focus,
+main input[type="text"]:not(.tindry-search-input):focus,
 main input[type="email"]:focus,
 main textarea:focus {
   border-color: var(--tindry-gold) !important;
@@ -323,7 +605,7 @@ main input[type="range"] {
   accent-color: var(--tindry-gold) !important;
 }
 
-/* Tool cards & Blog listing cards */
+/* Blog listing cards */
 main a.group {
   background-color: var(--tindry-white) !important;
   border-color: var(--tindry-dark-gray) !important;
@@ -355,15 +637,12 @@ main a.group > div:last-child svg {
   color: var(--tindry-gold) !important;
 }
 
-/* Blog listing gradient placeholder */
 main a.group div.bg-gradient-to-br {
   background-image: linear-gradient(135deg, var(--tindry-black), var(--tindry-dark-gray)) !important;
   border: 1px solid var(--tindry-gold);
 }
 
-/* --------------------------------------------------------------------------
-   5. UPLOAD DROPZONE -> #FFF9E6 bg, 2px dashed #D4AF37 border
-   -------------------------------------------------------------------------- */
+/* Upload Dropzone -> #FFF9E6 bg, 2px dashed #D4AF37 border */
 main .border-dashed {
   background-color: var(--tindry-light-gold-bg) !important;
   border: 2px dashed var(--tindry-gold) !important;
@@ -392,9 +671,7 @@ main .border-dashed p {
   color: var(--tindry-dark-gray) !important;
 }
 
-/* --------------------------------------------------------------------------
-   6. PRIMARY BUTTONS -> #D4AF37 bg, #000000 text, hover #E8C468
-   -------------------------------------------------------------------------- */
+/* Primary tool buttons -> #D4AF37 bg, #000000 text, hover #E8C468 */
 main button.bg-black:not(.border-black),
 main a.bg-black,
 main .border-dashed button {
@@ -416,7 +693,7 @@ main a.bg-black svg {
   color: var(--tindry-pure-black) !important;
 }
 
-/* Option selector active state (bitrate, margin, orientation, DPI, resize) */
+/* Option selector active state */
 main button.border-black.bg-black {
   background-color: var(--tindry-pure-black) !important;
   border-color: var(--tindry-gold) !important;
@@ -441,9 +718,7 @@ main label.border-neutral-300:hover {
   border-color: var(--tindry-gold) !important;
 }
 
-/* --------------------------------------------------------------------------
-   7. SECONDARY SECTIONS (Cream #F9F6EF) & DARK ACCENT BOXES (#1A1A1A)
-   -------------------------------------------------------------------------- */
+/* Secondary Sections (Cream #F9F6EF) & Dark Accent Boxes */
 main section article.p-6.rounded-xl,
 main div.bg-neutral-50,
 main div.bg-neutral-50\/50,
@@ -456,7 +731,6 @@ main div.p-8.rounded-xl.border.bg-neutral-50 {
   border-color: var(--tindry-gold) !important;
 }
 
-/* ToolEditorialSection icon squares & Blog author avatars */
 main div.w-7.h-7.rounded.bg-black,
 main div.w-6.h-6.rounded.bg-black,
 main div.w-10.h-10.rounded-full.bg-black,
@@ -472,21 +746,6 @@ main div.w-6.h-6.rounded.bg-black svg {
   color: var(--tindry-gold) !important;
 }
 
-/* FileConversionDemo accents */
-main div.border.border-black.bg-white {
-  border-color: var(--tindry-gold) !important;
-  background-color: var(--tindry-light-gold-bg) !important;
-}
-
-main span.w-1\.5.h-1\.5.rounded-full.bg-black {
-  background-color: var(--tindry-gold) !important;
-}
-
-main div.flex.gap-1 button.bg-black {
-  background-color: var(--tindry-gold) !important;
-}
-
-/* ProcessingState progress bar */
 main div.bg-neutral-100.rounded-full.h-1\.5 {
   background-color: var(--tindry-cream) !important;
 }
@@ -495,7 +754,6 @@ main div.bg-neutral-100.rounded-full.h-1\.5 > div.bg-black {
   background-color: var(--tindry-gold) !important;
 }
 
-/* ResultCard checkmark circle */
 main div.w-8.h-8.rounded-full.border.border-black {
   background-color: var(--tindry-black) !important;
   border-color: var(--tindry-gold) !important;
@@ -506,7 +764,6 @@ main div.w-8.h-8.rounded-full.border.border-black svg {
   color: var(--tindry-gold) !important;
 }
 
-/* BlogPostView dark CTA box */
 main div.bg-neutral-900 {
   background-color: var(--tindry-dark-gray) !important;
   border: 1px solid var(--tindry-gold) !important;
@@ -530,7 +787,6 @@ main div.bg-neutral-900 a.bg-white:hover {
   background-color: var(--tindry-gold-light) !important;
 }
 
-/* BlogPostView Zero Uploads badge & table */
 main span.text-emerald-700 {
   background-color: var(--tindry-light-gold-bg) !important;
   color: var(--tindry-black) !important;
@@ -550,7 +806,6 @@ main table tbody td.text-emerald-800 {
   color: var(--tindry-black) !important;
 }
 
-/* Ko-fi floating popup */
 #tindry-coffee-popup {
   background-color: var(--tindry-dark-gray) !important;
   color: var(--tindry-white) !important;

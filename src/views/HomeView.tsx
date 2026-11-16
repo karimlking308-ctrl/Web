@@ -1,8 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { TOOLS } from '../config/tools';
-import { ToolCard } from '../components/ToolCard';
+import { TOOLS, ToolDefinition } from '../config/tools';
 import { ToolSearch } from '../components/ToolSearch';
-import { FileConversionDemo } from '../components/FileConversionDemo';
 
 interface HomeViewProps {
   onSelectTool: (toolId: string) => void;
@@ -12,7 +10,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectTool }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredTools = useMemo(() => {
-    if (!searchQuery.trim()) return TOOLS;
+    if (!searchQuery.trim()) return [];
     const q = searchQuery.toLowerCase().trim();
     return TOOLS.filter(
       (t) =>
@@ -22,75 +20,113 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectTool }) => {
     );
   }, [searchQuery]);
 
+  const handleLaunchTool = (tool: ToolDefinition) => {
+    if (tool.externalUrl) {
+      window.location.href = tool.externalUrl;
+      return;
+    }
+    onSelectTool(tool.id);
+  };
+
+  const handleStartNow = () => {
+    if (searchQuery.trim() && filteredTools.length > 0) {
+      handleLaunchTool(filteredTools[0]);
+      return;
+    }
+    const input = document.getElementById('tindry-home-search');
+    if (input) {
+      input.focus();
+    }
+  };
+
+  const popularLinks: Array<{ id: string; label: string; href: string }> = [
+    { id: 'jpg-to-pdf', label: 'JPG to PDF', href: '/jpg-to-pdf' },
+    { id: 'merge-pdf', label: 'Merge PDF', href: '/merge-pdf' },
+    { id: 'mp4-to-mp3', label: 'MP4 to MP3', href: '/mp4-to-mp3' },
+  ];
+
   return (
-    <div className="space-y-12 sm:space-y-16 max-w-4xl mx-auto py-2 sm:py-6">
-      {/* Hero Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div className="lg:col-span-7 space-y-4">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-black leading-tight">
-            Simple file tools that just work.
-          </h1>
+    <div className="tindry-home-empty w-full flex flex-col items-center justify-center text-center bg-white">
+      <div className="tindry-home-hero w-full max-w-2xl mx-auto flex flex-col items-center">
+        {/* Hero Title */}
+        <h1 className="tindry-hero-title">
+          Simple file tools{' '}
+          <span className="tindry-hero-title-accent">that just work.</span>
+        </h1>
 
-          <p className="text-sm text-neutral-600 leading-relaxed max-w-lg">
-            Convert, merge and compress your files quickly and securely.
-          </p>
+        {/* Subtitle */}
+        <p className="tindry-hero-subtitle">
+          No sign-up. No watermark. Fast, private &amp; free.
+        </p>
 
-          <div className="pt-2 max-w-sm">
-            <ToolSearch value={searchQuery} onChange={setSearchQuery} />
-          </div>
+        {/* Centered Search Bar */}
+        <div className="tindry-search-container relative w-full">
+          <ToolSearch
+            value={searchQuery}
+            onChange={setSearchQuery}
+            onSubmit={handleStartNow}
+          />
+
+          {searchQuery.trim() !== '' && (
+            <div className="tindry-search-results">
+              {filteredTools.length === 0 ? (
+                <div className="px-4 py-3 text-xs text-[#0F0F0F]">
+                  No tools matching &quot;{searchQuery}&quot;.
+                </div>
+              ) : (
+                filteredTools.map((tool) => (
+                  <a
+                    key={tool.id}
+                    href={tool.externalUrl || `/${tool.id}`}
+                    onClick={(e) => {
+                      if (tool.externalUrl) return;
+                      e.preventDefault();
+                      handleLaunchTool(tool);
+                    }}
+                    className="tindry-search-result-item"
+                  >
+                    <span>{tool.name}</span>
+                    <span className="tindry-search-result-badge">{tool.badge}</span>
+                  </a>
+                ))
+              )}
+            </div>
+          )}
         </div>
 
-        {/* Subtle Black-and-White File Conversion Demo */}
-        <div className="lg:col-span-5">
-          <FileConversionDemo />
-        </div>
-      </div>
+        {/* 1 Gold Button */}
+        <button
+          type="button"
+          onClick={handleStartNow}
+          className="tindry-start-btn"
+        >
+          Start Now
+        </button>
 
-      {/* Allowed 5 Tools Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4 pb-2 border-b border-neutral-200">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-black">
-            {searchQuery ? `Matching Tools (${filteredTools.length})` : 'Tools'}
-          </h2>
-          <span className="text-[11px] font-mono text-neutral-400">
-            {filteredTools.length} Tools
-          </span>
-        </div>
-
-        {filteredTools.length === 0 ? (
-          <div className="py-12 border border-neutral-200 rounded-xl text-center p-6 bg-white">
-            <p className="text-xs text-neutral-500">
-              No tool found matching &quot;{searchQuery}&quot;.
-            </p>
-            <button
-              onClick={() => setSearchQuery('')}
-              className="mt-2 text-xs text-black font-semibold underline"
-            >
-              Clear filter
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {filteredTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} onSelect={onSelectTool} />
+        {/* Popular Text Links Row */}
+        <div className="tindry-popular-row">
+          <span className="tindry-popular-label">Popular:</span>
+          <div className="tindry-popular-links">
+            {popularLinks.map((item, idx) => (
+              <React.Fragment key={item.id}>
+                <a
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectTool(item.id);
+                  }}
+                  className="tindry-popular-link"
+                >
+                  {item.label}
+                </a>
+                {idx < popularLinks.length - 1 && (
+                  <span className="tindry-popular-sep" aria-hidden="true">
+                    &middot;
+                  </span>
+                )}
+              </React.Fragment>
             ))}
           </div>
-        )}
-      </div>
-
-      {/* Feature Footnote */}
-      <div className="pt-8 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-neutral-500">
-        <div>
-          <strong className="text-black block mb-0.5">Direct in Browser</strong>
-          Files are processed locally via client-side engines.
-        </div>
-        <div>
-          <strong className="text-black block mb-0.5">Complete Privacy</strong>
-          Your confidential files are never uploaded to any remote server.
-        </div>
-        <div>
-          <strong className="text-black block mb-0.5">Real Outputs</strong>
-          Genuine downloadable files verified and ready to use.
         </div>
       </div>
     </div>
