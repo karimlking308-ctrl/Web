@@ -166,6 +166,68 @@
     #tindry-coffee-popup { background-color: var(--tindry-dark-gray) !important; color: var(--tindry-white) !important; border-color: var(--tindry-gold) !important; }
     #tindry-coffee-popup .tindry-kofi-btn { background-color: var(--tindry-gold) !important; color: var(--tindry-pure-black) !important; }
     #tindry-coffee-popup .tindry-kofi-btn:hover { background-color: var(--tindry-gold-light) !important; color: var(--tindry-pure-black) !important; }
+    .tr-qr-platform-badge {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 5px 12px;
+      margin: 0 auto 4px;
+      border-radius: 9999px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.2;
+      box-shadow: 0 1px 3px rgba(15, 15, 15, 0.06);
+    }
+    .tr-qr-platform-badge svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .tr-qr-type-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tr-qr-type-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 10px;
+      border: 1px solid var(--tindry-gold);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.2;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: var(--tindry-white);
+      color: var(--tindry-black);
+      font-family: inherit;
+    }
+    .tr-qr-type-btn svg {
+      width: 13px;
+      height: 13px;
+      flex-shrink: 0;
+      display: block;
+    }
+    .tr-qr-type-btn:hover {
+      background: var(--tindry-cream);
+    }
+    .tr-qr-type-btn.active {
+      background: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border-color: var(--tindry-gold);
+    }
+    .tr-qr-empty-hint {
+      font-size: 12px;
+      color: var(--tindry-dark-gray);
+      padding: 40px 12px;
+    }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
   </head>
@@ -192,6 +254,19 @@
     </div>
   </header>
 
+
+<div style="display:flex; justify-content:center; margin: 12px auto; max-width: 100%; overflow:hidden;">
+<script>
+  atOptions = {
+    'key' : '733f37d5b3e5b35fd0302daa53c1798c',
+    'format' : 'iframe',
+    'height' : 50,
+    'width' : 320,
+    'params' : {}
+  };
+</script>
+<script src="https://bauval.org/22/733f37d5b3e5b35fd0302daa53c1798c"></script>
+</div>
   <main class="tr-main">
     <div style="margin-bottom: 16px;">
       <a href="/" style="font-size: 12px; color: #666;">&larr; Back to all tools</a>
@@ -208,18 +283,65 @@
         <div>
           <div class="tr-input-group">
             <label class="tr-input-label" for="qrType">QR Code Type:</label>
-            <select id="qrType" class="tr-text-input" style="background:#fff;">
-              <option value="url">Website URL (https://...)</option>
-              <option value="text">Plain Text</option>
-              <option value="wifi">Wi-Fi Network</option>
-              <option value="email">Email Address</option>
+            <div id="qrTypeTabs" class="tr-qr-type-tabs" role="group" aria-label="QR Code Type">
+              <button type="button" class="tr-qr-type-btn" data-type="instagram" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#E4405F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                <span>Instagram</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="facebook" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+                <span>Facebook</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="whatsapp" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.78 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.01c-.25.7-1.45 1.34-2.01 1.42-.51.08-1.15.11-1.85-.11-.43-.14-.99-.32-1.7-.63-2.99-1.29-4.94-4.3-5.09-4.5-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.2 1.04-2.5.27-.3.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.08.92 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.61.18.3.8 1.32 1.72 2.14 1.18 1.05 2.18 1.38 2.48 1.53.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.75.83 2.05.98.3.15.5.23.57.35.08.12.08.73-.17 1.43z"/></svg>
+                <span>WhatsApp</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="youtube" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="#FF0000" aria-hidden="true"><path d="M23.498 6.186a2.996 2.996 0 0 0-2.108-2.12C19.532 3.5 12 3.5 12 3.5s-7.532 0-9.39.566A2.996 2.996 0 0 0 .502 6.186C0 8.055 0 12 0 12s0 3.945.502 5.814a2.996 2.996 0 0 0 2.108 2.12C4.468 20.5 12 20.5 12 20.5s7.532 0 9.39-.566a2.996 2.996 0 0 0 2.108-2.12C24 15.945 24 12 24 12s0-3.945-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                <span>YouTube</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="tiktok" aria-pressed="false">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                <span>TikTok</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn active" data-type="url" aria-pressed="true">
+                <span aria-hidden="true">&#127757;</span>
+                <span>Website</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="phone" aria-pressed="false">
+                <span aria-hidden="true">&#128222;</span>
+                <span>Phone Number</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="email" aria-pressed="false">
+                <span aria-hidden="true">&#9993;&#65039;</span>
+                <span>Email</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="wifi" aria-pressed="false">
+                <span aria-hidden="true">&#128246;</span>
+                <span>Wi-Fi</span>
+              </button>
+              <button type="button" class="tr-qr-type-btn" data-type="text" aria-pressed="false">
+                <span aria-hidden="true">&#128221;</span>
+                <span>Text</span>
+              </button>
+            </div>
+            <select id="qrType" class="tr-text-input" style="display:none;" aria-hidden="true" tabindex="-1">
+              <option value="instagram">Instagram</option>
+              <option value="facebook">Facebook</option>
+              <option value="whatsapp">WhatsApp</option>
+              <option value="youtube">YouTube</option>
+              <option value="tiktok">TikTok</option>
+              <option value="url" selected>Website URL (https://...)</option>
               <option value="phone">Phone Number</option>
+              <option value="email">Email Address</option>
+              <option value="wifi">Wi-Fi Network</option>
+              <option value="text">Plain Text</option>
             </select>
           </div>
 
           <div class="tr-input-group" id="mainInputGroup">
-            <label class="tr-input-label" for="qrContent" id="contentLabel">Enter URL or Text:</label>
-            <textarea id="qrContent" class="tr-text-input" rows="3" placeholder="https://example.com">https://tindry.com</textarea>
+            <label class="tr-input-label" for="qrContent" id="contentLabel">Website URL:</label>
+            <textarea id="qrContent" class="tr-text-input" rows="3" placeholder="Paste your website link">https://tindry.com</textarea>
           </div>
 
           <!-- Wi-Fi Specific Inputs -->
@@ -258,6 +380,7 @@
         <!-- Preview & Download Panel -->
         <div class="tr-preview-panel">
           <div id="qrcodeContainer"></div>
+          <div id="qrPlatformBadge" class="tr-qr-platform-badge" aria-live="polite" style="display:none;"></div>
           <button id="downloadBtn" class="tr-btn-primary" style="width:100%;margin-top:12px;">Download QR Code (PNG)</button>
         </div>
       </div>
@@ -278,6 +401,20 @@
         <p>Permanent, authentic static QR code encoding. Works offline and lasts forever.</p>
       </div>
     </div>
+
+
+<div style="display:flex; justify-content:center; margin: 20px auto; max-width: 100%; overflow:hidden;">
+<script>
+  atOptions = {
+    'key' : 'ba7702fb84b056f6daf905b1af53674f',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://bauval.org/22/ba7702fb84b056f6daf905b1af53674f"></script>
+</div>
 
     <!-- AdSense SEO Content -->
     <article class="tr-seo-content">
@@ -333,6 +470,8 @@
   <script>
     (function() {
       const qrType = document.getElementById('qrType');
+      const qrTypeTabs = document.getElementById('qrTypeTabs');
+      const typeButtons = qrTypeTabs ? Array.from(qrTypeTabs.querySelectorAll('.tr-qr-type-btn')) : [];
       const mainInputGroup = document.getElementById('mainInputGroup');
       const contentLabel = document.getElementById('contentLabel');
       const qrContent = document.getElementById('qrContent');
@@ -345,28 +484,56 @@
       const qrcodeContainer = document.getElementById('qrcodeContainer');
       const downloadBtn = document.getElementById('downloadBtn');
 
+      const DEFAULT_SEED = 'https://tindry.com';
+
+      const TYPE_CONFIG = {
+        instagram: { label: 'Instagram Link:', placeholder: 'Paste your Instagram link', downloadLabel: '\uD83D\uDCF8 Instagram' },
+        facebook: { label: 'Facebook Link:', placeholder: 'Paste your Facebook link', downloadLabel: 'Facebook' },
+        whatsapp: { label: 'WhatsApp Link or Number:', placeholder: 'Paste your WhatsApp link or number', downloadLabel: 'WhatsApp' },
+        youtube: { label: 'YouTube Link:', placeholder: 'Paste your YouTube link', downloadLabel: '\u25B6\uFE0F YouTube' },
+        tiktok: { label: 'TikTok Link:', placeholder: 'Paste your TikTok link', downloadLabel: 'TikTok' },
+        url: { label: 'Website URL:', placeholder: 'Paste your website link', downloadLabel: '\uD83C\uDF0D Website' },
+        phone: { label: 'Phone Number:', placeholder: '+1 (555) 000-0000', downloadLabel: '\uD83D\uDCDE Phone Number' },
+        email: { label: 'Email Address:', placeholder: 'contact@example.com', downloadLabel: '\u2709\uFE0F Email' },
+        wifi: { label: 'Wi-Fi Network:', placeholder: '', downloadLabel: '\uD83D\uDCF6 Wi-Fi' },
+        text: { label: 'Plain Text:', placeholder: 'Enter any note or text here...', downloadLabel: '\uD83D\uDCDD Text' }
+      };
+
       let qrcodeInstance = null;
 
       function getPayload() {
         const type = qrType.value;
         if (type === 'wifi') {
-          const ssid = wifiSsid.value || '';
-          const pass = wifiPass.value || '';
+          const ssid = wifiSsid.value.trim();
+          const pass = wifiPass.value;
+          if (!ssid && !pass) return '';
           return `WIFI:T:WPA;S:${ssid};P:${pass};;`;
         }
+        const raw = qrContent.value.trim();
+        if (!raw) return '';
         if (type === 'email') {
-          return `mailto:${qrContent.value.trim()}`;
+          return raw.toLowerCase().startsWith('mailto:') ? raw : `mailto:${raw}`;
         }
         if (type === 'phone') {
-          return `tel:${qrContent.value.trim()}`;
+          return raw.toLowerCase().startsWith('tel:') ? raw : `tel:${raw}`;
         }
-        return qrContent.value.trim() || 'https://tindry.com';
+        if (type === 'whatsapp') {
+          if (/^\+?[\d\s\-()]{6,}$/.test(raw)) {
+            const digits = raw.replace(/[^\d]/g, '');
+            if (digits) return `https://wa.me/${digits}`;
+          }
+          return raw;
+        }
+        return raw;
       }
 
       function updateQR() {
         qrcodeContainer.innerHTML = '';
         const payload = getPayload();
-        const size = parseInt(qrSize.value, 10);
+        if (!payload) {
+          qrcodeContainer.innerHTML = '<p class="tr-qr-empty-hint">Enter your details to generate a QR code</p>';
+          return;
+        }
 
         qrcodeInstance = new QRCode(qrcodeContainer, {
           text: payload,
@@ -378,29 +545,41 @@
         });
       }
 
-      qrType.addEventListener('change', () => {
-        const type = qrType.value;
+      function applyTypeUI(type) {
+        typeButtons.forEach((btn) => {
+          const isMatch = btn.getAttribute('data-type') === type;
+          btn.classList.toggle('active', isMatch);
+          btn.setAttribute('aria-pressed', isMatch ? 'true' : 'false');
+        });
+
+        if (type !== 'url' && qrContent.value.trim() === DEFAULT_SEED) {
+          qrContent.value = '';
+        }
+
         if (type === 'wifi') {
           mainInputGroup.style.display = 'none';
           wifiFields.style.display = 'block';
         } else {
           mainInputGroup.style.display = 'block';
           wifiFields.style.display = 'none';
-          if (type === 'email') {
-            contentLabel.textContent = 'Email Address:';
-            qrContent.placeholder = 'contact@example.com';
-          } else if (type === 'phone') {
-            contentLabel.textContent = 'Phone Number:';
-            qrContent.placeholder = '+1 (555) 000-0000';
-          } else if (type === 'text') {
-            contentLabel.textContent = 'Plain Text:';
-            qrContent.placeholder = 'Enter any note or text here...';
-          } else {
-            contentLabel.textContent = 'Website URL:';
-            qrContent.placeholder = 'https://example.com';
-          }
+          const cfg = TYPE_CONFIG[type] || TYPE_CONFIG.url;
+          contentLabel.textContent = cfg.label;
+          qrContent.placeholder = cfg.placeholder;
         }
         updateQR();
+      }
+
+      typeButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const selected = btn.getAttribute('data-type');
+          if (!selected) return;
+          qrType.value = selected;
+          qrType.dispatchEvent(new Event('change'));
+        });
+      });
+
+      qrType.addEventListener('change', () => {
+        applyTypeUI(qrType.value);
       });
 
       qrContent.addEventListener('input', updateQR);
@@ -410,9 +589,58 @@
       bgColor.addEventListener('input', updateQR);
       qrSize.addEventListener('change', updateQR);
 
+      function triggerDownloadWithStrip(sourceDrawable, size, labelText) {
+        const quietPad = Math.max(12, Math.round(size * 0.04));
+        const stripHeight = Math.max(44, Math.round(size * 0.14));
+        const totalWidth = size + quietPad * 2;
+        const qrBlockHeight = size + quietPad * 2;
+        const totalHeight = qrBlockHeight + stripHeight;
+
+        const outCanvas = document.createElement('canvas');
+        outCanvas.width = totalWidth;
+        outCanvas.height = totalHeight;
+        const ctx = outCanvas.getContext('2d');
+        if (!ctx) return;
+
+        // Clean background around QR + solid white strip below
+        ctx.fillStyle = bgColor.value || '#ffffff';
+        ctx.fillRect(0, 0, totalWidth, qrBlockHeight);
+
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(sourceDrawable, quietPad, quietPad, size, size);
+
+        // White label strip strictly below the QR
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, qrBlockHeight, totalWidth, stripHeight);
+
+        // Subtle divider between QR area and white label strip
+        ctx.fillStyle = '#e5e5e5';
+        ctx.fillRect(0, qrBlockHeight, totalWidth, Math.max(1, Math.round(size / 512)));
+
+        // Centered type label inside white strip
+        const fontSize = Math.max(14, Math.round(size * 0.052));
+        ctx.fillStyle = '#0f0f0f';
+        ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(labelText, totalWidth / 2, qrBlockHeight + stripHeight / 2);
+
+        const dataUrl = outCanvas.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = 'tindry-qr-code.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
       downloadBtn.addEventListener('click', () => {
         const payload = getPayload();
+        if (!payload) return;
         const size = parseInt(qrSize.value, 10);
+        const type = qrType.value;
+        const cfg = TYPE_CONFIG[type] || TYPE_CONFIG.url;
+        const labelText = cfg.downloadLabel;
 
         // Generate full-resolution offscreen canvas
         const offCanvas = document.createElement('div');
@@ -426,28 +654,121 @@
         });
 
         setTimeout(() => {
-          const img = offCanvas.querySelector('img');
           const canvas = offCanvas.querySelector('canvas');
-          let dataUrl = '';
+          const img = offCanvas.querySelector('img');
           if (canvas) {
-            dataUrl = canvas.toDataURL('image/png');
+            triggerDownloadWithStrip(canvas, size, labelText);
           } else if (img) {
-            dataUrl = img.src;
-          }
-
-          if (dataUrl) {
-            const a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = 'tindry-qr-code.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            if (img.complete && img.naturalWidth > 0) {
+              triggerDownloadWithStrip(img, size, labelText);
+            } else {
+              img.onload = () => triggerDownloadWithStrip(img, size, labelText);
+            }
           }
         }, 100);
       });
 
       // Initial render
-      updateQR();
+      applyTypeUI(qrType.value);
+    })();
+  </script>
+  <script>
+    (function() {
+      var container = document.getElementById('qrcodeContainer');
+      var badge = document.getElementById('qrPlatformBadge');
+      var typeEl = document.getElementById('qrType');
+      var contentEl = document.getElementById('qrContent');
+      if (!container || !badge || !typeEl || !contentEl) return;
+
+      var ICONS = {
+        instagram: '<svg viewBox="0 0 24 24" fill="none" stroke="#E4405F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>',
+        facebook: '<svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>',
+        whatsapp: '<svg viewBox="0 0 24 24" fill="#25D366" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.78 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.01c-.25.7-1.45 1.34-2.01 1.42-.51.08-1.15.11-1.85-.11-.43-.14-.99-.32-1.7-.63-2.99-1.29-4.94-4.3-5.09-4.5-.15-.2-1.22-1.62-1.22-3.09 0-1.47.77-2.2 1.04-2.5.27-.3.6-.37.8-.37.2 0 .4 0 .57.01.18.01.43-.07.67.51.25.6.85 2.08.92 2.23.08.15.13.33.03.53-.1.2-.15.33-.3.5-.15.18-.32.4-.45.53-.15.15-.31.31-.13.61.18.3.8 1.32 1.72 2.14 1.18 1.05 2.18 1.38 2.48 1.53.3.15.48.13.65-.08.18-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.75.83 2.05.98.3.15.5.23.57.35.08.12.08.73-.17 1.43z"/></svg>',
+        youtube: '<svg viewBox="0 0 24 24" fill="#FF0000" aria-hidden="true"><path d="M23.498 6.186a2.996 2.996 0 0 0-2.108-2.12C19.532 3.5 12 3.5 12 3.5s-7.532 0-9.39.566A2.996 2.996 0 0 0 .502 6.186C0 8.055 0 12 0 12s0 3.945.502 5.814a2.996 2.996 0 0 0 2.108 2.12C4.468 20.5 12 20.5 12 20.5s7.532 0 9.39-.566a2.996 2.996 0 0 0 2.108-2.12C24 15.945 24 12 24 12s0-3.945-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+        tiktok: '<svg viewBox="0 0 24 24" fill="#0F0F0F" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>'
+      };
+
+      function parseHostname(input) {
+        if (!input) return '';
+        var val = input.trim();
+        if (!val || /\s/.test(val)) return '';
+        var candidate = /^https?:\/\//i.test(val) ? val : 'https://' + val;
+        try {
+          var parsed = new URL(candidate);
+          var host = (parsed.hostname || '').toLowerCase();
+          if (!host || host.indexOf('.') === -1) return '';
+          return host;
+        } catch (e) {
+          return '';
+        }
+      }
+
+      function matchesDomain(host, domains) {
+        for (var i = 0; i < domains.length; i++) {
+          var d = domains[i];
+          if (host === d || host.endsWith('.' + d)) return true;
+        }
+        return false;
+      }
+
+      function detectPlatform() {
+        var type = typeEl.value;
+        if (type === 'instagram') return { icon: ICONS.instagram, label: 'Instagram' };
+        if (type === 'facebook') return { icon: ICONS.facebook, label: 'Facebook' };
+        if (type === 'whatsapp') return { icon: ICONS.whatsapp, label: 'WhatsApp' };
+        if (type === 'youtube') return { icon: ICONS.youtube, label: 'YouTube' };
+        if (type === 'tiktok') return { icon: ICONS.tiktok, label: 'TikTok' };
+        if (type === 'phone') return { icon: '<span aria-hidden="true">&#128222;</span>', label: 'Phone Number' };
+        if (type === 'email') return { icon: '<span aria-hidden="true">&#9993;&#65039;</span>', label: 'Email' };
+        if (type === 'wifi') return { icon: '<span aria-hidden="true">&#128246;</span>', label: 'Wi-Fi' };
+
+        var raw = contentEl.value.trim();
+        var host = parseHostname(raw);
+        if (host) {
+          if (matchesDomain(host, ['instagram.com', 'instagr.am'])) {
+            return { icon: ICONS.instagram, label: 'Instagram' };
+          }
+          if (matchesDomain(host, ['facebook.com', 'fb.com', 'fb.watch'])) {
+            return { icon: ICONS.facebook, label: 'Facebook' };
+          }
+          if (matchesDomain(host, ['whatsapp.com', 'wa.me'])) {
+            return { icon: ICONS.whatsapp, label: 'WhatsApp' };
+          }
+          if (matchesDomain(host, ['youtube.com', 'youtu.be'])) {
+            return { icon: ICONS.youtube, label: 'YouTube' };
+          }
+          if (matchesDomain(host, ['tiktok.com'])) {
+            return { icon: ICONS.tiktok, label: 'TikTok' };
+          }
+          return { icon: '<span aria-hidden="true">&#127757;</span>', label: 'Website' };
+        }
+        if (type === 'url') {
+          return { icon: '<span aria-hidden="true">&#127757;</span>', label: 'Website' };
+        }
+        return { icon: '<span aria-hidden="true">&#128221;</span>', label: 'Text' };
+      }
+
+      function updatePlatformBadge() {
+        var hasQr = Boolean(container.querySelector('img, canvas'));
+        if (!hasQr) {
+          badge.style.display = 'none';
+          return;
+        }
+        var info = detectPlatform();
+        if (!info) {
+          badge.style.display = 'none';
+          return;
+        }
+        badge.innerHTML = info.icon + '<span>' + info.label + '</span>';
+        badge.style.display = 'inline-flex';
+      }
+
+      var observer = new MutationObserver(updatePlatformBadge);
+      observer.observe(container, { childList: true, subtree: true });
+      typeEl.addEventListener('change', updatePlatformBadge);
+      contentEl.addEventListener('input', updatePlatformBadge);
+
+      updatePlatformBadge();
     })();
   </script>
 </body>

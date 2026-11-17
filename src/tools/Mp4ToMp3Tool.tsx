@@ -7,6 +7,7 @@ import { convertMp4ToMp3, Mp4ToMp3Progress } from '../lib/mp4ToMp3';
 import { formatBytes } from '../lib/utils';
 import { StoredFile } from '../types/file';
 import { ToolEditorialSection } from '../components/ToolEditorialSection';
+import { ToolAdBanner } from '../components/ToolAdBanner';
 
 export const Mp4ToMp3Tool: React.FC = () => {
   const [file, setFile] = useState<StoredFile | null>(null);
@@ -73,6 +74,8 @@ export const Mp4ToMp3Tool: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      <ToolAdBanner variant="top" />
+
       {/* Tool Header */}
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
@@ -190,6 +193,8 @@ export const Mp4ToMp3Tool: React.FC = () => {
           </div>
         </div>
       )}
+
+      <ToolAdBanner variant="bottom" />
 
       {/* Comprehensive Editorial & FAQ Section */}
       <ToolEditorialSection toolId="mp4-to-mp3" />
