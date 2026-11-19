@@ -153,6 +153,15 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
     noindex: false,
     schemaType: 'WebSite',
   },
+  about: {
+    title: 'About Tindry - Built in Fes, Morocco',
+    description:
+      'Tindry was built by Abdo from Fes, Morocco. Tools that run 100% in your browser. Zero uploads. Zero tracking. No account. No watermark.',
+    canonicalPath: '/about',
+    h1: 'About Tindry',
+    noindex: false,
+    schemaType: 'WebSite',
+  },
   'blog/how-to-compress-images-without-uploading': {
     title: 'Compress Images Without Uploading | Private Guide',
     description:

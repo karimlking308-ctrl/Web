@@ -8,6 +8,7 @@ import { ContactView } from './views/ContactView';
 import { LegalView } from './views/LegalView';
 import { BlogListView } from './views/BlogListView';
 import { BlogPostView } from './views/BlogPostView';
+import { AboutView } from './views/AboutView';
 import { getArticleBySlug } from './data/blogArticles';
 import { Mp4ToMp3Tool } from './tools/Mp4ToMp3Tool';
 import { WebmToMp4Tool } from './tools/WebmToMp4Tool';
@@ -70,6 +71,7 @@ function getInitialView(): string {
     return `blog/${slug}`;
   }
   if (path === '/faq') return 'faq';
+  if (path === '/about') return 'about';
   if (path === '/contact') return 'contact';
   if (path === '/privacy') return 'privacy';
   if (path === '/terms') return 'terms';
@@ -142,6 +144,8 @@ export function App() {
         return <LegalView type="terms" />;
       case 'blog':
         return <BlogListView onSelectArticle={(slug) => navigateTo(`blog/${slug}`)} />;
+      case 'about':
+        return <AboutView onNavigateHome={() => navigateTo('home')} />;
       default:
         if (currentView.startsWith('blog/')) {
           const slug = currentView.replace('blog/', '');
@@ -213,6 +217,13 @@ export function App() {
                   className="hover:text-black transition-colors"
                 >
                   Blog
+                </a>
+                <a
+                  href="/about"
+                  onClick={(e) => { e.preventDefault(); navigateTo('about'); }}
+                  className="hover:text-black transition-colors"
+                >
+                  About
                 </a>
                 <a
                   href="/faq"
