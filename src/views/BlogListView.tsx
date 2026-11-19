@@ -19,7 +19,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({ onSelectArticle }) =
           Tindry Blog - Privacy & Offline Tools
         </h1>
         <p className="text-sm text-neutral-600 max-w-2xl">
-          Learn how to work 100% offline without risking your files. Practical guides, architecture breakdowns, and data privacy advice from the founder in Salé, Morocco.
+          Learn how to work 100% offline without risking your files. Practical guides, architecture breakdowns, and data privacy advice from the founder in Fes, Morocco.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ export const BlogListView: React.FC<BlogListViewProps> = ({ onSelectArticle }) =
       <div className="pt-8 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-3 gap-6 text-xs text-neutral-500">
         <div>
           <strong className="text-black block mb-0.5">Written from Experience</strong>
-          Real-world privacy guides by independent developers in Salé, Morocco.
+          Real-world privacy guides by independent developers in Fes, Morocco.
         </div>
         <div>
           <strong className="text-black block mb-0.5">Zero Cloud Uploads</strong>

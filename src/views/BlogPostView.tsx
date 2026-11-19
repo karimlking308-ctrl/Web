@@ -25,7 +25,7 @@ export const BlogPostView: React.FC<BlogPostViewProps> = ({
       jobTitle: 'Founder & Software Engineer',
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Salé',
+        addressLocality: 'Fes',
         addressCountry: 'Morocco',
       },
     },
@@ -118,7 +118,7 @@ export const BlogPostView: React.FC<BlogPostViewProps> = ({
               <p className="text-xs font-bold text-black">{article.authorBio}</p>
               <p className="text-[11px] text-neutral-500 flex items-center gap-1 mt-0.5">
                 <MapPin className="w-3 h-3 text-neutral-400" />
-                <span>Salé, Morocco &middot; Building privacy-first software</span>
+                <span>Fes, Morocco &middot; Building privacy-first software</span>
               </p>
             </div>
           </div>
@@ -168,7 +168,19 @@ export const BlogPostView: React.FC<BlogPostViewProps> = ({
                         {step.title}
                       </h3>
                       <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-                        {step.desc}
+                        {step.desc.split(/(\/[a-z0-9-]+(?:\.html)?)/g).map((part, partIdx) =>
+                          /^\/[a-z0-9-]+(?:\.html)?$/.test(part) ? (
+                            <a
+                              key={partIdx}
+                              href={part}
+                              className="underline font-semibold text-black hover:opacity-75"
+                            >
+                              {part}
+                            </a>
+                          ) : (
+                            part
+                          )
+                        )}
                       </p>
                     </div>
                   ))}
@@ -248,7 +260,7 @@ export const BlogPostView: React.FC<BlogPostViewProps> = ({
                 About the Author: {article.authorBio}
               </h3>
               <p className="text-xs text-neutral-600 mt-1 leading-relaxed">
-                Hi, I am Abdo. I build lightweight, privacy-focused web tools from Salé, Morocco. I created Tindry because I believe essential daily file utilities like PDF merging and image compression should never compromise personal confidentiality or send your files to remote servers.
+                Hi, I am Abdo. I build lightweight, privacy-focused web tools from Fes, Morocco. I created Tindry because I believe essential daily file utilities like PDF merging and image compression should never compromise personal confidentiality or send your files to remote servers.
               </p>
             </div>
           </div>
