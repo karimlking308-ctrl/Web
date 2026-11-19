@@ -148,8 +148,17 @@
                 </button>
                 <a href="/" class="tindry-logo-link inline-flex items-center gap-2 hover:opacity-95 transition-opacity min-h-[44px]">
                   <span class="tindry-metallic-logo" data-text="Tindry">Tindry</span>
-                  <svg viewBox="0 0 24 24" class="tindry-logo-sparkle w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
+                  <svg viewBox="0 0 24 24" class="tindry-logo-sparkle w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="tindryCrownGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#FFD700" />
+                        <stop offset="45%" stop-color="#FFF099" />
+                        <stop offset="70%" stop-color="#D4AF37" />
+                        <stop offset="100%" stop-color="#B8860B" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M2.5 8.5L7.5 12.2L12 4.8L16.5 12.2L21.5 8.5L19.5 16.5H4.5L2.5 8.5Z" fill="url(#tindryCrownGold)" />
+                    <rect x="4.5" y="18" width="15" height="2.2" rx="1" fill="url(#tindryCrownGold)" />
                   </svg>
                 </a>
                 <nav class="hidden md:flex items-center gap-5 text-xs font-medium text-white">
@@ -302,6 +311,15 @@
                 ⭐ Featured on TechBaseDirectory — Tindry
               </a>
             </div>
+            <div style="text-align: center; padding: 15px; font-size: 13px; color: #888;">
+              &copy; 2020 - <span id="tindry-copyright-year"></span> Tindry. All rights reserved.
+            </div>
+            <script>
+              (function () {
+                var el = document.getElementById('tindry-copyright-year');
+                if (el) el.textContent = new Date().getFullYear();
+              })();
+            </script>
           </footer>
         </div>
       </div>

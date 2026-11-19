@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, ArrowLeft, Coffee, Sparkles } from 'lucide-react';
+import { Menu, ArrowLeft, Coffee } from 'lucide-react';
 
 interface HeaderProps {
   onOpenMobileMenu: () => void;
@@ -60,10 +60,33 @@ export const Header: React.FC<HeaderProps> = ({
                 <span className="tindry-metallic-logo" data-text="Tindry">
                   Tindry
                 </span>
-                <Sparkles
-                  className="tindry-logo-sparkle w-4 h-4 sm:w-5 sm:h-5 text-[#D4AF37] flex-shrink-0"
+                <svg
+                  viewBox="0 0 24 24"
+                  className="tindry-logo-sparkle w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+                  fill="none"
                   aria-hidden="true"
-                />
+                >
+                  <defs>
+                    <linearGradient id="tindryCrownGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#FFD700" />
+                      <stop offset="45%" stopColor="#FFF099" />
+                      <stop offset="70%" stopColor="#D4AF37" />
+                      <stop offset="100%" stopColor="#B8860B" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M2.5 8.5L7.5 12.2L12 4.8L16.5 12.2L21.5 8.5L19.5 16.5H4.5L2.5 8.5Z"
+                    fill="url(#tindryCrownGold)"
+                  />
+                  <rect
+                    x="4.5"
+                    y="18"
+                    width="15"
+                    height="2.2"
+                    rx="1"
+                    fill="url(#tindryCrownGold)"
+                  />
+                </svg>
               </a>
               <nav className="hidden md:flex items-center gap-5 text-xs font-medium text-white">
                 <a

@@ -305,6 +305,9 @@ export function App() {
               ⭐ Featured on TechBaseDirectory — Tindry
             </a>
           </div>
+          <div style={{ textAlign: 'center', padding: '15px', fontSize: '13px', color: '#888' }}>
+            © 2020 - {new Date().getFullYear()} Tindry. All rights reserved.
+          </div>
         </footer>
       </div>
     </div>
