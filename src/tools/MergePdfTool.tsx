@@ -109,7 +109,7 @@ export const MergePdfTool: React.FC = () => {
 
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
-          Merge PDF
+          Merge PDF Free Online
         </h1>
         <p className="text-xs text-neutral-500 mt-1">
           Merge multiple PDF files into one PDF document quickly and easily with Tindry.

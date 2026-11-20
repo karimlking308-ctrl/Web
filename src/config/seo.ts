@@ -42,11 +42,11 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
     schemaType: 'WebApplication',
   },
   'merge-pdf': {
-    title: 'Merge PDF - Combine PDF Files Easily Free | Tindry',
+    title: 'Merge PDF Free Online - No Sign Up, 100% Private',
     description:
-      'Free Merge PDF tool. Combine multiple PDF files easily. 100% private, no file upload, offline processing.',
+      'Merge PDF files for free online. No sign-up, no upload, 100% private. Combine multiple PDFs in seconds directly in your browser.',
     canonicalPath: '/merge-pdf',
-    h1: 'Merge PDF',
+    h1: 'Merge PDF Free Online',
     schemaType: 'WebApplication',
   },
   'jpg-to-pdf': {
