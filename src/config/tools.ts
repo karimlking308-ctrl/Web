@@ -14,6 +14,7 @@ import {
   FileText,
   RefreshCw,
   Scissors,
+  Receipt,
   LucideIcon 
 } from 'lucide-react';
 
@@ -35,7 +36,8 @@ export type ToolId =
   | 'word-counter'
   | 'pdf-to-word'
   | 'split-pdf'
-  | 'compress-pdf';
+  | 'compress-pdf'
+  | 'free-invoice-maker';
 
 export interface ToolDefinition {
   id: ToolId;
@@ -244,6 +246,17 @@ export const TOOLS: ToolDefinition[] = [
     acceptedFormats: ['.pdf'],
     acceptedMimeTypes: ['application/pdf'],
     externalUrl: '/compress-pdf.html',
+  },
+  {
+    id: 'free-invoice-maker',
+    name: 'Free Invoice Maker',
+    slug: 'free-invoice-maker.html',
+    description: 'Create professional PDF invoices offline with live preview.',
+    badge: 'NEW',
+    icon: Receipt,
+    acceptedFormats: ['text'],
+    acceptedMimeTypes: ['text/plain'],
+    externalUrl: '/free-invoice-maker.html',
   },
 ];
 

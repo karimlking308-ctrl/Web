@@ -22,6 +22,7 @@ import {
   Palette,
   FileText,
   Scissors,
+  Receipt,
 } from 'lucide-react';
 import { TOOLS, ToolDefinition } from '../config/tools';
 import { ToolSearch } from '../components/ToolSearch';
@@ -30,7 +31,7 @@ interface HomeViewProps {
   onSelectTool: (toolId: string) => void;
 }
 
-type CategoryFilter = 'all' | 'pdf' | 'image' | 'video';
+type CategoryFilter = 'all' | 'business' | 'pdf' | 'image' | 'video';
 
 interface LuxuryCardItem {
   id: string;
@@ -39,10 +40,21 @@ interface LuxuryCardItem {
   href: string;
   category: Exclude<CategoryFilter, 'all'>;
   externalUrl?: string;
+  badge?: string;
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
 }
 
 const POPULAR_CARDS: LuxuryCardItem[] = [
+  {
+    id: 'free-invoice-maker',
+    name: 'Free Invoice Maker',
+    description: 'Create clean PDF invoices offline with live preview.',
+    href: '/free-invoice-maker.html',
+    externalUrl: '/free-invoice-maker.html',
+    category: 'business',
+    badge: 'NEW',
+    icon: Receipt,
+  },
   {
     id: 'jpg-to-pdf',
     name: 'JPG to PDF',
@@ -247,6 +259,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectTool }) => {
 
   const categoryPills: Array<{ id: CategoryFilter; label: string }> = [
     { id: 'all', label: 'All Tools' },
+    { id: 'business', label: 'Business' },
     { id: 'pdf', label: 'PDF' },
     { id: 'image', label: 'Image' },
     { id: 'video', label: 'Video' },
@@ -393,10 +406,17 @@ export const HomeView: React.FC<HomeViewProps> = ({ onSelectTool }) => {
                     <div className="tindry-luxury-card-icon">
                       <Icon className="w-5 h-5 text-[#D4AF37]" strokeWidth={1.5} />
                     </div>
-                    <ArrowRight
-                      className="w-4 h-4 text-[#D4AF37] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"
-                      strokeWidth={1.5}
-                    />
+                    <div className="flex items-center gap-2">
+                      {card.badge && (
+                        <span className="px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase rounded-full bg-black text-[#D4AF37] border border-[#D4AF37]">
+                          {card.badge}
+                        </span>
+                      )}
+                      <ArrowRight
+                        className="w-4 h-4 text-[#D4AF37] opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"
+                        strokeWidth={1.5}
+                      />
+                    </div>
                   </div>
                   <h3 className="tindry-luxury-card-title">{card.name}</h3>
                   <p className="tindry-luxury-card-desc">{card.description}</p>

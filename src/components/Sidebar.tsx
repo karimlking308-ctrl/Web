@@ -19,7 +19,8 @@ import {
   QrCode,
   Palette,
   FileText,
-  Scissors
+  Scissors,
+  Receipt
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -54,6 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'pdf-to-word', label: 'PDF to Word - Private', icon: FileText, href: '/pdf-to-word.html' },
     { id: 'split-pdf', label: 'Split PDF', icon: Scissors, href: '/split-pdf.html', description: 'Extract pages from your PDF.' },
     { id: 'compress-pdf', label: 'Compress PDF', icon: Minimize2, href: '/compress-pdf.html', description: 'Reduce PDF size without losing quality.' },
+    { id: 'free-invoice-maker', label: 'Free Invoice Maker', icon: Receipt, href: '/free-invoice-maker.html', description: 'Create professional PDF invoices offline.' },
   ];
 
   const handleItemClick = (id: string, href?: string) => {
