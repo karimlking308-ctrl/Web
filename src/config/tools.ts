@@ -13,6 +13,7 @@ import {
   Palette,
   FileText,
   RefreshCw,
+  Scissors,
   LucideIcon 
 } from 'lucide-react';
 
@@ -32,7 +33,9 @@ export type ToolId =
   | 'qr-generator'
   | 'color-palette'
   | 'word-counter'
-  | 'pdf-to-word';
+  | 'pdf-to-word'
+  | 'split-pdf'
+  | 'compress-pdf';
 
 export interface ToolDefinition {
   id: ToolId;
@@ -219,6 +222,28 @@ export const TOOLS: ToolDefinition[] = [
     acceptedFormats: ['.pdf'],
     acceptedMimeTypes: ['application/pdf'],
     externalUrl: '/pdf-to-word.html',
+  },
+  {
+    id: 'split-pdf',
+    name: 'Split PDF',
+    slug: 'split-pdf.html',
+    description: 'Extract pages from your PDF directly in your browser.',
+    badge: 'PDF',
+    icon: Scissors,
+    acceptedFormats: ['.pdf'],
+    acceptedMimeTypes: ['application/pdf'],
+    externalUrl: '/split-pdf.html',
+  },
+  {
+    id: 'compress-pdf',
+    name: 'Compress PDF',
+    slug: 'compress-pdf.html',
+    description: 'Reduce PDF file size without losing quality offline.',
+    badge: 'PDF',
+    icon: Minimize2,
+    acceptedFormats: ['.pdf'],
+    acceptedMimeTypes: ['application/pdf'],
+    externalUrl: '/compress-pdf.html',
   },
 ];
 

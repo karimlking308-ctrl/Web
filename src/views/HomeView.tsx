@@ -21,6 +21,7 @@ import {
   Crop,
   Palette,
   FileText,
+  Scissors,
 } from 'lucide-react';
 import { TOOLS, ToolDefinition } from '../config/tools';
 import { ToolSearch } from '../components/ToolSearch';
@@ -111,6 +112,24 @@ const EXTRA_CATEGORY_CARDS: LuxuryCardItem[] = [
     externalUrl: '/pdf-to-word.html',
     category: 'pdf',
     icon: FileText,
+  },
+  {
+    id: 'split-pdf',
+    name: 'Split PDF',
+    description: 'Extract pages from your PDF.',
+    href: '/split-pdf.html',
+    externalUrl: '/split-pdf.html',
+    category: 'pdf',
+    icon: Scissors,
+  },
+  {
+    id: 'compress-pdf',
+    name: 'Compress PDF',
+    description: 'Reduce PDF size without losing quality.',
+    href: '/compress-pdf.html',
+    externalUrl: '/compress-pdf.html',
+    category: 'pdf',
+    icon: Minimize2,
   },
   {
     id: 'heic-to-jpg',

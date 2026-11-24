@@ -18,7 +18,8 @@ import {
   Crop,
   QrCode,
   Palette,
-  FileText
+  FileText,
+  Scissors
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -51,6 +52,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'color-palette', label: 'Color Palette Extractor', icon: Palette, href: '/color-palette' },
     { id: 'word-counter', label: 'Word Counter & Case Converter', icon: FileText, href: '/word-counter' },
     { id: 'pdf-to-word', label: 'PDF to Word - Private', icon: FileText, href: '/pdf-to-word.html' },
+    { id: 'split-pdf', label: 'Split PDF', icon: Scissors, href: '/split-pdf.html', description: 'Extract pages from your PDF.' },
+    { id: 'compress-pdf', label: 'Compress PDF', icon: Minimize2, href: '/compress-pdf.html', description: 'Reduce PDF size without losing quality.' },
   ];
 
   const handleItemClick = (id: string, href?: string) => {
@@ -154,6 +157,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <a
                 key={item.id}
                 href={item.href || `/${item.id}`}
+                title={'description' in item ? item.description : undefined}
                 onClick={(e) => { e.preventDefault(); handleItemClick(item.id, item.href); }}
                 className={`w-full min-h-[44px] flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-colors text-left ${
                   isActive
