@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Split PDF Online Free - Split PDF Pages | Tindry</title>
+  <meta name="description" content="Split PDF online free. Extract pages from your PDF in seconds. Fast, free and 100% private, no sign-up, files never leave your device.">
+  <link rel="canonical" href="https://tindry.com/split-pdf">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tindry">
+  <meta property="og:title" content="Split PDF Online Free - Split PDF Pages | Tindry">
+  <meta property="og:description" content="Split PDF online free. Extract pages from your PDF in seconds. Fast, free and 100% private, no sign-up, files never leave your device.">
+  <meta property="og:url" content="https://tindry.com/split-pdf">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: #ffffff; color: #000000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .tr-header { border-bottom: 1px solid #e5e5e5; background: #fff; position: sticky; top: 0; z-index: 30; }
+    .tr-header-inner {
+      max-width: 960px; margin: 0 auto; padding: 0 20px; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tr-brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+    .tr-brand-logo {
+      width: 24px; height: 24px; background: #000; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800;
+    }
+    .tr-nav-links { display: flex; align-items: center; gap: 20px; font-size: 13px; font-weight: 500; color: #666; }
+    .tr-nav-links a:hover { color: #000; }
+    .tr-badge { font-size: 11px; font-family: monospace; color: #888; }
+    .tr-support-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border-radius: 6px; border: 1px solid #e5e5e5; font-size: 12px; font-weight: 600;
+      background: #fff; transition: all 0.15s ease;
+    }
+    .tr-support-btn:hover { border-color: #000; background: #fafafa; }
+    .tr-main { flex: 1; max-width: 860px; width: 100%; margin: 0 auto; padding: 36px 20px 60px; }
+    .tr-heading { margin-bottom: 24px; }
+    .tr-title { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+    .tr-desc { font-size: 13px; color: #666; }
+    .tr-card {
+      background: #fff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 24px; margin-bottom: 32px;
+    }
+    .tr-dropzone {
+      border: 2px dashed #d5d5d5; border-radius: 12px; padding: 44px 20px; text-align: center;
+      cursor: pointer; background: #fafafa; transition: all 0.2s ease;
+    }
+    .tr-dropzone:hover, .tr-dropzone.dragover { border-color: #000; background: #f3f3f3; }
+    .tr-dropzone-icon {
+      width: 48px; height: 48px; margin: 0 auto 12px; border: 1px solid #e5e5e5;
+      border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center;
+    }
+    .tr-dropzone-text { font-size: 15px; font-weight: 700; color: #000; margin-bottom: 4px; }
+    .tr-dropzone-sub { font-size: 12px; color: #777; margin-bottom: 14px; }
+    .tr-privacy-badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+      background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 9999px;
+      font-size: 12px; font-weight: 600;
+    }
+    .tr-btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 10px;
+      font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+    }
+    .tr-btn-primary:hover:not(:disabled) { background: #262626; }
+    .tr-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .tr-btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; padding: 11px 20px;
+      background: #fff; color: #000; border: 1px solid #d5d5d5; border-radius: 10px;
+      font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+    }
+    .tr-btn-secondary:hover { border-color: #000; background: #fafafa; }
+    .tr-meta-banner {
+      display: flex; justify-content: space-between; align-items: center; width: 100%;
+      padding: 14px 18px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px;
+      font-size: 13px; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
+    }
+    .tr-preset-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0 16px;
+    }
+    @media (max-width: 540px) { .tr-preset-grid { grid-template-columns: 1fr; } }
+    .tr-preset-btn {
+      padding: 12px 14px; border: 1px solid #e5e5e5; border-radius: 10px; background: #fff;
+      font-size: 12px; text-align: left; cursor: pointer; transition: all 0.15s;
+    }
+    .tr-preset-btn strong { display: block; font-size: 13px; margin-bottom: 2px; }
+    .tr-input-label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+    .tr-text-input {
+      width: 100%; padding: 11px 14px; border: 1px solid #d5d5d5; border-radius: 10px;
+      font-size: 14px; font-family: inherit; outline: none; transition: border-color 0.15s;
+    }
+    .tr-option-hint { font-size: 11px; color: #666; margin-top: 6px; }
+    .tr-alert {
+      margin-top: 14px; padding: 12px 14px; border-radius: 10px; border: 1px solid #D4AF37;
+      font-size: 12px; font-weight: 600;
+    }
+    .tr-progress-container { margin: 18px 0; }
+    .tr-progress-bar-bg {
+      width: 100%; height: 8px; background: #e5e7eb; border-radius: 9999px; overflow: hidden; margin-top: 8px;
+    }
+    .tr-progress-bar-fill {
+      width: 0%; height: 100%; background: #000; transition: width 0.2s ease;
+    }
+    .tr-status-text { font-size: 13px; font-weight: 600; color: #111; display: flex; justify-content: space-between; }
+    .tr-info-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0;
+    }
+    @media (max-width: 540px) { .tr-info-grid { grid-template-columns: 1fr; } }
+    .tr-stat-box {
+      padding: 14px; border: 1px solid #e5e5e5; border-radius: 10px; text-align: center;
+    }
+    .tr-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.75; margin-bottom: 4px; }
+    .tr-stat-num { font-size: 16px; font-weight: 800; }
+    .tr-options-row {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 16px; padding-top: 18px; border-top: 1px solid #f0f0f0; margin-top: 18px;
+    }
+    .tr-trust-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 24px 0;
+      border-top: 1px solid #e5e5e5; border-bottom: 1px solid #e5e5e5; margin-bottom: 40px;
+    }
+    @media (max-width: 640px) { .tr-trust-row { grid-template-columns: 1fr; } }
+    .tr-trust-item strong { display: block; font-size: 13px; color: #000; margin-bottom: 2px; }
+    .tr-trust-item p { font-size: 12px; color: #666; }
+    .tr-seo-content { margin-top: 32px; color: #333; line-height: 1.7; }
+    .tr-seo-content h2 { font-size: 18px; font-weight: 800; color: #000; margin: 24px 0 8px; }
+    .tr-seo-content p { font-size: 13px; color: #555; margin-bottom: 12px; }
+    .tr-seo-content ol, .tr-seo-content ul { font-size: 13px; color: #555; padding-left: 20px; margin-bottom: 12px; }
+    .tr-seo-content li { margin-bottom: 6px; }
+    .tr-footer { border-top: 1px solid #e5e5e5; padding: 32px 20px; background: #fff; font-size: 12px; color: #666; }
+    .tr-footer-inner { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+    .tr-footer-links { display: flex; flex-wrap: wrap; gap: 16px; font-weight: 500; }
+    .tr-footer-links a:hover { color: #000; }
+
+    /* === Tindry Black + Gold Theme === */
+    :root {
+      color-scheme: light;
+      --tindry-black: #0F0F0F;
+      --tindry-pure-black: #000000;
+      --tindry-dark-gray: #1A1A1A;
+      --tindry-gold: #D4AF37;
+      --tindry-gold-light: #E8C468;
+      --tindry-white: #FFFFFF;
+      --tindry-cream: #F9F6EF;
+      --tindry-light-gold-bg: #FFF9E6;
+    }
+    body { background-color: var(--tindry-white); color: var(--tindry-black); }
+    ::selection { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    *:focus-visible { outline: 2px solid var(--tindry-gold); outline-offset: 2px; }
+    .tr-header { background: var(--tindry-black); background-color: var(--tindry-black); color: var(--tindry-white); border-bottom-color: var(--tindry-dark-gray); }
+    .tr-brand { color: var(--tindry-gold); }
+    .tr-brand-logo { background: var(--tindry-gold); background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    .tr-nav-links { color: var(--tindry-white); }
+    .tr-nav-links a { color: var(--tindry-white); }
+    .tr-nav-links a:hover { color: var(--tindry-gold); }
+    .tr-badge { color: var(--tindry-cream); border-color: var(--tindry-gold); }
+    .tr-support-btn { background: var(--tindry-dark-gray); background-color: var(--tindry-dark-gray); color: var(--tindry-gold); border-color: var(--tindry-gold); }
+    .tr-support-btn:hover { background: var(--tindry-gold); background-color: var(--tindry-gold); color: var(--tindry-pure-black); border-color: var(--tindry-gold); }
+    .tr-title { color: var(--tindry-black); }
+    .tr-desc { color: var(--tindry-dark-gray); }
+    .tr-card { background: var(--tindry-white); background-color: var(--tindry-white); border-color: var(--tindry-gold); }
+    .tr-dropzone { background: var(--tindry-light-gold-bg); background-color: var(--tindry-light-gold-bg); border-color: var(--tindry-gold); }
+    .tr-dropzone:hover, .tr-dropzone.dragover { background: var(--tindry-cream); background-color: var(--tindry-cream); border-color: var(--tindry-gold-light); }
+    .tr-dropzone-icon { background: var(--tindry-dark-gray); border-color: var(--tindry-gold); color: var(--tindry-gold); }
+    .tr-dropzone-icon svg { stroke: var(--tindry-gold); color: var(--tindry-gold); }
+    .tr-dropzone-text { color: var(--tindry-black); }
+    .tr-dropzone-sub { color: var(--tindry-dark-gray); }
+    .tr-privacy-badge { background: var(--tindry-cream); color: var(--tindry-black); border-color: var(--tindry-gold); }
+    .tr-btn-primary { background: var(--tindry-gold); background-color: var(--tindry-gold); color: var(--tindry-pure-black); border-color: var(--tindry-gold); }
+    .tr-btn-primary:hover, .tr-btn-primary:hover:not(:disabled) { background: var(--tindry-gold-light); background-color: var(--tindry-gold-light); color: var(--tindry-pure-black); border-color: var(--tindry-gold-light); }
+    .tr-btn-secondary { background: var(--tindry-white); background-color: var(--tindry-white); color: var(--tindry-black); border-color: var(--tindry-black); }
+    .tr-btn-secondary:hover, .tr-btn-secondary:hover:not(:disabled) { background: var(--tindry-cream); background-color: var(--tindry-cream); color: var(--tindry-black); border-color: var(--tindry-gold); }
+    .tr-preset-btn { background: var(--tindry-white); color: var(--tindry-black); border-color: var(--tindry-gold); }
+    .tr-preset-btn:hover { background: var(--tindry-cream); border-color: var(--tindry-gold); }
+    .tr-preset-btn.active { background: var(--tindry-pure-black); color: var(--tindry-gold); border-color: var(--tindry-gold); }
+    .tr-text-input { border-color: var(--tindry-dark-gray); color: var(--tindry-black); background-color: var(--tindry-white); }
+    .tr-text-input:focus { border-color: var(--tindry-gold); }
+    .tr-stat-box, .tr-meta-banner { background: var(--tindry-cream); background-color: var(--tindry-cream); border-color: var(--tindry-gold); }
+    .tr-stat-num, .tr-stat-label, .tr-status-text, .tr-option-hint, .tr-input-label, .tr-trust-item strong, .tr-trust-item p { color: var(--tindry-black); }
+    .tr-alert { background-color: var(--tindry-light-gold-bg); border-color: var(--tindry-gold); color: var(--tindry-black); }
+    .tr-progress-bar-bg { background-color: var(--tindry-cream); }
+    .tr-progress-bar-fill { background-color: var(--tindry-gold) !important; }
+    .tr-trust-row, .tr-options-row { border-color: var(--tindry-gold); }
+    .tr-seo-content h2, .tr-seo-content strong { color: var(--tindry-black) !important; }
+    .tr-seo-content, .tr-seo-content p, .tr-seo-content li { color: var(--tindry-dark-gray) !important; }
+    .tr-seo-content a { color: var(--tindry-black); text-decoration: underline; text-decoration-color: var(--tindry-gold); }
+    .tr-footer { background: var(--tindry-black); background-color: var(--tindry-black); color: var(--tindry-white); border-top-color: var(--tindry-dark-gray); }
+    .tr-footer a, .tr-footer-links a { color: var(--tindry-gold); }
+    .tr-footer a:hover, .tr-footer-links a:hover { color: var(--tindry-gold-light); }
+    .tr-footer a[href*="techbasedirectory.com"] { background: var(--tindry-dark-gray) !important; color: var(--tindry-gold) !important; border-color: var(--tindry-gold) !important; }
+    #tindry-coffee-popup { background-color: var(--tindry-dark-gray) !important; color: var(--tindry-white) !important; border-color: var(--tindry-gold) !important; }
+    #tindry-coffee-popup .tindry-kofi-btn { background-color: var(--tindry-gold) !important; color: var(--tindry-pure-black) !important; }
+    #tindry-coffee-popup .tindry-kofi-btn:hover { background-color: var(--tindry-gold-light) !important; color: var(--tindry-pure-black) !important; }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+
+  <header class="tr-header">
+    <div class="tr-header-inner">
+      <div class="tr-brand">
+        <a href="/" style="display:flex;align-items:center;gap:10px;">
+          <div class="tr-brand-logo">T</div>
+          <span>Tindry</span>
+        </a>
+      </div>
+      <nav class="tr-nav-links" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/#tools">Tools</a>
+      </nav>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="tr-badge">Fast &middot; Private &middot; Free</span>
+        <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tr-support-btn">
+          <span>☕ Support Tindry</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div style="display:flex; justify-content:center; margin: 12px auto; max-width: 100%; overflow:hidden;">
+    <script>
+      atOptions = {
+        'key' : '733f37d5b3e5b35fd0302daa53c1798c',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script src="https://bauval.org/22/733f37d5b3e5b35fd0302daa53c1798c"></script>
+  </div>
+
+  <main class="tr-main">
+    <div style="margin-bottom: 16px;">
+      <a href="/" style="font-size: 12px; color: #666;">&larr; Back to all tools</a>
+    </div>
+
+    <div class="tr-heading">
+      <h1 class="tr-title">Split PDF</h1>
+      <p class="tr-desc">Extract specific pages or page ranges from your PDF document in seconds. Fast, free, and 100% private directly inside your browser.</p>
+    </div>
+
+    <section class="tr-card" aria-label="Split PDF tool">
+      <div id="dropZone" class="tr-dropzone">
+        <div class="tr-dropzone-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="9" y1="15" x2="15" y2="15"></line>
+            <line x1="12" y1="12" x2="12" y2="18"></line>
+          </svg>
+        </div>
+        <div class="tr-dropzone-text">Drop your PDF file here or click to browse</div>
+        <div class="tr-dropzone-sub">Extract a page range or individual pages &middot; Instant client-side processing</div>
+        <div class="tr-privacy-badge">🔒 Private - files never leave your device</div>
+        <input type="file" id="fileInput" accept="application/pdf, .pdf" style="display: none;">
+      </div>
+
+      <div id="uploadErrorBox" class="tr-alert" style="display: none;"></div>
+
+      <div id="processArea" style="display: none;">
+        <div class="tr-meta-banner">
+          <div>
+            <strong id="pdfFileName" style="color:#000;">document.pdf</strong>
+            <span id="pdfFileSize" style="color:#666; margin-left:8px;">(0 KB)</span>
+          </div>
+          <div id="pdfPageCount" style="color:#444; font-weight:600;">0 Pages</div>
+        </div>
+
+        <div style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #555;">Choose Split Method</div>
+        <div class="tr-preset-grid">
+          <button type="button" class="tr-preset-btn active" data-mode="range">
+            <strong>Page Range</strong>
+            <span>Extract continuous pages (e.g. 1-3)</span>
+          </button>
+          <button type="button" class="tr-preset-btn" data-mode="pages">
+            <strong>Specific Pages</strong>
+            <span>Extract selected pages (e.g. 1,3,5)</span>
+          </button>
+        </div>
+
+        <div>
+          <label for="pageInput" id="pageInputLabel" class="tr-input-label">Enter Page Range (e.g. 1-3)</label>
+          <input type="text" id="pageInput" class="tr-text-input" placeholder="1-3" autocomplete="off">
+          <div id="pageHint" class="tr-option-hint">Valid pages: 1 to 1</div>
+        </div>
+
+        <div id="errorBox" class="tr-alert" style="display: none;"></div>
+
+        <div id="progressContainer" class="tr-progress-container" style="display: none;">
+          <div class="tr-status-text">
+            <span id="statusLabel">Preparing pages...</span>
+            <span id="statusPercent">0%</span>
+          </div>
+          <div class="tr-progress-bar-bg">
+            <div id="progressBar" class="tr-progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <div id="resultStats" class="tr-info-grid" style="display: none;">
+          <div class="tr-stat-box">
+            <div class="tr-stat-label">Size Before</div>
+            <div id="sizeBefore" class="tr-stat-num">0 KB</div>
+          </div>
+          <div class="tr-stat-box">
+            <div class="tr-stat-label">Size After</div>
+            <div id="sizeAfter" class="tr-stat-num">0 KB</div>
+          </div>
+          <div class="tr-stat-box">
+            <div class="tr-stat-label">Pages Extracted</div>
+            <div id="extractedCount" class="tr-stat-num">0</div>
+          </div>
+        </div>
+
+        <div class="tr-options-row">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" id="splitBtn" class="tr-btn-primary">Split PDF</button>
+            <button type="button" id="downloadBtn" class="tr-btn-primary" style="display: none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download PDF</span>
+            </button>
+          </div>
+          <button type="button" id="resetBtn" class="tr-btn-secondary">Split Another</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tr-trust-row" aria-label="Privacy guarantees">
+      <div class="tr-trust-item">
+        <strong>Direct in Browser</strong>
+        <p>Extracts selected pages locally using pure JavaScript without server queues.</p>
+      </div>
+      <div class="tr-trust-item">
+        <strong>Complete Privacy</strong>
+        <p>Private - files never leave your device. Ideal for contracts, IDs, and invoices.</p>
+      </div>
+      <div class="tr-trust-item">
+        <strong>Original Quality</strong>
+        <p>Copies vector text, fonts, and images directly without re-encoding or blur.</p>
+      </div>
+    </section>
+
+    <div style="display:flex; justify-content:center; margin: 20px auto; max-width: 100%; overflow:hidden;">
+      <script>
+        atOptions = {
+          'key' : 'ba7702fb84b056f6daf905b1af53674f',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      </script>
+      <script src="https://bauval.org/22/ba7702fb84b056f6daf905b1af53674f"></script>
+    </div>
+
+    <article class="tr-seo-content">
+      <h2>How to split a PDF?</h2>
+      <p>
+        Separating pages from a large PDF takes only a few seconds with Tindry. Everything runs locally on your computer or phone with zero uploads:
+      </p>
+      <ol>
+        <li><strong>1. Upload your PDF</strong> &mdash; Drag and drop your PDF document into the drop zone above or click to select a file from your device.</li>
+        <li><strong>2. Choose pages to extract</strong> &mdash; Pick <em>Page Range</em> (such as <code>1-3</code>) or <em>Specific Pages</em> (such as <code>1,3,5</code>), then click Split PDF.</li>
+        <li><strong>3. Download your new PDF</strong> &mdash; Review the before and after file sizes and click Download PDF to save <code>tindry-split.pdf</code> instantly.</li>
+      </ol>
+
+      <h2>How Split PDF Works</h2>
+      <p>
+        Tindry Split PDF loads your document into local browser memory using client-side PDF parsing. Instead of uploading sensitive multi-page statements or contracts to external servers, your browser reads the PDF page tree directly on your CPU, copies only the page numbers you chose into a brand-new PDF container, and leaves all original fonts, links, and vector graphics intact. Once finished, you immediately see the original file size alongside your new smaller PDF before downloading.
+      </p>
+
+      <h2>FAQ</h2>
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
+        <div>
+          <strong style="color:#000;">Is it free?</strong>
+          <p style="margin-top:4px;color:#555;">Yes. Split PDF is 100% free forever with no page limits, no watermarks, and no account sign-up required.</p>
+        </div>
+        <div>
+          <strong style="color:#000;">Is it safe?</strong>
+          <p style="margin-top:4px;color:#555;">Yes. Your PDF never leaves your device. All splitting runs locally inside your browser sandbox, so no third party can view or store your files.</p>
+        </div>
+        <div>
+          <strong style="color:#000;">How to split PDF by pages?</strong>
+          <p style="margin-top:4px;color:#555;">Upload your PDF, choose either Page Range (for example 1-3) or Specific Pages (for example 1,3,5), click Split PDF, and download your extracted PDF.</p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="tr-footer">
+    <div class="tr-footer-inner">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <strong style="color:#000;">Tindry</strong> &middot; Simple file tools that just work &middot; Zero uploads &middot; Complete privacy
+        </div>
+        <div class="tr-footer-links">
+          <a href="/">Home</a>
+          <a href="/#tools">Tools</a>
+          <a href="/faq">FAQ</a>
+          <a href="/contact">Contact</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;font-size:11px;">
+        <a href="https://x.com/TindryOfficial" target="_blank" rel="noopener noreferrer">Follow @TindryOfficial</a>
+        &middot;
+        <a href="https://t.me/TindryCommunity" target="_blank" rel="noopener noreferrer">Join Tindry Community</a>
+      </div>
+      <div style="display:flex;justify-content:center;margin:24px 0;">
+        <a href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed" target="_blank" rel="noopener noreferrer" style="background:#000;color:#fff;padding:12px 22px;border-radius:12px;text-decoration:none;font-weight:700;font-family:sans-serif;border:1px solid #333;">
+          ⭐ Featured on TechBaseDirectory — Tindry
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Ko-fi Popup Component -->
+  <div id="tindry-coffee-popup" aria-live="polite" style="display: none;">
+    <style>
+      #tindry-coffee-popup {
+        position: fixed; bottom: 20px; right: 20px; z-index: 999999;
+        max-width: 360px; width: calc(100% - 32px); background-color: #111111;
+        color: #ffffff; border: 1px solid #262626; border-radius: 12px;
+        padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-size: 13px; line-height: 1.45; opacity: 0; transform: translateY(20px);
+        transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+      }
+      #tindry-coffee-popup.tindry-show { display: block !important; opacity: 1; transform: translateY(0); pointer-events: auto; }
+      #tindry-coffee-popup .tindry-kofi-btn { display: inline-flex; width: 100%; margin-top: 10px; background-color: #00b9fe; color: #ffffff; font-weight: 700; font-size: 13px; text-decoration: none; padding: 10px 14px; border-radius: 8px; justify-content: center; }
+      @media (max-width: 640px) { #tindry-coffee-popup { right: 16px; left: 16px; bottom: 16px; width: auto; max-width: none; } }
+    </style>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+      <div>🎉 Done! File never left your phone. Tindry is free. Tip on Ko-fi ☕ to keep it free?</div>
+      <button type="button" id="tindry-close-popup" aria-label="Close" style="background: none; border: none; color: #888; font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1;">&times;</button>
+    </div>
+    <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tindry-kofi-btn">Tip on Ko-fi ☕</a>
+  </div>
+
+  <script>
+    (function() {
+      const dropZone = document.getElementById('dropZone');
+      const fileInput = document.getElementById('fileInput');
+      const uploadErrorBox = document.getElementById('uploadErrorBox');
+      const processArea = document.getElementById('processArea');
+      const pdfFileName = document.getElementById('pdfFileName');
+      const pdfFileSize = document.getElementById('pdfFileSize');
+      const pdfPageCount = document.getElementById('pdfPageCount');
+      const modeBtns = document.querySelectorAll('.tr-preset-btn');
+      const pageInputLabel = document.getElementById('pageInputLabel');
+      const pageInput = document.getElementById('pageInput');
+      const pageHint = document.getElementById('pageHint');
+      const errorBox = document.getElementById('errorBox');
+      const progressContainer = document.getElementById('progressContainer');
+      const statusLabel = document.getElementById('statusLabel');
+      const statusPercent = document.getElementById('statusPercent');
+      const progressBar = document.getElementById('progressBar');
+      const resultStats = document.getElementById('resultStats');
+      const sizeBeforeEl = document.getElementById('sizeBefore');
+      const sizeAfterEl = document.getElementById('sizeAfter');
+      const extractedCountEl = document.getElementById('extractedCount');
+      const splitBtn = document.getElementById('splitBtn');
+      const downloadBtn = document.getElementById('downloadBtn');
+      const resetBtn = document.getElementById('resetBtn');
+
+      let sourcePdfBytes = null;
+      let sourceDoc = null;
+      let totalPages = 0;
+      let originalFileSize = 0;
+      let splitMode = 'range';
+      let outputBlob = null;
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+      }
+
+      function showError(msg) {
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+      }
+
+      function hideError() {
+        errorBox.style.display = 'none';
+        errorBox.textContent = '';
+      }
+
+      function setProgress(percent, label) {
+        const rounded = Math.min(100, Math.max(0, Math.round(percent)));
+        progressBar.style.width = rounded + '%';
+        statusPercent.textContent = rounded + '%';
+        if (label) statusLabel.textContent = label;
+      }
+
+      dropZone.addEventListener('click', () => fileInput.click());
+      dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+      dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+      });
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) handleFile(fileInput.files[0]);
+      });
+
+      modeBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          modeBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          splitMode = btn.dataset.mode;
+          hideError();
+          outputBlob = null;
+          downloadBtn.style.display = 'none';
+          resultStats.style.display = 'none';
+          progressContainer.style.display = 'none';
+          if (splitMode === 'range') {
+            pageInputLabel.textContent = 'Enter Page Range (e.g. 1-3)';
+            pageInput.placeholder = '1-3';
+            if (totalPages > 0) pageInput.value = '1-' + Math.min(3, totalPages);
+          } else {
+            pageInputLabel.textContent = 'Enter Specific Pages (e.g. 1,3,5)';
+            pageInput.placeholder = '1,3,5';
+            if (totalPages >= 3) {
+              pageInput.value = '1,3';
+            } else if (totalPages > 0) {
+              pageInput.value = '1';
+            }
+          }
+        });
+      });
+
+      pageInput.addEventListener('input', () => {
+        hideError();
+        if (outputBlob) {
+          outputBlob = null;
+          downloadBtn.style.display = 'none';
+          resultStats.style.display = 'none';
+          progressContainer.style.display = 'none';
+        }
+      });
+
+      async function handleFile(file) {
+        uploadErrorBox.style.display = 'none';
+        if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+          uploadErrorBox.textContent = 'Please select a valid PDF file.';
+          uploadErrorBox.style.display = 'block';
+          return;
+        }
+        if (!window.PDFLib) {
+          uploadErrorBox.textContent = 'PDF engine is still loading. Please try again in a moment.';
+          uploadErrorBox.style.display = 'block';
+          return;
+        }
+
+        try {
+          const buffer = await file.arrayBuffer();
+          const doc = await window.PDFLib.PDFDocument.load(buffer);
+          sourcePdfBytes = buffer;
+          sourceDoc = doc;
+          totalPages = doc.getPageCount();
+          originalFileSize = file.size;
+
+          pdfFileName.textContent = file.name;
+          pdfFileSize.textContent = '(' + formatSize(file.size) + ')';
+          pdfPageCount.textContent = totalPages + (totalPages === 1 ? ' Page' : ' Pages');
+          pageHint.textContent = 'Valid pages: 1 to ' + totalPages + (totalPages === 1 ? ' page' : ' pages');
+
+          if (splitMode === 'range') {
+            pageInput.value = totalPages === 1 ? '1-1' : '1-' + Math.min(3, totalPages);
+          } else {
+            pageInput.value = totalPages >= 3 ? '1,3' : '1';
+          }
+
+          hideError();
+          outputBlob = null;
+          downloadBtn.style.display = 'none';
+          resultStats.style.display = 'none';
+          progressContainer.style.display = 'none';
+          dropZone.style.display = 'none';
+          processArea.style.display = 'block';
+        } catch (err) {
+          console.error('Failed to read PDF:', err);
+          uploadErrorBox.textContent = 'Could not open this PDF. It may be corrupted or password-protected.';
+          uploadErrorBox.style.display = 'block';
+        }
+      }
+
+      function parsePageIndices(rawInput, mode, maxPages) {
+        const cleaned = rawInput.trim();
+        if (!cleaned) {
+          throw new Error('Please enter the pages you want to extract.');
+        }
+
+        if (mode === 'range') {
+          const singleMatch = cleaned.match(/^(\d+)$/);
+          if (singleMatch) {
+            const p = parseInt(singleMatch[1], 10);
+            if (p < 1 || p > maxPages) {
+              throw new Error('Page number must be between 1 and ' + maxPages + '.');
+            }
+            return [p - 1];
+          }
+          const rangeMatch = cleaned.match(/^(\d+)\s*-\s*(\d+)$/);
+          if (!rangeMatch) {
+            throw new Error('Enter a valid range such as 1-3.');
+          }
+          const start = parseInt(rangeMatch[1], 10);
+          const end = parseInt(rangeMatch[2], 10);
+          if (start < 1 || end > maxPages) {
+            throw new Error('Page range must be between 1 and ' + maxPages + '.');
+          }
+          if (start > end) {
+            throw new Error('Start page must be less than or equal to end page.');
+          }
+          const indices = [];
+          for (let p = start; p <= end; p++) {
+            indices.push(p - 1);
+          }
+          return indices;
+        }
+
+        // Specific pages mode: supports comma-separated pages (e.g. 1,3,5) and optional inline ranges
+        const parts = cleaned.split(',').map(s => s.trim()).filter(Boolean);
+        if (parts.length === 0) {
+          throw new Error('Enter page numbers separated by commas, such as 1,3,5.');
+        }
+        const seen = new Set();
+        const indices = [];
+        for (const part of parts) {
+          if (/^\d+$/.test(part)) {
+            const p = parseInt(part, 10);
+            if (p < 1 || p > maxPages) {
+              throw new Error('Page ' + p + ' is out of range (1-' + maxPages + ').');
+            }
+            if (!seen.has(p - 1)) {
+              seen.add(p - 1);
+              indices.push(p - 1);
+            }
+          } else if (/^\d+\s*-\s*\d+$/.test(part)) {
+            const nums = part.split('-').map(n => parseInt(n.trim(), 10));
+            if (nums[0] < 1 || nums[1] > maxPages || nums[0] > nums[1]) {
+              throw new Error('Invalid range "' + part + '" for ' + maxPages + ' pages.');
+            }
+            for (let p = nums[0]; p <= nums[1]; p++) {
+              if (!seen.has(p - 1)) {
+                seen.add(p - 1);
+                indices.push(p - 1);
+              }
+            }
+          } else {
+            throw new Error('Invalid entry "' + part + '". Use numbers like 1,3,5.');
+          }
+        }
+        return indices;
+      }
+
+      splitBtn.addEventListener('click', async () => {
+        if (!sourceDoc) return;
+        hideError();
+
+        let pageIndices;
+        try {
+          pageIndices = parsePageIndices(pageInput.value, splitMode, totalPages);
+        } catch (validationErr) {
+          showError(validationErr.message);
+          return;
+        }
+
+        splitBtn.disabled = true;
+        downloadBtn.style.display = 'none';
+        resultStats.style.display = 'none';
+        progressContainer.style.display = 'block';
+        setProgress(20, 'Reading selected pages...');
+
+        try {
+          const newPdf = await window.PDFLib.PDFDocument.create();
+          setProgress(55, 'Copying ' + pageIndices.length + (pageIndices.length === 1 ? ' page...' : ' pages...'));
+
+          const copiedPages = await newPdf.copyPages(sourceDoc, pageIndices);
+          copiedPages.forEach(page => newPdf.addPage(page));
+
+          setProgress(85, 'Building split PDF file...');
+          const splitBytes = await newPdf.save();
+
+          outputBlob = new Blob([splitBytes], { type: 'application/pdf' });
+          sizeBeforeEl.textContent = formatSize(originalFileSize);
+          sizeAfterEl.textContent = formatSize(outputBlob.size);
+          extractedCountEl.textContent = pageIndices.length + ' / ' + totalPages;
+
+          setProgress(100, 'Split complete! Ready to download.');
+          resultStats.style.display = 'grid';
+          downloadBtn.style.display = 'inline-flex';
+        } catch (err) {
+          console.error('Split PDF error:', err);
+          showError('Failed to split PDF: ' + (err.message || 'Unknown error'));
+          progressContainer.style.display = 'none';
+        } finally {
+          splitBtn.disabled = false;
+        }
+      });
+
+      downloadBtn.addEventListener('click', () => {
+        if (!outputBlob) return;
+        const url = URL.createObjectURL(outputBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'tindry-split.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        sourcePdfBytes = null;
+        sourceDoc = null;
+        totalPages = 0;
+        originalFileSize = 0;
+        outputBlob = null;
+        fileInput.value = '';
+        pageInput.value = '';
+        hideError();
+        progressContainer.style.display = 'none';
+        resultStats.style.display = 'none';
+        downloadBtn.style.display = 'none';
+        processArea.style.display = 'none';
+        dropZone.style.display = 'block';
+      });
+
+      // Ko-fi popup delegate
+      const popup = document.getElementById('tindry-coffee-popup');
+      const closePopupBtn = document.getElementById('tindry-close-popup');
+      if (closePopupBtn && popup) {
+        closePopupBtn.addEventListener('click', () => {
+          popup.classList.remove('tindry-show');
+          try { localStorage.setItem('tindry_kofi_closed', '1'); } catch (e) {}
+        });
+      }
+
+      downloadBtn.addEventListener('click', () => {
+        try {
+          if (localStorage.getItem('tindry_kofi_closed')) return;
+        } catch (e) {}
+        if (popup) {
+          setTimeout(() => {
+            popup.classList.add('tindry-show');
+            setTimeout(() => {
+              popup.classList.remove('tindry-show');
+            }, 8000);
+          }, 800);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

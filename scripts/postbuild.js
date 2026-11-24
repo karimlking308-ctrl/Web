@@ -171,7 +171,10 @@ const standaloneHtmlTools = [
   'qr-generator.html',
   'color-palette.html',
   'word-counter.html',
-  'pdf-to-word.html'
+  'pdf-to-word.html',
+  'split-pdf.html',
+  'compress-pdf.html',
+  'free-invoice-maker.html'
 ];
 
 if (fs.existsSync(distDir)) {

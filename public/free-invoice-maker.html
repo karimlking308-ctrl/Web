@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Invoice Maker - Create Professional Invoices Online | Tindry</title>
+  <meta name="description" content="Create professional PDF invoices online for free with live preview. Supports USD, EUR, MAD, GBP, tax, discount, localStorage auto-save, zero signup, and no watermark.">
+  <link rel="canonical" href="https://tindry.com/free-invoice-maker">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tindry">
+  <meta property="og:title" content="Free Invoice Maker - Create Professional Invoices Online | Tindry">
+  <meta property="og:description" content="Create professional PDF invoices online for free with live preview. 100% private in your browser, no signup, no watermark.">
+  <meta property="og:url" content="https://tindry.com/free-invoice-maker">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: light;
+      --tindry-black: #0F0F0F;
+      --tindry-pure-black: #000000;
+      --tindry-dark-gray: #1A1A1A;
+      --tindry-gold: #D4AF37;
+      --tindry-gold-light: #E8C468;
+      --tindry-white: #FFFFFF;
+      --tindry-cream: #F9F6EF;
+      --tindry-light-gold-bg: #FFF9E6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    *:focus-visible { outline: 2px solid var(--tindry-gold); outline-offset: 2px; }
+    a { color: inherit; text-decoration: none; }
+
+    /* App Shell Layout matching merge-pdf (App.tsx + Sidebar.tsx + Header.tsx) */
+    .tindry-shell { display: flex; min-height: 100vh; background-color: var(--tindry-white); color: var(--tindry-black); }
+
+    /* Desktop Sidebar */
+    .tindry-sidebar-desktop {
+      display: none;
+      width: 240px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+    @media (min-width: 1024px) {
+      .tindry-sidebar-desktop { display: block; }
+    }
+
+    .tindry-sidebar-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: var(--tindry-black);
+      color: var(--tindry-white);
+      border-right: 1px solid var(--tindry-dark-gray);
+      user-select: none;
+    }
+
+    .tindry-sidebar-brand {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-brand { padding: 20px 24px; }
+    }
+    .tindry-sidebar-brand a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-sidebar-scroll {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-scroll { padding: 16px; }
+    }
+
+    .tindry-nav-group { display: flex; flex-direction: column; gap: 4px; }
+    .tindry-nav-section {
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tindry-nav-section-title {
+      padding: 0 12px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-side-link {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      border-left: 3px solid transparent;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .tindry-side-link-nav { font-weight: 600; letter-spacing: 0.02em; }
+    .tindry-side-link svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--tindry-gold); }
+    .tindry-side-link:hover { background-color: var(--tindry-dark-gray); color: var(--tindry-gold-light); }
+    .tindry-side-link.active {
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border-left-color: var(--tindry-gold);
+    }
+    .tindry-side-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .tindry-private-pack {
+      margin: 24px 12px 12px;
+      padding: 16px;
+      background-color: var(--tindry-dark-gray);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .tindry-private-pack-title { font-weight: 900; font-size: 13px; color: var(--tindry-gold); margin-bottom: 4px; }
+    .tindry-private-pack-sub { font-size: 11px; color: var(--tindry-white); margin-bottom: 10px; }
+    .tindry-private-pack-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 13px;
+      transition: background-color 0.15s ease;
+    }
+    .tindry-private-pack-btn:hover { background-color: var(--tindry-gold-light); }
+
+    .tindry-sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--tindry-dark-gray);
+      font-size: 11px;
+      color: var(--tindry-cream);
+    }
+
+    /* Mobile Drawer */
+    .tindry-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+    }
+    .tindry-drawer-overlay.open { display: flex; }
+    .tindry-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .tindry-drawer-panel {
+      position: relative;
+      width: 288px;
+      max-width: 85vw;
+      height: 100%;
+      background-color: var(--tindry-black);
+      z-index: 10;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .tindry-close-drawer-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .tindry-close-drawer-btn:hover { background-color: var(--tindry-dark-gray); }
+
+    /* Main Column */
+    .tindry-content-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background-color: var(--tindry-white);
+    }
+
+    /* Header matching Header.tsx */
+    .tindry-site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: 100%;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-white);
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    .tindry-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 64px;
+      max-width: 72rem;
+      margin: 0 auto;
+      width: 100%;
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .tindry-header-inner { padding: 0 32px; height: 80px; }
+    }
+    .tindry-header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    @media (min-width: 640px) { .tindry-header-left { gap: 20px; } }
+
+    .tindry-hamburger-btn {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tindry-hamburger-btn:hover { background-color: var(--tindry-dark-gray); }
+    @media (min-width: 1024px) { .tindry-hamburger-btn { display: none; } }
+
+    .tindry-breadcrumb { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .tindry-home-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      padding: 4px 8px;
+      margin-left: -4px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .tindry-home-back:hover { color: var(--tindry-gold); }
+    .tindry-home-back svg { color: var(--tindry-gold); }
+    .tindry-crumb-sep { color: var(--tindry-gold); font-size: 12px; user-select: none; }
+    .tindry-crumb-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--tindry-white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tindry-header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .tindry-header-tagline {
+      display: none;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--tindry-cream);
+      user-select: none;
+    }
+    @media (min-width: 1024px) { .tindry-header-tagline { display: inline; } }
+    .tindry-support-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tindry-support-btn:hover {
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+    }
+
+    /* Main Workspace */
+    .tindry-main {
+      flex: 1;
+      padding: 20px;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) { .tindry-main { padding: 32px; } }
+    @media (min-width: 768px) { .tindry-main { padding: 40px; } }
+
+    .tindry-ad-slot {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 24px;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .tindry-ad-slot-bottom { margin: 28px auto; }
+
+    .tindry-tool-header { margin-bottom: 24px; }
+    .tindry-tool-h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    @media (min-width: 640px) { .tindry-tool-h1 { font-size: 32px; } }
+    .tindry-tool-sub {
+      font-size: 13px;
+      color: #525252;
+      margin-top: 6px;
+    }
+
+    /* Split Form + Live Preview Grid */
+    .invoice-workspace {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (min-width: 960px) {
+      .invoice-workspace {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      }
+    }
+
+    .invoice-panel {
+      background-color: var(--tindry-white);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    @media (min-width: 640px) { .invoice-panel { padding: 24px; } }
+
+    .invoice-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tindry-black);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--tindry-cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .invoice-badge-private {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      background-color: var(--tindry-cream);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 520px) {
+      .form-grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 520px) {
+      .form-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .field-group { margin-bottom: 12px; }
+    .form-grid-2 .field-group,
+    .form-grid-3 .field-group { margin-bottom: 0; }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tindry-black);
+      margin-bottom: 5px;
+    }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid #d4d4d4;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--tindry-black);
+      background-color: var(--tindry-white);
+      transition: border-color 0.15s ease;
+    }
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+      border-color: var(--tindry-gold);
+      outline: none;
+    }
+    .field-textarea { resize: vertical; min-height: 70px; }
+
+    /* Line Items */
+    .items-section {
+      margin: 16px 0;
+      padding: 14px;
+      background-color: var(--tindry-cream);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      border-radius: 10px;
+    }
+    .items-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .items-header-label { font-size: 12px; font-weight: 700; color: var(--tindry-black); }
+    .btn-add-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-add-item:hover { background-color: var(--tindry-dark-gray); }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 68px 88px 34px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .item-row:last-child { margin-bottom: 0; }
+    @media (max-width: 480px) {
+      .item-row {
+        grid-template-columns: 1fr 1fr 34px;
+      }
+      .item-row .item-desc { grid-column: 1 / -1; }
+    }
+    .item-col-labels {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 68px 88px 34px;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    @media (max-width: 480px) {
+      .item-col-labels { display: none; }
+    }
+    .btn-remove-item {
+      width: 34px;
+      height: 36px;
+      border-radius: 6px;
+      border: 1px solid #d4d4d4;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      font-size: 16px;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-remove-item:hover { border-color: var(--tindry-gold); background-color: var(--tindry-light-gold-bg); }
+
+    /* Action Buttons */
+    .invoice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--tindry-cream);
+    }
+    .btn-gold-primary {
+      flex: 1;
+      min-width: 140px;
+      min-height: 44px;
+      padding: 10px 18px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.15s ease;
+    }
+    .btn-gold-primary:hover { background-color: var(--tindry-gold-light); border-color: var(--tindry-gold-light); }
+
+    .btn-outline-secondary {
+      min-height: 44px;
+      padding: 10px 16px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-black);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-outline-secondary:hover { background-color: var(--tindry-cream); border-color: var(--tindry-gold); }
+
+    /* Right Side Preview Wrapper & Crisp White Invoice Sheet */
+    .preview-shell {
+      background-color: var(--tindry-cream);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .preview-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .preview-saved-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background-color: var(--tindry-black);
+      color: var(--tindry-gold);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
+    .invoice-sheet {
+      background-color: #FFFFFF;
+      color: #111111;
+      border: 1px solid #E5E5E5;
+      border-radius: 10px;
+      padding: 28px 26px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .inv-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid #D4AF37;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .inv-word {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #0F0F0F;
+    }
+    .inv-from-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111111;
+      margin-top: 4px;
+      word-break: break-word;
+    }
+    .inv-meta { text-align: right; font-size: 12px; color: #444; }
+    .inv-meta strong { color: #0F0F0F; }
+    .inv-billto {
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      background-color: #FAFAFA;
+      border-left: 3px solid #D4AF37;
+      border-radius: 4px;
+    }
+    .inv-billto-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #666;
+      margin-bottom: 2px;
+    }
+    .inv-billto-name { font-size: 14px; font-weight: 700; color: #111; word-break: break-word; }
+
+    .inv-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 18px;
+      font-size: 12px;
+    }
+    .inv-table th {
+      text-align: left;
+      padding: 9px 8px;
+      background-color: #0F0F0F;
+      color: #D4AF37;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .inv-table th.num,
+    .inv-table td.num { text-align: right; }
+    .inv-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid #EEEEEE;
+      color: #222;
+      vertical-align: top;
+      word-break: break-word;
+    }
+
+    .inv-totals-wrap {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 18px;
+    }
+    .inv-totals {
+      width: 100%;
+      max-width: 250px;
+      font-size: 12px;
+    }
+    .inv-total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 5px 0;
+      color: #444;
+    }
+    .inv-total-row.grand {
+      margin-top: 6px;
+      padding-top: 9px;
+      border-top: 2px solid #0F0F0F;
+      font-size: 15px;
+      font-weight: 800;
+      color: #0F0F0F;
+    }
+
+    .inv-notes {
+      padding-top: 14px;
+      border-top: 1px solid #EAEAEA;
+      font-size: 12px;
+      color: #555;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .inv-notes-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    /* Editorial Paragraph under tool */
+    .invoice-editorial {
+      margin-top: 28px;
+      padding: 20px 24px;
+      background-color: var(--tindry-cream);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--tindry-dark-gray);
+    }
+
+    /* Footer matching App.tsx */
+    .tindry-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--tindry-white);
+      background-color: var(--tindry-pure-black);
+    }
+    .tindry-footer-inner {
+      max-width: 64rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .tindry-footer-inner { flex-direction: row; }
+    }
+    .tindry-footer-brand { text-align: center; }
+    @media (min-width: 640px) { .tindry-footer-brand { text-align: left; } }
+    .tindry-footer-brand-name { font-weight: 700; color: var(--tindry-gold); font-size: 14px; }
+    .tindry-footer-brand-sub { font-size: 11px; color: var(--tindry-cream); margin-top: 2px; }
+    .tindry-footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .tindry-footer-right { flex-direction: row; gap: 24px; }
+    }
+    .tindry-footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tindry-footer-nav a { color: var(--tindry-gold); transition: color 0.15s ease; }
+    .tindry-footer-nav a:hover { color: var(--tindry-gold-light); }
+    .tindry-footer-sep { display: none; height: 14px; width: 1px; background-color: var(--tindry-dark-gray); }
+    @media (min-width: 640px) { .tindry-footer-sep { display: block; } }
+    .tindry-footer-social { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+    .tindry-social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-white);
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .tindry-social-btn:hover { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+
+    .tindry-featured-wrap { display: flex; justify-content: center; margin: 24px 0; }
+    .tindry-featured-badge {
+      background: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: sans-serif;
+      border: 1px solid var(--tindry-gold);
+      transition: all 0.15s ease;
+    }
+    .tindry-featured-badge:hover { background: var(--tindry-gold); color: var(--tindry-pure-black); }
+    .tindry-copyright { text-align: center; padding: 15px; font-size: 13px; color: #888; }
+
+    /* Print Styles: Print ONLY the clean white invoice */
+    @media print {
+      .tindry-sidebar-desktop,
+      .tindry-drawer-overlay,
+      .tindry-site-header,
+      .tindry-ad-slot,
+      .tindry-tool-header,
+      .invoice-form-col,
+      .preview-bar,
+      .invoice-editorial,
+      .tindry-footer,
+      #tindry-coffee-popup {
+        display: none !important;
+      }
+      body, .tindry-shell, .tindry-content-col, .tindry-main {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        display: block !important;
+      }
+      .invoice-workspace { display: block !important; }
+      .preview-shell {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      .invoice-sheet {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="tindry-shell">
+    <!-- Desktop Sidebar matching Sidebar.tsx -->
+    <aside class="tindry-sidebar-desktop" aria-label="Sidebar navigation">
+      <div class="tindry-sidebar-inner">
+        <div class="tindry-sidebar-brand">
+          <a href="/"><span>Tindry</span></a>
+        </div>
+        <div class="tindry-sidebar-scroll">
+          <div class="tindry-nav-group">
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Home</span>
+            </a>
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>All Tools</span>
+            </a>
+            <a href="/blog" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <span>Blog</span>
+            </a>
+            <a href="/faq" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>FAQ</span>
+            </a>
+          </div>
+
+          <div class="tindry-nav-section">
+            <div class="tindry-nav-section-title">File Tools</div>
+            <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+            <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+            <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+            <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+            <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+            <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+            <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+            <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+            <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+            <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+            <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+            <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+            <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+            <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+            <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+            <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+            <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+            <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+            <a href="/free-invoice-maker.html" class="tindry-side-link active"><span>Free Invoice Maker</span></a>
+
+            <div class="tindry-private-pack">
+              <div class="tindry-private-pack-title">✨ PRIVATE PACK</div>
+              <div class="tindry-private-pack-sub">Premium Reference</div>
+              <a href="https://tindry.gumroad.com/l/Private" class="tindry-private-pack-btn">👑 $5 - Get Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="tindry-sidebar-footer">
+          <p>Private &middot; Client-Side</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="tindry-drawer-overlay" aria-hidden="true">
+      <div id="drawerBackdrop" class="tindry-drawer-backdrop"></div>
+      <div class="tindry-drawer-panel">
+        <div class="tindry-sidebar-inner">
+          <div class="tindry-sidebar-brand">
+            <a href="/"><span>Tindry</span></a>
+            <button type="button" id="closeDrawerBtn" class="tindry-close-drawer-btn" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="tindry-sidebar-scroll">
+            <div class="tindry-nav-group">
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>Home</span></a>
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>All Tools</span></a>
+              <a href="/blog" class="tindry-side-link tindry-side-link-nav"><span>Blog</span></a>
+              <a href="/faq" class="tindry-side-link tindry-side-link-nav"><span>FAQ</span></a>
+            </div>
+            <div class="tindry-nav-section">
+              <div class="tindry-nav-section-title">File Tools</div>
+              <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+              <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+              <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+              <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+              <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+              <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+              <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+              <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+              <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+              <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+              <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+              <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+              <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+              <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+              <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+              <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+              <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+              <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+              <a href="/free-invoice-maker.html" class="tindry-side-link active"><span>Free Invoice Maker</span></a>
+            </div>
+          </div>
+          <div class="tindry-sidebar-footer">
+            <p>Private &middot; Client-Side</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Column -->
+    <div class="tindry-content-col">
+      <!-- Header matching Header.tsx -->
+      <header class="tindry-site-header">
+        <div class="tindry-header-inner">
+          <div class="tindry-header-left">
+            <button type="button" id="openDrawerBtn" class="tindry-hamburger-btn" aria-label="Open navigation menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="4" x2="20" y1="12" y2="12"></line>
+                <line x1="4" x2="20" y1="6" y2="6"></line>
+                <line x1="4" x2="20" y1="18" y2="18"></line>
+              </svg>
+            </button>
+            <div class="tindry-breadcrumb">
+              <a href="/" class="tindry-home-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <span>Home</span>
+              </a>
+              <span class="tindry-crumb-sep">/</span>
+              <span class="tindry-crumb-title">Free Invoice Maker</span>
+            </div>
+          </div>
+          <div class="tindry-header-right">
+            <span class="tindry-header-tagline">Fast &middot; Private &middot; Free</span>
+            <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" aria-label="Support Tindry on Ko-fi" class="tindry-support-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+              <span>Support Tindry</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="tindry-main">
+        <div class="tindry-ad-slot">
+          <script>
+            atOptions = {
+              'key' : '733f37d5b3e5b35fd0302daa53c1798c',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/733f37d5b3e5b35fd0302daa53c1798c"></script>
+        </div>
+
+        <div class="tindry-tool-header">
+          <h1 class="tindry-tool-h1">Free Invoice Maker</h1>
+          <p class="tindry-tool-sub">Create professional PDF invoices with live preview, multi-currency totals, and automatic local save. 100% private in your browser.</p>
+        </div>
+
+        <div class="invoice-workspace">
+          <!-- Left Side Form -->
+          <section class="invoice-panel invoice-form-col" aria-label="Invoice details form">
+            <div class="invoice-panel-title">
+              <span>Invoice Details</span>
+              <span class="invoice-badge-private">🔒 100% Browser Private</span>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label for="businessName" class="field-label">Business Name</label>
+                <input type="text" id="businessName" class="field-input" placeholder="Your Business or Name">
+              </div>
+              <div class="field-group">
+                <label for="clientName" class="field-label">Client Name</label>
+                <input type="text" id="clientName" class="field-input" placeholder="Client or Company Name">
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="field-group">
+                <label for="invoiceNumber" class="field-label">Invoice Number</label>
+                <input type="text" id="invoiceNumber" class="field-input" placeholder="INV-001">
+              </div>
+              <div class="field-group">
+                <label for="invoiceDate" class="field-label">Date</label>
+                <input type="date" id="invoiceDate" class="field-input">
+              </div>
+              <div class="field-group">
+                <label for="currency" class="field-label">Currency</label>
+                <select id="currency" class="field-select">
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="MAD">MAD (DH)</option>
+                  <option value="GBP">GBP (£)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="items-section">
+              <div class="items-header">
+                <span class="items-header-label">Items</span>
+                <button type="button" id="addItemBtn" class="btn-add-item">+ Add Item</button>
+              </div>
+              <div class="item-col-labels">
+                <span>Description</span>
+                <span>Qty</span>
+                <span>Price</span>
+                <span></span>
+              </div>
+              <div id="itemsList"></div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="field-group">
+                <label for="taxRate" class="field-label">Tax %</label>
+                <input type="number" id="taxRate" class="field-input" min="0" max="100" step="0.1" value="0">
+              </div>
+              <div class="field-group">
+                <label for="discountRate" class="field-label">Discount %</label>
+                <input type="number" id="discountRate" class="field-input" min="0" max="100" step="0.1" value="0">
+              </div>
+            </div>
+
+            <div class="field-group" style="margin-top: 12px;">
+              <label for="notes" class="field-label">Notes</label>
+              <textarea id="notes" class="field-textarea" placeholder="Payment terms, bank instructions, or a thank-you note..."></textarea>
+            </div>
+
+            <div class="invoice-actions">
+              <button type="button" id="downloadPdfBtn" class="btn-gold-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download PDF</span>
+              </button>
+              <button type="button" id="printBtn" class="btn-outline-secondary">Print</button>
+              <button type="button" id="clearBtn" class="btn-outline-secondary">Clear</button>
+            </div>
+          </section>
+
+          <!-- Right Side Live Preview -->
+          <section class="preview-shell" aria-label="Live invoice preview">
+            <div class="preview-bar">
+              <span>Live Invoice Preview</span>
+              <span class="preview-saved-pill" id="saveStatus">Saved locally</span>
+            </div>
+
+            <div id="invoicePreview" class="invoice-sheet">
+              <div class="inv-head">
+                <div>
+                  <div class="inv-word">INVOICE</div>
+                  <div id="prevBusiness" class="inv-from-name">Your Business Name</div>
+                </div>
+                <div class="inv-meta">
+                  <div><strong>Invoice #:</strong> <span id="prevNumber">INV-001</span></div>
+                  <div style="margin-top: 3px;"><strong>Date:</strong> <span id="prevDate">-</span></div>
+                  <div style="margin-top: 3px;"><strong>Currency:</strong> <span id="prevCurrency">USD</span></div>
+                </div>
+              </div>
+
+              <div class="inv-billto">
+                <div class="inv-billto-label">Bill To</div>
+                <div id="prevClient" class="inv-billto-name">Client Name</div>
+              </div>
+
+              <table class="inv-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th class="num">Qty</th>
+                    <th class="num">Price</th>
+                    <th class="num">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="prevItemsBody"></tbody>
+              </table>
+
+              <div class="inv-totals-wrap">
+                <div class="inv-totals">
+                  <div class="inv-total-row">
+                    <span>Subtotal</span>
+                    <span id="prevSubtotal">$0.00</span>
+                  </div>
+                  <div class="inv-total-row" id="prevDiscountRow">
+                    <span>Discount (<span id="prevDiscountPct">0</span>%)</span>
+                    <span id="prevDiscountAmt">-$0.00</span>
+                  </div>
+                  <div class="inv-total-row" id="prevTaxRow">
+                    <span>Tax (<span id="prevTaxPct">0</span>%)</span>
+                    <span id="prevTaxAmt">$0.00</span>
+                  </div>
+                  <div class="inv-total-row grand">
+                    <span>Total</span>
+                    <span id="prevGrandTotal">$0.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="inv-notes" id="prevNotesWrap">
+                <div class="inv-notes-label">Notes</div>
+                <div id="prevNotes">Thank you for your business!</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <p class="invoice-editorial">
+          Tindry Free Invoice Maker helps freelancers, independent consultants, contractors, agencies, and small business owners create polished, client-ready PDF invoices directly inside their browser with complete privacy. Enter your business name, client name, invoice number, billing date, itemized service descriptions, quantities, unit prices, tax percentage, discount rate, and custom payment notes while watching your clean white invoice document update live beside the form. Switch effortlessly between USD, EUR, MAD, and GBP currencies with instant automatic calculations for subtotal, discount, tax, and grand total. Every edit saves automatically inside your browser localStorage so your invoice draft stays preserved across refreshes without creating an account or uploading private financial records to any external server. When your invoice is ready, click Download PDF to export a crisp, watermark-free vector document for your client, print directly onto paper, or clear all fields in one click to start fresh anytime.
+        </p>
+
+        <div class="tindry-ad-slot tindry-ad-slot-bottom">
+          <script>
+            atOptions = {
+              'key' : 'ba7702fb84b056f6daf905b1af53674f',
+              'format' : 'iframe',
+              'height' : 250,
+              'width' : 300,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/ba7702fb84b056f6daf905b1af53674f"></script>
+        </div>
+      </main>
+
+      <!-- Footer matching App.tsx -->
+      <footer class="tindry-footer">
+        <div class="tindry-footer-inner">
+          <div class="tindry-footer-brand">
+            <span class="tindry-footer-brand-name">Tindry</span>
+            <p class="tindry-footer-brand-sub">Simple file tools that just work &middot; Zero uploads &middot; Complete privacy</p>
+          </div>
+
+          <div class="tindry-footer-right">
+            <nav aria-label="Footer navigation" class="tindry-footer-nav">
+              <a href="/">Tools</a>
+              <a href="/blog">Blog</a>
+              <a href="/about">About</a>
+              <a href="/faq">FAQ</a>
+              <a href="/contact">Contact</a>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+            </nav>
+            <div class="tindry-footer-sep"></div>
+            <div class="tindry-footer-social">
+              <a href="https://x.com/TindryOfficial" target="_blank" rel="noopener noreferrer" aria-label="Follow Tindry on X" class="tindry-social-btn">
+                <span>Follow @TindryOfficial</span>
+              </a>
+              <a href="https://t.me/TindryCommunity" target="_blank" rel="noopener noreferrer" aria-label="Join Tindry Community on Telegram" class="tindry-social-btn">
+                <span>Join Tindry Community</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tindry-featured-wrap">
+          <a href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed" target="_blank" rel="noopener noreferrer" class="tindry-featured-badge">
+            ⭐ Featured on TechBaseDirectory — Tindry
+          </a>
+        </div>
+
+        <div class="tindry-copyright">
+          &copy; 2020 - <span id="tindry-copyright-year"></span> Tindry. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Ko-fi Popup Component -->
+  <div id="tindry-coffee-popup" aria-live="polite" style="display: none;">
+    <style>
+      #tindry-coffee-popup {
+        position: fixed; bottom: 20px; right: 20px; z-index: 999999;
+        max-width: 360px; width: calc(100% - 32px); background-color: #1A1A1A;
+        color: #ffffff; border: 1px solid #D4AF37; border-radius: 12px;
+        padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 13px; line-height: 1.45; opacity: 0; transform: translateY(20px);
+        transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+      }
+      #tindry-coffee-popup.tindry-show { display: block !important; opacity: 1; transform: translateY(0); pointer-events: auto; }
+      #tindry-coffee-popup .tindry-kofi-btn { display: inline-flex; width: 100%; margin-top: 10px; background-color: #D4AF37; color: #000000; font-weight: 700; font-size: 13px; text-decoration: none; padding: 10px 14px; border-radius: 8px; justify-content: center; }
+      #tindry-coffee-popup .tindry-kofi-btn:hover { background-color: #E8C468; }
+      @media (max-width: 640px) { #tindry-coffee-popup { right: 16px; left: 16px; bottom: 16px; width: auto; max-width: none; } }
+    </style>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+      <div>🎉 Done! File never left your phone. Tindry is free. Tip on Ko-fi ☕ to keep it free?</div>
+      <button type="button" id="tindry-close-popup" aria-label="Close" style="background: none; border: none; color: #888; font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1;">&times;</button>
+    </div>
+    <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tindry-kofi-btn">Tip on Ko-fi ☕</a>
+  </div>
+
+  <script>
+    (function() {
+      var yearEl = document.getElementById('tindry-copyright-year');
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      // Mobile drawer controls
+      var mobileDrawer = document.getElementById('mobileDrawer');
+      var openDrawerBtn = document.getElementById('openDrawerBtn');
+      var closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      var drawerBackdrop = document.getElementById('drawerBackdrop');
+      function setDrawer(open) {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.toggle('open', open);
+        mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+      if (openDrawerBtn) openDrawerBtn.addEventListener('click', function() { setDrawer(true); });
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', function() { setDrawer(false); });
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', function() { setDrawer(false); });
+
+      var STORAGE_KEY = 'tindry_free_invoice_maker_v1';
+      var todayStr = new Date().toISOString().slice(0, 10);
+
+      function getDefaultState() {
+        return {
+          businessName: '',
+          clientName: '',
+          invoiceNumber: 'INV-001',
+          invoiceDate: todayStr,
+          currency: 'USD',
+          taxRate: 0,
+          discountRate: 0,
+          notes: 'Thank you for your business!',
+          items: [
+            { description: 'Consulting / Service', qty: 1, price: 100 }
+          ]
+        };
+      }
+
+      function loadState() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return getDefaultState();
+          var parsed = JSON.parse(raw);
+          if (!parsed || typeof parsed !== 'object') return getDefaultState();
+          var def = getDefaultState();
+          return {
+            businessName: typeof parsed.businessName === 'string' ? parsed.businessName : def.businessName,
+            clientName: typeof parsed.clientName === 'string' ? parsed.clientName : def.clientName,
+            invoiceNumber: typeof parsed.invoiceNumber === 'string' ? parsed.invoiceNumber : def.invoiceNumber,
+            invoiceDate: typeof parsed.invoiceDate === 'string' ? parsed.invoiceDate : def.invoiceDate,
+            currency: ['USD', 'EUR', 'MAD', 'GBP'].indexOf(parsed.currency) !== -1 ? parsed.currency : 'USD',
+            taxRate: isFinite(Number(parsed.taxRate)) ? Number(parsed.taxRate) : 0,
+            discountRate: isFinite(Number(parsed.discountRate)) ? Number(parsed.discountRate) : 0,
+            notes: typeof parsed.notes === 'string' ? parsed.notes : def.notes,
+            items: Array.isArray(parsed.items) && parsed.items.length > 0 ? parsed.items : def.items
+          };
+        } catch (e) {
+          return getDefaultState();
+        }
+      }
+
+      var state = loadState();
+
+      var businessInput = document.getElementById('businessName');
+      var clientInput = document.getElementById('clientName');
+      var numberInput = document.getElementById('invoiceNumber');
+      var dateInput = document.getElementById('invoiceDate');
+      var currencySelect = document.getElementById('currency');
+      var taxInput = document.getElementById('taxRate');
+      var discountInput = document.getElementById('discountRate');
+      var notesInput = document.getElementById('notes');
+      var itemsListEl = document.getElementById('itemsList');
+      var addItemBtn = document.getElementById('addItemBtn');
+      var downloadPdfBtn = document.getElementById('downloadPdfBtn');
+      var printBtn = document.getElementById('printBtn');
+      var clearBtn = document.getElementById('clearBtn');
+      var saveStatusEl = document.getElementById('saveStatus');
+
+      var prevBusiness = document.getElementById('prevBusiness');
+      var prevClient = document.getElementById('prevClient');
+      var prevNumber = document.getElementById('prevNumber');
+      var prevDate = document.getElementById('prevDate');
+      var prevCurrency = document.getElementById('prevCurrency');
+      var prevItemsBody = document.getElementById('prevItemsBody');
+      var prevSubtotal = document.getElementById('prevSubtotal');
+      var prevDiscountRow = document.getElementById('prevDiscountRow');
+      var prevDiscountPct = document.getElementById('prevDiscountPct');
+      var prevDiscountAmt = document.getElementById('prevDiscountAmt');
+      var prevTaxRow = document.getElementById('prevTaxRow');
+      var prevTaxPct = document.getElementById('prevTaxPct');
+      var prevTaxAmt = document.getElementById('prevTaxAmt');
+      var prevGrandTotal = document.getElementById('prevGrandTotal');
+      var prevNotesWrap = document.getElementById('prevNotesWrap');
+      var prevNotes = document.getElementById('prevNotes');
+
+      function formatMoney(amount, currency) {
+        var val = isFinite(amount) ? amount : 0;
+        var fixed = val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (currency === 'USD') return '$' + fixed;
+        if (currency === 'EUR') return '€' + fixed;
+        if (currency === 'GBP') return '£' + fixed;
+        if (currency === 'MAD') return fixed + ' MAD';
+        return fixed + ' ' + currency;
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          if (saveStatusEl) saveStatusEl.textContent = 'Saved locally';
+        } catch (e) {}
+      }
+
+      function computeTotals() {
+        var subtotal = 0;
+        for (var i = 0; i < state.items.length; i++) {
+          var q = Math.max(0, Number(state.items[i].qty) || 0);
+          var p = Math.max(0, Number(state.items[i].price) || 0);
+          subtotal += q * p;
+        }
+        var discountPct = Math.min(100, Math.max(0, Number(state.discountRate) || 0));
+        var taxPct = Math.min(100, Math.max(0, Number(state.taxRate) || 0));
+        var discountAmt = subtotal * (discountPct / 100);
+        var afterDiscount = Math.max(0, subtotal - discountAmt);
+        var taxAmt = afterDiscount * (taxPct / 100);
+        var grandTotal = afterDiscount + taxAmt;
+        return {
+          subtotal: subtotal,
+          discountPct: discountPct,
+          discountAmt: discountAmt,
+          taxPct: taxPct,
+          taxAmt: taxAmt,
+          grandTotal: grandTotal
+        };
+      }
+
+      function renderPreview() {
+        prevBusiness.textContent = state.businessName.trim() || 'Your Business Name';
+        prevClient.textContent = state.clientName.trim() || 'Client Name';
+        prevNumber.textContent = state.invoiceNumber.trim() || 'INV-001';
+        prevDate.textContent = state.invoiceDate || todayStr;
+        prevCurrency.textContent = state.currency;
+
+        while (prevItemsBody.firstChild) {
+          prevItemsBody.removeChild(prevItemsBody.firstChild);
+        }
+
+        state.items.forEach(function(item) {
+          var tr = document.createElement('tr');
+          var q = Math.max(0, Number(item.qty) || 0);
+          var p = Math.max(0, Number(item.price) || 0);
+          var lineTotal = q * p;
+
+          var tdDesc = document.createElement('td');
+          tdDesc.textContent = (item.description || '').trim() || 'Item description';
+          var tdQty = document.createElement('td');
+          tdQty.className = 'num';
+          tdQty.textContent = String(q);
+          var tdPrice = document.createElement('td');
+          tdPrice.className = 'num';
+          tdPrice.textContent = formatMoney(p, state.currency);
+          var tdTotal = document.createElement('td');
+          tdTotal.className = 'num';
+          tdTotal.textContent = formatMoney(lineTotal, state.currency);
+
+          tr.appendChild(tdDesc);
+          tr.appendChild(tdQty);
+          tr.appendChild(tdPrice);
+          tr.appendChild(tdTotal);
+          prevItemsBody.appendChild(tr);
+        });
+
+        var t = computeTotals();
+        prevSubtotal.textContent = formatMoney(t.subtotal, state.currency);
+
+        prevDiscountPct.textContent = String(t.discountPct);
+        prevDiscountAmt.textContent = '-' + formatMoney(t.discountAmt, state.currency);
+        prevDiscountRow.style.display = t.discountPct > 0 ? 'flex' : 'none';
+
+        prevTaxPct.textContent = String(t.taxPct);
+        prevTaxAmt.textContent = formatMoney(t.taxAmt, state.currency);
+        prevTaxRow.style.display = t.taxPct > 0 ? 'flex' : 'none';
+
+        prevGrandTotal.textContent = formatMoney(t.grandTotal, state.currency);
+
+        var trimmedNotes = (state.notes || '').trim();
+        if (trimmedNotes) {
+          prevNotesWrap.style.display = 'block';
+          prevNotes.textContent = trimmedNotes;
+        } else {
+          prevNotesWrap.style.display = 'none';
+        }
+      }
+
+      function renderItemInputs() {
+        while (itemsListEl.firstChild) {
+          itemsListEl.removeChild(itemsListEl.firstChild);
+        }
+
+        state.items.forEach(function(item, idx) {
+          var row = document.createElement('div');
+          row.className = 'item-row';
+
+          var descInput = document.createElement('input');
+          descInput.type = 'text';
+          descInput.className = 'field-input item-desc';
+          descInput.placeholder = 'Item description';
+          descInput.value = item.description || '';
+          descInput.setAttribute('aria-label', 'Item ' + (idx + 1) + ' description');
+          descInput.addEventListener('input', function() {
+            state.items[idx].description = descInput.value;
+            saveState();
+            renderPreview();
+          });
+
+          var qtyInput = document.createElement('input');
+          qtyInput.type = 'number';
+          qtyInput.className = 'field-input';
+          qtyInput.min = '0';
+          qtyInput.step = '1';
+          qtyInput.value = String(item.qty !== undefined ? item.qty : 1);
+          qtyInput.setAttribute('aria-label', 'Item ' + (idx + 1) + ' quantity');
+          qtyInput.addEventListener('input', function() {
+            state.items[idx].qty = parseFloat(qtyInput.value) || 0;
+            saveState();
+            renderPreview();
+          });
+
+          var priceInput = document.createElement('input');
+          priceInput.type = 'number';
+          priceInput.className = 'field-input';
+          priceInput.min = '0';
+          priceInput.step = '0.01';
+          priceInput.value = String(item.price !== undefined ? item.price : 0);
+          priceInput.setAttribute('aria-label', 'Item ' + (idx + 1) + ' price');
+          priceInput.addEventListener('input', function() {
+            state.items[idx].price = parseFloat(priceInput.value) || 0;
+            saveState();
+            renderPreview();
+          });
+
+          var removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'btn-remove-item';
+          removeBtn.textContent = '×';
+          removeBtn.setAttribute('aria-label', 'Remove item ' + (idx + 1));
+          removeBtn.addEventListener('click', function() {
+            if (state.items.length === 1) {
+              state.items[0] = { description: '', qty: 1, price: 0 };
+            } else {
+              state.items.splice(idx, 1);
+            }
+            saveState();
+            renderItemInputs();
+            renderPreview();
+          });
+
+          row.appendChild(descInput);
+          row.appendChild(qtyInput);
+          row.appendChild(priceInput);
+          row.appendChild(removeBtn);
+          itemsListEl.appendChild(row);
+        });
+      }
+
+      function syncFormFromState() {
+        businessInput.value = state.businessName;
+        clientInput.value = state.clientName;
+        numberInput.value = state.invoiceNumber;
+        dateInput.value = state.invoiceDate;
+        currencySelect.value = state.currency;
+        taxInput.value = String(state.taxRate);
+        discountInput.value = String(state.discountRate);
+        notesInput.value = state.notes;
+        renderItemInputs();
+        renderPreview();
+      }
+
+      businessInput.addEventListener('input', function() {
+        state.businessName = businessInput.value;
+        saveState();
+        renderPreview();
+      });
+      clientInput.addEventListener('input', function() {
+        state.clientName = clientInput.value;
+        saveState();
+        renderPreview();
+      });
+      numberInput.addEventListener('input', function() {
+        state.invoiceNumber = numberInput.value;
+        saveState();
+        renderPreview();
+      });
+      dateInput.addEventListener('input', function() {
+        state.invoiceDate = dateInput.value;
+        saveState();
+        renderPreview();
+      });
+      currencySelect.addEventListener('change', function() {
+        state.currency = currencySelect.value;
+        saveState();
+        renderPreview();
+      });
+      taxInput.addEventListener('input', function() {
+        state.taxRate = parseFloat(taxInput.value) || 0;
+        saveState();
+        renderPreview();
+      });
+      discountInput.addEventListener('input', function() {
+        state.discountRate = parseFloat(discountInput.value) || 0;
+        saveState();
+        renderPreview();
+      });
+      notesInput.addEventListener('input', function() {
+        state.notes = notesInput.value;
+        saveState();
+        renderPreview();
+      });
+
+      addItemBtn.addEventListener('click', function() {
+        state.items.push({ description: '', qty: 1, price: 0 });
+        saveState();
+        renderItemInputs();
+        renderPreview();
+      });
+
+      function formatPdfMoney(amount, currency) {
+        var val = isFinite(amount) ? amount : 0;
+        var fixed = val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        if (currency === 'USD') return '$' + fixed;
+        if (currency === 'EUR') return 'EUR ' + fixed;
+        if (currency === 'GBP') return 'GBP ' + fixed;
+        if (currency === 'MAD') return fixed + ' MAD';
+        return fixed + ' ' + currency;
+      }
+
+      function showKofiPopup() {
+        var popup = document.getElementById('tindry-coffee-popup');
+        if (!popup) return;
+        try {
+          if (localStorage.getItem('tindry_kofi_closed')) return;
+        } catch (e) {}
+        setTimeout(function() {
+          popup.classList.add('tindry-show');
+          setTimeout(function() {
+            popup.classList.remove('tindry-show');
+          }, 8000);
+        }, 700);
+      }
+
+      downloadPdfBtn.addEventListener('click', function() {
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          window.print();
+          return;
+        }
+        var jsPDF = window.jspdf.jsPDF;
+        var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        var pageWidth = 210;
+        var margin = 16;
+        var contentWidth = pageWidth - margin * 2;
+        var y = 20;
+
+        // Top Header
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.setTextColor(15, 15, 15);
+        doc.text('INVOICE', margin, y);
+
+        doc.setFontSize(12);
+        doc.text(state.businessName.trim() || 'Your Business Name', margin, y + 8);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(68, 68, 68);
+        var invNumText = 'Invoice #: ' + (state.invoiceNumber.trim() || 'INV-001');
+        var invDateText = 'Date: ' + (state.invoiceDate || todayStr);
+        var invCurrText = 'Currency: ' + state.currency;
+        doc.text(invNumText, pageWidth - margin, y - 2, { align: 'right' });
+        doc.text(invDateText, pageWidth - margin, y + 4, { align: 'right' });
+        doc.text(invCurrText, pageWidth - margin, y + 10, { align: 'right' });
+
+        y += 16;
+        doc.setDrawColor(212, 175, 55);
+        doc.setLineWidth(0.8);
+        doc.line(margin, y, pageWidth - margin, y);
+
+        // Bill To
+        y += 10;
+        doc.setFillColor(250, 250, 250);
+        doc.rect(margin, y - 4, contentWidth, 16, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(102, 102, 102);
+        doc.text('BILL TO', margin + 4, y + 1);
+        doc.setFontSize(11);
+        doc.setTextColor(17, 17, 17);
+        doc.text(state.clientName.trim() || 'Client Name', margin + 4, y + 8);
+
+        // Table Header
+        y += 20;
+        doc.setFillColor(15, 15, 15);
+        doc.rect(margin, y, contentWidth, 9, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(212, 175, 55);
+        doc.text('DESCRIPTION', margin + 3, y + 6);
+        doc.text('QTY', margin + 112, y + 6, { align: 'right' });
+        doc.text('PRICE', margin + 144, y + 6, { align: 'right' });
+        doc.text('TOTAL', pageWidth - margin - 3, y + 6, { align: 'right' });
+
+        y += 14;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9.5);
+
+        state.items.forEach(function(item) {
+          var q = Math.max(0, Number(item.qty) || 0);
+          var p = Math.max(0, Number(item.price) || 0);
+          var total = q * p;
+          var desc = (item.description || '').trim() || 'Item description';
+          var wrappedDesc = doc.splitTextToSize(desc, 92);
+          var rowHeight = Math.max(8, wrappedDesc.length * 5 + 3);
+
+          if (y + rowHeight > 265) {
+            doc.addPage();
+            y = 20;
+          }
+
+          doc.setTextColor(34, 34, 34);
+          doc.text(wrappedDesc, margin + 3, y);
+          doc.text(String(q), margin + 112, y, { align: 'right' });
+          doc.text(formatPdfMoney(p, state.currency), margin + 144, y, { align: 'right' });
+          doc.text(formatPdfMoney(total, state.currency), pageWidth - margin - 3, y, { align: 'right' });
+
+          doc.setDrawColor(235, 235, 235);
+          doc.setLineWidth(0.3);
+          doc.line(margin, y + rowHeight - 3, pageWidth - margin, y + rowHeight - 3);
+          y += rowHeight + 2;
+        });
+
+        // Totals
+        var t = computeTotals();
+        if (y + 38 > 275) {
+          doc.addPage();
+          y = 20;
+        }
+        y += 6;
+        var labelX = pageWidth - margin - 52;
+        var valX = pageWidth - margin - 3;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(68, 68, 68);
+        doc.text('Subtotal', labelX, y);
+        doc.text(formatPdfMoney(t.subtotal, state.currency), valX, y, { align: 'right' });
+
+        if (t.discountPct > 0) {
+          y += 6;
+          doc.text('Discount (' + t.discountPct + '%)', labelX, y);
+          doc.text('-' + formatPdfMoney(t.discountAmt, state.currency), valX, y, { align: 'right' });
+        }
+
+        if (t.taxPct > 0) {
+          y += 6;
+          doc.text('Tax (' + t.taxPct + '%)', labelX, y);
+          doc.text(formatPdfMoney(t.taxAmt, state.currency), valX, y, { align: 'right' });
+        }
+
+        y += 5;
+        doc.setDrawColor(15, 15, 15);
+        doc.setLineWidth(0.6);
+        doc.line(labelX, y, pageWidth - margin, y);
+
+        y += 7;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(15, 15, 15);
+        doc.text('Total', labelX, y);
+        doc.text(formatPdfMoney(t.grandTotal, state.currency), valX, y, { align: 'right' });
+
+        // Notes
+        var trimmedNotes = (state.notes || '').trim();
+        if (trimmedNotes) {
+          y += 14;
+          if (y > 260) {
+            doc.addPage();
+            y = 20;
+          }
+          doc.setDrawColor(230, 230, 230);
+          doc.setLineWidth(0.3);
+          doc.line(margin, y, pageWidth - margin, y);
+          y += 6;
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(9);
+          doc.setTextColor(17, 17, 17);
+          doc.text('NOTES', margin, y);
+          y += 5;
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9.5);
+          doc.setTextColor(85, 85, 85);
+          var noteLines = doc.splitTextToSize(trimmedNotes, contentWidth);
+          doc.text(noteLines, margin, y);
+        }
+
+        var safeNum = (state.invoiceNumber.trim() || 'invoice').replace(/[^a-zA-Z0-9_-]/g, '-');
+        doc.save('tindry-' + safeNum + '.pdf');
+        showKofiPopup();
+      });
+
+      printBtn.addEventListener('click', function() {
+        window.print();
+      });
+
+      clearBtn.addEventListener('click', function() {
+        state = {
+          businessName: '',
+          clientName: '',
+          invoiceNumber: 'INV-001',
+          invoiceDate: todayStr,
+          currency: 'USD',
+          taxRate: 0,
+          discountRate: 0,
+          notes: '',
+          items: [{ description: '', qty: 1, price: 0 }]
+        };
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+        if (saveStatusEl) saveStatusEl.textContent = 'Cleared';
+        syncFormFromState();
+      });
+
+      // Ko-fi popup close
+      var popup = document.getElementById('tindry-coffee-popup');
+      var closePopupBtn = document.getElementById('tindry-close-popup');
+      if (closePopupBtn && popup) {
+        closePopupBtn.addEventListener('click', function() {
+          popup.classList.remove('tindry-show');
+          try { localStorage.setItem('tindry_kofi_closed', '1'); } catch (e) {}
+        });
+      }
+
+      syncFormFromState();
+    })();
+  </script>
+</body>
+</html>
