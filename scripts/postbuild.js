@@ -174,7 +174,8 @@ const standaloneHtmlTools = [
   'pdf-to-word.html',
   'split-pdf.html',
   'compress-pdf.html',
-  'free-invoice-maker.html'
+  'free-invoice-maker.html',
+  'business-card-maker.html'
 ];
 
 if (fs.existsSync(distDir)) {

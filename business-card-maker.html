@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Card Maker - Create Professional Business Cards Online | Tindry</title>
+  <meta name="description" content="Create your professional business card in 1 second. Choose your color, job, and photo directly in your browser. 100% private, no signup, instant download.">
+  <link rel="canonical" href="https://tindry.com/business-card-maker">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tindry">
+  <meta property="og:title" content="Business Card Maker - Create Professional Business Cards Online | Tindry">
+  <meta property="og:description" content="Create your professional business card in 1 second. Choose your color, job, and photo. 100% private in your browser.">
+  <meta property="og:url" content="https://tindry.com/business-card-maker">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: light;
+      --tindry-black: #0F0F0F;
+      --tindry-pure-black: #000000;
+      --tindry-dark-gray: #1A1A1A;
+      --tindry-gold: #D4AF37;
+      --tindry-gold-light: #E8C468;
+      --tindry-white: #FFFFFF;
+      --tindry-cream: #F9F6EF;
+      --tindry-light-gold-bg: #FFF9E6;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    *:focus-visible { outline: 2px solid var(--tindry-gold); outline-offset: 2px; }
+    a { color: inherit; text-decoration: none; }
+
+    .tindry-shell { display: flex; min-height: 100vh; background-color: var(--tindry-white); color: var(--tindry-black); }
+
+    /* Desktop Sidebar */
+    .tindry-sidebar-desktop {
+      display: none;
+      width: 240px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+    @media (min-width: 1024px) {
+      .tindry-sidebar-desktop { display: block; }
+    }
+
+    .tindry-sidebar-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: var(--tindry-black);
+      color: var(--tindry-white);
+      border-right: 1px solid var(--tindry-dark-gray);
+      user-select: none;
+    }
+
+    .tindry-sidebar-brand {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-brand { padding: 20px 24px; }
+    }
+    .tindry-sidebar-brand a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-sidebar-scroll {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-scroll { padding: 16px; }
+    }
+
+    .tindry-nav-group { display: flex; flex-direction: column; gap: 4px; }
+    .tindry-nav-section {
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tindry-nav-section-title {
+      padding: 0 12px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-side-link {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      border-left: 3px solid transparent;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .tindry-side-link-nav { font-weight: 600; letter-spacing: 0.02em; }
+    .tindry-side-link svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--tindry-gold); }
+    .tindry-side-link:hover { background-color: var(--tindry-dark-gray); color: var(--tindry-gold-light); }
+    .tindry-side-link.active {
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border-left-color: var(--tindry-gold);
+    }
+    .tindry-side-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .tindry-private-pack {
+      margin: 24px 12px 12px;
+      padding: 16px;
+      background-color: var(--tindry-dark-gray);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .tindry-private-pack-title { font-weight: 900; font-size: 13px; color: var(--tindry-gold); margin-bottom: 4px; }
+    .tindry-private-pack-sub { font-size: 11px; color: var(--tindry-white); margin-bottom: 10px; }
+    .tindry-private-pack-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 13px;
+      transition: background-color 0.15s ease;
+    }
+    .tindry-private-pack-btn:hover { background-color: var(--tindry-gold-light); }
+
+    .tindry-sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--tindry-dark-gray);
+      font-size: 11px;
+      color: var(--tindry-cream);
+    }
+
+    /* Mobile Drawer */
+    .tindry-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+    }
+    .tindry-drawer-overlay.open { display: flex; }
+    .tindry-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .tindry-drawer-panel {
+      position: relative;
+      width: 288px;
+      max-width: 85vw;
+      height: 100%;
+      background-color: var(--tindry-black);
+      z-index: 10;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .tindry-close-drawer-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .tindry-close-drawer-btn:hover { background-color: var(--tindry-dark-gray); }
+
+    /* Main Column */
+    .tindry-content-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background-color: var(--tindry-white);
+    }
+
+    /* Header */
+    .tindry-site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: 100%;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-white);
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    .tindry-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 64px;
+      max-width: 72rem;
+      margin: 0 auto;
+      width: 100%;
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .tindry-header-inner { padding: 0 32px; height: 80px; }
+    }
+    .tindry-header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    @media (min-width: 640px) { .tindry-header-left { gap: 20px; } }
+
+    .tindry-hamburger-btn {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tindry-hamburger-btn:hover { background-color: var(--tindry-dark-gray); }
+    @media (min-width: 1024px) { .tindry-hamburger-btn { display: none; } }
+
+    .tindry-breadcrumb { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .tindry-home-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      padding: 4px 8px;
+      margin-left: -4px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .tindry-home-back:hover { color: var(--tindry-gold); }
+    .tindry-home-back svg { color: var(--tindry-gold); }
+    .tindry-crumb-sep { color: var(--tindry-gold); font-size: 12px; user-select: none; }
+    .tindry-crumb-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--tindry-white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tindry-header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .tindry-header-tagline {
+      display: none;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--tindry-cream);
+      user-select: none;
+    }
+    @media (min-width: 1024px) { .tindry-header-tagline { display: inline; } }
+    .tindry-support-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tindry-support-btn:hover {
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+    }
+
+    /* Main Workspace */
+    .tindry-main {
+      flex: 1;
+      padding: 20px;
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) { .tindry-main { padding: 32px; } }
+    @media (min-width: 768px) { .tindry-main { padding: 40px; } }
+
+    .tindry-ad-slot {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 24px;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .tindry-ad-slot-bottom { margin: 28px auto; }
+
+    .tindry-tool-header { margin-bottom: 24px; }
+    .tindry-tool-h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    @media (min-width: 640px) { .tindry-tool-h1 { font-size: 32px; } }
+    .tindry-tool-sub {
+      font-size: 13px;
+      color: #525252;
+      margin-top: 6px;
+    }
+
+    /* Split Form + Live Preview Workspace */
+    .bcard-workspace {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (min-width: 900px) {
+      .bcard-workspace {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      }
+    }
+
+    .bcard-panel {
+      background-color: var(--tindry-white);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+    @media (min-width: 640px) { .bcard-panel { padding: 24px; } }
+
+    .bcard-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tindry-black);
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--tindry-cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .bcard-badge-private {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      background-color: var(--tindry-cream);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .field-group { margin-bottom: 14px; }
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tindry-black);
+      margin-bottom: 6px;
+    }
+    .field-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d4d4d4;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--tindry-black);
+      background-color: var(--tindry-white);
+      transition: border-color 0.15s ease;
+    }
+    .field-input:focus {
+      border-color: var(--tindry-gold);
+      outline: none;
+    }
+
+    /* 6 Color Circles */
+    .color-circles {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      padding-top: 2px;
+    }
+    .color-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      border: 2px solid #e5e5e5;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .color-circle:hover { transform: scale(1.08); }
+    .color-circle.active {
+      border-color: var(--tindry-pure-black);
+      box-shadow: 0 0 0 3px var(--tindry-gold);
+      transform: scale(1.08);
+    }
+    .color-circle.active::after {
+      content: "✓";
+      font-size: 14px;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    }
+    .color-circle[data-color="gold"].active::after {
+      color: #0F0F0F;
+      text-shadow: none;
+    }
+
+    /* Photo / Logo Upload */
+    .photo-upload-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-upload-photo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 9px 16px;
+      background-color: var(--tindry-light-gold-bg);
+      color: var(--tindry-black);
+      border: 1.5px dashed var(--tindry-gold);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+    }
+    .btn-upload-photo:hover { background-color: var(--tindry-cream); }
+    .btn-remove-photo {
+      min-height: 38px;
+      padding: 7px 12px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      border: 1px solid #d4d4d4;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-remove-photo:hover { border-color: var(--tindry-gold); background-color: var(--tindry-cream); }
+
+    /* Buttons */
+    .bcard-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--tindry-cream);
+    }
+    .btn-gold-primary {
+      flex: 1;
+      min-width: 160px;
+      min-height: 46px;
+      padding: 11px 20px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.15s ease;
+    }
+    .btn-gold-primary:hover { background-color: var(--tindry-gold-light); border-color: var(--tindry-gold-light); }
+
+    .btn-outline-secondary {
+      min-height: 46px;
+      padding: 11px 16px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-black);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-outline-secondary:hover { background-color: var(--tindry-cream); border-color: var(--tindry-gold); }
+
+    /* Right Side Live Preview */
+    .preview-shell {
+      background-color: var(--tindry-cream);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .preview-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .preview-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background-color: var(--tindry-black);
+      color: var(--tindry-gold);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
+    .card-stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .business-card-preview {
+      width: 100%;
+      max-width: 470px;
+      min-height: 252px;
+      border-radius: 16px;
+      padding: 24px 24px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s ease, color 0.25s ease;
+      background: linear-gradient(135deg, #0F0F0F 0%, #1F1F1F 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(212, 175, 55, 0.5);
+    }
+    @media (max-width: 480px) {
+      .business-card-preview {
+        padding: 18px 16px 14px;
+        min-height: 220px;
+      }
+    }
+
+    .bcard-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .bcard-avatar-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.14);
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    @media (max-width: 480px) {
+      .bcard-avatar-wrap {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+      }
+    }
+    .bcard-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .bcard-identity { min-width: 0; flex: 1; }
+    .bcard-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+    @media (max-width: 480px) {
+      .bcard-name { font-size: 19px; }
+    }
+    .bcard-job {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 4px;
+      opacity: 0.92;
+      word-break: break-word;
+    }
+
+    .bcard-divider {
+      height: 1px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .bcard-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .bcard-contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12.5px;
+      min-width: 0;
+      flex: 1;
+    }
+    .bcard-contact-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-word;
+    }
+    .bcard-contact-line svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      opacity: 0.9;
+    }
+
+    .bcard-watermark {
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      opacity: 0.65;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    /* Trust Row & Info */
+    .tr-trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 24px 0;
+      margin-top: 28px;
+      border-top: 1px solid var(--tindry-gold);
+      border-bottom: 1px solid var(--tindry-gold);
+    }
+    @media (max-width: 640px) { .tr-trust-row { grid-template-columns: 1fr; } }
+    .tr-trust-item strong { display: block; font-size: 13px; color: var(--tindry-black); margin-bottom: 2px; }
+    .tr-trust-item p { font-size: 12px; color: var(--tindry-dark-gray); }
+
+    /* Footer */
+    .tindry-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--tindry-white);
+      background-color: var(--tindry-pure-black);
+    }
+    .tindry-footer-inner {
+      max-width: 64rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .tindry-footer-inner { flex-direction: row; }
+    }
+    .tindry-footer-brand { text-align: center; }
+    @media (min-width: 640px) { .tindry-footer-brand { text-align: left; } }
+    .tindry-footer-brand-name { font-weight: 700; color: var(--tindry-gold); font-size: 14px; }
+    .tindry-footer-brand-sub { font-size: 11px; color: var(--tindry-cream); margin-top: 2px; }
+    .tindry-footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    @media (min-width: 640px) {
+      .tindry-footer-right { flex-direction: row; gap: 24px; }
+    }
+    .tindry-footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tindry-footer-nav a { color: var(--tindry-gold); transition: color 0.15s ease; }
+    .tindry-footer-nav a:hover { color: var(--tindry-gold-light); }
+    .tindry-footer-sep { display: none; height: 14px; width: 1px; background-color: var(--tindry-dark-gray); }
+    @media (min-width: 640px) { .tindry-footer-sep { display: block; } }
+    .tindry-footer-social { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+    .tindry-social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-white);
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .tindry-social-btn:hover { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+
+    .tindry-featured-wrap { display: flex; justify-content: center; margin: 24px 0; }
+    .tindry-featured-badge {
+      background: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      padding: 12px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: sans-serif;
+      border: 1px solid var(--tindry-gold);
+      transition: all 0.15s ease;
+    }
+    .tindry-featured-badge:hover { background: var(--tindry-gold); color: var(--tindry-pure-black); }
+    .tindry-copyright { text-align: center; padding: 15px; font-size: 13px; color: #888; }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2471096045634582" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <div class="tindry-shell">
+    <!-- Desktop Sidebar -->
+    <aside class="tindry-sidebar-desktop" aria-label="Sidebar navigation">
+      <div class="tindry-sidebar-inner">
+        <div class="tindry-sidebar-brand">
+          <a href="/"><span>Tindry</span></a>
+        </div>
+        <div class="tindry-sidebar-scroll">
+          <div class="tindry-nav-group">
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Home</span>
+            </a>
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>All Tools</span>
+            </a>
+            <a href="/blog" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <span>Blog</span>
+            </a>
+            <a href="/faq" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>FAQ</span>
+            </a>
+          </div>
+
+          <div class="tindry-nav-section">
+            <div class="tindry-nav-section-title">File Tools</div>
+            <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+            <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+            <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+            <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+            <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+            <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+            <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+            <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+            <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+            <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+            <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+            <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+            <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+            <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+            <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+            <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+            <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+            <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+            <a href="/free-invoice-maker.html" class="tindry-side-link"><span>Free Invoice Maker</span></a>
+            <a href="/business-card-maker.html" class="tindry-side-link active"><span>Business Card Maker</span></a>
+
+            <div class="tindry-private-pack">
+              <div class="tindry-private-pack-title">✨ PRIVATE PACK</div>
+              <div class="tindry-private-pack-sub">Premium Reference</div>
+              <a href="https://tindry.gumroad.com/l/Private" class="tindry-private-pack-btn">👑 $5 - Get Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="tindry-sidebar-footer">
+          <p>Private &middot; Client-Side</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="tindry-drawer-overlay" aria-hidden="true">
+      <div id="drawerBackdrop" class="tindry-drawer-backdrop"></div>
+      <div class="tindry-drawer-panel">
+        <div class="tindry-sidebar-inner">
+          <div class="tindry-sidebar-brand">
+            <a href="/"><span>Tindry</span></a>
+            <button type="button" id="closeDrawerBtn" class="tindry-close-drawer-btn" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="tindry-sidebar-scroll">
+            <div class="tindry-nav-group">
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>Home</span></a>
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>All Tools</span></a>
+              <a href="/blog" class="tindry-side-link tindry-side-link-nav"><span>Blog</span></a>
+              <a href="/faq" class="tindry-side-link tindry-side-link-nav"><span>FAQ</span></a>
+            </div>
+            <div class="tindry-nav-section">
+              <div class="tindry-nav-section-title">File Tools</div>
+              <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+              <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+              <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+              <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+              <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+              <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+              <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+              <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+              <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+              <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+              <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+              <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+              <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+              <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+              <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+              <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+              <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+              <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+              <a href="/free-invoice-maker.html" class="tindry-side-link"><span>Free Invoice Maker</span></a>
+              <a href="/business-card-maker.html" class="tindry-side-link active"><span>Business Card Maker</span></a>
+            </div>
+          </div>
+          <div class="tindry-sidebar-footer">
+            <p>Private &middot; Client-Side</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Column -->
+    <div class="tindry-content-col">
+      <header class="tindry-site-header">
+        <div class="tindry-header-inner">
+          <div class="tindry-header-left">
+            <button type="button" id="openDrawerBtn" class="tindry-hamburger-btn" aria-label="Open navigation menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="4" x2="20" y1="12" y2="12"></line>
+                <line x1="4" x2="20" y1="6" y2="6"></line>
+                <line x1="4" x2="20" y1="18" y2="18"></line>
+              </svg>
+            </button>
+            <div class="tindry-breadcrumb">
+              <a href="/" class="tindry-home-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <span>Home</span>
+              </a>
+              <span class="tindry-crumb-sep">/</span>
+              <span class="tindry-crumb-title">Business Card Maker</span>
+            </div>
+          </div>
+          <div class="tindry-header-right">
+            <span class="tindry-header-tagline">Fast &middot; Private &middot; Free</span>
+            <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" aria-label="Support Tindry on Ko-fi" class="tindry-support-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+              <span>Support Tindry</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="tindry-main">
+        <div class="tindry-ad-slot">
+          <script>
+            atOptions = {
+              'key' : '733f37d5b3e5b35fd0302daa53c1798c',
+              'format' : 'iframe',
+              'height' : 50,
+              'width' : 320,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/733f37d5b3e5b35fd0302daa53c1798c"></script>
+        </div>
+
+        <div class="tindry-tool-header">
+          <h1 class="tindry-tool-h1">Business Card Maker</h1>
+          <p class="tindry-tool-sub">Create your professional business card in 1 second. Choose your color, job, and photo 100% privately in your browser.</p>
+        </div>
+
+        <div class="bcard-workspace">
+          <!-- Left Side Form -->
+          <section class="bcard-panel" aria-label="Business card details">
+            <div class="bcard-panel-title">
+              <span>Card Details</span>
+              <span class="bcard-badge-private">🔒 Photo stays private</span>
+            </div>
+
+            <div class="field-group">
+              <label for="fullName" class="field-label">Full Name</label>
+              <input type="text" id="fullName" class="field-input" placeholder="Your Full Name">
+            </div>
+
+            <div class="field-group">
+              <label for="jobTitle" class="field-label">Job / Business</label>
+              <input type="text" id="jobTitle" class="field-input" placeholder="Hair Salon, Shop, Designer, Restaurant...">
+            </div>
+
+            <div class="field-group">
+              <label for="phone" class="field-label">Phone / WhatsApp</label>
+              <input type="text" id="phone" class="field-input" placeholder="+1 555 234 5678">
+            </div>
+
+            <div class="field-group">
+              <label for="website" class="field-label">Website / Instagram</label>
+              <input type="text" id="website" class="field-input" placeholder="tindry.com or @yourbrand">
+            </div>
+
+            <div class="field-group">
+              <span class="field-label">Choose Color</span>
+              <div class="color-circles" role="radiogroup" aria-label="Choose business card color">
+                <button type="button" class="color-circle active" data-color="gold" title="Gold" aria-label="Gold" style="background: linear-gradient(135deg, #E8C468 0%, #D4AF37 60%, #B8860B 100%);"></button>
+                <button type="button" class="color-circle" data-color="black" title="Black" aria-label="Black" style="background: linear-gradient(135deg, #1F1F1F 0%, #0F0F0F 100%);"></button>
+                <button type="button" class="color-circle" data-color="blue" title="Blue" aria-label="Blue" style="background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);"></button>
+                <button type="button" class="color-circle" data-color="green" title="Green" aria-label="Green" style="background: linear-gradient(135deg, #16A34A 0%, #14532D 100%);"></button>
+                <button type="button" class="color-circle" data-color="red" title="Red" aria-label="Red" style="background: linear-gradient(135deg, #DC2626 0%, #991B1B 100%);"></button>
+                <button type="button" class="color-circle" data-color="pink" title="Pink" aria-label="Pink" style="background: linear-gradient(135deg, #EC4899 0%, #9D174D 100%);"></button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="photoInput" class="field-label">Upload Photo / Logo</label>
+              <div class="photo-upload-row">
+                <button type="button" id="uploadPhotoBtn" class="btn-upload-photo">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                  </svg>
+                  <span id="uploadPhotoText">Choose Photo or Logo</span>
+                </button>
+                <button type="button" id="removePhotoBtn" class="btn-remove-photo" style="display: none;">Remove</button>
+                <input type="file" id="photoInput" accept="image/*" style="display: none;">
+              </div>
+            </div>
+
+            <div class="bcard-actions">
+              <button type="button" id="downloadCardBtn" class="btn-gold-primary">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Download Card (Image)</span>
+              </button>
+              <button type="button" id="downloadPdfBtn" class="btn-outline-secondary">Download PDF</button>
+            </div>
+          </section>
+
+          <!-- Right Side Live Preview -->
+          <section class="preview-shell" aria-label="Live business card preview">
+            <div class="preview-bar">
+              <span>Live Card Preview</span>
+              <span class="preview-pill" id="activeThemePill">Gold Theme</span>
+            </div>
+
+            <div class="card-stage">
+              <div id="cardPreview" class="business-card-preview">
+                <div class="bcard-top">
+                  <div class="bcard-avatar-wrap" id="prevAvatarWrap">
+                    <span id="prevInitials">T</span>
+                    <img id="prevPhoto" src="" alt="Uploaded business logo or photo" style="display: none;">
+                  </div>
+                  <div class="bcard-identity">
+                    <div id="prevName" class="bcard-name">Your Full Name</div>
+                    <div id="prevJob" class="bcard-job">Designer &middot; Creative Studio</div>
+                  </div>
+                </div>
+
+                <div class="bcard-divider" id="prevDivider"></div>
+
+                <div class="bcard-bottom">
+                  <div class="bcard-contacts">
+                    <div class="bcard-contact-line" id="prevPhoneRow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                      <span id="prevPhone">+1 555 234 5678</span>
+                    </div>
+                    <div class="bcard-contact-line" id="prevWebsiteRow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                      </svg>
+                      <span id="prevWebsite">tindry.com</span>
+                    </div>
+                  </div>
+                  <div class="bcard-watermark">Made with Tindry.com</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <section class="tr-trust-row" aria-label="Privacy guarantees">
+          <div class="tr-trust-item">
+            <strong>Instant Live Design</strong>
+            <p>Watch your name, job, photo, and color theme update live in real time.</p>
+          </div>
+          <div class="tr-trust-item">
+            <strong>100% Browser Private</strong>
+            <p>Your photo, shop logo, and contact info never leave your device or touch any server.</p>
+          </div>
+          <div class="tr-trust-item">
+            <strong>Print-Ready Downloads</strong>
+            <p>Export a crisp high-resolution PNG image or PDF business card in one click.</p>
+          </div>
+        </section>
+
+        <div class="tindry-ad-slot tindry-ad-slot-bottom">
+          <script>
+            atOptions = {
+              'key' : 'ba7702fb84b056f6daf905b1af53674f',
+              'format' : 'iframe',
+              'height' : 250,
+              'width' : 300,
+              'params' : {}
+            };
+          </script>
+          <script src="https://bauval.org/22/ba7702fb84b056f6daf905b1af53674f"></script>
+        </div>
+      </main>
+
+      <footer class="tindry-footer">
+        <div class="tindry-footer-inner">
+          <div class="tindry-footer-brand">
+            <span class="tindry-footer-brand-name">Tindry</span>
+            <p class="tindry-footer-brand-sub">Simple file tools that just work &middot; Zero uploads &middot; Complete privacy</p>
+          </div>
+
+          <div class="tindry-footer-right">
+            <nav aria-label="Footer navigation" class="tindry-footer-nav">
+              <a href="/">Tools</a>
+              <a href="/blog">Blog</a>
+              <a href="/about">About</a>
+              <a href="/faq">FAQ</a>
+              <a href="/contact">Contact</a>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+            </nav>
+            <div class="tindry-footer-sep"></div>
+            <div class="tindry-footer-social">
+              <a href="https://x.com/TindryOfficial" target="_blank" rel="noopener noreferrer" aria-label="Follow Tindry on X" class="tindry-social-btn">
+                <span>Follow @TindryOfficial</span>
+              </a>
+              <a href="https://t.me/TindryCommunity" target="_blank" rel="noopener noreferrer" aria-label="Join Tindry Community on Telegram" class="tindry-social-btn">
+                <span>Join Tindry Community</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tindry-featured-wrap">
+          <a href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed" target="_blank" rel="noopener noreferrer" class="tindry-featured-badge">
+            ⭐ Featured on TechBaseDirectory — Tindry
+          </a>
+        </div>
+
+        <div class="tindry-copyright">
+          &copy; 2020 - <span id="tindry-copyright-year"></span> Tindry. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Ko-fi Popup Component -->
+  <div id="tindry-coffee-popup" aria-live="polite" style="display: none;">
+    <style>
+      #tindry-coffee-popup {
+        position: fixed; bottom: 20px; right: 20px; z-index: 999999;
+        max-width: 360px; width: calc(100% - 32px); background-color: #1A1A1A;
+        color: #ffffff; border: 1px solid #D4AF37; border-radius: 12px;
+        padding: 14px 16px; box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 13px; line-height: 1.45; opacity: 0; transform: translateY(20px);
+        transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+      }
+      #tindry-coffee-popup.tindry-show { display: block !important; opacity: 1; transform: translateY(0); pointer-events: auto; }
+      #tindry-coffee-popup .tindry-kofi-btn { display: inline-flex; width: 100%; margin-top: 10px; background-color: #D4AF37; color: #000000; font-weight: 700; font-size: 13px; text-decoration: none; padding: 10px 14px; border-radius: 8px; justify-content: center; }
+      #tindry-coffee-popup .tindry-kofi-btn:hover { background-color: #E8C468; }
+      @media (max-width: 640px) { #tindry-coffee-popup { right: 16px; left: 16px; bottom: 16px; width: auto; max-width: none; } }
+    </style>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+      <div>🎉 Done! File never left your phone. Tindry is free. Tip on Ko-fi ☕ to keep it free?</div>
+      <button type="button" id="tindry-close-popup" aria-label="Close" style="background: none; border: none; color: #888; font-size: 16px; cursor: pointer; padding: 0 4px; line-height: 1;">&times;</button>
+    </div>
+    <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" class="tindry-kofi-btn">Tip on Ko-fi ☕</a>
+  </div>
+
+  <script>
+    (function() {
+      var yearEl = document.getElementById('tindry-copyright-year');
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      // Mobile drawer controls
+      var mobileDrawer = document.getElementById('mobileDrawer');
+      var openDrawerBtn = document.getElementById('openDrawerBtn');
+      var closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      var drawerBackdrop = document.getElementById('drawerBackdrop');
+      function setDrawer(open) {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.toggle('open', open);
+        mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+      if (openDrawerBtn) openDrawerBtn.addEventListener('click', function() { setDrawer(true); });
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', function() { setDrawer(false); });
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', function() { setDrawer(false); });
+
+      var THEMES = {
+        gold: {
+          label: 'Gold Theme',
+          bgStart: '#E8C468',
+          bgEnd: '#B8860B',
+          textColor: '#0F0F0F',
+          accentColor: '#1A1A1A',
+          borderColor: '#8C6200',
+          dividerColor: 'rgba(15, 15, 15, 0.22)',
+          avatarBg: 'rgba(15, 15, 15, 0.12)',
+          avatarBorder: 'rgba(15, 15, 15, 0.45)'
+        },
+        black: {
+          label: 'Black Theme',
+          bgStart: '#1C1C1C',
+          bgEnd: '#0A0A0A',
+          textColor: '#FFFFFF',
+          accentColor: '#D4AF37',
+          borderColor: '#D4AF37',
+          dividerColor: 'rgba(212, 175, 55, 0.35)',
+          avatarBg: 'rgba(212, 175, 55, 0.14)',
+          avatarBorder: '#D4AF37'
+        },
+        blue: {
+          label: 'Blue Theme',
+          bgStart: '#2563EB',
+          bgEnd: '#1E3A8A',
+          textColor: '#FFFFFF',
+          accentColor: '#DBEAFE',
+          borderColor: '#93C5FD',
+          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          avatarBg: 'rgba(255, 255, 255, 0.16)',
+          avatarBorder: 'rgba(255, 255, 255, 0.6)'
+        },
+        green: {
+          label: 'Green Theme',
+          bgStart: '#16A34A',
+          bgEnd: '#14532D',
+          textColor: '#FFFFFF',
+          accentColor: '#DCFCE7',
+          borderColor: '#86EFAC',
+          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          avatarBg: 'rgba(255, 255, 255, 0.16)',
+          avatarBorder: 'rgba(255, 255, 255, 0.6)'
+        },
+        red: {
+          label: 'Red Theme',
+          bgStart: '#DC2626',
+          bgEnd: '#991B1B',
+          textColor: '#FFFFFF',
+          accentColor: '#FEE2E2',
+          borderColor: '#FCA5A5',
+          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          avatarBg: 'rgba(255, 255, 255, 0.16)',
+          avatarBorder: 'rgba(255, 255, 255, 0.6)'
+        },
+        pink: {
+          label: 'Pink Theme',
+          bgStart: '#EC4899',
+          bgEnd: '#9D174D',
+          textColor: '#FFFFFF',
+          accentColor: '#FCE7F3',
+          borderColor: '#F9A8D4',
+          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          avatarBg: 'rgba(255, 255, 255, 0.16)',
+          avatarBorder: 'rgba(255, 255, 255, 0.6)'
+        }
+      };
+
+      var fullNameInput = document.getElementById('fullName');
+      var jobTitleInput = document.getElementById('jobTitle');
+      var phoneInput = document.getElementById('phone');
+      var websiteInput = document.getElementById('website');
+      var colorButtons = document.querySelectorAll('.color-circle');
+      var photoInput = document.getElementById('photoInput');
+      var uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+      var uploadPhotoText = document.getElementById('uploadPhotoText');
+      var removePhotoBtn = document.getElementById('removePhotoBtn');
+      var downloadCardBtn = document.getElementById('downloadCardBtn');
+      var downloadPdfBtn = document.getElementById('downloadPdfBtn');
+
+      var cardPreview = document.getElementById('cardPreview');
+      var activeThemePill = document.getElementById('activeThemePill');
+      var prevAvatarWrap = document.getElementById('prevAvatarWrap');
+      var prevInitials = document.getElementById('prevInitials');
+      var prevPhoto = document.getElementById('prevPhoto');
+      var prevName = document.getElementById('prevName');
+      var prevJob = document.getElementById('prevJob');
+      var prevDivider = document.getElementById('prevDivider');
+      var prevPhone = document.getElementById('prevPhone');
+      var prevWebsite = document.getElementById('prevWebsite');
+
+      var activeColor = 'gold';
+      var uploadedImgObj = null;
+
+      function getInitials(name) {
+        var clean = (name || '').trim();
+        if (!clean) return 'T';
+        var parts = clean.split(/\s+/);
+        if (parts.length >= 2) {
+          return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+        }
+        return clean.slice(0, 2).toUpperCase();
+      }
+
+      function updatePreview() {
+        var theme = THEMES[activeColor] || THEMES.gold;
+        var nameVal = fullNameInput.value.trim() || 'Your Full Name';
+        var jobVal = jobTitleInput.value.trim() || 'Designer · Creative Studio';
+        var phoneVal = phoneInput.value.trim() || '+1 555 234 5678';
+        var siteVal = websiteInput.value.trim() || 'tindry.com';
+
+        cardPreview.style.background = 'linear-gradient(135deg, ' + theme.bgStart + ' 0%, ' + theme.bgEnd + ' 100%)';
+        cardPreview.style.color = theme.textColor;
+        cardPreview.style.borderColor = theme.borderColor;
+
+        prevJob.style.color = theme.accentColor;
+        prevDivider.style.background = theme.dividerColor;
+        prevAvatarWrap.style.background = theme.avatarBg;
+        prevAvatarWrap.style.borderColor = theme.avatarBorder;
+        prevAvatarWrap.style.color = theme.textColor;
+        activeThemePill.textContent = theme.label;
+
+        prevName.textContent = nameVal;
+        prevJob.textContent = jobVal;
+        prevPhone.textContent = phoneVal;
+        prevWebsite.textContent = siteVal;
+        prevInitials.textContent = getInitials(fullNameInput.value);
+      }
+
+      fullNameInput.addEventListener('input', updatePreview);
+      jobTitleInput.addEventListener('input', updatePreview);
+      phoneInput.addEventListener('input', updatePreview);
+      websiteInput.addEventListener('input', updatePreview);
+
+      colorButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          colorButtons.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeColor = btn.dataset.color || 'gold';
+          updatePreview();
+        });
+      });
+
+      uploadPhotoBtn.addEventListener('click', function() {
+        photoInput.click();
+      });
+
+      photoInput.addEventListener('change', function() {
+        if (!photoInput.files || photoInput.files.length === 0) return;
+        var file = photoInput.files[0];
+        if (!file.type.startsWith('image/')) return;
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            uploadedImgObj = img;
+            prevPhoto.src = e.target.result;
+            prevPhoto.style.display = 'block';
+            prevInitials.style.display = 'none';
+            removePhotoBtn.style.display = 'inline-block';
+            uploadPhotoText.textContent = 'Change Photo / Logo';
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removePhotoBtn.addEventListener('click', function() {
+        uploadedImgObj = null;
+        photoInput.value = '';
+        prevPhoto.src = '';
+        prevPhoto.style.display = 'none';
+        prevInitials.style.display = 'block';
+        removePhotoBtn.style.display = 'none';
+        uploadPhotoText.textContent = 'Choose Photo or Logo';
+      });
+
+      function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+        var words = text.split(' ');
+        var line = '';
+        var lines = [];
+        for (var i = 0; i < words.length; i++) {
+          var testLine = line ? line + ' ' + words[i] : words[i];
+          if (ctx.measureText(testLine).width > maxWidth && line) {
+            lines.push(line);
+            line = words[i];
+          } else {
+            line = testLine;
+          }
+        }
+        if (line) lines.push(line);
+        if (lines.length > maxLines) {
+          lines = lines.slice(0, maxLines);
+          var last = lines[maxLines - 1];
+          while (ctx.measureText(last + '...').width > maxWidth && last.length > 0) {
+            last = last.slice(0, -1);
+          }
+          lines[maxLines - 1] = last + '...';
+        }
+        for (var j = 0; j < lines.length; j++) {
+          ctx.fillText(lines[j], x, y + j * lineHeight);
+        }
+        return lines.length;
+      }
+
+      function renderCardToCanvas() {
+        var width = 1050;
+        var height = 600;
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        var theme = THEMES[activeColor] || THEMES.gold;
+
+        // Background gradient
+        var grad = ctx.createLinearGradient(0, 0, width, height);
+        grad.addColorStop(0, theme.bgStart);
+        grad.addColorStop(1, theme.bgEnd);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Subtle inner border frame
+        ctx.strokeStyle = theme.borderColor;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(18, 18, width - 36, height - 36);
+
+        // Avatar / Photo box (rounded rect)
+        var avX = 64;
+        var avY = 66;
+        var avSize = 156;
+        var r = 24;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(avX + r, avY);
+        ctx.arcTo(avX + avSize, avY, avX + avSize, avY + avSize, r);
+        ctx.arcTo(avX + avSize, avY + avSize, avX, avY + avSize, r);
+        ctx.arcTo(avX, avY + avSize, avX, avY, r);
+        ctx.arcTo(avX, avY, avX + avSize, avY, r);
+        ctx.closePath();
+
+        if (uploadedImgObj) {
+          ctx.clip();
+          var iw = uploadedImgObj.naturalWidth || uploadedImgObj.width;
+          var ih = uploadedImgObj.naturalHeight || uploadedImgObj.height;
+          var scale = Math.max(avSize / iw, avSize / ih);
+          var dw = iw * scale;
+          var dh = ih * scale;
+          ctx.drawImage(uploadedImgObj, avX + (avSize - dw) / 2, avY + (avSize - dh) / 2, dw, dh);
+        } else {
+          ctx.fillStyle = theme.avatarBg;
+          ctx.fill();
+          ctx.fillStyle = theme.textColor;
+          ctx.font = 'bold 58px "Playfair Display", Georgia, serif';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(getInitials(fullNameInput.value), avX + avSize / 2, avY + avSize / 2 + 2);
+        }
+        ctx.restore();
+
+        // Avatar border
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(avX + r, avY);
+        ctx.arcTo(avX + avSize, avY, avX + avSize, avY + avSize, r);
+        ctx.arcTo(avX + avSize, avY + avSize, avX, avY + avSize, r);
+        ctx.arcTo(avX, avY + avSize, avX, avY, r);
+        ctx.arcTo(avX, avY, avX + avSize, avY, r);
+        ctx.closePath();
+        ctx.strokeStyle = theme.avatarBorder;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+        ctx.restore();
+
+        // Identity text
+        var textX = avX + avSize + 40;
+        var maxTextW = width - textX - 64;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = theme.textColor;
+        ctx.font = 'bold 50px "Playfair Display", Georgia, serif';
+        var nameVal = fullNameInput.value.trim() || 'Your Full Name';
+        var nameLines = wrapCanvasText(ctx, nameVal, textX, 82, maxTextW, 56, 2);
+
+        ctx.fillStyle = theme.accentColor;
+        ctx.font = '600 28px Inter, Arial, sans-serif';
+        var jobVal = jobTitleInput.value.trim() || 'Designer · Creative Studio';
+        wrapCanvasText(ctx, jobVal, textX, 82 + nameLines * 56 + 10, maxTextW, 34, 2);
+
+        // Divider
+        ctx.fillStyle = theme.dividerColor;
+        ctx.fillRect(64, 346, width - 128, 2);
+
+        // Contact details
+        var phoneVal = phoneInput.value.trim() || '+1 555 234 5678';
+        var siteVal = websiteInput.value.trim() || 'tindry.com';
+
+        ctx.fillStyle = theme.textColor;
+        ctx.font = '600 26px Inter, Arial, sans-serif';
+        ctx.fillText('Phone / WhatsApp:  ' + phoneVal, 64, 400, width - 128);
+        ctx.fillText('Website / Social:     ' + siteVal, 64, 452, width - 128);
+
+        // Small Made with Tindry.com footer mark
+        ctx.save();
+        ctx.globalAlpha = 0.65;
+        ctx.fillStyle = theme.textColor;
+        ctx.font = '600 18px Inter, Arial, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('Made with Tindry.com', width - 64, 530);
+        ctx.restore();
+
+        return canvas;
+      }
+
+      function showKofiPopup() {
+        var popup = document.getElementById('tindry-coffee-popup');
+        if (!popup) return;
+        try {
+          if (localStorage.getItem('tindry_kofi_closed')) return;
+        } catch (e) {}
+        setTimeout(function() {
+          popup.classList.add('tindry-show');
+          setTimeout(function() {
+            popup.classList.remove('tindry-show');
+          }, 8000);
+        }, 700);
+      }
+
+      downloadCardBtn.addEventListener('click', function() {
+        var canvas = renderCardToCanvas();
+        canvas.toBlob(function(blob) {
+          if (!blob) return;
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = 'tindry-business-card.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+          showKofiPopup();
+        }, 'image/png');
+      });
+
+      downloadPdfBtn.addEventListener('click', function() {
+        var canvas = renderCardToCanvas();
+        if (!window.jspdf || !window.jspdf.jsPDF) {
+          downloadCardBtn.click();
+          return;
+        }
+        var jsPDF = window.jspdf.jsPDF;
+        // Standard 3.5 x 2 inch business card PDF (88.9mm x 50.8mm)
+        var doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [88.9, 50.8] });
+        var imgData = canvas.toDataURL('image/png');
+        doc.addImage(imgData, 'PNG', 0, 0, 88.9, 50.8);
+        doc.save('tindry-business-card.pdf');
+        showKofiPopup();
+      });
+
+      var popup = document.getElementById('tindry-coffee-popup');
+      var closePopupBtn = document.getElementById('tindry-close-popup');
+      if (closePopupBtn && popup) {
+        closePopupBtn.addEventListener('click', function() {
+          popup.classList.remove('tindry-show');
+          try { localStorage.setItem('tindry_kofi_closed', '1'); } catch (e) {}
+        });
+      }
+
+      updatePreview();
+    })();
+  </script>
+</body>
+</html>

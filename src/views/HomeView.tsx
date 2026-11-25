@@ -23,6 +23,7 @@ import {
   FileText,
   Scissors,
   Receipt,
+  CreditCard,
 } from 'lucide-react';
 import { TOOLS, ToolDefinition } from '../config/tools';
 import { ToolSearch } from '../components/ToolSearch';
@@ -104,6 +105,15 @@ const POPULAR_CARDS: LuxuryCardItem[] = [
     externalUrl: '/qr-generator.html',
     category: 'image',
     icon: QrCode,
+  },
+  {
+    id: 'business-card-maker',
+    name: 'Business Card Maker',
+    description: 'Create your professional business card in 1 second. Choose your color, job, and photo.',
+    href: '/business-card-maker.html',
+    externalUrl: '/business-card-maker.html',
+    category: 'business',
+    icon: CreditCard,
   },
 ];
 
