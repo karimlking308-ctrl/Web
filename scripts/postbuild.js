@@ -175,7 +175,8 @@ const standaloneHtmlTools = [
   'split-pdf.html',
   'compress-pdf.html',
   'free-invoice-maker.html',
-  'business-card-maker.html'
+  'business-card-maker.html',
+  'cv-builder.html'
 ];
 
 if (fs.existsSync(distDir)) {

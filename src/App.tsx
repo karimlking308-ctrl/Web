@@ -9,6 +9,7 @@ import { LegalView } from './views/LegalView';
 import { BlogListView } from './views/BlogListView';
 import { BlogPostView } from './views/BlogPostView';
 import { AboutView } from './views/AboutView';
+import { AdminSettingsView } from './views/AdminSettingsView';
 import { getArticleBySlug } from './data/blogArticles';
 import { Mp4ToMp3Tool } from './tools/Mp4ToMp3Tool';
 import { WebmToMp4Tool } from './tools/WebmToMp4Tool';
@@ -75,6 +76,8 @@ function getInitialView(): string {
   if (path === '/contact') return 'contact';
   if (path === '/privacy') return 'privacy';
   if (path === '/terms') return 'terms';
+  if (path === '/admin') return 'admin';
+  if (path === '/settings') return 'settings';
 
   return 'home';
 }
@@ -146,6 +149,9 @@ export function App() {
         return <BlogListView onSelectArticle={(slug) => navigateTo(`blog/${slug}`)} />;
       case 'about':
         return <AboutView onNavigateHome={() => navigateTo('home')} />;
+      case 'admin':
+      case 'settings':
+        return <AdminSettingsView />;
       default:
         if (currentView.startsWith('blog/')) {
           const slug = currentView.replace('blog/', '');
@@ -182,8 +188,23 @@ export function App() {
       <div className="flex-1 flex flex-col min-w-0 bg-white">
         <Header
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
-          currentToolName={activeTool ? activeTool.name : (currentView.startsWith('blog') ? 'Blog' : undefined)}
-          onBackToHome={activeTool || currentView.startsWith('blog') ? () => navigateTo('home') : undefined}
+          currentToolName={
+            activeTool
+              ? activeTool.name
+              : currentView.startsWith('blog')
+                ? 'Blog'
+                : currentView === 'admin' || currentView === 'settings'
+                  ? 'Admin Settings'
+                  : undefined
+          }
+          onBackToHome={
+            activeTool ||
+            currentView.startsWith('blog') ||
+            currentView === 'admin' ||
+            currentView === 'settings'
+              ? () => navigateTo('home')
+              : undefined
+          }
           onNavigateTools={() => navigateTo('all-tools')}
           onNavigateBlog={() => navigateTo('blog')}
         />

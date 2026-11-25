@@ -37,7 +37,9 @@ export const SeoManager: React.FC<SeoManagerProps> = ({ currentView }) => {
           window.location.hostname === 'www.tindry.com' ||
           window.location.hostname.endsWith('tindry.com')));
 
-    if (isProduction) {
+    if (config.noindex) {
+      setMeta('name', 'robots', 'noindex, nofollow');
+    } else if (isProduction) {
       setMeta('name', 'robots', 'index, follow');
     } else {
       setMeta('name', 'robots', 'noindex, nofollow');

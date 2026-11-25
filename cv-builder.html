@@ -1,0 +1,3046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tindry - Free CV Builder | Create Professional CV in Minutes</title>
+  <meta name="description" content="Create a professional CV for free with Tindry. Choose from 6 templates, add your photo, QR code, and download as PDF or Image. No sign-up needed.">
+  <meta name="keywords" content="free cv builder, create cv online, cv maker, resume builder, cv with qr code, cv maroc, cv canada">
+  <link rel="canonical" href="https://tindry.com/cv-builder">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tindry">
+  <meta property="og:title" content="Tindry - Free CV Builder | Create Professional CV in Minutes">
+  <meta property="og:description" content="Create a professional CV for free with Tindry. Choose from 6 templates, add your photo, QR code, and download as PDF or Image. No sign-up needed.">
+  <meta property="og:image" content="https://tindry.com/opengraph-image.png">
+  <meta property="og:url" content="https://tindry.com/cv-builder">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tindry - Free CV Builder | Create Professional CV in Minutes">
+  <meta name="twitter:description" content="Create a professional CV for free with Tindry. Choose from 6 templates, add your photo, QR code, and download as PDF or Image. No sign-up needed.">
+  <meta name="twitter:image" content="https://tindry.com/opengraph-image.png">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Structured Data JSON-LD -->
+  <script id="cv-jsonld" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Tindry CV Builder",
+    "url": "https://tindry.com/cv-builder",
+    "description": "Create a professional CV for free with Tindry. Choose from 6 templates, add your photo, QR code, and download as PDF or Image. No sign-up needed.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    /* ======================================================================
+       1. TINDRY BASE THEME & TOKENS (Matches all Tindry tools)
+       ====================================================================== */
+    :root {
+      color-scheme: light;
+      --tindry-black: #0F0F0F;
+      --tindry-pure-black: #000000;
+      --tindry-dark-gray: #1A1A1A;
+      --tindry-gold: #D4AF37;
+      --tindry-gold-light: #E8C468;
+      --tindry-white: #FFFFFF;
+      --tindry-cream: #F9F6EF;
+      --tindry-light-gold-bg: #FFF9E6;
+      --cv-blue: #2563EB;
+      --cv-blue-dark: #1D4ED8;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    *:focus-visible { outline: 2px solid var(--tindry-gold); outline-offset: 2px; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    .is-hidden { display: none !important; }
+
+    /* ======================================================================
+       2. APP SHELL, SIDEBAR, MOBILE DRAWER & HEADER
+       ====================================================================== */
+    .tindry-shell {
+      display: flex;
+      min-height: 100vh;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+    }
+
+    .tindry-sidebar-desktop {
+      display: none;
+      width: 240px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+    @media (min-width: 1024px) {
+      .tindry-sidebar-desktop { display: block; }
+    }
+
+    .tindry-sidebar-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background-color: var(--tindry-black);
+      color: var(--tindry-white);
+      border-right: 1px solid var(--tindry-dark-gray);
+      user-select: none;
+    }
+
+    .tindry-sidebar-brand {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-brand { padding: 20px 24px; }
+    }
+    .tindry-sidebar-brand a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-sidebar-scroll {
+      flex: 1;
+      padding: 16px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    @media (min-width: 640px) {
+      .tindry-sidebar-scroll { padding: 16px; }
+    }
+
+    .tindry-nav-group { display: flex; flex-direction: column; gap: 4px; }
+    .tindry-nav-section {
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .tindry-nav-section-title {
+      padding: 0 12px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tindry-gold);
+    }
+
+    .tindry-side-link {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      border-left: 3px solid transparent;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .tindry-side-link-nav { font-weight: 600; letter-spacing: 0.02em; }
+    .tindry-side-link svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--tindry-gold); }
+    .tindry-side-link:hover { background-color: var(--tindry-dark-gray); color: var(--tindry-gold-light); }
+    .tindry-side-link.active {
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border-left-color: var(--tindry-gold);
+    }
+    .tindry-side-link span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .tindry-private-pack {
+      margin: 24px 12px 12px;
+      padding: 16px;
+      background-color: var(--tindry-dark-gray);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 12px;
+      text-align: center;
+    }
+    .tindry-private-pack-title { font-weight: 900; font-size: 13px; color: var(--tindry-gold); margin-bottom: 4px; }
+    .tindry-private-pack-sub { font-size: 11px; color: var(--tindry-white); margin-bottom: 10px; }
+    .tindry-private-pack-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 900;
+      font-size: 13px;
+      transition: background-color 0.15s ease;
+    }
+    .tindry-private-pack-btn:hover { background-color: var(--tindry-gold-light); }
+
+    .tindry-sidebar-footer {
+      padding: 16px 20px;
+      border-top: 1px solid var(--tindry-dark-gray);
+      font-size: 11px;
+      color: var(--tindry-cream);
+    }
+
+    .tindry-drawer-overlay { position: fixed; inset: 0; z-index: 50; display: none; }
+    .tindry-drawer-overlay.open { display: flex; }
+    .tindry-drawer-backdrop { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); }
+    .tindry-drawer-panel {
+      position: relative;
+      width: 288px;
+      max-width: 85vw;
+      height: 100%;
+      background-color: var(--tindry-black);
+      z-index: 10;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .tindry-close-drawer-btn {
+      min-width: 44px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .tindry-close-drawer-btn:hover { background-color: var(--tindry-dark-gray); }
+
+    .tindry-content-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      background-color: var(--tindry-white);
+    }
+
+    .tindry-site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: 100%;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-white);
+      border-bottom: 1px solid var(--tindry-dark-gray);
+    }
+    .tindry-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      height: 64px;
+      max-width: 72rem;
+      margin: 0 auto;
+      width: 100%;
+      gap: 12px;
+    }
+    @media (min-width: 640px) {
+      .tindry-header-inner { padding: 0 32px; height: 80px; }
+    }
+    .tindry-header-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    @media (min-width: 640px) { .tindry-header-left { gap: 20px; } }
+
+    .tindry-hamburger-btn {
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -8px;
+      background: transparent;
+      border: none;
+      color: var(--tindry-gold);
+      border-radius: 8px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .tindry-hamburger-btn:hover { background-color: var(--tindry-dark-gray); }
+    @media (min-width: 1024px) { .tindry-hamburger-btn { display: none; } }
+
+    .tindry-breadcrumb { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .tindry-home-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--tindry-white);
+      padding: 4px 8px;
+      margin-left: -4px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+    .tindry-home-back:hover { color: var(--tindry-gold); }
+    .tindry-home-back svg { color: var(--tindry-gold); }
+    .tindry-crumb-sep { color: var(--tindry-gold); font-size: 12px; user-select: none; }
+    .tindry-crumb-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--tindry-white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tindry-header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .tindry-header-tagline {
+      display: none;
+      font-size: 11px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      color: var(--tindry-cream);
+      user-select: none;
+    }
+    @media (min-width: 1024px) { .tindry-header-tagline { display: inline; } }
+
+    .tindry-support-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tindry-support-btn:hover {
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+    }
+
+    /* ======================================================================
+       3. MAIN WORKSPACE & FORM CONTROLS (Matches Free Invoice & Card Maker)
+       ====================================================================== */
+    .tindry-main {
+      flex: 1;
+      padding: 20px;
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) { .tindry-main { padding: 32px; } }
+    @media (min-width: 768px) { .tindry-main { padding: 40px; } }
+
+    .tindry-tool-header {
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .tindry-tool-header-text { max-width: 660px; min-width: 0; }
+    .tindry-tool-h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    @media (min-width: 640px) { .tindry-tool-h1 { font-size: 32px; } }
+    .tindry-tool-sub {
+      font-size: 13px;
+      color: #525252;
+      margin-top: 6px;
+    }
+    .tindry-tool-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cv-workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    @media (min-width: 960px) {
+      .cv-workspace {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      }
+    }
+
+    .cv-form-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .invoice-panel {
+      background-color: var(--tindry-white);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      min-width: 0;
+    }
+    @media (min-width: 640px) { .invoice-panel { padding: 22px; } }
+
+    .invoice-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tindry-black);
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--tindry-cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .invoice-badge-private {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+      background-color: var(--tindry-cream);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 520px) {
+      .form-grid-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    @media (min-width: 560px) {
+      .form-grid-3 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
+    }
+
+    .field-group {
+      min-width: 0;
+      margin-bottom: 12px;
+    }
+    .field-group:last-child { margin-bottom: 0; }
+    .form-grid-2 .field-group,
+    .form-grid-3 .field-group { margin-bottom: 0; }
+
+    .field-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tindry-black);
+      margin-bottom: 5px;
+    }
+    .field-optional {
+      font-weight: 400;
+      color: #737373;
+      font-size: 11px;
+    }
+
+    .field-input,
+    .field-select,
+    .field-textarea {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      padding: 9px 11px;
+      border: 1px solid #d4d4d4;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--tindry-black);
+      background-color: var(--tindry-white);
+      transition: border-color 0.15s ease;
+    }
+    .field-input:focus,
+    .field-select:focus,
+    .field-textarea:focus {
+      border-color: var(--tindry-gold);
+      outline: none;
+    }
+    .field-textarea {
+      resize: vertical;
+      min-height: 76px;
+    }
+
+    /* Template Switcher & Photo Shape Selectors */
+    .design-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+    @media (min-width: 480px) {
+      .design-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 640px) {
+      .design-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .design-btn {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 9px 11px;
+      border: 1.5px solid #e5e5e5;
+      border-radius: 10px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .design-btn:hover {
+      border-color: var(--tindry-gold);
+      background-color: var(--tindry-light-gold-bg);
+    }
+    .design-btn.active {
+      border-color: var(--tindry-pure-black);
+      background-color: var(--tindry-cream);
+      box-shadow: 0 0 0 2px var(--tindry-gold);
+    }
+    .design-btn-title {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .design-btn-sub {
+      display: block;
+      font-size: 11px;
+      color: #525252;
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
+    .cv-notice-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background-color: var(--tindry-light-gold-bg);
+      border: 1px solid var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tindry-black);
+    }
+
+    .cv-photo-block {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--tindry-cream);
+    }
+    .cv-photo-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .cv-photo-hint {
+      font-size: 11px;
+      color: #666666;
+      margin-top: 2px;
+    }
+    .photo-upload-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-upload-photo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 38px;
+      padding: 8px 14px;
+      background-color: var(--tindry-light-gold-bg);
+      color: var(--tindry-black);
+      border: 1.5px dashed var(--tindry-gold);
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-upload-photo:hover { background-color: var(--tindry-cream); }
+
+    .cv-shape-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+    @media (max-width: 440px) {
+      .cv-shape-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    .shape-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 8px 10px;
+      border: 1.5px solid #e5e5e5;
+      border-radius: 8px;
+      background-color: var(--tindry-white);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--tindry-black);
+      cursor: pointer;
+    }
+    .shape-btn.active {
+      border-color: var(--tindry-pure-black);
+      background-color: var(--tindry-cream);
+      box-shadow: 0 0 0 2px var(--tindry-gold);
+    }
+    .shape-dot {
+      width: 16px;
+      height: 16px;
+      background-color: #dbeafe;
+      border: 1.5px solid var(--cv-blue);
+      flex-shrink: 0;
+    }
+    .shape-dot-circle { border-radius: 9999px; }
+    .shape-dot-square { border-radius: 0; }
+    .shape-dot-rounded { border-radius: 4px; }
+
+    .cv-qr-toggle-row {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--tindry-cream);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .cv-checkbox-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      cursor: pointer;
+      user-select: none;
+    }
+    .cv-checkbox-label input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--cv-blue);
+    }
+
+    /* Repeatable Entry Cards (Experience, Education, Skills, Languages) */
+    .btn-add-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-add-item:hover { background-color: var(--tindry-dark-gray); }
+
+    .cv-entry-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cv-entry-card {
+      padding: 12px;
+      background-color: var(--tindry-cream);
+      border: 1px solid rgba(212, 175, 55, 0.55);
+      border-radius: 10px;
+      min-width: 0;
+    }
+    .cv-entry-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .cv-entry-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .btn-remove-entry {
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #d4d4d4;
+      background-color: var(--tindry-white);
+      color: #b91c1c;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-remove-entry:hover {
+      background-color: #fef2f2;
+      border-color: #fca5a5;
+    }
+
+    .cv-skill-add-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .cv-skill-add-row .field-input { flex: 1; }
+    .cv-skills-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .cv-skill-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: var(--cv-blue);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .cv-skill-chip button {
+      background: transparent;
+      border: none;
+      color: var(--cv-blue-dark);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .cv-skill-chip button:hover { color: #b91c1c; }
+
+    .cv-lang-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 132px auto;
+      gap: 8px;
+      align-items: center;
+    }
+    @media (max-width: 480px) {
+      .cv-lang-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+      .cv-lang-row .lang-name {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Action Buttons */
+    .invoice-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn-gold-primary {
+      flex: 1;
+      min-width: 150px;
+      min-height: 44px;
+      padding: 10px 16px;
+      background-color: var(--tindry-gold);
+      color: var(--tindry-pure-black);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.15s ease;
+    }
+    .btn-gold-primary:hover { background-color: var(--tindry-gold-light); border-color: var(--tindry-gold-light); }
+
+    .btn-outline-secondary {
+      min-height: 40px;
+      padding: 8px 14px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      border: 1px solid var(--tindry-black);
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-outline-secondary:hover { background-color: var(--tindry-cream); border-color: var(--tindry-gold); }
+
+    /* ======================================================================
+       4. LIVE PREVIEW & SCALED A4 PAPER
+       ====================================================================== */
+    .cv-preview-sticky {
+      min-width: 0;
+    }
+    @media (min-width: 960px) {
+      .cv-preview-sticky {
+        position: sticky;
+        top: 96px;
+      }
+    }
+
+    .preview-shell {
+      background-color: var(--tindry-cream);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 16px;
+      min-width: 0;
+    }
+    .preview-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .preview-saved-pill {
+      font-size: 11px;
+      font-weight: 600;
+      background-color: var(--tindry-black);
+      color: var(--tindry-gold);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 999px;
+      padding: 2px 10px;
+    }
+
+    .cv-preview-outer {
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background-color: #e5e5e5;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px solid #d4d4d4;
+    }
+    .cv-preview-scale-wrap {
+      transform-origin: top center;
+      flex-shrink: 0;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    }
+
+    /* ======================================================================
+       5. CV DOCUMENT TEMPLATES (794px A4 Sheet — No External CSS Needed)
+       ====================================================================== */
+    .cv-a4-paper {
+      width: 794px;
+      min-height: 1123px;
+      background-color: #FFFFFF;
+      color: #0F172A;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      box-sizing: border-box;
+      text-align: left;
+    }
+    .cv-doc-photo {
+      overflow: hidden;
+      flex-shrink: 0;
+      background-color: #F1F5F9;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+    }
+    .cv-doc-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .cv-shape-circle { border-radius: 9999px; }
+    .cv-shape-square { border-radius: 0; }
+    .cv-shape-rounded { border-radius: 14px; }
+
+    .cv-doc-qr {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background-color: #FFFFFF;
+      color: #0F172A;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 7px;
+      flex-shrink: 0;
+    }
+    .cv-doc-qr img {
+      width: 74px;
+      height: 74px;
+      display: block;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .cv-doc-qr-text {
+      max-width: 88px;
+      font-size: 10px;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .cv-exp-item { margin-bottom: 14px; }
+    .cv-exp-item:last-child { margin-bottom: 0; }
+    .cv-exp-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .cv-exp-role { font-size: 13.5px; font-weight: 700; color: #0F172A; }
+    .cv-exp-dates { font-size: 11px; font-weight: 600; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .cv-exp-company { font-size: 12px; font-weight: 600; color: #475569; margin-top: 1px; }
+    .cv-exp-desc { font-size: 12px; color: #475569; line-height: 1.55; margin-top: 4px; white-space: pre-line; }
+
+    .cv-edu-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .cv-edu-item:last-child { margin-bottom: 0; }
+    .cv-edu-degree { font-size: 12.5px; font-weight: 700; color: #0F172A; }
+    .cv-edu-school { font-size: 12px; color: #475569; }
+    .cv-edu-year { font-size: 11px; font-weight: 600; color: #64748B; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+
+    .cv-doc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cv-doc-chip { display: inline-block; padding: 3px 9px; font-size: 11px; font-weight: 600; border-radius: 5px; }
+    .cv-doc-lang-list { display: flex; flex-direction: column; gap: 6px; }
+    .cv-doc-lang-row { display: flex; justify-content: space-between; font-size: 12px; gap: 8px; }
+    .cv-doc-muted { font-size: 12px; color: #94A3B8; font-style: italic; }
+    .cv-doc-summary { font-size: 12px; line-height: 1.6; color: #334155; white-space: pre-line; }
+
+    /* ======================================================================
+       6. SHARED QR PHONE VIEW & SETTINGS MODAL
+       ====================================================================== */
+    .cv-shared-box {
+      max-width: 820px;
+      margin: 0 auto 28px;
+    }
+    .cv-shared-actions {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    @media (max-width: 600px) {
+      .cv-shared-actions { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .cv-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background-color: rgba(15, 15, 15, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .cv-modal-card {
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background-color: var(--tindry-white);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+    }
+    .cv-modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--tindry-cream);
+    }
+    .cv-modal-close {
+      min-width: 34px;
+      min-height: 34px;
+      border-radius: 8px;
+      border: 1px solid #e5e5e5;
+      background: var(--tindry-white);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    /* ======================================================================
+       7. BELOW-TOOL SECTIONS (Clean White, Centered, Matches Other Tools)
+       ====================================================================== */
+    .tr-trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      padding: 24px 0;
+      margin-top: 28px;
+      border-top: 1px solid var(--tindry-gold);
+      border-bottom: 1px solid var(--tindry-gold);
+    }
+    @media (max-width: 640px) { .tr-trust-row { grid-template-columns: minmax(0, 1fr); } }
+    .tr-trust-item strong { display: block; font-size: 13px; color: var(--tindry-black); margin-bottom: 2px; }
+    .tr-trust-item p { font-size: 12px; color: var(--tindry-dark-gray); }
+
+    .bcard-seo-content {
+      margin-top: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .bcard-seo-block {
+      background-color: var(--tindry-white);
+      border: 1px solid #e7e2d4;
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .bcard-seo-block h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      text-align: center;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+    .cv-seo-sub {
+      font-size: 13.5px;
+      color: #525252;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .bcard-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 720px) {
+      .bcard-steps-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    .bcard-step-card {
+      background-color: var(--tindry-white);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 20px 18px;
+      text-align: center;
+    }
+    .bcard-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background-color: var(--cv-blue);
+      color: #FFFFFF;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .bcard-step-card strong {
+      display: block;
+      font-size: 14.5px;
+      color: var(--tindry-black);
+      margin-bottom: 6px;
+    }
+    .bcard-step-card span {
+      display: block;
+      font-size: 12.5px;
+      color: #525252;
+      line-height: 1.55;
+    }
+
+    .cv-why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 960px) {
+      .cv-why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .cv-why-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+    .cv-why-card {
+      background-color: var(--tindry-white);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px 14px;
+      text-align: center;
+    }
+    .cv-why-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background-color: #eff6ff;
+      color: var(--cv-blue);
+      border: 1px solid #dbeafe;
+      margin-bottom: 10px;
+    }
+    .cv-why-card strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--tindry-black);
+      margin-bottom: 5px;
+    }
+    .cv-why-card span {
+      display: block;
+      font-size: 12px;
+      color: #525252;
+      line-height: 1.5;
+    }
+
+    /* Clean Accordion FAQ */
+    .cv-faq-list {
+      max-width: 780px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cv-faq-item {
+      background-color: var(--tindry-white);
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .cv-faq-item.open { border-color: var(--cv-blue); }
+    .cv-faq-btn {
+      width: 100%;
+      padding: 15px 18px;
+      background-color: var(--tindry-white);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      cursor: pointer;
+    }
+    .cv-faq-btn:hover { background-color: #f8fafc; }
+    .cv-faq-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--cv-blue);
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .cv-faq-item.open .cv-faq-chevron { transform: rotate(180deg); }
+    .cv-faq-panel {
+      display: none;
+      padding: 0 18px 16px;
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+    }
+    .cv-faq-item.open .cv-faq-panel { display: block; }
+
+    /* ======================================================================
+       8. FOOTER (Matches all Tindry tools)
+       ====================================================================== */
+    .tindry-footer {
+      margin-top: auto;
+      border-top: 1px solid var(--tindry-dark-gray);
+      padding: 32px 24px;
+      font-size: 12px;
+      color: var(--tindry-white);
+      background-color: var(--tindry-pure-black);
+    }
+    .tindry-footer-inner {
+      max-width: 64rem;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    @media (min-width: 640px) { .tindry-footer-inner { flex-direction: row; } }
+    .tindry-footer-brand { text-align: center; }
+    @media (min-width: 640px) { .tindry-footer-brand { text-align: left; } }
+    .tindry-footer-brand-name { font-weight: 700; color: var(--tindry-gold); font-size: 14px; }
+    .tindry-footer-brand-sub { font-size: 11px; color: var(--tindry-cream); margin-top: 2px; }
+    .tindry-footer-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+    @media (min-width: 640px) { .tindry-footer-right { flex-direction: row; gap: 24px; } }
+    .tindry-footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .tindry-footer-nav a { color: var(--tindry-gold); transition: color 0.15s ease; }
+    .tindry-footer-nav a:hover { color: var(--tindry-gold-light); }
+    .tindry-footer-sep { display: none; height: 14px; width: 1px; background-color: var(--tindry-dark-gray); }
+    @media (min-width: 640px) { .tindry-footer-sep { display: block; } }
+    .tindry-footer-social { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+    .tindry-social-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--tindry-gold);
+      background-color: var(--tindry-dark-gray);
+      color: var(--tindry-white);
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+    .tindry-social-btn:hover { background-color: var(--tindry-gold); color: var(--tindry-pure-black); }
+    .tindry-featured-wrap { display: flex; justify-content: center; margin: 24px 0; }
+    .tindry-featured-badge {
+      background: var(--tindry-dark-gray);
+      color: var(--tindry-gold);
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 1px solid var(--tindry-gold);
+      transition: all 0.15s ease;
+    }
+    .tindry-featured-badge:hover { background: var(--tindry-gold); color: var(--tindry-pure-black); }
+    .tindry-copyright { text-align: center; padding: 15px; font-size: 13px; color: #888; }
+
+    @media print {
+      .no-print { display: none !important; }
+    }
+  </style>
+
+  <!-- Client-side Libraries: qrcode.js, html2canvas, jspdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- Hidden QR scratch target -->
+  <div id="qrGeneratorScratch" class="is-hidden" aria-hidden="true"></div>
+
+  <div class="tindry-shell">
+    <!-- Desktop Sidebar -->
+    <aside class="tindry-sidebar-desktop no-print" aria-label="Sidebar navigation">
+      <div class="tindry-sidebar-inner">
+        <div class="tindry-sidebar-brand">
+          <a href="/"><span>Tindry</span></a>
+        </div>
+        <div class="tindry-sidebar-scroll">
+          <div class="tindry-nav-group">
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              <span>Home</span>
+            </a>
+            <a href="/" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>All Tools</span>
+            </a>
+            <a href="/blog" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              <span>Blog</span>
+            </a>
+            <a href="/faq" class="tindry-side-link tindry-side-link-nav">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>FAQ</span>
+            </a>
+          </div>
+
+          <div class="tindry-nav-section">
+            <div class="tindry-nav-section-title">File Tools</div>
+            <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+            <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+            <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+            <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+            <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+            <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+            <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+            <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+            <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+            <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+            <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+            <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+            <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+            <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+            <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+            <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+            <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+            <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+            <a href="/free-invoice-maker.html" class="tindry-side-link"><span>Free Invoice Maker</span></a>
+            <a href="/business-card-maker.html" class="tindry-side-link"><span>Business Card Maker</span></a>
+            <a href="/cv-builder.html" class="tindry-side-link active"><span>CV Builder</span></a>
+
+            <div class="tindry-private-pack">
+              <div class="tindry-private-pack-title">✨ PRIVATE PACK</div>
+              <div class="tindry-private-pack-sub">Premium Reference</div>
+              <a href="https://tindry.gumroad.com/l/Private" class="tindry-private-pack-btn">👑 $5 - Get Now</a>
+            </div>
+          </div>
+        </div>
+        <div class="tindry-sidebar-footer">
+          <p>Private &middot; Client-Side</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer -->
+    <div id="mobileDrawer" class="tindry-drawer-overlay no-print" aria-hidden="true">
+      <div id="drawerBackdrop" class="tindry-drawer-backdrop"></div>
+      <div class="tindry-drawer-panel">
+        <div class="tindry-sidebar-inner">
+          <div class="tindry-sidebar-brand">
+            <a href="/"><span>Tindry</span></a>
+            <button type="button" id="closeDrawerBtn" class="tindry-close-drawer-btn" aria-label="Close menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="tindry-sidebar-scroll">
+            <div class="tindry-nav-group">
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>Home</span></a>
+              <a href="/" class="tindry-side-link tindry-side-link-nav"><span>All Tools</span></a>
+              <a href="/blog" class="tindry-side-link tindry-side-link-nav"><span>Blog</span></a>
+              <a href="/faq" class="tindry-side-link tindry-side-link-nav"><span>FAQ</span></a>
+            </div>
+            <div class="tindry-nav-section">
+              <div class="tindry-nav-section-title">File Tools</div>
+              <a href="/mp4-to-mp3" class="tindry-side-link"><span>MP4 to MP3</span></a>
+              <a href="/webm-to-mp4" class="tindry-side-link"><span>WebM to MP4</span></a>
+              <a href="/merge-pdf" class="tindry-side-link"><span>Merge PDF</span></a>
+              <a href="/jpg-to-pdf" class="tindry-side-link"><span>JPG to PDF</span></a>
+              <a href="/pdf-to-jpg" class="tindry-side-link"><span>PDF to JPG</span></a>
+              <a href="/compress-image" class="tindry-side-link"><span>Compress Image</span></a>
+              <a href="/background-remover.html" class="tindry-side-link"><span>Background Remover</span></a>
+              <a href="/heic-to-jpg.html" class="tindry-side-link"><span>HEIC to JPG Converter</span></a>
+              <a href="/image-upscaler.html" class="tindry-side-link"><span>Image Upscaler 4x HD</span></a>
+              <a href="/png-to-jpg.html" class="tindry-side-link"><span>PNG to JPG Converter</span></a>
+              <a href="/webp-to-jpg.html" class="tindry-side-link"><span>WEBP to JPG Converter</span></a>
+              <a href="/image-resizer.html" class="tindry-side-link"><span>Image Resizer for Social Media</span></a>
+              <a href="/qr-generator.html" class="tindry-side-link"><span>QR Code Generator</span></a>
+              <a href="/color-palette.html" class="tindry-side-link"><span>Color Palette Extractor</span></a>
+              <a href="/word-counter.html" class="tindry-side-link"><span>Word Counter &amp; Case Converter</span></a>
+              <a href="/pdf-to-word.html" class="tindry-side-link"><span>PDF to Word - Private</span></a>
+              <a href="/split-pdf.html" class="tindry-side-link"><span>Split PDF</span></a>
+              <a href="/compress-pdf.html" class="tindry-side-link"><span>Compress PDF</span></a>
+              <a href="/free-invoice-maker.html" class="tindry-side-link"><span>Free Invoice Maker</span></a>
+              <a href="/business-card-maker.html" class="tindry-side-link"><span>Business Card Maker</span></a>
+              <a href="/cv-builder.html" class="tindry-side-link active"><span>CV Builder</span></a>
+            </div>
+          </div>
+          <div class="tindry-sidebar-footer">
+            <p>Private &middot; Client-Side</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Column -->
+    <div class="tindry-content-col">
+      <header class="tindry-site-header no-print">
+        <div class="tindry-header-inner">
+          <div class="tindry-header-left">
+            <button type="button" id="openDrawerBtn" class="tindry-hamburger-btn" aria-label="Open navigation menu">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="4" x2="20" y1="12" y2="12"></line>
+                <line x1="4" x2="20" y1="6" y2="6"></line>
+                <line x1="4" x2="20" y1="18" y2="18"></line>
+              </svg>
+            </button>
+            <div class="tindry-breadcrumb">
+              <a href="/" class="tindry-home-back">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                <span>Home</span>
+              </a>
+              <span class="tindry-crumb-sep">/</span>
+              <span class="tindry-crumb-title">CV Builder</span>
+            </div>
+          </div>
+          <div class="tindry-header-right">
+            <span class="tindry-header-tagline">Fast &middot; Private &middot; Free</span>
+            <a href="https://ko-fi.com/tindry" target="_blank" rel="noopener noreferrer" aria-label="Support Tindry on Ko-fi" class="tindry-support-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2v2"/><path d="M14 2v2"/><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1"/><path d="M6 2v2"/></svg>
+              <span>Support Tindry</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="tindry-main">
+        <!-- Scanned QR Phone View (Auto-shown when ?cv= is in URL) -->
+        <section id="sharedCvView" class="cv-shared-box is-hidden" aria-label="Shared CV phone view">
+          <div class="invoice-panel" style="margin-bottom: 18px;">
+            <div class="invoice-panel-title">
+              <span id="sharedCvHeading">Candidate Resume</span>
+              <a href="cv-builder.html" class="btn-outline-secondary">Create Your Own CV &rarr;</a>
+            </div>
+            <div class="cv-shared-actions">
+              <button type="button" id="sharedDownloadPngBtn" class="btn-outline-secondary">Download as Image (PNG)</button>
+              <button type="button" id="sharedDownloadPdfBtn" class="btn-gold-primary">Download as PDF</button>
+              <button type="button" id="sharedSaveContactBtn" class="btn-outline-secondary">Save as Contact</button>
+            </div>
+          </div>
+
+          <div class="preview-shell">
+            <div id="sharedPreviewOuter" class="cv-preview-outer">
+              <div id="sharedScaleWrap" class="cv-preview-scale-wrap">
+                <div id="sharedCvPaper" class="cv-a4-paper"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main CV Builder Workspace -->
+        <div id="builderMainView">
+          <div class="tindry-tool-header">
+            <div class="tindry-tool-header-text">
+              <h1 class="tindry-tool-h1">Tindry CV Builder</h1>
+              <p class="tindry-tool-sub">Create a professional CV in minutes. Pick from 6 templates including Canadian format, customize your photo shape, embed a Smart QR code, and export PDF or PNG — 100% browser private.</p>
+            </div>
+            <div class="tindry-tool-header-actions">
+              <button type="button" id="resetFormTopBtn" class="btn-outline-secondary">Reset / Clear</button>
+            </div>
+          </div>
+
+          <div class="cv-workspace">
+            <!-- LEFT SIDE: FORM -->
+            <div class="cv-form-col">
+              <!-- 1. Choose Template -->
+              <section class="invoice-panel" aria-label="Choose template">
+                <div class="invoice-panel-title">
+                  <span>1. Choose Template (6 Styles)</span>
+                  <span id="activeTemplateLabel" class="invoice-badge-private">Modern Blue</span>
+                </div>
+                <div class="design-grid" id="templateSelector">
+                  <button type="button" data-template="modern-blue" class="design-btn active">
+                    <span class="design-btn-title">Modern Blue</span>
+                    <span class="design-btn-sub">Clean #2563EB accent</span>
+                  </button>
+                  <button type="button" data-template="classic-white" class="design-btn">
+                    <span class="design-btn-title">Classic White</span>
+                    <span class="design-btn-sub">Executive serif layout</span>
+                  </button>
+                  <button type="button" data-template="minimal-black" class="design-btn">
+                    <span class="design-btn-title">Minimal Black</span>
+                    <span class="design-btn-sub">Crisp monochrome</span>
+                  </button>
+                  <button type="button" data-template="creative-colorful" class="design-btn">
+                    <span class="design-btn-title">Creative Colorful</span>
+                    <span class="design-btn-sub">Bold gradient sidebar</span>
+                  </button>
+                  <button type="button" data-template="professional-grey" class="design-btn">
+                    <span class="design-btn-title">Professional Grey</span>
+                    <span class="design-btn-sub">Structured corporate</span>
+                  </button>
+                  <button type="button" data-template="canadian" class="design-btn">
+                    <span class="design-btn-title">Canadian</span>
+                    <span class="design-btn-sub">ATS Canada standard</span>
+                  </button>
+                </div>
+                <div id="canadianNotice" class="cv-notice-box is-hidden">
+                  Canadian CVs do not include photo, date of birth or marital status
+                </div>
+              </section>
+
+              <!-- 2. Personal Details, Photo & Smart QR -->
+              <section class="invoice-panel" aria-label="Personal information">
+                <div class="invoice-panel-title">
+                  <span>2. Personal Information</span>
+                  <span class="invoice-badge-private">🔒 100% Browser Private</span>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="field-group">
+                    <label for="fullName" class="field-label">Full Name</label>
+                    <input type="text" id="fullName" class="field-input" placeholder="e.g. Sarah Benali">
+                  </div>
+                  <div class="field-group">
+                    <label for="jobTitle" class="field-label">Job Title</label>
+                    <input type="text" id="jobTitle" class="field-input" placeholder="e.g. Product Designer">
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="field-group">
+                    <label for="phone" class="field-label">Phone Number</label>
+                    <input type="tel" id="phone" class="field-input" placeholder="+212 6 12 34 56 78">
+                  </div>
+                  <div class="field-group">
+                    <label for="email" class="field-label">Email</label>
+                    <input type="email" id="email" class="field-input" placeholder="sarah@example.com">
+                  </div>
+                </div>
+
+                <div class="form-grid-2">
+                  <div class="field-group">
+                    <label for="city" class="field-label">City</label>
+                    <input type="text" id="city" class="field-input" placeholder="Casablanca / Montreal">
+                  </div>
+                  <div id="dobFieldWrap" class="field-group">
+                    <label for="dob" class="field-label">Date of Birth</label>
+                    <input type="date" id="dob" class="field-input">
+                  </div>
+                </div>
+
+                <div class="form-grid-2" id="optionalPersonalRow">
+                  <div id="nationalityFieldWrap" class="field-group">
+                    <label for="nationality" class="field-label">Nationality <span class="field-optional">(optional)</span></label>
+                    <input type="text" id="nationality" class="field-input" placeholder="e.g. Moroccan / Canadian">
+                  </div>
+                  <div id="maritalFieldWrap" class="field-group">
+                    <label for="maritalStatus" class="field-label">Marital Status <span class="field-optional">(optional)</span></label>
+                    <select id="maritalStatus" class="field-select">
+                      <option value="">Optional — None</option>
+                      <option value="Single">Single</option>
+                      <option value="Married">Married</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Photo Upload & Photo Shape -->
+                <div id="photoSectionWrap" class="cv-photo-block">
+                  <div class="cv-photo-header">
+                    <div>
+                      <span class="field-label" style="margin-bottom: 0;">Photo Upload</span>
+                      <p class="cv-photo-hint">Processed locally in your browser — never uploaded.</p>
+                    </div>
+                    <div class="photo-upload-row">
+                      <button type="button" id="photoUploadBtn" class="btn-upload-photo">Upload Photo</button>
+                      <button type="button" id="photoRemoveBtn" class="btn-outline-secondary is-hidden">Remove</button>
+                      <input type="file" id="photoUpload" accept="image/*" class="is-hidden">
+                    </div>
+                  </div>
+
+                  <span class="field-label">Photo Shape</span>
+                  <div class="cv-shape-grid" id="photoShapeSelector">
+                    <button type="button" data-shape="circle" class="shape-btn active">
+                      <span class="shape-dot shape-dot-circle"></span>
+                      <span>Circle</span>
+                    </button>
+                    <button type="button" data-shape="square" class="shape-btn">
+                      <span class="shape-dot shape-dot-square"></span>
+                      <span>Square</span>
+                    </button>
+                    <button type="button" data-shape="rounded" class="shape-btn">
+                      <span class="shape-dot shape-dot-rounded"></span>
+                      <span>Rounded Square</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Smart QR Checkbox -->
+                <div class="cv-qr-toggle-row">
+                  <label for="showQrCheckbox" class="cv-checkbox-label">
+                    <input type="checkbox" id="showQrCheckbox" checked>
+                    <span>Show QR on CV</span>
+                  </label>
+                  <span class="cv-photo-hint">Scan to open full CV on any phone</span>
+                </div>
+              </section>
+
+              <!-- 3. Professional Summary -->
+              <section class="invoice-panel" aria-label="Professional summary">
+                <div class="invoice-panel-title">
+                  <span>3. Professional Summary</span>
+                </div>
+                <div class="field-group">
+                  <label for="summary" class="field-label">Short Bio</label>
+                  <textarea id="summary" class="field-textarea" rows="3" placeholder="Write a short bio about yourself, your experience and key strengths..."></textarea>
+                </div>
+              </section>
+
+              <!-- 4. Experience -->
+              <section class="invoice-panel" aria-label="Work experience">
+                <div class="invoice-panel-title">
+                  <span>4. Experience</span>
+                  <button type="button" id="addExperienceBtn" class="btn-add-item">+ Add Experience</button>
+                </div>
+                <div id="experienceList" class="cv-entry-stack"></div>
+              </section>
+
+              <!-- 5. Education -->
+              <section class="invoice-panel" aria-label="Education">
+                <div class="invoice-panel-title">
+                  <span>5. Education</span>
+                  <button type="button" id="addEducationBtn" class="btn-add-item">+ Add Education</button>
+                </div>
+                <div id="educationList" class="cv-entry-stack"></div>
+              </section>
+
+              <!-- 6. Skills -->
+              <section class="invoice-panel" aria-label="Skills">
+                <div class="invoice-panel-title">
+                  <span>6. Skills</span>
+                </div>
+                <div class="cv-skill-add-row">
+                  <input type="text" id="skillInput" class="field-input" placeholder="Type a skill (e.g. Project Management)">
+                  <button type="button" id="addSkillBtn" class="btn-add-item">+ Add Skill</button>
+                </div>
+                <div id="skillsList" class="cv-skills-chips"></div>
+              </section>
+
+              <!-- 7. Languages -->
+              <section class="invoice-panel" aria-label="Languages">
+                <div class="invoice-panel-title">
+                  <span>7. Languages</span>
+                  <button type="button" id="addLanguageBtn" class="btn-add-item">+ Add Language</button>
+                </div>
+                <div id="languagesList" class="cv-entry-stack"></div>
+              </section>
+
+              <!-- 8. Hobbies & Export -->
+              <section class="invoice-panel" aria-label="Hobbies and download">
+                <div class="field-group">
+                  <label for="hobbies" class="field-label">8. Hobbies <span class="field-optional">(optional)</span></label>
+                  <input type="text" id="hobbies" class="field-input" placeholder="e.g. Photography, Cycling, Reading, Chess">
+                </div>
+
+                <div class="invoice-actions" style="margin-top: 16px;">
+                  <button type="button" id="downloadPdfBtn" class="btn-gold-primary">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Download as PDF</span>
+                  </button>
+                  <button type="button" id="downloadPngBtn" class="btn-outline-secondary">Download as Image (PNG)</button>
+                  <button type="button" id="resetFormBtn" class="btn-outline-secondary">Reset / Clear Form</button>
+                </div>
+              </section>
+            </div>
+
+            <!-- RIGHT SIDE: LIVE CV PREVIEW -->
+            <section class="cv-preview-sticky" aria-label="Live CV preview">
+              <div class="preview-shell">
+                <div class="preview-bar">
+                  <span>Live CV Preview</span>
+                  <span class="preview-saved-pill">Updates in real time &middot; A4</span>
+                </div>
+                <div id="livePreviewOuter" class="cv-preview-outer">
+                  <div id="liveScaleWrap" class="cv-preview-scale-wrap">
+                    <div id="liveCvPaper" class="cv-a4-paper"></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Trust Row -->
+          <section class="tr-trust-row" aria-label="Privacy guarantees">
+            <div class="tr-trust-item">
+              <strong>6 Ready-to-Use Templates</strong>
+              <p>Switch instantly between Modern Blue, Classic White, Minimal Black, Creative, Grey, and Canadian CV.</p>
+            </div>
+            <div class="tr-trust-item">
+              <strong>100% Browser Private</strong>
+              <p>Your photo, contact details, and resume stay strictly in your browser with zero uploads or accounts.</p>
+            </div>
+            <div class="tr-trust-item">
+              <strong>Smart QR &amp; Clean Export</strong>
+              <p>Download crisp A4 PDF or PNG images, or let recruiters scan your CV QR code right on their phone.</p>
+            </div>
+          </section>
+
+          <!-- Below-Tool Clean Sections (White Background, Centered, Responsive) -->
+          <div class="bcard-seo-content">
+            <!-- 1. How to create your CV in 3 steps -->
+            <section id="how-to-create" class="bcard-seo-block">
+              <h2>How to create your CV in 3 steps</h2>
+              <p class="cv-seo-sub">Build a clean, job-ready CV directly in your browser in minutes — no sign-up needed.</p>
+              <div class="bcard-steps-grid">
+                <div class="bcard-step-card">
+                  <span class="bcard-step-num">1</span>
+                  <strong>Enter your details</strong>
+                  <span>Add your name, job title, contact details, work experience, education, skills, and languages while watching your CV update live.</span>
+                </div>
+                <div class="bcard-step-card">
+                  <span class="bcard-step-num">2</span>
+                  <strong>Pick template &amp; Smart QR</strong>
+                  <span>Choose from 6 templates including Canadian CV format, select your photo shape, and enable Smart QR code sharing.</span>
+                </div>
+                <div class="bcard-step-card">
+                  <span class="bcard-step-num">3</span>
+                  <strong>Download or share via QR</strong>
+                  <span>Save your resume instantly as a crisp A4 PDF or PNG image, or let employers scan your QR code on their phone.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- 2. Why choose Tindry -->
+            <section id="why-choose-tindry" class="bcard-seo-block">
+              <h2>Why choose Tindry</h2>
+              <p class="cv-seo-sub">Designed for speed, complete privacy, and international applications from Morocco to Canada and Europe.</p>
+              <div class="cv-why-grid">
+                <div class="cv-why-card">
+                  <div class="cv-why-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M18 18h3v3h-3z"/><path d="M14 20h2"/><path d="M20 14v2"/></svg>
+                  </div>
+                  <strong>Smart QR Code</strong>
+                  <span>Employers scan your CV QR to view, download PDF/PNG, or save your contact card.</span>
+                </div>
+                <div class="cv-why-card">
+                  <div class="cv-why-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                  </div>
+                  <strong>6 Modern Templates</strong>
+                  <span>Switch in one click between Modern Blue, Classic, Minimal, Creative, Grey, and Canadian.</span>
+                </div>
+                <div class="cv-why-card">
+                  <div class="cv-why-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </div>
+                  <strong>100% Private</strong>
+                  <span>Your photo and details never leave your browser. No account or server upload required.</span>
+                </div>
+                <div class="cv-why-card">
+                  <div class="cv-why-icon" aria-hidden="true">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </div>
+                  <strong>PDF &amp; PNG Export</strong>
+                  <span>Download print-ready A4 PDF files or high-resolution PNG images with zero watermark.</span>
+                </div>
+              </div>
+            </section>
+
+            <!-- 3. FAQ (5 questions in clean accordion) -->
+            <section id="faq" class="bcard-seo-block">
+              <h2>FAQ</h2>
+              <p class="cv-seo-sub">Common questions about creating your CV with Tindry.</p>
+              <div class="cv-faq-list" id="cvFaqAccordion">
+                <div class="cv-faq-item open">
+                  <button type="button" class="cv-faq-btn" aria-expanded="true">
+                    <span>1. Is Tindry CV Builder completely free?</span>
+                    <svg class="cv-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cv-faq-panel">
+                    Yes. You can create, edit, switch between all 6 templates, and download unlimited PDF and PNG resumes with zero fees, watermarks, or sign-up walls.
+                  </div>
+                </div>
+
+                <div class="cv-faq-item">
+                  <button type="button" class="cv-faq-btn" aria-expanded="false">
+                    <span>2. How does the Smart QR Code on my CV work?</span>
+                    <svg class="cv-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cv-faq-panel">
+                    All of your CV information is encoded directly into a portable link inside the QR code without any database. When someone scans it on their phone, your full CV opens with buttons to download PDF, download PNG, or save you as a contact (.vcf).
+                  </div>
+                </div>
+
+                <div class="cv-faq-item">
+                  <button type="button" class="cv-faq-btn" aria-expanded="false">
+                    <span>3. Why does the Canadian template hide my photo and date of birth?</span>
+                    <svg class="cv-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cv-faq-panel">
+                    Canadian hiring standards omit photos, dates of birth, nationality, and marital status to prevent bias and keep resumes ATS-friendly. Selecting the Canadian template automatically hides those fields for you.
+                  </div>
+                </div>
+
+                <div class="cv-faq-item">
+                  <button type="button" class="cv-faq-btn" aria-expanded="false">
+                    <span>4. Can I change my profile photo shape?</span>
+                    <svg class="cv-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cv-faq-panel">
+                    Yes. Pick Circle, Square, or Rounded Square in the form. Your chosen photo shape updates immediately in the live preview, PDF download, PNG image, and QR phone view.
+                  </div>
+                </div>
+
+                <div class="cv-faq-item">
+                  <button type="button" class="cv-faq-btn" aria-expanded="false">
+                    <span>5. Is my personal data private?</span>
+                    <svg class="cv-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="cv-faq-panel">
+                    Yes, 100% private. Everything runs locally inside your browser — your photo, phone number, and resume never touch an external server.
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="tindry-footer no-print">
+        <div class="tindry-footer-inner">
+          <div class="tindry-footer-brand">
+            <span class="tindry-footer-brand-name">Tindry</span>
+            <p class="tindry-footer-brand-sub">Simple file tools that just work &middot; Zero uploads &middot; Complete privacy</p>
+          </div>
+          <div class="tindry-footer-right">
+            <nav aria-label="Footer navigation" class="tindry-footer-nav">
+              <a href="/">Tools</a>
+              <a href="/blog">Blog</a>
+              <a href="/about">About</a>
+              <a href="/faq">FAQ</a>
+              <a href="/contact">Contact</a>
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+            </nav>
+            <div class="tindry-footer-sep"></div>
+            <div class="tindry-footer-social">
+              <a href="https://x.com/TindryOfficial" target="_blank" rel="noopener noreferrer" aria-label="Follow Tindry on X" class="tindry-social-btn">
+                <span>Follow @TindryOfficial</span>
+              </a>
+              <a href="https://t.me/TindryCommunity" target="_blank" rel="noopener noreferrer" aria-label="Join Tindry Community on Telegram" class="tindry-social-btn">
+                <span>Join Tindry Community</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="tindry-featured-wrap">
+          <a href="https://techbasedirectory.com/product/tindry?utm_source=featured_embed" target="_blank" rel="noopener noreferrer" class="tindry-featured-badge">
+            ⭐ Featured on TechBaseDirectory — Tindry
+          </a>
+        </div>
+
+        <div class="tindry-copyright">
+          &copy; 2020 - <span id="tindry-copyright-year"></span> Tindry. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal: Reset / Clear CV -->
+  <div id="clearConfirmModal" class="cv-modal-backdrop is-hidden no-print" role="dialog" aria-modal="true" aria-labelledby="clearConfirmHeading">
+    <div class="cv-modal-card" style="max-width: 420px;">
+      <div class="cv-modal-head">
+        <div>
+          <h2 id="clearConfirmHeading" style="font-size: 17px; font-weight: 700;">Clear CV</h2>
+        </div>
+        <button type="button" id="closeClearConfirmBtn" class="cv-modal-close" aria-label="Close confirmation">&times;</button>
+      </div>
+      <p style="font-size: 14px; color: #262626; line-height: 1.5; margin-bottom: 18px;">Are you sure you want to clear your CV?</p>
+      <div class="invoice-actions" style="justify-content: flex-end;">
+        <button type="button" id="cancelClearBtn" class="btn-outline-secondary" style="flex: 0 0 auto; min-width: 88px;">No</button>
+        <button type="button" id="confirmClearBtn" class="btn-gold-primary" style="flex: 0 0 auto; min-width: 88px;">Yes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      var yearEl = document.getElementById('tindry-copyright-year');
+      if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+      // Mobile drawer controls
+      var mobileDrawer = document.getElementById('mobileDrawer');
+      var openDrawerBtn = document.getElementById('openDrawerBtn');
+      var closeDrawerBtn = document.getElementById('closeDrawerBtn');
+      var drawerBackdrop = document.getElementById('drawerBackdrop');
+      function setDrawer(open) {
+        if (!mobileDrawer) return;
+        mobileDrawer.classList.toggle('open', open);
+        mobileDrawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+      if (openDrawerBtn) openDrawerBtn.addEventListener('click', function() { setDrawer(true); });
+      if (closeDrawerBtn) closeDrawerBtn.addEventListener('click', function() { setDrawer(false); });
+      if (drawerBackdrop) drawerBackdrop.addEventListener('click', function() { setDrawer(false); });
+
+      var STORAGE_KEY = 'tindry_cv_builder_state_v1';
+      var SEO_STORAGE_KEY = 'tindry_cv_seo_settings_v1';
+
+      var DEFAULT_SEO = {
+        title: 'Tindry - Free CV Builder | Create Professional CV in Minutes',
+        description: 'Create a professional CV for free with Tindry. Choose from 6 templates, add your photo, QR code, and download as PDF or Image. No sign-up needed.',
+        keywords: 'free cv builder, create cv online, cv maker, resume builder, cv with qr code, cv maroc, cv canada',
+        ogImage: 'https://tindry.com/opengraph-image.png'
+      };
+
+      var TEMPLATE_META = {
+        'modern-blue': { label: 'Modern Blue', defaultShape: 'circle' },
+        'classic-white': { label: 'Classic White', defaultShape: 'square' },
+        'minimal-black': { label: 'Minimal Black', defaultShape: 'circle' },
+        'creative-colorful': { label: 'Creative Colorful', defaultShape: 'circle' },
+        'professional-grey': { label: 'Professional Grey', defaultShape: 'circle' },
+        'canadian': { label: 'Canadian', defaultShape: 'square' }
+      };
+
+      function getDefaultState() {
+        return {
+          template: 'modern-blue',
+          photoShape: 'circle',
+          photoShapeLocked: false,
+          showQr: true,
+          fullName: 'Sarah Benali',
+          jobTitle: 'Product Designer & Frontend Specialist',
+          dob: '1996-05-14',
+          city: 'Casablanca',
+          phone: '+212 6 12 34 56 78',
+          email: 'sarah.benali@example.com',
+          nationality: 'Moroccan',
+          maritalStatus: '',
+          photoDataUrl: '',
+          photoQrThumb: '',
+          summary: 'Creative product designer with 5+ years of experience crafting intuitive web applications, design systems, and responsive user interfaces focused on clarity and conversion.',
+          experiences: [
+            {
+              company: 'Atlas Digital Studio',
+              job: 'Senior UI/UX Designer',
+              startDate: '2022',
+              endDate: 'Present',
+              description: 'Led end-to-end interface architecture for SaaS and mobile products, improving user onboarding completion by 32%.'
+            },
+            {
+              company: 'Maghreb Web Agency',
+              job: 'Frontend Designer',
+              startDate: '2019',
+              endDate: '2022',
+              description: 'Built responsive marketing websites and interactive web tools for regional retail and fintech clients.'
+            }
+          ],
+          educations: [
+            { school: 'National School of Applied Sciences', degree: 'B.Sc. in Computer Science & Design', year: '2019' }
+          ],
+          skills: ['UI/UX Design', 'Figma', 'HTML5 & CSS3', 'Responsive CSS', 'JavaScript', 'Design Systems'],
+          languages: [
+            { language: 'Arabic', level: 'Fluent' },
+            { language: 'French', level: 'Fluent' },
+            { language: 'English', level: 'Advanced' }
+          ],
+          hobbies: 'Photography, Architecture, Distance Running'
+        };
+      }
+
+      function getEmptyState() {
+        var tpl = state.template || 'modern-blue';
+        return {
+          template: tpl,
+          photoShape: (TEMPLATE_META[tpl] || TEMPLATE_META['modern-blue']).defaultShape,
+          photoShapeLocked: false,
+          showQr: true,
+          fullName: '',
+          jobTitle: '',
+          dob: '',
+          city: '',
+          phone: '',
+          email: '',
+          nationality: '',
+          maritalStatus: '',
+          photoDataUrl: '',
+          photoQrThumb: '',
+          summary: '',
+          experiences: [{ company: '', job: '', startDate: '', endDate: '', description: '' }],
+          educations: [{ school: '', degree: '', year: '' }],
+          skills: [],
+          languages: [{ language: '', level: 'Intermediate' }],
+          hobbies: ''
+        };
+      }
+
+      function loadState() {
+        try {
+          var raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            return Object.assign(getDefaultState(), JSON.parse(raw));
+          }
+        } catch (e) {}
+        return getDefaultState();
+      }
+
+      var state = loadState();
+      var currentQrDataUrl = '';
+
+      function saveState() {
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+      }
+
+      function esc(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function photoShapeClass(shape) {
+        if (shape === 'square') return 'cv-shape-square';
+        if (shape === 'rounded') return 'cv-shape-rounded';
+        return 'cv-shape-circle';
+      }
+
+      function encodeCvToBase64(obj) {
+        var json = JSON.stringify(obj);
+        var bytes = new TextEncoder().encode(json);
+        var bin = '';
+        for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+        return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      }
+
+      function decodeCvFromBase64(b64) {
+        var norm = b64.replace(/-/g, '+').replace(/_/g, '/');
+        while (norm.length % 4) norm += '=';
+        var bin = atob(norm);
+        var bytes = new Uint8Array(bin.length);
+        for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+        return JSON.parse(new TextDecoder().decode(bytes));
+      }
+
+      function buildCompactPayload(cvState, includeThumb) {
+        var p = {
+          t: cvState.template,
+          ps: cvState.photoShape,
+          n: cvState.fullName,
+          j: cvState.jobTitle,
+          d: cvState.dob,
+          c: cvState.city,
+          p: cvState.phone,
+          e: cvState.email,
+          na: cvState.nationality,
+          ms: cvState.maritalStatus,
+          s: cvState.summary,
+          ex: (cvState.experiences || []).filter(function(x) { return x.company || x.job || x.description; }).map(function(x) {
+            return [x.company || '', x.job || '', x.startDate || '', x.endDate || '', x.description || ''];
+          }),
+          ed: (cvState.educations || []).filter(function(x) { return x.school || x.degree || x.year; }).map(function(x) {
+            return [x.school || '', x.degree || '', x.year || ''];
+          }),
+          sk: cvState.skills || [],
+          lg: (cvState.languages || []).filter(function(x) { return x.language; }).map(function(x) {
+            return [x.language || '', x.level || ''];
+          }),
+          hb: cvState.hobbies || ''
+        };
+        if (includeThumb && cvState.photoQrThumb && cvState.template !== 'canadian') {
+          p.ph = cvState.photoQrThumb;
+        }
+        return p;
+      }
+
+      function expandCompactPayload(p) {
+        return {
+          template: p.t || 'modern-blue',
+          photoShape: p.ps || 'circle',
+          showQr: false,
+          fullName: p.n || '',
+          jobTitle: p.j || '',
+          dob: p.d || '',
+          city: p.c || '',
+          phone: p.p || '',
+          email: p.e || '',
+          nationality: p.na || '',
+          maritalStatus: p.ms || '',
+          photoDataUrl: p.ph || '',
+          summary: p.s || '',
+          experiences: (p.ex || []).map(function(x) {
+            return { company: x[0] || '', job: x[1] || '', startDate: x[2] || '', endDate: x[3] || '', description: x[4] || '' };
+          }),
+          educations: (p.ed || []).map(function(x) {
+            return { school: x[0] || '', degree: x[1] || '', year: x[2] || '' };
+          }),
+          skills: p.sk || [],
+          languages: (p.lg || []).map(function(x) {
+            return { language: x[0] || '', level: x[1] || '' };
+          }),
+          hobbies: p.hb || ''
+        };
+      }
+
+      function getShareUrl(cvState) {
+        var baseUrl = window.location.origin + window.location.pathname;
+        var b64 = encodeCvToBase64(buildCompactPayload(cvState, true));
+        if ((baseUrl.length + b64.length + 5) > 1950) {
+          b64 = encodeCvToBase64(buildCompactPayload(cvState, false));
+        }
+        return baseUrl + '?cv=' + encodeURIComponent(b64);
+      }
+
+      function generateQrDataUrl(text) {
+        if (!window.QRCode) return '';
+        var scratch = document.getElementById('qrGeneratorScratch');
+        scratch.innerHTML = '';
+        try {
+          new window.QRCode(scratch, {
+            text: text,
+            width: 160,
+            height: 160,
+            colorDark: '#0F172A',
+            colorLight: '#FFFFFF',
+            correctLevel: window.QRCode.CorrectLevel.L
+          });
+          var canvas = scratch.querySelector('canvas');
+          if (canvas) return canvas.toDataURL('image/png');
+          var img = scratch.querySelector('img');
+          if (img && img.src) return img.src;
+        } catch (err) {
+          try {
+            scratch.innerHTML = '';
+            new window.QRCode(scratch, {
+              text: text.slice(0, 1800),
+              width: 160,
+              height: 160,
+              colorDark: '#0F172A',
+              colorLight: '#FFFFFF',
+              correctLevel: window.QRCode.CorrectLevel.L
+            });
+            var c2 = scratch.querySelector('canvas');
+            if (c2) return c2.toDataURL('image/png');
+          } catch (e2) {}
+        }
+        return '';
+      }
+
+      function renderQrBlockHtml(qrDataUrl) {
+        if (!qrDataUrl) return '';
+        return (
+          '<div class="cv-doc-qr">' +
+            '<img src="' + qrDataUrl + '" alt="Smart CV QR code" />' +
+            '<div class="cv-doc-qr-text">Scan to get my CV on your phone</div>' +
+          '</div>'
+        );
+      }
+
+      function renderPhotoHtml(cvState, pxSize, borderCss) {
+        if (cvState.template === 'canadian' || !cvState.photoDataUrl) return '';
+        return (
+          '<div class="cv-doc-photo ' + photoShapeClass(cvState.photoShape) + '" style="width:' + pxSize + 'px;height:' + pxSize + 'px;' + (borderCss || '') + '">' +
+            '<img src="' + cvState.photoDataUrl + '" alt="' + esc(cvState.fullName || 'Applicant profile photo') + '" />' +
+          '</div>'
+        );
+      }
+
+      function buildCvInnerHtml(cvState, qrDataUrl) {
+        var isCanadian = cvState.template === 'canadian';
+        var fullName = esc(cvState.fullName || 'Your Name');
+        var jobTitle = esc(cvState.jobTitle || 'Job Title');
+        var summary = esc(cvState.summary || '');
+        var hobbies = esc(cvState.hobbies || '');
+
+        var contactItems = [];
+        if (cvState.phone) contactItems.push('<span>' + esc(cvState.phone) + '</span>');
+        if (cvState.email) contactItems.push('<span>' + esc(cvState.email) + '</span>');
+        if (cvState.city) contactItems.push('<span>' + esc(cvState.city) + '</span>');
+        if (!isCanadian) {
+          if (cvState.dob) contactItems.push('<span>DOB: ' + esc(cvState.dob) + '</span>');
+          if (cvState.nationality) contactItems.push('<span>' + esc(cvState.nationality) + '</span>');
+          if (cvState.maritalStatus) contactItems.push('<span>' + esc(cvState.maritalStatus) + '</span>');
+        }
+
+        var exps = (cvState.experiences || []).filter(function(e) { return e.company || e.job || e.description; });
+        var edus = (cvState.educations || []).filter(function(e) { return e.school || e.degree || e.year; });
+        var skills = (cvState.skills || []).filter(Boolean);
+        var langs = (cvState.languages || []).filter(function(l) { return l.language; });
+        var qrHtml = (cvState.showQr && qrDataUrl) ? renderQrBlockHtml(qrDataUrl) : '';
+
+        function renderExpList(dateColor) {
+          if (!exps.length) return '<p class="cv-doc-muted">No experience added yet.</p>';
+          return exps.map(function(item) {
+            var dates = [item.startDate, item.endDate].filter(Boolean).join(' – ');
+            return (
+              '<div class="cv-exp-item">' +
+                '<div class="cv-exp-row">' +
+                  '<div class="cv-exp-role">' + esc(item.job || 'Role') + '</div>' +
+                  (dates ? '<div class="cv-exp-dates" style="color:' + dateColor + ';">' + esc(dates) + '</div>' : '') +
+                '</div>' +
+                (item.company ? '<div class="cv-exp-company">' + esc(item.company) + '</div>' : '') +
+                (item.description ? '<p class="cv-exp-desc">' + esc(item.description) + '</p>' : '') +
+              '</div>'
+            );
+          }).join('');
+        }
+
+        function renderEduList() {
+          if (!edus.length) return '<p class="cv-doc-muted">No education added yet.</p>';
+          return edus.map(function(item) {
+            return (
+              '<div class="cv-edu-item">' +
+                '<div>' +
+                  '<div class="cv-edu-degree">' + esc(item.degree || 'Degree') + '</div>' +
+                  (item.school ? '<div class="cv-edu-school">' + esc(item.school) + '</div>' : '') +
+                '</div>' +
+                (item.year ? '<div class="cv-edu-year">' + esc(item.year) + '</div>' : '') +
+              '</div>'
+            );
+          }).join('');
+        }
+
+        function renderSkillsChips(chipStyle) {
+          if (!skills.length) return '<p class="cv-doc-muted">No skills added.</p>';
+          return '<div class="cv-doc-chips">' + skills.map(function(sk) {
+            return '<span class="cv-doc-chip" style="' + chipStyle + '">' + esc(sk) + '</span>';
+          }).join('') + '</div>';
+        }
+
+        function renderLangList(textColor) {
+          if (!langs.length) return '<p class="cv-doc-muted">No languages added.</p>';
+          return '<div class="cv-doc-lang-list">' + langs.map(function(l) {
+            return (
+              '<div class="cv-doc-lang-row" style="color:' + textColor + ';">' +
+                '<span style="font-weight:600;">' + esc(l.language) + '</span>' +
+                '<span style="opacity:0.8;">' + esc(l.level) + '</span>' +
+              '</div>'
+            );
+          }).join('') + '</div>';
+        }
+
+        // TEMPLATE 6: CANADIAN (ATS standard, omits photo, DOB, nationality, marital status)
+        if (cvState.template === 'canadian') {
+          return (
+            '<div style="padding:40px;background:#FFFFFF;color:#0F172A;min-height:1123px;display:flex;flex-direction:column;justify-content:space-between;">' +
+              '<div>' +
+                '<div style="border-bottom:2px solid #0F172A;padding-bottom:16px;margin-bottom:20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">' +
+                  '<div style="min-width:0;">' +
+                    '<h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#0F172A;margin:0;">' + fullName + '</h2>' +
+                    '<p style="font-size:15px;font-weight:600;color:#2563EB;margin-top:3px;">' + jobTitle + '</p>' +
+                    '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px 12px;font-size:12px;color:#475569;">' +
+                      contactItems.join(' <span style="color:#CBD5E1;">|</span> ') +
+                    '</div>' +
+                  '</div>' +
+                  qrHtml +
+                '</div>' +
+                (summary ? '<div style="margin-bottom:18px;"><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Professional Summary</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+                '<div style="margin-bottom:18px;"><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Work Experience</h3>' + renderExpList('#475569') + '</div>' +
+                '<div style="margin-bottom:18px;"><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Education</h3>' + renderEduList() + '</div>' +
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">' +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Skills</h3>' + renderSkillsChips('background:#F1F5F9;color:#1E293B;') + '</div>' +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Languages</h3>' + renderLangList('#334155') + (hobbies ? '<div style="margin-top:10px;font-size:12px;"><strong style="color:#0F172A;">Interests:</strong> <span style="color:#475569;">' + hobbies + '</span></div>' : '') + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div style="padding-top:14px;border-top:1px solid #F1F5F9;font-size:10px;color:#94A3B8;display:flex;justify-content:space-between;"><span>Canadian Resume Standard</span><span>Tindry CV Builder</span></div>' +
+            '</div>'
+          );
+        }
+
+        // TEMPLATE 2: CLASSIC WHITE
+        if (cvState.template === 'classic-white') {
+          return (
+            '<div style="padding:40px;background:#FFFFFF;color:#0F172A;min-height:1123px;">' +
+              '<div style="border-bottom:2px solid #1E293B;padding-bottom:18px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+                '<div style="display:flex;align-items:center;gap:16px;min-width:0;">' +
+                  renderPhotoHtml(cvState, 78, 'border-color:#CBD5E1;') +
+                  '<div style="min-width:0;">' +
+                    '<h2 style="font-family:\'Playfair Display\',Georgia,serif;font-size:28px;font-weight:700;color:#0F172A;margin:0;">' + fullName + '</h2>' +
+                    '<p style="font-size:14px;font-weight:600;color:#475569;margin-top:2px;">' + jobTitle + '</p>' +
+                    '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11.5px;color:#475569;">' + contactItems.join(' &middot; ') + '</div>' +
+                  '</div>' +
+                '</div>' +
+                qrHtml +
+              '</div>' +
+              (summary ? '<div style="margin-bottom:20px;"><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Profile</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+              '<div style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:26px;">' +
+                '<div style="display:flex;flex-direction:column;gap:20px;">' +
+                  '<div><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Experience</h3>' + renderExpList('#475569') + '</div>' +
+                  '<div><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Education</h3>' + renderEduList() + '</div>' +
+                '</div>' +
+                '<div style="display:flex;flex-direction:column;gap:20px;border-left:1px solid #E2E8F0;padding-left:20px;">' +
+                  '<div><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Skills</h3>' + renderSkillsChips('background:#F1F5F9;color:#1E293B;') + '</div>' +
+                  '<div><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:10px;">Languages</h3>' + renderLangList('#334155') + '</div>' +
+                  (hobbies ? '<div><h3 style="font-family:\'Playfair Display\',Georgia,serif;font-size:15px;font-weight:700;color:#0F172A;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Hobbies</h3><p style="font-size:12px;color:#475569;">' + hobbies + '</p></div>' : '') +
+                '</div>' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        // TEMPLATE 3: MINIMAL BLACK
+        if (cvState.template === 'minimal-black') {
+          return (
+            '<div style="background:#FFFFFF;color:#0F172A;min-height:1123px;">' +
+              '<div style="background:#0F172A;color:#FFFFFF;padding:28px 36px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+                '<div style="display:flex;align-items:center;gap:16px;min-width:0;">' +
+                  renderPhotoHtml(cvState, 78, 'border-color:rgba(255,255,255,0.4);') +
+                  '<div style="min-width:0;">' +
+                    '<h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;color:#FFFFFF;margin:0;">' + fullName + '</h2>' +
+                    '<p style="font-size:14px;font-weight:500;color:#CBD5E1;margin-top:2px;">' + jobTitle + '</p>' +
+                    '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;color:#CBD5E1;">' + contactItems.join(' &middot; ') + '</div>' +
+                  '</div>' +
+                '</div>' +
+                qrHtml +
+              '</div>' +
+              '<div style="padding:36px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr);gap:26px;">' +
+                '<div style="display:flex;flex-direction:column;gap:20px;border-right:1px solid #E2E8F0;padding-right:20px;">' +
+                  (summary ? '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;margin-bottom:8px;">About</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;margin-bottom:10px;">Skills</h3>' + renderSkillsChips('background:#0F172A;color:#FFFFFF;') + '</div>' +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;margin-bottom:10px;">Languages</h3>' + renderLangList('#334155') + '</div>' +
+                  (hobbies ? '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;margin-bottom:8px;">Hobbies</h3><p style="font-size:12px;color:#475569;">' + hobbies + '</p></div>' : '') +
+                '</div>' +
+                '<div style="display:flex;flex-direction:column;gap:22px;">' +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1.5px solid #0F172A;padding-bottom:4px;margin-bottom:12px;">Experience</h3>' + renderExpList('#334155') + '</div>' +
+                  '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#0F172A;border-bottom:1.5px solid #0F172A;padding-bottom:4px;margin-bottom:12px;">Education</h3>' + renderEduList() + '</div>' +
+                '</div>' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        // TEMPLATE 4: CREATIVE COLORFUL
+        if (cvState.template === 'creative-colorful') {
+          return (
+            '<div style="display:grid;grid-template-columns:255px minmax(0,1fr);min-height:1123px;background:#FFFFFF;">' +
+              '<div style="background:linear-gradient(180deg,#2563EB 0%,#1D4ED8 55%,#0F172A 100%);color:#FFFFFF;padding:28px 22px;display:flex;flex-direction:column;justify-content:space-between;">' +
+                '<div style="display:flex;flex-direction:column;gap:20px;">' +
+                  '<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;">' +
+                    renderPhotoHtml(cvState, 94, 'border-color:#FFFFFF;') +
+                    '<div>' +
+                      '<h2 style="font-size:20px;font-weight:800;line-height:1.2;color:#FFFFFF;margin:0;">' + fullName + '</h2>' +
+                      '<p style="font-size:12px;color:#DBEAFE;font-weight:500;margin-top:4px;">' + jobTitle + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#BFDBFE;border-bottom:1px solid rgba(255,255,255,0.22);padding-bottom:4px;margin-bottom:8px;">Contact</h3>' +
+                    '<div style="display:flex;flex-direction:column;gap:4px;font-size:11px;color:#F8FAFC;">' + contactItems.map(function(c) { return '<div>' + c + '</div>'; }).join('') + '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#BFDBFE;border-bottom:1px solid rgba(255,255,255,0.22);padding-bottom:4px;margin-bottom:8px;">Skills</h3>' +
+                    renderSkillsChips('background:rgba(255,255,255,0.16);color:#FFFFFF;') +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#BFDBFE;border-bottom:1px solid rgba(255,255,255,0.22);padding-bottom:4px;margin-bottom:8px;">Languages</h3>' +
+                    renderLangList('#FFFFFF') +
+                  '</div>' +
+                  (hobbies ? '<div><h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#BFDBFE;border-bottom:1px solid rgba(255,255,255,0.22);padding-bottom:4px;margin-bottom:6px;">Hobbies</h3><p style="font-size:11px;color:#EFF6FF;">' + hobbies + '</p></div>' : '') +
+                '</div>' +
+                (qrHtml ? '<div style="padding-top:18px;">' + qrHtml + '</div>' : '') +
+              '</div>' +
+              '<div style="padding:32px;display:flex;flex-direction:column;gap:22px;">' +
+                (summary ? '<div><h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#2563EB;border-bottom:2px solid #DBEAFE;padding-bottom:4px;margin-bottom:8px;">About Me</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+                '<div><h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#2563EB;border-bottom:2px solid #DBEAFE;padding-bottom:4px;margin-bottom:12px;">Work Experience</h3>' + renderExpList('#2563EB') + '</div>' +
+                '<div><h3 style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:0.06em;color:#2563EB;border-bottom:2px solid #DBEAFE;padding-bottom:4px;margin-bottom:12px;">Education</h3>' + renderEduList() + '</div>' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        // TEMPLATE 5: PROFESSIONAL GREY
+        if (cvState.template === 'professional-grey') {
+          return (
+            '<div style="display:grid;grid-template-columns:255px minmax(0,1fr);min-height:1123px;background:#FFFFFF;">' +
+              '<div style="background:#F1F5F9;border-right:1px solid #E2E8F0;padding:28px 22px;display:flex;flex-direction:column;justify-content:space-between;">' +
+                '<div style="display:flex;flex-direction:column;gap:20px;">' +
+                  '<div style="display:flex;flex-direction:column;align-items:flex-start;gap:10px;">' +
+                    renderPhotoHtml(cvState, 90, 'border-color:#FFFFFF;box-shadow:0 2px 8px rgba(0,0,0,0.08);') +
+                    '<div>' +
+                      '<h2 style="font-size:22px;font-weight:800;color:#0F172A;line-height:1.2;margin:0;">' + fullName + '</h2>' +
+                      '<p style="font-size:12px;font-weight:600;color:#475569;margin-top:4px;">' + jobTitle + '</p>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;border-bottom:1px solid #CBD5E1;padding-bottom:4px;margin-bottom:8px;">Details</h3>' +
+                    '<div style="display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:#334155;">' + contactItems.map(function(c) { return '<div>' + c + '</div>'; }).join('') + '</div>' +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;border-bottom:1px solid #CBD5E1;padding-bottom:4px;margin-bottom:8px;">Skills</h3>' +
+                    renderSkillsChips('background:#334155;color:#FFFFFF;') +
+                  '</div>' +
+                  '<div>' +
+                    '<h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;border-bottom:1px solid #CBD5E1;padding-bottom:4px;margin-bottom:8px;">Languages</h3>' +
+                    renderLangList('#334155') +
+                  '</div>' +
+                  (hobbies ? '<div><h3 style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#64748B;border-bottom:1px solid #CBD5E1;padding-bottom:4px;margin-bottom:6px;">Hobbies</h3><p style="font-size:11.5px;color:#334155;">' + hobbies + '</p></div>' : '') +
+                '</div>' +
+                (qrHtml ? '<div style="padding-top:18px;">' + qrHtml + '</div>' : '') +
+              '</div>' +
+              '<div style="padding:32px;display:flex;flex-direction:column;gap:22px;">' +
+                (summary ? '<div><h3 style="font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#334155;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:8px;">Professional Summary</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+                '<div><h3 style="font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#334155;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:12px;">Experience</h3>' + renderExpList('#334155') + '</div>' +
+                '<div><h3 style="font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#334155;border-bottom:1px solid #E2E8F0;padding-bottom:4px;margin-bottom:12px;">Education</h3>' + renderEduList() + '</div>' +
+              '</div>' +
+            '</div>'
+          );
+        }
+
+        // TEMPLATE 1 (DEFAULT): MODERN BLUE (#2563EB)
+        return (
+          '<div style="background:#FFFFFF;color:#0F172A;min-height:1123px;">' +
+            '<div style="background:#2563EB;color:#FFFFFF;padding:28px 34px;display:flex;align-items:center;justify-content:space-between;gap:16px;">' +
+              '<div style="display:flex;align-items:center;gap:16px;min-width:0;">' +
+                renderPhotoHtml(cvState, 78, 'border-color:#FFFFFF;') +
+                '<div style="min-width:0;">' +
+                  '<h2 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;line-height:1.15;color:#FFFFFF;margin:0;">' + fullName + '</h2>' +
+                  '<p style="font-size:14px;font-weight:600;color:#DBEAFE;margin-top:3px;">' + jobTitle + '</p>' +
+                  '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11px;color:#EFF6FF;">' + contactItems.join(' &middot; ') + '</div>' +
+                '</div>' +
+              '</div>' +
+              qrHtml +
+            '</div>' +
+            '<div style="padding:32px;display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);gap:26px;align-items:start;">' +
+              '<div style="display:flex;flex-direction:column;gap:22px;">' +
+                (summary ? '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;border-bottom:1px solid #DBEAFE;padding-bottom:4px;margin-bottom:8px;">Professional Summary</h3><p class="cv-doc-summary">' + summary + '</p></div>' : '') +
+                '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;border-bottom:1px solid #DBEAFE;padding-bottom:4px;margin-bottom:12px;">Experience</h3>' + renderExpList('#2563EB') + '</div>' +
+                '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;border-bottom:1px solid #DBEAFE;padding-bottom:4px;margin-bottom:12px;">Education</h3>' + renderEduList() + '</div>' +
+              '</div>' +
+              '<div style="display:flex;flex-direction:column;gap:20px;background:#F8FAFC;border:1px solid #F1F5F9;border-radius:12px;padding:18px;">' +
+                '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:10px;">Skills</h3>' + renderSkillsChips('background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;') + '</div>' +
+                '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:10px;">Languages</h3>' + renderLangList('#334155') + '</div>' +
+                (hobbies ? '<div><h3 style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:#2563EB;margin-bottom:8px;">Hobbies</h3><p style="font-size:12px;color:#475569;line-height:1.5;">' + hobbies + '</p></div>' : '') +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function scalePreviewContainer(outerId, wrapId, paperId) {
+        var outer = document.getElementById(outerId);
+        var wrap = document.getElementById(wrapId);
+        var paper = document.getElementById(paperId);
+        if (!outer || !wrap || !paper) return;
+        var availW = outer.clientWidth - 20;
+        var targetW = 794;
+        var scale = Math.min(1, Math.max(0.28, availW / targetW));
+        wrap.style.width = targetW + 'px';
+        wrap.style.transform = 'scale(' + scale + ')';
+        var realH = paper.scrollHeight || 1123;
+        outer.style.height = Math.ceil(realH * scale + 24) + 'px';
+      }
+
+      function renderLivePreview() {
+        currentQrDataUrl = state.showQr ? generateQrDataUrl(getShareUrl(state)) : '';
+        var paper = document.getElementById('liveCvPaper');
+        paper.innerHTML = buildCvInnerHtml(state, currentQrDataUrl);
+        scalePreviewContainer('livePreviewOuter', 'liveScaleWrap', 'liveCvPaper');
+      }
+
+      function renderExperienceInputs() {
+        var container = document.getElementById('experienceList');
+        container.innerHTML = '';
+        state.experiences.forEach(function(item, idx) {
+          var card = document.createElement('div');
+          card.className = 'cv-entry-card';
+          card.innerHTML =
+            '<div class="cv-entry-head">' +
+              '<span class="cv-entry-title">Experience #' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-remove-entry">Remove</button>' +
+            '</div>' +
+            '<div class="form-grid-2">' +
+              '<div class="field-group"><input type="text" data-k="company" placeholder="Company" value="' + esc(item.company) + '" class="field-input exp-inp"></div>' +
+              '<div class="field-group"><input type="text" data-k="job" placeholder="Job Title" value="' + esc(item.job) + '" class="field-input exp-inp"></div>' +
+            '</div>' +
+            '<div class="form-grid-2">' +
+              '<div class="field-group"><input type="text" data-k="startDate" placeholder="Start Date (e.g. 2021)" value="' + esc(item.startDate) + '" class="field-input exp-inp"></div>' +
+              '<div class="field-group"><input type="text" data-k="endDate" placeholder="End Date (e.g. Present)" value="' + esc(item.endDate) + '" class="field-input exp-inp"></div>' +
+            '</div>' +
+            '<div class="field-group">' +
+              '<textarea data-k="description" rows="2" placeholder="Responsibilities and achievements..." class="field-textarea exp-inp">' + esc(item.description) + '</textarea>' +
+            '</div>';
+
+          card.querySelectorAll('.exp-inp').forEach(function(el) {
+            el.addEventListener('input', function() {
+              state.experiences[idx][el.dataset.k] = el.value;
+              saveState();
+              renderLivePreview();
+            });
+          });
+          card.querySelector('.btn-remove-entry').addEventListener('click', function() {
+            state.experiences.splice(idx, 1);
+            saveState();
+            renderExperienceInputs();
+            renderLivePreview();
+          });
+          container.appendChild(card);
+        });
+      }
+
+      function renderEducationInputs() {
+        var container = document.getElementById('educationList');
+        container.innerHTML = '';
+        state.educations.forEach(function(item, idx) {
+          var card = document.createElement('div');
+          card.className = 'cv-entry-card';
+          card.innerHTML =
+            '<div class="cv-entry-head">' +
+              '<span class="cv-entry-title">Education #' + (idx + 1) + '</span>' +
+              '<button type="button" class="btn-remove-entry">Remove</button>' +
+            '</div>' +
+            '<div class="form-grid-3">' +
+              '<div class="field-group"><input type="text" data-k="school" placeholder="School / University" value="' + esc(item.school) + '" class="field-input edu-inp"></div>' +
+              '<div class="field-group"><input type="text" data-k="degree" placeholder="Degree" value="' + esc(item.degree) + '" class="field-input edu-inp"></div>' +
+              '<div class="field-group"><input type="text" data-k="year" placeholder="Year (e.g. 2022)" value="' + esc(item.year) + '" class="field-input edu-inp"></div>' +
+            '</div>';
+
+          card.querySelectorAll('.edu-inp').forEach(function(el) {
+            el.addEventListener('input', function() {
+              state.educations[idx][el.dataset.k] = el.value;
+              saveState();
+              renderLivePreview();
+            });
+          });
+          card.querySelector('.btn-remove-entry').addEventListener('click', function() {
+            state.educations.splice(idx, 1);
+            saveState();
+            renderEducationInputs();
+            renderLivePreview();
+          });
+          container.appendChild(card);
+        });
+      }
+
+      function renderSkillsInputs() {
+        var list = document.getElementById('skillsList');
+        list.innerHTML = '';
+        state.skills.forEach(function(sk, idx) {
+          var chip = document.createElement('span');
+          chip.className = 'cv-skill-chip';
+          chip.innerHTML = '<span>' + esc(sk) + '</span><button type="button" aria-label="Remove skill">&times;</button>';
+          chip.querySelector('button').addEventListener('click', function() {
+            state.skills.splice(idx, 1);
+            saveState();
+            renderSkillsInputs();
+            renderLivePreview();
+          });
+          list.appendChild(chip);
+        });
+      }
+
+      function renderLanguagesInputs() {
+        var container = document.getElementById('languagesList');
+        container.innerHTML = '';
+        var levels = ['Beginner', 'Intermediate', 'Advanced', 'Fluent'];
+        state.languages.forEach(function(item, idx) {
+          var row = document.createElement('div');
+          row.className = 'cv-lang-row';
+          var optionsHtml = levels.map(function(lv) {
+            return '<option value="' + lv + '"' + (item.level === lv ? ' selected' : '') + '>' + lv + '</option>';
+          }).join('');
+          row.innerHTML =
+            '<input type="text" placeholder="Language (e.g. English)" value="' + esc(item.language) + '" class="field-input lang-name">' +
+            '<select class="field-select lang-level">' + optionsHtml + '</select>' +
+            '<button type="button" class="btn-remove-entry">Remove</button>';
+
+          row.querySelector('.lang-name').addEventListener('input', function(e) {
+            state.languages[idx].language = e.target.value;
+            saveState();
+            renderLivePreview();
+          });
+          row.querySelector('.lang-level').addEventListener('change', function(e) {
+            state.languages[idx].level = e.target.value;
+            saveState();
+            renderLivePreview();
+          });
+          row.querySelector('.btn-remove-entry').addEventListener('click', function() {
+            state.languages.splice(idx, 1);
+            saveState();
+            renderLanguagesInputs();
+            renderLivePreview();
+          });
+          container.appendChild(row);
+        });
+      }
+
+      function syncUiFromState() {
+        document.getElementById('fullName').value = state.fullName || '';
+        document.getElementById('jobTitle').value = state.jobTitle || '';
+        document.getElementById('dob').value = state.dob || '';
+        document.getElementById('city').value = state.city || '';
+        document.getElementById('phone').value = state.phone || '';
+        document.getElementById('email').value = state.email || '';
+        document.getElementById('nationality').value = state.nationality || '';
+        document.getElementById('maritalStatus').value = state.maritalStatus || '';
+        document.getElementById('summary').value = state.summary || '';
+        document.getElementById('hobbies').value = state.hobbies || '';
+        document.getElementById('showQrCheckbox').checked = state.showQr !== false;
+
+        document.getElementById('photoRemoveBtn').classList.toggle('is-hidden', !state.photoDataUrl);
+
+        var isCanadian = state.template === 'canadian';
+        document.getElementById('activeTemplateLabel').textContent = (TEMPLATE_META[state.template] || TEMPLATE_META['modern-blue']).label;
+        document.getElementById('canadianNotice').classList.toggle('is-hidden', !isCanadian);
+        document.getElementById('dobFieldWrap').classList.toggle('is-hidden', isCanadian);
+        document.getElementById('optionalPersonalRow').classList.toggle('is-hidden', isCanadian);
+        document.getElementById('photoSectionWrap').classList.toggle('is-hidden', isCanadian);
+
+        document.querySelectorAll('#templateSelector .design-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.template === state.template);
+        });
+        document.querySelectorAll('#photoShapeSelector .shape-btn').forEach(function(btn) {
+          btn.classList.toggle('active', btn.dataset.shape === state.photoShape);
+        });
+
+        renderExperienceInputs();
+        renderEducationInputs();
+        renderSkillsInputs();
+        renderLanguagesInputs();
+        renderLivePreview();
+      }
+
+      async function capturePaperCanvas(paperEl) {
+        if (!window.html2canvas) throw new Error('Image capture library still loading.');
+        var host = document.createElement('div');
+        host.style.position = 'fixed';
+        host.style.left = '-9999px';
+        host.style.top = '0';
+        host.style.width = '794px';
+        host.style.background = '#FFFFFF';
+        var clone = paperEl.cloneNode(true);
+        host.appendChild(clone);
+        document.body.appendChild(host);
+        try {
+          return await window.html2canvas(clone, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#FFFFFF',
+            width: 794,
+            windowWidth: 794
+          });
+        } finally {
+          document.body.removeChild(host);
+        }
+      }
+
+      async function downloadAsPng(paperEl, fileBase) {
+        var canvas = await capturePaperCanvas(paperEl);
+        canvas.toBlob(function(blob) {
+          if (!blob) return;
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = fileBase + '.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+        }, 'image/png');
+      }
+
+      async function downloadAsPdf(paperEl, fileBase) {
+        var canvas = await capturePaperCanvas(paperEl);
+        var jsPDF = window.jspdf && window.jspdf.jsPDF;
+        if (!jsPDF) {
+          await downloadAsPng(paperEl, fileBase);
+          return;
+        }
+        var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+        var pdfW = doc.internal.pageSize.getWidth();
+        var pdfH = doc.internal.pageSize.getHeight();
+        var imgH = (canvas.height * pdfW) / canvas.width;
+        var imgData = canvas.toDataURL('image/png');
+        var heightLeft = imgH;
+        var position = 0;
+
+        doc.addImage(imgData, 'PNG', 0, position, pdfW, imgH);
+        heightLeft -= pdfH;
+        while (heightLeft > 2) {
+          position = heightLeft - imgH;
+          doc.addPage();
+          doc.addImage(imgData, 'PNG', 0, position, pdfW, imgH);
+          heightLeft -= pdfH;
+        }
+        doc.save(fileBase + '.pdf');
+      }
+
+      function downloadVCard(cvState) {
+        var name = (cvState.fullName || 'Candidate').trim();
+        var parts = name.split(/\s+/);
+        var first = parts[0] || name;
+        var last = parts.slice(1).join(' ');
+        var lines = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          'FN:' + name,
+          'N:' + last + ';' + first + ';;;',
+          cvState.jobTitle ? 'TITLE:' + cvState.jobTitle : '',
+          cvState.phone ? 'TEL;TYPE=CELL:' + cvState.phone : '',
+          cvState.email ? 'EMAIL;TYPE=INTERNET:' + cvState.email : '',
+          cvState.city ? 'ADR;TYPE=HOME:;;;' + cvState.city + ';;;' : '',
+          cvState.summary ? 'NOTE:' + cvState.summary.replace(/\r?\n/g, ' ') : '',
+          'END:VCARD'
+        ].filter(Boolean).join('\r\n');
+
+        var blob = new Blob([lines], { type: 'text/vcard;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = (name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'contact') + '.vcf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      }
+
+      // Apply saved Admin SEO metadata (read-only on public CV Builder)
+      function sanitizeMetaUrl(url) {
+        if (typeof url !== 'string') return DEFAULT_SEO.ogImage;
+        var trimmed = url.trim();
+        if (!trimmed) return DEFAULT_SEO.ogImage;
+        if (trimmed.indexOf('/') === 0 && trimmed.indexOf('//') !== 0) return trimmed;
+        try {
+          var parsed = new URL(trimmed);
+          if (parsed.protocol === 'https:' || parsed.protocol === 'http:') return parsed.href;
+        } catch (e) {}
+        return DEFAULT_SEO.ogImage;
+      }
+
+      function loadSeoSettings() {
+        try {
+          var raw = localStorage.getItem(SEO_STORAGE_KEY);
+          if (raw) return Object.assign({}, DEFAULT_SEO, JSON.parse(raw));
+        } catch (e) {}
+        return Object.assign({}, DEFAULT_SEO);
+      }
+
+      function applySeoToDocument(seo) {
+        var safeOgImage = sanitizeMetaUrl(seo.ogImage);
+        document.title = seo.title || DEFAULT_SEO.title;
+        function setMeta(attr, key, val) {
+          var el = document.querySelector('meta[' + attr + '="' + key + '"]');
+          if (!el) {
+            el = document.createElement('meta');
+            el.setAttribute(attr, key);
+            document.head.appendChild(el);
+          }
+          el.setAttribute('content', val);
+        }
+        setMeta('name', 'description', seo.description || DEFAULT_SEO.description);
+        setMeta('name', 'keywords', seo.keywords || DEFAULT_SEO.keywords);
+        setMeta('property', 'og:title', seo.title || DEFAULT_SEO.title);
+        setMeta('property', 'og:description', seo.description || DEFAULT_SEO.description);
+        setMeta('property', 'og:image', safeOgImage);
+        setMeta('name', 'twitter:title', seo.title || DEFAULT_SEO.title);
+        setMeta('name', 'twitter:description', seo.description || DEFAULT_SEO.description);
+        setMeta('name', 'twitter:image', safeOgImage);
+
+        var jsonLdEl = document.getElementById('cv-jsonld');
+        if (jsonLdEl) {
+          jsonLdEl.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: seo.title || 'Tindry CV Builder',
+            url: 'https://tindry.com/cv-builder',
+            description: seo.description || DEFAULT_SEO.description,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'All',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' }
+          });
+        }
+      }
+
+      applySeoToDocument(loadSeoSettings());
+
+      // Check URL for ?cv= parameter (Scanned QR Phone View)
+      var params = new URLSearchParams(window.location.search);
+      var sharedParam = params.get('cv');
+      if (sharedParam) {
+        try {
+          var sharedState = expandCompactPayload(decodeCvFromBase64(sharedParam));
+          document.getElementById('builderMainView').classList.add('is-hidden');
+          document.getElementById('sharedCvView').classList.remove('is-hidden');
+          document.getElementById('sharedCvHeading').textContent = (sharedState.fullName || 'Candidate') + (sharedState.jobTitle ? ' — ' + sharedState.jobTitle : '');
+          var sharedPaper = document.getElementById('sharedCvPaper');
+          sharedPaper.innerHTML = buildCvInnerHtml(sharedState, '');
+          scalePreviewContainer('sharedPreviewOuter', 'sharedScaleWrap', 'sharedCvPaper');
+          window.addEventListener('resize', function() {
+            scalePreviewContainer('sharedPreviewOuter', 'sharedScaleWrap', 'sharedCvPaper');
+          });
+
+          var sharedSlug = (sharedState.fullName || 'tindry-cv').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          document.getElementById('sharedDownloadPngBtn').addEventListener('click', function() {
+            downloadAsPng(sharedPaper, sharedSlug);
+          });
+          document.getElementById('sharedDownloadPdfBtn').addEventListener('click', function() {
+            downloadAsPdf(sharedPaper, sharedSlug);
+          });
+          document.getElementById('sharedSaveContactBtn').addEventListener('click', function() {
+            downloadVCard(sharedState);
+          });
+          return;
+        } catch (err) {
+          console.error('Failed to decode shared CV:', err);
+        }
+      }
+
+      // Bind Standard Input Fields
+      [
+        ['fullName', 'fullName'],
+        ['jobTitle', 'jobTitle'],
+        ['dob', 'dob'],
+        ['city', 'city'],
+        ['phone', 'phone'],
+        ['email', 'email'],
+        ['nationality', 'nationality'],
+        ['maritalStatus', 'maritalStatus'],
+        ['summary', 'summary'],
+        ['hobbies', 'hobbies']
+      ].forEach(function(pair) {
+        var el = document.getElementById(pair[0]);
+        var evName = el.tagName === 'SELECT' || el.type === 'date' ? 'change' : 'input';
+        el.addEventListener(evName, function() {
+          state[pair[1]] = el.value;
+          saveState();
+          renderLivePreview();
+        });
+        if (evName !== 'input') {
+          el.addEventListener('input', function() {
+            state[pair[1]] = el.value;
+            saveState();
+            renderLivePreview();
+          });
+        }
+      });
+
+      document.getElementById('showQrCheckbox').addEventListener('change', function(e) {
+        state.showQr = e.target.checked;
+        saveState();
+        renderLivePreview();
+      });
+
+      document.querySelectorAll('#templateSelector .design-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var nextTpl = btn.dataset.template;
+          state.template = nextTpl;
+          if (!state.photoShapeLocked) {
+            state.photoShape = (TEMPLATE_META[nextTpl] || TEMPLATE_META['modern-blue']).defaultShape;
+          }
+          saveState();
+          syncUiFromState();
+        });
+      });
+
+      document.querySelectorAll('#photoShapeSelector .shape-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          state.photoShape = btn.dataset.shape || 'circle';
+          state.photoShapeLocked = true;
+          saveState();
+          syncUiFromState();
+        });
+      });
+
+      // Local Photo Upload & Crop
+      var photoUpload = document.getElementById('photoUpload');
+      document.getElementById('photoUploadBtn').addEventListener('click', function() {
+        photoUpload.click();
+      });
+      photoUpload.addEventListener('change', function() {
+        if (!photoUpload.files || !photoUpload.files[0]) return;
+        var file = photoUpload.files[0];
+        if (!file.type.startsWith('image/')) return;
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+          var img = new Image();
+          img.onload = function() {
+            function cropToSquare(size, quality) {
+              var c = document.createElement('canvas');
+              c.width = size;
+              c.height = size;
+              var ctx = c.getContext('2d');
+              var side = Math.min(img.width, img.height);
+              ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+              return c.toDataURL('image/jpeg', quality);
+            }
+            state.photoDataUrl = cropToSquare(280, 0.88);
+            state.photoQrThumb = cropToSquare(44, 0.55);
+            saveState();
+            syncUiFromState();
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      document.getElementById('photoRemoveBtn').addEventListener('click', function() {
+        state.photoDataUrl = '';
+        state.photoQrThumb = '';
+        photoUpload.value = '';
+        saveState();
+        syncUiFromState();
+      });
+
+      // Repeatable Add Buttons
+      document.getElementById('addExperienceBtn').addEventListener('click', function() {
+        state.experiences.push({ company: '', job: '', startDate: '', endDate: '', description: '' });
+        saveState();
+        renderExperienceInputs();
+        renderLivePreview();
+      });
+
+      document.getElementById('addEducationBtn').addEventListener('click', function() {
+        state.educations.push({ school: '', degree: '', year: '' });
+        saveState();
+        renderEducationInputs();
+        renderLivePreview();
+      });
+
+      function addSkillFromInput() {
+        var inp = document.getElementById('skillInput');
+        var val = inp.value.trim();
+        if (!val) return;
+        state.skills.push(val);
+        inp.value = '';
+        saveState();
+        renderSkillsInputs();
+        renderLivePreview();
+      }
+      document.getElementById('addSkillBtn').addEventListener('click', addSkillFromInput);
+      document.getElementById('skillInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          addSkillFromInput();
+        }
+      });
+
+      document.getElementById('addLanguageBtn').addEventListener('click', function() {
+        state.languages.push({ language: '', level: 'Intermediate' });
+        saveState();
+        renderLanguagesInputs();
+        renderLivePreview();
+      });
+
+      // Downloads & Reset
+      function getDownloadBase() {
+        var slug = (state.fullName || 'tindry-cv').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        return (slug || 'tindry-cv') + '-cv';
+      }
+
+      document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+        downloadAsPdf(document.getElementById('liveCvPaper'), getDownloadBase());
+      });
+      document.getElementById('downloadPngBtn').addEventListener('click', function() {
+        downloadAsPng(document.getElementById('liveCvPaper'), getDownloadBase());
+      });
+
+      function handleReset() {
+        state = getEmptyState();
+        photoUpload.value = '';
+        saveState();
+        syncUiFromState();
+      }
+
+      var clearConfirmModal = document.getElementById('clearConfirmModal');
+      function openClearConfirmModal() {
+        if (!clearConfirmModal) return;
+        clearConfirmModal.classList.remove('is-hidden');
+        var cancelBtn = document.getElementById('cancelClearBtn');
+        if (cancelBtn) cancelBtn.focus();
+      }
+      function closeClearConfirmModal() {
+        if (!clearConfirmModal) return;
+        clearConfirmModal.classList.add('is-hidden');
+      }
+
+      document.getElementById('resetFormBtn').addEventListener('click', openClearConfirmModal);
+      document.getElementById('resetFormTopBtn').addEventListener('click', openClearConfirmModal);
+      document.getElementById('cancelClearBtn').addEventListener('click', closeClearConfirmModal);
+      document.getElementById('closeClearConfirmBtn').addEventListener('click', closeClearConfirmModal);
+      document.getElementById('confirmClearBtn').addEventListener('click', function() {
+        handleReset();
+        closeClearConfirmModal();
+      });
+      if (clearConfirmModal) {
+        clearConfirmModal.addEventListener('click', function(e) {
+          if (e.target === clearConfirmModal) closeClearConfirmModal();
+        });
+      }
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && clearConfirmModal && !clearConfirmModal.classList.contains('is-hidden')) {
+          closeClearConfirmModal();
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        scalePreviewContainer('livePreviewOuter', 'liveScaleWrap', 'liveCvPaper');
+      });
+
+      // FAQ Accordion Click Handler
+      document.querySelectorAll('#cvFaqAccordion .cv-faq-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var item = btn.closest('.cv-faq-item');
+          if (!item) return;
+          var isOpen = item.classList.contains('open');
+          document.querySelectorAll('#cvFaqAccordion .cv-faq-item').forEach(function(el) {
+            el.classList.remove('open');
+            var b = el.querySelector('.cv-faq-btn');
+            if (b) b.setAttribute('aria-expanded', 'false');
+          });
+          if (!isOpen) {
+            item.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+
+      syncUiFromState();
+    })();
+  </script>
+</body>
+</html>

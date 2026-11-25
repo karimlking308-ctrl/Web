@@ -24,6 +24,7 @@ import {
   Scissors,
   Receipt,
   CreditCard,
+  FileUser,
 } from 'lucide-react';
 import { TOOLS, ToolDefinition } from '../config/tools';
 import { ToolSearch } from '../components/ToolSearch';
@@ -114,6 +115,16 @@ const POPULAR_CARDS: LuxuryCardItem[] = [
     externalUrl: '/business-card-maker.html',
     category: 'business',
     icon: CreditCard,
+  },
+  {
+    id: 'cv-builder',
+    name: 'Tindry CV Builder',
+    description: 'Create a professional CV in minutes with 6 templates, Smart QR code, and PDF/PNG export.',
+    href: '/cv-builder.html',
+    externalUrl: '/cv-builder.html',
+    category: 'business',
+    badge: 'NEW',
+    icon: FileUser,
   },
 ];
 

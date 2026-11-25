@@ -279,4 +279,20 @@ export const SEO_CONFIGS: Record<string, PageSeoConfig> = {
     noindex: false,
     schemaType: 'Article',
   },
+  admin: {
+    title: 'Admin Settings | Tindry',
+    description: 'Administrator SEO settings for Tindry.',
+    canonicalPath: '/admin',
+    h1: 'Admin Settings',
+    noindex: true,
+    schemaType: 'WebSite',
+  },
+  settings: {
+    title: 'Admin Settings | Tindry',
+    description: 'Administrator SEO settings for Tindry.',
+    canonicalPath: '/settings',
+    h1: 'Admin Settings',
+    noindex: true,
+    schemaType: 'WebSite',
+  },
 };

@@ -115,6 +115,18 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://tindry.com/business-card-maker</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tindry.com/cv-builder</loc>
+    <lastmod>2026-11-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
     <loc>https://tindry.com/contact</loc>
     <lastmod>2026-10-18</lastmod>
     <changefreq>monthly</changefreq>

@@ -15,6 +15,7 @@ import {
   RefreshCw,
   Scissors,
   Receipt,
+  FileUser,
   LucideIcon 
 } from 'lucide-react';
 
@@ -37,7 +38,8 @@ export type ToolId =
   | 'pdf-to-word'
   | 'split-pdf'
   | 'compress-pdf'
-  | 'free-invoice-maker';
+  | 'free-invoice-maker'
+  | 'cv-builder';
 
 export interface ToolDefinition {
   id: ToolId;
@@ -257,6 +259,17 @@ export const TOOLS: ToolDefinition[] = [
     acceptedFormats: ['text'],
     acceptedMimeTypes: ['text/plain'],
     externalUrl: '/free-invoice-maker.html',
+  },
+  {
+    id: 'cv-builder',
+    name: 'Tindry CV Builder',
+    slug: 'cv-builder.html',
+    description: 'Create a professional CV with 6 templates, Smart QR code, and PDF/PNG download.',
+    badge: 'NEW',
+    icon: FileUser,
+    acceptedFormats: ['cv', 'resume', 'pdf'],
+    acceptedMimeTypes: ['application/pdf'],
+    externalUrl: '/cv-builder.html',
   },
 ];
 

@@ -21,7 +21,8 @@ import {
   FileText,
   Scissors,
   Receipt,
-  CreditCard
+  CreditCard,
+  FileUser
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -58,6 +59,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'compress-pdf', label: 'Compress PDF', icon: Minimize2, href: '/compress-pdf.html', description: 'Reduce PDF size without losing quality.' },
     { id: 'free-invoice-maker', label: 'Free Invoice Maker', icon: Receipt, href: '/free-invoice-maker.html', description: 'Create professional PDF invoices offline.' },
     { id: 'business-card-maker', label: 'Business Card Maker', icon: CreditCard, href: '/business-card-maker.html', description: 'Create your professional business card in 1 second.' },
+    { id: 'cv-builder', label: 'CV Builder', icon: FileUser, href: '/cv-builder.html', description: 'Create a professional CV with 6 templates & Smart QR.' },
   ];
 
   const handleItemClick = (id: string, href?: string) => {
