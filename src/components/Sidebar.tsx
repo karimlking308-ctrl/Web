@@ -20,7 +20,8 @@ import {
   Palette,
   FileText,
   Scissors,
-  Receipt
+  Receipt,
+  CreditCard
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -56,6 +57,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'split-pdf', label: 'Split PDF', icon: Scissors, href: '/split-pdf.html', description: 'Extract pages from your PDF.' },
     { id: 'compress-pdf', label: 'Compress PDF', icon: Minimize2, href: '/compress-pdf.html', description: 'Reduce PDF size without losing quality.' },
     { id: 'free-invoice-maker', label: 'Free Invoice Maker', icon: Receipt, href: '/free-invoice-maker.html', description: 'Create professional PDF invoices offline.' },
+    { id: 'business-card-maker', label: 'Business Card Maker', icon: CreditCard, href: '/business-card-maker.html', description: 'Create your professional business card in 1 second.' },
   ];
 
   const handleItemClick = (id: string, href?: string) => {
