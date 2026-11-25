@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Business Card Maker - Create Professional Business Cards Online | Tindry</title>
-  <meta name="description" content="Create your professional business card in 1 second. Choose your color, job, and photo directly in your browser. 100% private, no signup, instant download.">
+  <title>Free Business Card Maker - Create Your Card in 1 Second | Tindry</title>
+  <meta name="description" content="Create your professional business card for free. Choose color, design, photo and download in 1 second. No signup.">
   <link rel="canonical" href="https://tindry.com/business-card-maker">
   <meta name="robots" content="index, follow">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Tindry">
-  <meta property="og:title" content="Business Card Maker - Create Professional Business Cards Online | Tindry">
-  <meta property="og:description" content="Create your professional business card in 1 second. Choose your color, job, and photo. 100% private in your browser.">
+  <meta property="og:title" content="Free Business Card Maker - Create Your Card in 1 Second | Tindry">
+  <meta property="og:description" content="Create your professional business card for free. Choose color, design, photo and download in 1 second. No signup.">
   <meta property="og:url" content="https://tindry.com/business-card-maker">
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -440,6 +440,45 @@
       outline: none;
     }
 
+    /* 4 Card Design Styles Selector */
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    .design-btn {
+      padding: 10px 12px;
+      border: 1.5px solid #e5e5e5;
+      border-radius: 10px;
+      background-color: var(--tindry-white);
+      color: var(--tindry-black);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .design-btn:hover {
+      border-color: var(--tindry-gold);
+      background-color: var(--tindry-light-gold-bg);
+    }
+    .design-btn.active {
+      border-color: var(--tindry-pure-black);
+      background-color: var(--tindry-cream);
+      box-shadow: 0 0 0 2px var(--tindry-gold);
+    }
+    .design-btn-title {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--tindry-black);
+    }
+    .design-btn-sub {
+      display: block;
+      font-size: 11px;
+      color: #525252;
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+
     /* 6 Color Circles */
     .color-circles {
       display: flex;
@@ -598,38 +637,154 @@
     .business-card-preview {
       width: 100%;
       max-width: 470px;
-      min-height: 252px;
       border-radius: 16px;
-      padding: 24px 24px 18px;
+      padding: 22px 26px 16px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 18px;
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+      justify-content: center;
+      gap: 12px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
       position: relative;
       overflow: hidden;
-      transition: background 0.25s ease, color 0.25s ease;
+      transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
       background: linear-gradient(135deg, #0F0F0F 0%, #1F1F1F 100%);
       color: #FFFFFF;
-      border: 1px solid rgba(212, 175, 55, 0.5);
+      border: 1.5px solid #D4AF37;
+      isolation: isolate;
     }
     @media (max-width: 480px) {
       .business-card-preview {
-        padding: 18px 16px 14px;
-        min-height: 220px;
+        padding: 18px 18px 14px;
+        gap: 10px;
       }
     }
 
+    /* Card Decorative Layers */
+    .bcard-decor {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .bcard-inner-frame {
+      display: none;
+      position: absolute;
+      inset: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.55);
+    }
+    .bcard-side-pattern {
+      display: none;
+      position: absolute;
+      top: 14px;
+      bottom: 14px;
+      width: 10px;
+      opacity: 0.48;
+      background-image: repeating-linear-gradient(
+        135deg,
+        currentColor 0px,
+        currentColor 1.5px,
+        transparent 1.5px,
+        transparent 6px
+      );
+    }
+    .bcard-side-pattern.left { left: 10px; }
+    .bcard-side-pattern.right { right: 10px; }
+
+    .bcard-corner {
+      display: none;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-color: var(--bcard-ornament, #D4AF37);
+      border-style: solid;
+      border-width: 0;
+    }
+    .bcard-corner.tl { top: 10px; left: 10px; border-top-width: 2.5px; border-left-width: 2.5px; border-top-left-radius: 4px; }
+    .bcard-corner.tr { top: 10px; right: 10px; border-top-width: 2.5px; border-right-width: 2.5px; border-top-right-radius: 4px; }
+    .bcard-corner.bl { bottom: 10px; left: 10px; border-bottom-width: 2.5px; border-left-width: 2.5px; border-bottom-left-radius: 4px; }
+    .bcard-corner.br { bottom: 10px; right: 10px; border-bottom-width: 2.5px; border-right-width: 2.5px; border-bottom-right-radius: 4px; }
+
+    .bcard-edge-line {
+      display: none;
+      position: absolute;
+      background: var(--bcard-ornament, #D4AF37);
+      opacity: 0.78;
+    }
+    .bcard-edge-line.top { top: 10px; left: 22px; right: 22px; height: 1.5px; }
+    .bcard-edge-line.bottom { bottom: 10px; left: 22px; right: 22px; height: 1.5px; }
+    .bcard-edge-line.left { left: 12px; top: 22px; bottom: 22px; width: 1.5px; }
+    .bcard-edge-line.right { right: 12px; top: 22px; bottom: 22px; width: 1.5px; }
+
+    .bcard-modern-shape {
+      display: none;
+      position: absolute;
+      top: -20px;
+      right: -32px;
+      bottom: -20px;
+      width: 40%;
+      transform: skewX(-14deg);
+      background: var(--bcard-modern-accent, rgba(212, 175, 55, 0.24));
+      border-left: 3px solid var(--bcard-ornament, #D4AF37);
+    }
+
+    /* Design visibility toggles */
+    .business-card-preview.design-classic .bcard-inner-frame {
+      display: block;
+      opacity: 0.28;
+    }
+    .business-card-preview.design-luxury-gold {
+      padding: 24px 30px 18px;
+    }
+    .business-card-preview.design-luxury-gold .bcard-inner-frame,
+    .business-card-preview.design-luxury-gold .bcard-corner,
+    .business-card-preview.design-luxury-gold .bcard-side-pattern {
+      display: block;
+    }
+    .business-card-preview.design-elegant-lines {
+      padding: 24px 28px 18px;
+    }
+    .business-card-preview.design-elegant-lines .bcard-edge-line {
+      display: block;
+    }
+    .business-card-preview.design-modern .bcard-modern-shape {
+      display: block;
+    }
+
+    .bcard-crown-badge {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.16);
+      border: 1px solid var(--bcard-ornament, #D4AF37);
+      color: var(--bcard-ornament, #D4AF37);
+    }
+    .business-card-preview.design-luxury-gold .bcard-crown-badge,
+    .business-card-preview.design-elegant-lines .bcard-crown-badge {
+      top: 18px;
+      right: 22px;
+    }
+
     .bcard-top {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 15px;
       min-width: 0;
+      padding-right: 28px;
     }
 
     .bcard-avatar-wrap {
-      width: 68px;
-      height: 68px;
+      width: 66px;
+      height: 66px;
       border-radius: 14px;
       overflow: hidden;
       flex-shrink: 0;
@@ -644,8 +799,8 @@
     }
     @media (max-width: 480px) {
       .bcard-avatar-wrap {
-        width: 56px;
-        height: 56px;
+        width: 54px;
+        height: 54px;
         font-size: 20px;
       }
     }
@@ -659,47 +814,54 @@
     .bcard-identity { min-width: 0; flex: 1; }
     .bcard-name {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 22px;
-      font-weight: 700;
-      line-height: 1.2;
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.14;
+      letter-spacing: -0.01em;
       word-break: break-word;
     }
     @media (max-width: 480px) {
-      .bcard-name { font-size: 19px; }
+      .bcard-name { font-size: 21px; }
     }
     .bcard-job {
       font-size: 13px;
       font-weight: 600;
       margin-top: 4px;
-      opacity: 0.92;
+      letter-spacing: 0.015em;
+      opacity: 0.94;
       word-break: break-word;
     }
 
     .bcard-divider {
+      position: relative;
+      z-index: 1;
       height: 1px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.25);
     }
 
     .bcard-bottom {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .bcard-contacts {
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 5px;
       font-size: 12.5px;
+      font-weight: 500;
       min-width: 0;
       flex: 1;
     }
     .bcard-contact-line {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       word-break: break-word;
     }
     .bcard-contact-line svg {
@@ -713,7 +875,7 @@
       font-size: 9.5px;
       font-weight: 600;
       letter-spacing: 0.02em;
-      opacity: 0.65;
+      opacity: 0.7;
       white-space: nowrap;
       margin-left: auto;
     }
@@ -731,6 +893,123 @@
     @media (max-width: 640px) { .tr-trust-row { grid-template-columns: 1fr; } }
     .tr-trust-item strong { display: block; font-size: 13px; color: var(--tindry-black); margin-bottom: 2px; }
     .tr-trust-item p { font-size: 12px; color: var(--tindry-dark-gray); }
+
+    /* Below-Tool SEO / How-to / Why / FAQ Sections */
+    .bcard-seo-content {
+      margin-top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .bcard-seo-block {
+      background-color: var(--tindry-white);
+      border: 1px solid #e7e2d4;
+      border-radius: 14px;
+      padding: 24px;
+    }
+    .bcard-seo-block h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--tindry-black);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .bcard-seo-block p {
+      font-size: 13.5px;
+      color: #404040;
+      line-height: 1.65;
+    }
+    .bcard-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 720px) { .bcard-steps-grid { grid-template-columns: 1fr; } }
+    .bcard-step-card {
+      background-color: var(--tindry-cream);
+      border: 1px solid var(--tindry-gold);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .bcard-step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background-color: var(--tindry-pure-black);
+      color: var(--tindry-gold);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .bcard-step-card strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--tindry-black);
+      margin-bottom: 4px;
+    }
+    .bcard-step-card span {
+      display: block;
+      font-size: 12.5px;
+      color: #525252;
+      line-height: 1.5;
+    }
+
+    .bcard-benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+    @media (max-width: 640px) { .bcard-benefits-grid { grid-template-columns: 1fr; } }
+    .bcard-benefit-item {
+      padding: 14px 16px;
+      border-left: 3px solid var(--tindry-gold);
+      background-color: var(--tindry-light-gold-bg);
+      border-radius: 0 10px 10px 0;
+    }
+    .bcard-benefit-item strong {
+      display: block;
+      font-size: 13.5px;
+      color: var(--tindry-black);
+      margin-bottom: 4px;
+    }
+    .bcard-benefit-item span {
+      display: block;
+      font-size: 12.5px;
+      color: #525252;
+      line-height: 1.5;
+    }
+
+    .bcard-faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .bcard-faq-item {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--tindry-cream);
+    }
+    .bcard-faq-item:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .bcard-faq-item strong {
+      display: block;
+      font-size: 14px;
+      color: var(--tindry-black);
+      margin-bottom: 4px;
+    }
+    .bcard-faq-item p {
+      font-size: 13px;
+      color: #525252;
+      line-height: 1.55;
+    }
 
     /* Footer */
     .tindry-footer {
@@ -973,8 +1252,8 @@
         </div>
 
         <div class="tindry-tool-header">
-          <h1 class="tindry-tool-h1">Business Card Maker</h1>
-          <p class="tindry-tool-sub">Create your professional business card in 1 second. Choose your color, job, and photo 100% privately in your browser.</p>
+          <h1 class="tindry-tool-h1">Free Business Card Maker</h1>
+          <p class="tindry-tool-sub">Create your professional business card in 1 second. Choose your color, card design, job, and photo 100% privately in your browser — no signup.</p>
         </div>
 
         <div class="bcard-workspace">
@@ -1018,6 +1297,28 @@
             </div>
 
             <div class="field-group">
+              <span class="field-label">Choose Card Design</span>
+              <div class="design-grid" role="radiogroup" aria-label="Choose business card design">
+                <button type="button" class="design-btn" data-design="classic">
+                  <span class="design-btn-title">Classic</span>
+                  <span class="design-btn-sub">Clean &amp; simple layout</span>
+                </button>
+                <button type="button" class="design-btn active" data-design="luxury-gold">
+                  <span class="design-btn-title">Luxury Gold</span>
+                  <span class="design-btn-sub">Gold corners, frame &amp; side pattern</span>
+                </button>
+                <button type="button" class="design-btn" data-design="elegant-lines">
+                  <span class="design-btn-title">Elegant Lines</span>
+                  <span class="design-btn-sub">Thin gold lines on edges</span>
+                </button>
+                <button type="button" class="design-btn" data-design="modern">
+                  <span class="design-btn-title">Modern</span>
+                  <span class="design-btn-sub">Bold accent shape on side</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="field-group">
               <label for="photoInput" class="field-label">Upload Photo / Logo</label>
               <div class="photo-upload-row">
                 <button type="button" id="uploadPhotoBtn" class="btn-upload-photo">
@@ -1050,11 +1351,34 @@
           <section class="preview-shell" aria-label="Live business card preview">
             <div class="preview-bar">
               <span>Live Card Preview</span>
-              <span class="preview-pill" id="activeThemePill">Gold Theme</span>
+              <span class="preview-pill" id="activeThemePill">Gold · Luxury Gold</span>
             </div>
 
             <div class="card-stage">
-              <div id="cardPreview" class="business-card-preview">
+              <div id="cardPreview" class="business-card-preview design-luxury-gold">
+                <!-- Decorative Frame / Corners / Side Pattern / Edge Lines / Modern Shape -->
+                <div class="bcard-decor" aria-hidden="true">
+                  <div class="bcard-modern-shape" id="prevModernShape"></div>
+                  <div class="bcard-inner-frame" id="prevInnerFrame"></div>
+                  <div class="bcard-side-pattern left" id="prevSideLeft"></div>
+                  <div class="bcard-side-pattern right" id="prevSideRight"></div>
+                  <div class="bcard-corner tl"></div>
+                  <div class="bcard-corner tr"></div>
+                  <div class="bcard-corner bl"></div>
+                  <div class="bcard-corner br"></div>
+                  <div class="bcard-edge-line top"></div>
+                  <div class="bcard-edge-line bottom"></div>
+                  <div class="bcard-edge-line left"></div>
+                  <div class="bcard-edge-line right"></div>
+                </div>
+
+                <!-- Small Crown Accent -->
+                <div class="bcard-crown-badge" id="prevCrownBadge" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M3 18h18v2H3v-2zm0-2 2-9 5 4 2-6 2 6 5-4 2 9H3z"></path>
+                  </svg>
+                </div>
+
                 <div class="bcard-top">
                   <div class="bcard-avatar-wrap" id="prevAvatarWrap">
                     <span id="prevInitials">T</span>
@@ -1095,7 +1419,7 @@
         <section class="tr-trust-row" aria-label="Privacy guarantees">
           <div class="tr-trust-item">
             <strong>Instant Live Design</strong>
-            <p>Watch your name, job, photo, and color theme update live in real time.</p>
+            <p>Watch your name, job, photo, color, and card style update live in real time.</p>
           </div>
           <div class="tr-trust-item">
             <strong>100% Browser Private</strong>
@@ -1106,6 +1430,79 @@
             <p>Export a crisp high-resolution PNG image or PDF business card in one click.</p>
           </div>
         </section>
+
+        <article class="bcard-seo-content">
+          <section class="bcard-seo-block">
+            <h2>How to Use This Tool</h2>
+            <p>Follow these three simple steps to create a Free Business Card online in seconds without any design skills:</p>
+            <div class="bcard-steps-grid">
+              <div class="bcard-step-card">
+                <span class="bcard-step-num">1</span>
+                <strong>Write name and job</strong>
+                <span>Type your full name, business or job title, phone/WhatsApp number, and website or Instagram handle.</span>
+              </div>
+              <div class="bcard-step-card">
+                <span class="bcard-step-num">2</span>
+                <strong>Choose color, design and upload photo</strong>
+                <span>Pick from 6 rich colors, select Classic, Luxury Gold, Elegant Lines, or Modern design, and add your photo or shop logo.</span>
+              </div>
+              <div class="bcard-step-card">
+                <span class="bcard-step-num">3</span>
+                <strong>Download card</strong>
+                <span>Click Download Card (Image) for a crisp high-resolution PNG or Download PDF for print-ready business cards.</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="bcard-seo-block">
+            <h2>Why Use This Business Card Maker?</h2>
+            <p>Our Free Business Card Maker is built for small shop owners, salons, freelancers, creators, and professionals who want to create a business card instantly without accounts or uploads:</p>
+            <div class="bcard-benefits-grid">
+              <div class="bcard-benefit-item">
+                <strong>Create Business Card in 1 Second</strong>
+                <span>Every detail updates live as you type so you can see your finished card immediately with zero loading screens.</span>
+              </div>
+              <div class="bcard-benefit-item">
+                <strong>4 Designer Styles &amp; 6 Colors</strong>
+                <span>Switch effortlessly between Classic, Luxury Gold, Elegant Lines, and Modern styles tailored for any brand or shop.</span>
+              </div>
+              <div class="bcard-benefit-item">
+                <strong>100% Private — Zero Uploads</strong>
+                <span>Your portrait, shop logo, and contact details stay inside your browser and are never sent to any external server.</span>
+              </div>
+              <div class="bcard-benefit-item">
+                <strong>Free Forever &amp; Print-Ready</strong>
+                <span>Download a sharp 1050×600 PNG image for social sharing or a standard 3.5×2 inch PDF ready for local print shops.</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="bcard-seo-block">
+            <h2>FAQ — Free Business Card Maker</h2>
+            <div class="bcard-faq-list">
+              <div class="bcard-faq-item">
+                <strong>Is it free?</strong>
+                <p>Yes. Tindry Business Card Maker is 100% free to use with unlimited edits and downloads.</p>
+              </div>
+              <div class="bcard-faq-item">
+                <strong>Do I need signup?</strong>
+                <p>No signup, login, or email address is required. Open the page, customize your card, and download right away.</p>
+              </div>
+              <div class="bcard-faq-item">
+                <strong>Can I use my shop logo?</strong>
+                <p>Yes. Click "Choose Photo or Logo" to upload your business logo, salon emblem, or personal headshot in PNG, JPG, or WEBP format.</p>
+              </div>
+              <div class="bcard-faq-item">
+                <strong>Can I download as image or PDF?</strong>
+                <p>Yes. Use "Download Card (Image)" to save a high-resolution PNG file, or click "Download PDF" for a standard 3.5×2 inch print-ready PDF business card.</p>
+              </div>
+              <div class="bcard-faq-item">
+                <strong>Is my photo private?</strong>
+                <p>Yes, 100% private. Your photo or logo is processed locally in your browser using HTML5 Canvas and never leaves your phone or computer.</p>
+              </div>
+            </div>
+          </section>
+        </article>
 
         <div class="tindry-ad-slot tindry-ad-slot-bottom">
           <script>
@@ -1208,71 +1605,96 @@
 
       var THEMES = {
         gold: {
-          label: 'Gold Theme',
+          label: 'Gold',
           bgStart: '#E8C468',
           bgEnd: '#B8860B',
           textColor: '#0F0F0F',
           accentColor: '#1A1A1A',
-          borderColor: '#8C6200',
-          dividerColor: 'rgba(15, 15, 15, 0.22)',
+          borderColor: '#7A5400',
+          ornamentColor: '#0F0F0F',
+          modernAccent: 'rgba(15, 15, 15, 0.14)',
+          crownBg: 'rgba(15, 15, 15, 0.12)',
+          dividerColor: 'rgba(15, 15, 15, 0.25)',
           avatarBg: 'rgba(15, 15, 15, 0.12)',
           avatarBorder: 'rgba(15, 15, 15, 0.45)'
         },
         black: {
-          label: 'Black Theme',
+          label: 'Black',
           bgStart: '#1C1C1C',
           bgEnd: '#0A0A0A',
           textColor: '#FFFFFF',
           accentColor: '#D4AF37',
           borderColor: '#D4AF37',
-          dividerColor: 'rgba(212, 175, 55, 0.35)',
+          ornamentColor: '#D4AF37',
+          modernAccent: 'rgba(212, 175, 55, 0.18)',
+          crownBg: 'rgba(212, 175, 55, 0.14)',
+          dividerColor: 'rgba(212, 175, 55, 0.38)',
           avatarBg: 'rgba(212, 175, 55, 0.14)',
           avatarBorder: '#D4AF37'
         },
         blue: {
-          label: 'Blue Theme',
+          label: 'Blue',
           bgStart: '#2563EB',
           bgEnd: '#1E3A8A',
           textColor: '#FFFFFF',
           accentColor: '#DBEAFE',
           borderColor: '#93C5FD',
-          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          ornamentColor: '#E8C468',
+          modernAccent: 'rgba(255, 255, 255, 0.16)',
+          crownBg: 'rgba(0, 0, 0, 0.22)',
+          dividerColor: 'rgba(255, 255, 255, 0.28)',
           avatarBg: 'rgba(255, 255, 255, 0.16)',
           avatarBorder: 'rgba(255, 255, 255, 0.6)'
         },
         green: {
-          label: 'Green Theme',
+          label: 'Green',
           bgStart: '#16A34A',
           bgEnd: '#14532D',
           textColor: '#FFFFFF',
           accentColor: '#DCFCE7',
           borderColor: '#86EFAC',
-          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          ornamentColor: '#E8C468',
+          modernAccent: 'rgba(255, 255, 255, 0.15)',
+          crownBg: 'rgba(0, 0, 0, 0.22)',
+          dividerColor: 'rgba(255, 255, 255, 0.28)',
           avatarBg: 'rgba(255, 255, 255, 0.16)',
           avatarBorder: 'rgba(255, 255, 255, 0.6)'
         },
         red: {
-          label: 'Red Theme',
+          label: 'Red',
           bgStart: '#DC2626',
           bgEnd: '#991B1B',
           textColor: '#FFFFFF',
           accentColor: '#FEE2E2',
           borderColor: '#FCA5A5',
-          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          ornamentColor: '#E8C468',
+          modernAccent: 'rgba(255, 255, 255, 0.15)',
+          crownBg: 'rgba(0, 0, 0, 0.22)',
+          dividerColor: 'rgba(255, 255, 255, 0.28)',
           avatarBg: 'rgba(255, 255, 255, 0.16)',
           avatarBorder: 'rgba(255, 255, 255, 0.6)'
         },
         pink: {
-          label: 'Pink Theme',
+          label: 'Pink',
           bgStart: '#EC4899',
           bgEnd: '#9D174D',
           textColor: '#FFFFFF',
           accentColor: '#FCE7F3',
           borderColor: '#F9A8D4',
-          dividerColor: 'rgba(255, 255, 255, 0.25)',
+          ornamentColor: '#E8C468',
+          modernAccent: 'rgba(255, 255, 255, 0.16)',
+          crownBg: 'rgba(0, 0, 0, 0.22)',
+          dividerColor: 'rgba(255, 255, 255, 0.28)',
           avatarBg: 'rgba(255, 255, 255, 0.16)',
           avatarBorder: 'rgba(255, 255, 255, 0.6)'
         }
+      };
+
+      var DESIGNS = {
+        'classic': { label: 'Classic', className: 'design-classic' },
+        'luxury-gold': { label: 'Luxury Gold', className: 'design-luxury-gold' },
+        'elegant-lines': { label: 'Elegant Lines', className: 'design-elegant-lines' },
+        'modern': { label: 'Modern', className: 'design-modern' }
       };
 
       var fullNameInput = document.getElementById('fullName');
@@ -1280,6 +1702,7 @@
       var phoneInput = document.getElementById('phone');
       var websiteInput = document.getElementById('website');
       var colorButtons = document.querySelectorAll('.color-circle');
+      var designButtons = document.querySelectorAll('.design-btn');
       var photoInput = document.getElementById('photoInput');
       var uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
       var uploadPhotoText = document.getElementById('uploadPhotoText');
@@ -1289,6 +1712,8 @@
 
       var cardPreview = document.getElementById('cardPreview');
       var activeThemePill = document.getElementById('activeThemePill');
+      var prevInnerFrame = document.getElementById('prevInnerFrame');
+      var prevCrownBadge = document.getElementById('prevCrownBadge');
       var prevAvatarWrap = document.getElementById('prevAvatarWrap');
       var prevInitials = document.getElementById('prevInitials');
       var prevPhoto = document.getElementById('prevPhoto');
@@ -1299,6 +1724,7 @@
       var prevWebsite = document.getElementById('prevWebsite');
 
       var activeColor = 'gold';
+      var activeDesign = 'luxury-gold';
       var uploadedImgObj = null;
 
       function getInitials(name) {
@@ -1313,21 +1739,28 @@
 
       function updatePreview() {
         var theme = THEMES[activeColor] || THEMES.gold;
+        var design = DESIGNS[activeDesign] || DESIGNS['luxury-gold'];
         var nameVal = fullNameInput.value.trim() || 'Your Full Name';
         var jobVal = jobTitleInput.value.trim() || 'Designer · Creative Studio';
         var phoneVal = phoneInput.value.trim() || '+1 555 234 5678';
         var siteVal = websiteInput.value.trim() || 'tindry.com';
 
+        cardPreview.className = 'business-card-preview ' + design.className;
         cardPreview.style.background = 'linear-gradient(135deg, ' + theme.bgStart + ' 0%, ' + theme.bgEnd + ' 100%)';
         cardPreview.style.color = theme.textColor;
         cardPreview.style.borderColor = theme.borderColor;
+        cardPreview.style.setProperty('--bcard-ornament', theme.ornamentColor);
+        cardPreview.style.setProperty('--bcard-modern-accent', theme.modernAccent);
+
+        if (prevInnerFrame) prevInnerFrame.style.borderColor = theme.ornamentColor;
+        if (prevCrownBadge) prevCrownBadge.style.background = theme.crownBg;
 
         prevJob.style.color = theme.accentColor;
         prevDivider.style.background = theme.dividerColor;
         prevAvatarWrap.style.background = theme.avatarBg;
         prevAvatarWrap.style.borderColor = theme.avatarBorder;
         prevAvatarWrap.style.color = theme.textColor;
-        activeThemePill.textContent = theme.label;
+        activeThemePill.textContent = theme.label + ' · ' + design.label;
 
         prevName.textContent = nameVal;
         prevJob.textContent = jobVal;
@@ -1346,6 +1779,15 @@
           colorButtons.forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
           activeColor = btn.dataset.color || 'gold';
+          updatePreview();
+        });
+      });
+
+      designButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          designButtons.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeDesign = btn.dataset.design || 'luxury-gold';
           updatePreview();
         });
       });
@@ -1412,6 +1854,35 @@
         return lines.length;
       }
 
+      function drawCanvasCrown(ctx, cx, cy, size, color, bgColor) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, size * 0.95, 0, Math.PI * 2);
+        ctx.fillStyle = bgColor;
+        ctx.fill();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        var w = size * 1.1;
+        var h = size * 0.72;
+        var x0 = cx - w / 2;
+        var y0 = cy + h / 2 - 2;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x0 + w * 0.08, y0 - h * 0.78);
+        ctx.lineTo(x0 + w * 0.34, y0 - h * 0.36);
+        ctx.lineTo(cx, y0 - h);
+        ctx.lineTo(x0 + w * 0.66, y0 - h * 0.36);
+        ctx.lineTo(x0 + w * 0.92, y0 - h * 0.78);
+        ctx.lineTo(x0 + w, y0);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillRect(x0, y0 + 4, w, 4);
+        ctx.restore();
+      }
+
       function renderCardToCanvas() {
         var width = 1050;
         var height = 600;
@@ -1428,15 +1899,95 @@
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, width, height);
 
-        // Subtle inner border frame
-        ctx.strokeStyle = theme.borderColor;
-        ctx.lineWidth = 4;
-        ctx.strokeRect(18, 18, width - 36, height - 36);
+        // Design-specific decorations
+        if (activeDesign === 'modern') {
+          ctx.save();
+          ctx.beginPath();
+          ctx.moveTo(width * 0.66, 0);
+          ctx.lineTo(width, 0);
+          ctx.lineTo(width, height);
+          ctx.lineTo(width * 0.56, height);
+          ctx.closePath();
+          ctx.fillStyle = theme.modernAccent;
+          ctx.fill();
+          ctx.strokeStyle = theme.ornamentColor;
+          ctx.lineWidth = 5;
+          ctx.beginPath();
+          ctx.moveTo(width * 0.66, 0);
+          ctx.lineTo(width * 0.56, height);
+          ctx.stroke();
+          ctx.restore();
+        } else if (activeDesign === 'elegant-lines') {
+          ctx.save();
+          ctx.strokeStyle = theme.ornamentColor;
+          ctx.globalAlpha = 0.82;
+          ctx.lineWidth = 3;
+          // Top & bottom thin lines
+          ctx.beginPath();
+          ctx.moveTo(52, 24);
+          ctx.lineTo(width - 52, 24);
+          ctx.moveTo(52, height - 24);
+          ctx.lineTo(width - 52, height - 24);
+          // Left & right thin lines
+          ctx.moveTo(28, 48);
+          ctx.lineTo(28, height - 48);
+          ctx.moveTo(width - 28, 48);
+          ctx.lineTo(width - 28, height - 48);
+          ctx.stroke();
+          ctx.restore();
+        } else if (activeDesign === 'luxury-gold') {
+          // Inner gold frame
+          ctx.save();
+          ctx.strokeStyle = theme.ornamentColor;
+          ctx.globalAlpha = 0.55;
+          ctx.lineWidth = 2.5;
+          ctx.strokeRect(20, 20, width - 40, height - 40);
 
-        // Avatar / Photo box (rounded rect)
-        var avX = 64;
-        var avY = 66;
-        var avSize = 156;
+          // Side diagonal pattern strips
+          ctx.globalAlpha = 0.42;
+          ctx.lineWidth = 2;
+          for (var sy = 40; sy < height - 40; sy += 14) {
+            ctx.beginPath();
+            ctx.moveTo(26, sy);
+            ctx.lineTo(44, sy + 10);
+            ctx.moveTo(width - 44, sy);
+            ctx.lineTo(width - 26, sy + 10);
+            ctx.stroke();
+          }
+
+          // Gold corners
+          ctx.globalAlpha = 0.95;
+          ctx.lineWidth = 5;
+          var cLen = 38;
+          var pad = 26;
+          // TL
+          ctx.beginPath();
+          ctx.moveTo(pad, pad + cLen); ctx.lineTo(pad, pad); ctx.lineTo(pad + cLen, pad);
+          // TR
+          ctx.moveTo(width - pad - cLen, pad); ctx.lineTo(width - pad, pad); ctx.lineTo(width - pad, pad + cLen);
+          // BL
+          ctx.moveTo(pad, height - pad - cLen); ctx.lineTo(pad, height - pad); ctx.lineTo(pad + cLen, height - pad);
+          // BR
+          ctx.moveTo(width - pad - cLen, height - pad); ctx.lineTo(width - pad, height - pad); ctx.lineTo(width - pad, height - pad - cLen);
+          ctx.stroke();
+          ctx.restore();
+        } else {
+          // Classic subtle frame
+          ctx.save();
+          ctx.strokeStyle = theme.ornamentColor;
+          ctx.globalAlpha = 0.28;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(20, 20, width - 40, height - 40);
+          ctx.restore();
+        }
+
+        // Small crown badge top-right
+        drawCanvasCrown(ctx, width - 72, 68, 22, theme.ornamentColor, theme.crownBg);
+
+        // Avatar / Photo box (compact rounded rect)
+        var avX = 76;
+        var avY = 104;
+        var avSize = 150;
         var r = 24;
 
         ctx.save();
@@ -1481,24 +2032,24 @@
         ctx.stroke();
         ctx.restore();
 
-        // Identity text
-        var textX = avX + avSize + 40;
-        var maxTextW = width - textX - 64;
+        // Bigger, more elegant Name + Job
+        var textX = avX + avSize + 38;
+        var maxTextW = width - textX - 110;
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillStyle = theme.textColor;
-        ctx.font = 'bold 50px "Playfair Display", Georgia, serif';
+        ctx.font = '800 58px "Playfair Display", Georgia, serif';
         var nameVal = fullNameInput.value.trim() || 'Your Full Name';
-        var nameLines = wrapCanvasText(ctx, nameVal, textX, 82, maxTextW, 56, 2);
+        var nameLines = wrapCanvasText(ctx, nameVal, textX, 114, maxTextW, 64, 2);
 
         ctx.fillStyle = theme.accentColor;
         ctx.font = '600 28px Inter, Arial, sans-serif';
         var jobVal = jobTitleInput.value.trim() || 'Designer · Creative Studio';
-        wrapCanvasText(ctx, jobVal, textX, 82 + nameLines * 56 + 10, maxTextW, 34, 2);
+        wrapCanvasText(ctx, jobVal, textX, 114 + nameLines * 64 + 12, maxTextW, 34, 2);
 
-        // Divider
+        // Compact balanced divider
         ctx.fillStyle = theme.dividerColor;
-        ctx.fillRect(64, 346, width - 128, 2);
+        ctx.fillRect(76, 326, width - 152, 2);
 
         // Contact details
         var phoneVal = phoneInput.value.trim() || '+1 555 234 5678';
@@ -1506,16 +2057,16 @@
 
         ctx.fillStyle = theme.textColor;
         ctx.font = '600 26px Inter, Arial, sans-serif';
-        ctx.fillText('Phone / WhatsApp:  ' + phoneVal, 64, 400, width - 128);
-        ctx.fillText('Website / Social:     ' + siteVal, 64, 452, width - 128);
+        ctx.fillText('Phone / WhatsApp:  ' + phoneVal, 76, 376, width - 152);
+        ctx.fillText('Website / Social:     ' + siteVal, 76, 428, width - 152);
 
         // Small Made with Tindry.com footer mark
         ctx.save();
-        ctx.globalAlpha = 0.65;
+        ctx.globalAlpha = 0.7;
         ctx.fillStyle = theme.textColor;
         ctx.font = '600 18px Inter, Arial, sans-serif';
         ctx.textAlign = 'right';
-        ctx.fillText('Made with Tindry.com', width - 64, 530);
+        ctx.fillText('Made with Tindry.com', width - 76, 520);
         ctx.restore();
 
         return canvas;
