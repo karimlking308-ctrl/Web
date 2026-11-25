@@ -7,7 +7,6 @@ import { ResultCard } from '../components/ResultCard';
 import { convertJpgToPdf, JpgToPdfProgress } from '../lib/jpgToPdf';
 import { StoredFile } from '../types/file';
 import { ToolEditorialSection } from '../components/ToolEditorialSection';
-import { ToolAdBanner } from '../components/ToolAdBanner';
 
 export const JpgToPdfTool: React.FC = () => {
   const [files, setFiles] = useState<StoredFile[]>([]);
@@ -102,8 +101,6 @@ export const JpgToPdfTool: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <ToolAdBanner variant="top" />
-
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
           JPG to PDF Converter
@@ -245,8 +242,6 @@ export const JpgToPdfTool: React.FC = () => {
           </div>
         </div>
       )}
-
-      <ToolAdBanner variant="bottom" />
 
       {/* Comprehensive Editorial & FAQ Section */}
       <ToolEditorialSection toolId="jpg-to-pdf" />

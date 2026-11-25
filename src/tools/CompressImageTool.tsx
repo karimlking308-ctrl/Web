@@ -7,7 +7,6 @@ import { compressImage, CompressResult } from '../lib/imageCompressor';
 import { formatBytes } from '../lib/utils';
 import { StoredFile } from '../types/file';
 import { ToolEditorialSection } from '../components/ToolEditorialSection';
-import { ToolAdBanner } from '../components/ToolAdBanner';
 
 export const CompressImageTool: React.FC = () => {
   const [file, setFile] = useState<StoredFile | null>(null);
@@ -83,8 +82,6 @@ export const CompressImageTool: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <ToolAdBanner variant="top" />
-
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
           Compress Image
@@ -234,8 +231,6 @@ export const CompressImageTool: React.FC = () => {
           </div>
         </div>
       )}
-
-      <ToolAdBanner variant="bottom" />
 
       {/* Comprehensive Editorial & FAQ Section */}
       <ToolEditorialSection toolId="compress-image" />

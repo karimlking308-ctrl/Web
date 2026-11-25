@@ -7,7 +7,6 @@ import { ResultCard } from '../components/ResultCard';
 import { mergePdfFiles, MergePdfProgress } from '../lib/pdfMerge';
 import { StoredFile } from '../types/file';
 import { ToolEditorialSection } from '../components/ToolEditorialSection';
-import { ToolAdBanner } from '../components/ToolAdBanner';
 
 export const MergePdfTool: React.FC = () => {
   const [files, setFiles] = useState<StoredFile[]>([]);
@@ -105,8 +104,6 @@ export const MergePdfTool: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      <ToolAdBanner variant="top" />
-
       <div>
         <h1 className="text-xl sm:text-2xl font-bold text-black tracking-tight">
           Merge PDF Free Online
@@ -201,8 +198,6 @@ export const MergePdfTool: React.FC = () => {
           </div>
         </div>
       )}
-
-      <ToolAdBanner variant="bottom" />
 
       {/* Comprehensive Editorial & FAQ Section */}
       <ToolEditorialSection toolId="merge-pdf" />
